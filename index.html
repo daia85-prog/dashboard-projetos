@@ -83,46 +83,13 @@
             box-shadow: 0 6px 15px rgba(16, 185, 129, 0.5);
         }
 
-        .loading {
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        .btn-warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            box-shadow: 0 4px 10px rgba(245, 158, 11, 0.4);
         }
 
-        .loading-spinner {
-            border: 4px solid #f3f4f6;
-            border-top: 4px solid #667eea;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .error {
-            background: #fee2e2;
-            color: #991b1b;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 25px;
-            border-left: 4px solid #dc2626;
-        }
-
-        .error h3 {
-            margin-bottom: 10px;
-            font-size: 18px;
-        }
-
-        .error p {
-            margin-bottom: 15px;
-            line-height: 1.6;
+        .btn-warning:hover {
+            box-shadow: 0 6px 15px rgba(245, 158, 11, 0.5);
         }
 
         .success {
@@ -154,32 +121,35 @@
         .setup-instructions ol {
             margin-left: 20px;
             line-height: 2;
+            margin-bottom: 20px;
         }
 
         .setup-instructions strong {
             color: #667eea;
         }
 
-        .input-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-
-        .input-group input {
-            flex: 1;
-            min-width: 300px;
-            padding: 12px;
-            border: 2px solid #667eea;
+        .paste-area {
+            width: 100%;
+            min-height: 200px;
+            padding: 15px;
+            border: 2px dashed #667eea;
             border-radius: 8px;
-            font-size: 14px;
+            font-family: monospace;
+            font-size: 13px;
+            resize: vertical;
+            margin-bottom: 15px;
         }
 
-        .input-group input:focus {
+        .paste-area:focus {
             outline: none;
             border-color: #5568d3;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: #f9fafb;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .cards-grid {
@@ -393,14 +363,6 @@
             .header-left, .header-actions {
                 width: 100%;
             }
-
-            .input-group {
-                flex-direction: column;
-            }
-
-            .input-group input {
-                min-width: 100%;
-            }
         }
     </style>
 </head>
@@ -412,8 +374,8 @@
                 <p>Atualizado em: <span id="currentDate"></span></p>
             </div>
             <div class="header-actions">
-                <button class="btn btn-success" onclick="refreshData()" id="refreshBtn" style="display: none;">
-                    🔄 Atualizar Dados
+                <button class="btn btn-warning" onclick="showUpdateModal()" id="updateBtn" style="display: none;">
+                    ✏️ Atualizar Dados
                 </button>
                 <button class="btn" onclick="window.print()">
                     🖨️ Imprimir / PDF
@@ -422,44 +384,45 @@
         </div>
 
         <div id="setupInstructions" class="setup-instructions">
-            <h3>🚀 Configuração Simples (Apenas 2 Passos!)</h3>
+            <h3>🚀 Super Simples - Cole os Dados da Planilha!</h3>
             <ol>
-                <li>Abra sua planilha no Google Sheets</li>
-                <li>Clique em <strong>"Compartilhar"</strong> → <strong>"Qualquer pessoa com o link"</strong> → Permissão: <strong>"Leitor"</strong></li>
-                <li>Copie o link da planilha (o link normal da barra de endereço)</li>
-                <li>Cole o link abaixo e clique em <strong>"Conectar"</strong></li>
+                <li>Abra sua planilha no <strong>Google Sheets</strong></li>
+                <li>Selecione <strong>TODOS os dados</strong> (incluindo cabeçalhos) - Pressione <strong>Ctrl+A</strong></li>
+                <li>Copie os dados - Pressione <strong>Ctrl+C</strong></li>
+                <li>Cole na caixa abaixo - Pressione <strong>Ctrl+V</strong></li>
+                <li>Clique em <strong>"Carregar Dashboard"</strong></li>
             </ol>
-            <div class="input-group">
-                <input 
-                    type="text" 
-                    id="sheetUrl" 
-                    placeholder="Cole aqui o link da planilha (ex: https://docs.google.com/spreadsheets/d/...)" 
-                >
-                <button class="btn btn-success" onclick="connectSheet()">
-                    ✅ Conectar Planilha
+
+            <textarea 
+                id="pasteArea" 
+                class="paste-area" 
+                placeholder="Cole aqui os dados copiados do Google Sheets...
+
+Exemplo:
+Projeto	Status	Responsável	Data_GoLive	Localização	Prioridade	Observação
+BELEZA	Concluído	Daiana	30/10/2025	JARDIM IPE - SP	MÉDIA	Projeto finalizado
+BETA	Em Andamento	Daiana	02/03/2026	Araçariguama - SP	MÉDIA	Aguardando validação"
+            ></textarea>
+
+            <div class="action-buttons">
+                <button class="btn btn-success" onclick="loadPastedData()">
+                    ✅ Carregar Dashboard
+                </button>
+                <button class="btn" onclick="document.getElementById('pasteArea').value = ''">
+                    🗑️ Limpar
                 </button>
             </div>
+
             <p style="margin-top: 15px; color: #666; font-size: 13px;">
-                💡 <strong>Dica:</strong> Funciona com qualquer planilha pública do Google Sheets!
+                💡 <strong>Dica:</strong> Funciona com dados copiados diretamente do Google Sheets ou Excel!
             </p>
-        </div>
-
-        <div id="loadingDiv" class="loading hidden">
-            <div class="loading-spinner"></div>
-            <h3>Carregando dados da planilha...</h3>
-            <p>Aguarde alguns segundos</p>
-        </div>
-
-        <div id="errorDiv" class="error hidden">
-            <h3>⚠️ Erro ao Carregar Dados</h3>
-            <p id="errorMessage"></p>
         </div>
 
         <div id="successDiv" class="success hidden">
             <span style="font-size: 24px;">✅</span>
             <div>
-                <strong>Conectado com sucesso!</strong>
-                <p style="margin: 0; font-size: 13px;">Dashboard sincronizado com sua planilha</p>
+                <strong>Dashboard carregado com sucesso!</strong>
+                <p style="margin: 0; font-size: 13px;" id="successMessage"></p>
             </div>
         </div>
 
@@ -534,124 +497,67 @@
 
     <script>
         let projects = [];
-        let currentSheetId = null;
 
         const hoje = new Date();
         const opcoes = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
         document.getElementById('currentDate').textContent = hoje.toLocaleDateString('pt-BR', opcoes);
 
         window.addEventListener('load', () => {
-            const savedUrl = localStorage.getItem('sheetUrl');
-            if (savedUrl) {
-                document.getElementById('sheetUrl').value = savedUrl;
-                connectSheet();
+            const savedData = localStorage.getItem('dashboardProjects');
+            if (savedData) {
+                try {
+                    projects = JSON.parse(savedData);
+                    if (projects.length > 0) {
+                        showDashboard();
+                    }
+                } catch (e) {
+                    console.error('Erro ao carregar dados salvos:', e);
+                }
             }
         });
 
-        function extractSheetId(url) {
-            const match = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
-            return match ? match[1] : null;
-        }
-
-        async function connectSheet() {
-            const url = document.getElementById('sheetUrl').value.trim();
+        function loadPastedData() {
+            const pastedText = document.getElementById('pasteArea').value.trim();
             
-            if (!url) {
-                showError('Por favor, cole o link da planilha do Google Sheets.');
+            if (!pastedText) {
+                alert('Por favor, cole os dados da planilha primeiro!');
                 return;
             }
-
-            const sheetId = extractSheetId(url);
-            if (!sheetId) {
-                showError('Link inválido. Por favor, use o link completo da planilha do Google Sheets.');
-                return;
-            }
-
-            currentSheetId = sheetId;
-            localStorage.setItem('sheetUrl', url);
-
-            await loadSheetData();
-        }
-
-        async function loadSheetData() {
-            if (!currentSheetId) return;
-
-            document.getElementById('setupInstructions').classList.add('hidden');
-            document.getElementById('errorDiv').classList.add('hidden');
-            document.getElementById('successDiv').classList.add('hidden');
-            document.getElementById('dashboardContent').classList.add('hidden');
-            document.getElementById('loadingDiv').classList.remove('hidden');
 
             try {
-                const csvUrl = `https://docs.google.com/spreadsheets/d/${currentSheetId}/export?format=csv&gid=0`;
+                projects = parsePastedData(pastedText);
                 
-                const response = await fetch(csvUrl);
-                
-                if (!response.ok) {
-                    throw new Error('Não foi possível acessar a planilha. Certifique-se de que ela está compartilhada como "Qualquer pessoa com o link pode visualizar".');
-                }
-
-                const csvText = await response.text();
-                projects = parseCSV(csvText);
-
                 if (projects.length === 0) {
-                    throw new Error('A planilha está vazia ou não possui dados válidos.');
+                    alert('Não foram encontrados dados válidos. Certifique-se de copiar a planilha completa, incluindo os cabeçalhos.');
+                    return;
                 }
 
-                document.getElementById('loadingDiv').classList.add('hidden');
-                document.getElementById('successDiv').classList.remove('hidden');
-                document.getElementById('dashboardContent').classList.remove('hidden');
-                document.getElementById('refreshBtn').style.display = 'flex';
+                localStorage.setItem('dashboardProjects', JSON.stringify(projects));
                 
-                updateDashboard();
-
+                showDashboard();
+                
+                document.getElementById('successMessage').textContent = `${projects.length} projetos carregados com sucesso!`;
+                document.getElementById('successDiv').classList.remove('hidden');
+                
                 setTimeout(() => {
                     document.getElementById('successDiv').classList.add('hidden');
                 }, 3000);
 
             } catch (error) {
+                alert('Erro ao processar os dados. Certifique-se de copiar diretamente do Google Sheets.');
                 console.error('Erro:', error);
-                showError(error.message + '<br><br><strong>Certifique-se de que:</strong><br>1. A planilha está compartilhada como "Qualquer pessoa com o link"<br>2. O link está correto<br>3. A planilha tem as colunas: Projeto, Status, Responsável, Data_GoLive, Localização, Prioridade, Observação');
-                document.getElementById('loadingDiv').classList.add('hidden');
-                document.getElementById('setupInstructions').classList.remove('hidden');
             }
         }
 
-        async function refreshData() {
-            await loadSheetData();
-        }
-
-        function showError(message) {
-            document.getElementById('errorMessage').innerHTML = message;
-            document.getElementById('errorDiv').classList.remove('hidden');
-        }
-
-        function parseCSV(csv) {
-            const lines = csv.split('\n').filter(line => line.trim());
+        function parsePastedData(text) {
+            const lines = text.split('\n').filter(line => line.trim());
             if (lines.length < 2) return [];
 
             const data = [];
 
             for (let i = 1; i < lines.length; i++) {
-                const line = lines[i];
-                const values = [];
-                let current = '';
-                let inQuotes = false;
-
-                for (let j = 0; j < line.length; j++) {
-                    const char = line[j];
-                    
-                    if (char === '"') {
-                        inQuotes = !inQuotes;
-                    } else if (char === ',' && !inQuotes) {
-                        values.push(current.trim());
-                        current = '';
-                    } else {
-                        current += char;
-                    }
-                }
-                values.push(current.trim());
-
+                const values = lines[i].split('\t').map(v => v.trim());
+                
                 if (values.length >= 7 && values[0]) {
                     const project = {
                         name: values[0] || '',
@@ -667,6 +573,23 @@
             }
 
             return data;
+        }
+
+        function showUpdateModal() {
+            document.getElementById('dashboardContent').classList.add('hidden');
+            document.getElementById('setupInstructions').classList.remove('hidden');
+            document.getElementById('updateBtn').style.display = 'none';
+            
+            document.getElementById('pasteArea').value = '';
+            document.getElementById('pasteArea').focus();
+        }
+
+        function showDashboard() {
+            document.getElementById('setupInstructions').classList.add('hidden');
+            document.getElementById('dashboardContent').classList.remove('hidden');
+            document.getElementById('updateBtn').style.display = 'flex';
+            
+            updateDashboard();
         }
 
         function normalizeStatus(status) {
