@@ -45,11 +45,6 @@
             font-size: 14px;
         }
 
-        .header-actions {
-            display: flex;
-            gap: 10px;
-        }
-
         .btn {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -71,13 +66,81 @@
             box-shadow: 0 6px 15px rgba(102, 126, 234, 0.5);
         }
 
-        .btn-secondary {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.4);
+        .loading {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
-        .btn-secondary:hover {
-            box-shadow: 0 6px 15px rgba(16, 185, 129, 0.5);
+        .loading-spinner {
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border-left: 4px solid #dc2626;
+        }
+
+        .error h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .error p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .error code {
+            background: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 13px;
+        }
+
+        .setup-instructions {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 25px;
+        }
+
+        .setup-instructions h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .setup-instructions ol {
+            margin-left: 20px;
+            line-height: 2;
+        }
+
+        .setup-instructions code {
+            background: #f3f4f6;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 13px;
         }
 
         .cards-grid {
@@ -178,7 +241,7 @@
             color: #065f46;
         }
 
-        .badge-andamento {
+        .badge-andamento, .badge-em-andamento {
             background: #dbeafe;
             color: #1e40af;
         }
@@ -193,7 +256,7 @@
             color: #92400e;
         }
 
-        .badge-aguardando {
+        .badge-aguardando, .badge-aguardando-cliente {
             background: #ede9fe;
             color: #5b21b6;
         }
@@ -203,16 +266,16 @@
             color: #374151;
         }
 
-        .priority-high {
+        .priority-high, .priority-alta {
             color: #ef4444;
             font-weight: bold;
         }
 
-        .priority-medium {
+        .priority-medium, .priority-media {
             color: #f59e0b;
         }
 
-        .priority-low {
+        .priority-low, .priority-baixa {
             color: #10b981;
         }
 
@@ -264,101 +327,6 @@
             transition: width 1s ease;
         }
 
-        .edit-mode {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            margin-bottom: 25px;
-        }
-
-        .edit-mode h3 {
-            color: #333;
-            margin-bottom: 20px;
-            font-size: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            color: #666;
-            font-weight: 600;
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
-
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: border-color 0.3s;
-        }
-
-        .form-group input:focus, .form-group select:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .project-item {
-            background: #f9fafb;
-            padding: 15px;
-            border-radius: 10px;
-            border-left: 4px solid #667eea;
-        }
-
-        .project-item h4 {
-            color: #333;
-            margin-bottom: 8px;
-            font-size: 16px;
-        }
-
-        .project-item p {
-            color: #666;
-            font-size: 13px;
-            margin: 4px 0;
-        }
-
-        .project-actions {
-            margin-top: 10px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn-small {
-            padding: 6px 12px;
-            font-size: 12px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .btn-small:hover {
-            background: #5568d3;
-        }
-
-        .btn-danger {
-            background: #ef4444;
-        }
-
-        .btn-danger:hover {
-            background: #dc2626;
-        }
-
         .hidden {
             display: none;
         }
@@ -369,7 +337,7 @@
                 padding: 0;
             }
             
-            .btn, .header-actions, .edit-mode {
+            .btn, .header-actions, .setup-instructions {
                 display: none;
             }
         }
@@ -382,265 +350,238 @@
                 <h1>📊 Dashboard Executivo - Controle de Projetos</h1>
                 <p>Atualizado em: <span id="currentDate"></span></p>
             </div>
-            <div class="header-actions">
-                <button class="btn btn-secondary" onclick="toggleEditMode()">
-                    ✏️ Editar Dados
+            <button class="btn" onclick="window.print()">
+                🖨️ Imprimir / Exportar PDF
+            </button>
+        </div>
+
+        <div id="setupInstructions" class="setup-instructions">
+            <h3>📋 Configure sua Planilha do Google Sheets</h3>
+            <ol>
+                <li>Abra sua planilha no Google Sheets</li>
+                <li>Clique em <strong>Arquivo → Compartilhar → Publicar na Web</strong></li>
+                <li>Selecione a aba com os projetos</li>
+                <li>Escolha formato: <strong>CSV</strong></li>
+                <li>Clique em <strong>Publicar</strong></li>
+                <li>Copie o link que aparecer</li>
+                <li>Cole o link abaixo e clique em <strong>Carregar Dados</strong></li>
+            </ol>
+            <div style="margin-top: 20px;">
+                <input 
+                    type="text" 
+                    id="sheetUrl" 
+                    placeholder="Cole aqui o link da planilha publicada..." 
+                    style="width: 70%; padding: 12px; border: 2px solid #667eea; border-radius: 8px; font-size: 14px;"
+                >
+                <button 
+                    onclick="loadSheetData()" 
+                    style="padding: 12px 25px; background: #10b981; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-left: 10px;"
+                >
+                    ✅ Carregar Dados
                 </button>
-                <button class="btn" onclick="window.print()">
-                    🖨️ Imprimir / PDF
-                </button>
             </div>
+            <p style="margin-top: 15px; color: #666; font-size: 13px;">
+                💡 <strong>Dica:</strong> A estrutura da planilha deve ter as colunas: 
+                <code>Projeto</code>, <code>Status</code>, <code>Responsável</code>, 
+                <code>Data_GoLive</code>, <code>Localização</code>, <code>Prioridade</code>, <code>Observação</code>
+            </p>
         </div>
 
-        <!-- Modo de Edição -->
-        <div id="editMode" class="edit-mode hidden">
-            <h3>➕ Adicionar/Editar Projeto</h3>
-            <form id="projectForm" onsubmit="addProject(event)">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <div class="form-group">
-                        <label>Nome do Projeto:</label>
-                        <input type="text" id="projectName" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Status:</label>
-                        <select id="projectStatus" required>
-                            <option value="Em Andamento">Em Andamento</option>
-                            <option value="Concluído">Concluído</option>
-                            <option value="Atrasado">Atrasado</option>
-                            <option value="Aguardando Cliente">Aguardando Cliente</option>
-                            <option value="Não Iniciado">Não Iniciado</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Responsável:</label>
-                        <input type="text" id="projectResponsible" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Data Go Live:</label>
-                        <input type="date" id="projectDate">
-                    </div>
-                    <div class="form-group">
-                        <label>Localização:</label>
-                        <input type="text" id="projectLocation">
-                    </div>
-                    <div class="form-group">
-                        <label>Prioridade:</label>
-                        <select id="projectPriority">
-                            <option value="BAIXA">Baixa</option>
-                            <option value="MÉDIA">Média</option>
-                            <option value="ALTA">Alta</option>
-                        </select>
-                    </div>
+        <div id="loadingDiv" class="loading hidden">
+            <div class="loading-spinner"></div>
+            <h3>Carregando dados da planilha...</h3>
+            <p>Aguarde alguns segundos</p>
+        </div>
+
+        <div id="errorDiv" class="error hidden">
+            <h3>⚠️ Erro ao Carregar Dados</h3>
+            <p id="errorMessage"></p>
+        </div>
+
+        <div id="dashboardContent" class="hidden">
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-label">Total de Projetos</div>
+                    <div class="card-number" style="color: #667eea;" id="totalProjects">0</div>
                 </div>
-                <div class="form-group">
-                    <label>Observação:</label>
-                    <input type="text" id="projectNote">
+                <div class="card">
+                    <div class="card-label">Concluídos</div>
+                    <div class="card-number concluido" id="completedProjects">0</div>
                 </div>
-                <button type="submit" class="btn" style="margin-top: 10px;">💾 Salvar Projeto</button>
-            </form>
+                <div class="card">
+                    <div class="card-label">Em Andamento</div>
+                    <div class="card-number andamento" id="ongoingProjects">0</div>
+                </div>
+                <div class="card">
+                    <div class="card-label">Atrasados</div>
+                    <div class="card-number atrasado" id="delayedProjects">0</div>
+                </div>
+                <div class="card">
+                    <div class="card-label">Aguardando</div>
+                    <div class="card-number aguardando" id="waitingProjects">0</div>
+                </div>
+                <div class="card">
+                    <div class="card-label">Não Iniciados</div>
+                    <div class="card-number bloqueado" id="notStartedProjects">0</div>
+                </div>
+            </div>
 
-            <h3 style="margin-top: 30px;">📋 Projetos Cadastrados</h3>
-            <div id="projectsList" class="projects-grid"></div>
-        </div>
+            <div class="chart-container">
+                <h2>📈 Distribuição por Status</h2>
+                <div class="bar-chart" id="barChart"></div>
+            </div>
 
-        <div class="cards-grid">
-            <div class="card">
-                <div class="card-label">Total de Projetos</div>
-                <div class="card-number" style="color: #667eea;" id="totalProjects">0</div>
+            <div class="table-section">
+                <h2>🚨 Projetos que Requerem Atenção Imediata</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Projeto</th>
+                            <th>Status</th>
+                            <th>Responsável</th>
+                            <th>Data Prevista</th>
+                            <th>Prioridade</th>
+                            <th>Observação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="criticalProjectsTable"></tbody>
+                </table>
             </div>
-            <div class="card">
-                <div class="card-label">Concluídos</div>
-                <div class="card-number concluido" id="completedProjects">0</div>
-            </div>
-            <div class="card">
-                <div class="card-label">Em Andamento</div>
-                <div class="card-number andamento" id="ongoingProjects">0</div>
-            </div>
-            <div class="card">
-                <div class="card-label">Atrasados</div>
-                <div class="card-number atrasado" id="delayedProjects">0</div>
-            </div>
-            <div class="card">
-                <div class="card-label">Aguardando</div>
-                <div class="card-number aguardando" id="waitingProjects">0</div>
-            </div>
-            <div class="card">
-                <div class="card-label">Não Iniciados</div>
-                <div class="card-number bloqueado" id="notStartedProjects">0</div>
-            </div>
-        </div>
 
-        <div class="chart-container">
-            <h2>📈 Distribuição por Status</h2>
-            <div class="bar-chart" id="barChart"></div>
-        </div>
-
-        <div class="table-section">
-            <h2>🚨 Projetos que Requerem Atenção Imediata</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Projeto</th>
-                        <th>Status</th>
-                        <th>Responsável</th>
-                        <th>Data Prevista</th>
-                        <th>Prioridade</th>
-                        <th>Observação</th>
-                    </tr>
-                </thead>
-                <tbody id="criticalProjectsTable"></tbody>
-            </table>
-        </div>
-
-        <div class="table-section">
-            <h2>📋 Todos os Projetos - Visão Consolidada</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Projeto</th>
-                        <th>Status</th>
-                        <th>Responsável</th>
-                        <th>Go Live</th>
-                        <th>Localização</th>
-                        <th>Prioridade</th>
-                    </tr>
-                </thead>
-                <tbody id="allProjectsTable"></tbody>
-            </table>
+            <div class="table-section">
+                <h2>📋 Todos os Projetos - Visão Consolidada</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Projeto</th>
+                            <th>Status</th>
+                            <th>Responsável</th>
+                            <th>Go Live</th>
+                            <th>Localização</th>
+                            <th>Prioridade</th>
+                        </tr>
+                    </thead>
+                    <tbody id="allProjectsTable"></tbody>
+                </table>
+            </div>
         </div>
     </div>
 
     <script>
-        // Dados iniciais (baseados nas suas planilhas)
-        let projects = [
-            { name: "BELEZA", status: "Concluído", responsible: "Daiana", date: "2025-10-30", location: "JARDIM IPE - SP", priority: "MÉDIA", note: "Projeto finalizado com sucesso" },
-            { name: "ESPERANÇA", status: "Concluído", responsible: "Daiana", date: "2026-01-15", location: "Arujá - SP", priority: "MÉDIA", note: "Entrega realizada" },
-            { name: "COUGAR", status: "Em Andamento", responsible: "Leandro PMO", date: "", location: "-", priority: "MÉDIA", note: "Em desenvolvimento" },
-            { name: "CANDELÁRIA", status: "Em Andamento", responsible: "Alen PMO", date: "2026-01-05", location: "A definir", priority: "MÉDIA", note: "Aguardando definições" },
-            { name: "GAVIÃO", status: "Concluído", responsible: "Daiana", date: "2025-12-01", location: "Itajaí - SP", priority: "BAIXA", note: "Backup configurado" },
-            { name: "BETA", status: "Em Andamento", responsible: "Daiana", date: "2026-03-02", location: "Araçariguama - SP", priority: "MÉDIA", note: "Aguardando validação do cliente" },
-            { name: "OPTIMUS PRIME", status: "Aguardando Cliente", responsible: "Daiana", date: "2025-10-27", location: "Navegantes - SC", priority: "MÉDIA", note: "Pendente retorno cliente" },
-            { name: "BP", status: "Atrasado", responsible: "Daiana", date: "2026-03-02", location: "-", priority: "ALTA", note: "Pendência com infraestrutura" },
-            { name: "DIA", status: "Em Andamento", responsible: "Vinicius PMO", date: "2026-01-26", location: "-", priority: "MÉDIA", note: "Em progresso" },
-            { name: "FLOWER", status: "Não Iniciado", responsible: "Alen PMO", date: "2026-03-13", location: "A definir", priority: "ALTA", note: "Aguardando kickoff do projeto" },
-            { name: "CDSK", status: "Em Andamento", responsible: "Daiana", date: "2026-02-19", location: "RS", priority: "MÉDIA", note: "Desenvolvimento ativo" },
-            { name: "ELETRO", status: "Em Andamento", responsible: "Daiana", date: "2026-03-20", location: "Joinville - SC", priority: "MÉDIA", note: "Em andamento" },
-            { name: "BRF EMBU", status: "Aguardando Cliente", responsible: "Daiana", date: "", location: "A definir", priority: "MÉDIA", note: "Aguardando definições" },
-            { name: "BRF JUNDIAÍ", status: "Aguardando Cliente", responsible: "Daiana", date: "", location: "A definir", priority: "MÉDIA", note: "Pendente cliente" },
-            { name: "BRF UBERLÂNDIA", status: "Atrasado", responsible: "Daiana", date: "", location: "A definir", priority: "ALTA", note: "Atrasado por recursos" },
-            { name: "MASTER", status: "Não Iniciado", responsible: "Leandro PMO", date: "", location: "A definir", priority: "ALTA", note: "Sem informações de início" },
-            { name: "REVERSE", status: "Em Andamento", responsible: "Daiana", date: "2026-02-23", location: "Campinas - SP", priority: "MÉDIA", note: "Em desenvolvimento" },
-            { name: "TITANO", status: "Em Andamento", responsible: "Daiana", date: "", location: "A definir", priority: "MÉDIA", note: "Início recente" },
-            { name: "OCOTPUS MS", status: "Atrasado", responsible: "-", date: "", location: "-", priority: "ALTA", note: "Necessita atenção" },
-            { name: "PROMOFARMA", status: "Concluído", responsible: "-", date: "", location: "-", priority: "BAIXA", note: "Finalizado" }
-        ];
+        let projects = [];
 
-        // Carregar dados salvos do localStorage
-        function loadData() {
-            const saved = localStorage.getItem('dashboardProjects');
-            if (saved) {
-                projects = JSON.parse(saved);
-            }
-            updateDashboard();
-        }
-
-        // Salvar dados no localStorage
-        function saveData() {
-            localStorage.setItem('dashboardProjects', JSON.stringify(projects));
-        }
-
-        // Atualizar data atual
         const hoje = new Date();
         const opcoes = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
         document.getElementById('currentDate').textContent = hoje.toLocaleDateString('pt-BR', opcoes);
 
-        // Função para alternar modo de edição
-        function toggleEditMode() {
-            const editMode = document.getElementById('editMode');
-            editMode.classList.toggle('hidden');
-            if (!editMode.classList.contains('hidden')) {
-                renderProjectsList();
+        window.addEventListener('load', () => {
+            const savedUrl = localStorage.getItem('sheetUrl');
+            if (savedUrl) {
+                document.getElementById('sheetUrl').value = savedUrl;
+                loadSheetData();
             }
-        }
+        });
 
-        // Função para adicionar projeto
-        function addProject(event) {
-            event.preventDefault();
+        async function loadSheetData() {
+            const url = document.getElementById('sheetUrl').value.trim();
             
-            const newProject = {
-                name: document.getElementById('projectName').value,
-                status: document.getElementById('projectStatus').value,
-                responsible: document.getElementById('projectResponsible').value,
-                date: document.getElementById('projectDate').value,
-                location: document.getElementById('projectLocation').value || '-',
-                priority: document.getElementById('projectPriority').value,
-                note: document.getElementById('projectNote').value || '-'
-            };
+            if (!url) {
+                showError('Por favor, cole o link da planilha publicada.');
+                return;
+            }
 
-            projects.push(newProject);
-            saveData();
-            updateDashboard();
-            renderProjectsList();
-            document.getElementById('projectForm').reset();
-            alert('Projeto adicionado com sucesso!');
-        }
+            localStorage.setItem('sheetUrl', url);
 
-        // Função para deletar projeto
-        function deleteProject(index) {
-            if (confirm('Tem certeza que deseja deletar este projeto?')) {
-                projects.splice(index, 1);
-                saveData();
+            document.getElementById('setupInstructions').classList.add('hidden');
+            document.getElementById('errorDiv').classList.add('hidden');
+            document.getElementById('dashboardContent').classList.add('hidden');
+            document.getElementById('loadingDiv').classList.remove('hidden');
+
+            try {
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error('Não foi possível carregar a planilha. Verifique se ela está publicada corretamente.');
+                }
+
+                const csvText = await response.text();
+                projects = parseCSV(csvText);
+
+                if (projects.length === 0) {
+                    throw new Error('A planilha está vazia ou não possui dados válidos.');
+                }
+
+                document.getElementById('loadingDiv').classList.add('hidden');
+                document.getElementById('dashboardContent').classList.remove('hidden');
+                
                 updateDashboard();
-                renderProjectsList();
+
+            } catch (error) {
+                showError(error.message + '<br><br>Certifique-se de que:<br>1. A planilha está publicada como CSV<br>2. O link está correto<br>3. A planilha tem as colunas corretas');
+                document.getElementById('loadingDiv').classList.add('hidden');
+                document.getElementById('setupInstructions').classList.remove('hidden');
             }
         }
 
-        // Renderizar lista de projetos para edição
-        function renderProjectsList() {
-            const container = document.getElementById('projectsList');
-            container.innerHTML = projects.map((project, index) => `
-                <div class="project-item">
-                    <h4>${project.name}</h4>
-                    <p><strong>Status:</strong> ${project.status}</p>
-                    <p><strong>Responsável:</strong> ${project.responsible}</p>
-                    <p><strong>Data:</strong> ${project.date || 'Não definida'}</p>
-                    <div class="project-actions">
-                        <button class="btn-small btn-danger" onclick="deleteProject(${index})">🗑️ Deletar</button>
-                    </div>
-                </div>
-            `).join('');
+        function showError(message) {
+            document.getElementById('errorMessage').innerHTML = message;
+            document.getElementById('errorDiv').classList.remove('hidden');
         }
 
-        // Função para contar projetos por status
+        function parseCSV(csv) {
+            const lines = csv.split('\n').filter(line => line.trim());
+            if (lines.length < 2) return [];
+
+            const headers = lines[0].split('\t');
+            const data = [];
+
+            for (let i = 1; i < lines.length; i++) {
+                const values = lines[i].split('\t');
+                if (values.length >= 7) {
+                    const project = {
+                        name: values[0] || '',
+                        status: values[1] || '',
+                        responsible: values[2] || '',
+                        date: values[3] || '',
+                        location: values[4] || '-',
+                        priority: values[5] || 'MÉDIA',
+                        note: values[6] || '-'
+                    };
+                    data.push(project);
+                }
+            }
+
+            return data;
+        }
+
+        function normalizeStatus(status) {
+            const normalized = status.toLowerCase().trim();
+            if (normalized.includes('conclu')) return 'Concluído';
+            if (normalized.includes('andamento')) return 'Em Andamento';
+            if (normalized.includes('atras')) return 'Atrasado';
+            if (normalized.includes('aguard')) return 'Aguardando Cliente';
+            if (normalized.includes('iniciado') || normalized.includes('início')) return 'Não Iniciado';
+            return status;
+        }
+
         function countByStatus(status) {
-            return projects.filter(p => p.status === status).length;
+            return projects.filter(p => normalizeStatus(p.status) === status).length;
         }
 
-        // Função para obter classe de badge do status
         function getStatusBadge(status) {
-            const badges = {
-                'Concluído': 'badge-concluido',
-                'Em Andamento': 'badge-andamento',
-                'Atrasado': 'badge-atrasado',
-                'Aguardando Cliente': 'badge-aguardando',
-                'Não Iniciado': 'badge-nao-iniciado'
-            };
-            return badges[status] || 'badge-nao-iniciado';
+            const normalized = normalizeStatus(status).toLowerCase().replace(/\s+/g, '-');
+            return 'badge-' + normalized;
         }
 
-        // Função para obter classe de prioridade
         function getPriorityClass(priority) {
-            const classes = {
-                'ALTA': 'priority-high',
-                'MÉDIA': 'priority-medium',
-                'BAIXA': 'priority-low'
-            };
-            return classes[priority] || 'priority-low';
+            const normalized = priority.toLowerCase().trim();
+            if (normalized.includes('alta')) return 'priority-alta';
+            if (normalized.includes('média') || normalized.includes('media')) return 'priority-media';
+            if (normalized.includes('baixa')) return 'priority-baixa';
+            return 'priority-media';
         }
 
-        // Atualizar dashboard
         function updateDashboard() {
-            // Atualizar cards
             document.getElementById('totalProjects').textContent = projects.length;
             document.getElementById('completedProjects').textContent = countByStatus('Concluído');
             document.getElementById('ongoingProjects').textContent = countByStatus('Em Andamento');
@@ -648,7 +589,6 @@
             document.getElementById('waitingProjects').textContent = countByStatus('Aguardando Cliente');
             document.getElementById('notStartedProjects').textContent = countByStatus('Não Iniciado');
 
-            // Atualizar gráfico de barras
             const chartData = [
                 { label: 'Em Andamento', count: countByStatus('Em Andamento'), color: 'linear-gradient(90deg, #3b82f6, #2563eb)' },
                 { label: 'Concluídos', count: countByStatus('Concluído'), color: 'linear-gradient(90deg, #10b981, #059669)' },
@@ -671,41 +611,36 @@
                 `;
             }).join('');
 
-            // Atualizar tabela de projetos críticos
-            const criticalProjects = projects.filter(p => 
-                p.status === 'Atrasado' || 
-                p.status === 'Não Iniciado' || 
-                p.priority === 'ALTA'
-            );
+            const criticalProjects = projects.filter(p => {
+                const status = normalizeStatus(p.status);
+                const priority = p.priority.toUpperCase();
+                return status === 'Atrasado' || status === 'Não Iniciado' || priority === 'ALTA';
+            });
 
             const criticalTable = document.getElementById('criticalProjectsTable');
             criticalTable.innerHTML = criticalProjects.map(project => `
                 <tr>
                     <td><strong>${project.name}</strong></td>
-                    <td><span class="status-badge ${getStatusBadge(project.status)}">${project.status}</span></td>
+                    <td><span class="status-badge ${getStatusBadge(project.status)}">${normalizeStatus(project.status)}</span></td>
                     <td>${project.responsible}</td>
-                    <td>${project.date ? new Date(project.date).toLocaleDateString('pt-BR') : '-'}</td>
-                    <td><span class="${getPriorityClass(project.priority)}">${project.priority}</span></td>
+                    <td>${project.date || '-'}</td>
+                    <td><span class="${getPriorityClass(project.priority)}">${project.priority.toUpperCase()}</span></td>
                     <td>${project.note}</td>
                 </tr>
             `).join('');
 
-            // Atualizar tabela de todos os projetos
             const allTable = document.getElementById('allProjectsTable');
             allTable.innerHTML = projects.map(project => `
                 <tr>
                     <td><strong>${project.name}</strong></td>
-                    <td><span class="status-badge ${getStatusBadge(project.status)}">${project.status}</span></td>
+                    <td><span class="status-badge ${getStatusBadge(project.status)}">${normalizeStatus(project.status)}</span></td>
                     <td>${project.responsible}</td>
-                    <td>${project.date ? new Date(project.date).toLocaleDateString('pt-BR') : '-'}</td>
+                    <td>${project.date || '-'}</td>
                     <td>${project.location}</td>
-                    <td><span class="${getPriorityClass(project.priority)}">${project.priority}</span></td>
+                    <td><span class="${getPriorityClass(project.priority)}">${project.priority.toUpperCase()}</span></td>
                 </tr>
             `).join('');
         }
-
-        // Inicializar dashboard
-        loadData();
     </script>
 </body>
 </html>
