@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Status de Projetos - Infraestrutura</title>
+    <title>Status dos Projetos - Infraestrutura</title>
     <style>
         * {
             margin: 0;
@@ -184,7 +184,7 @@
             white-space: nowrap;
         }
 
-        .badge-concluido {
+        .badge-concluido, .badge-concluído {
             background: #d1fae5;
             color: #065f46;
         }
@@ -209,7 +209,7 @@
             color: #5b21b6;
         }
 
-        .badge-nao-iniciado {
+        .badge-nao-iniciado, .badge-não-iniciado {
             background: #f3f4f6;
             color: #374151;
         }
@@ -219,7 +219,7 @@
             font-weight: bold;
         }
 
-        .priority-medium, .priority-media {
+        .priority-medium, .priority-media, .priority-média {
             color: #f59e0b;
         }
 
@@ -233,6 +233,17 @@
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             margin-bottom: 25px;
+        }
+
+        .chart-container h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 22px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .bar-chart {
@@ -302,11 +313,11 @@
     <div class="container">
         <div class="header">
             <div class="header-left">
-                <h1>📊 Status de Projetos - Infraestrutura</h1>
+                <h1>📊 Status dos Projetos - Infraestrutura</h1>
                 <p>Atualizado em: <span id="currentDate"></span></p>
             </div>
             <button class="btn" onclick="window.print()">
-                🖨️ Imprimir / Exportar PDF
+                🖨️ Imprimir / PDF
             </button>
         </div>
 
@@ -414,12 +425,17 @@
         });
 
         function normalizeStatus(status) {
+            if (!status) return 'Não Definido';
             const normalized = status.toLowerCase().trim();
             if (normalized.includes('conclu')) return 'Concluído';
             if (normalized.includes('andamento')) return 'Em Andamento';
             if (normalized.includes('atras')) return 'Atrasado';
             if (normalized.includes('aguard')) return 'Aguardando Cliente';
-            if (normalized.includes('iniciado') || normalized.includes('início')) return 'Não Iniciado';
+            if (normalized.includes('iniciado') || normalized.includes('início') || normalized.includes('inicio')) return 'Não Iniciado';
+            if (normalized.includes('bloq')) return 'Bloqueado';
+            if (normalized.includes('cancel')) return 'Cancelado';
+            if (normalized.includes('paus')) return 'Pausado';
+            if (normalized.includes('pend')) return 'Pendente';
             return status;
         }
 
@@ -428,15 +444,20 @@
         }
 
         function getStatusBadge(status) {
-            const normalized = normalizeStatus(status).toLowerCase().replace(/\s+/g, '-');
+            const normalized = normalizeStatus(status)
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/\s+/g, '-');
             return 'badge-' + normalized;
         }
 
         function getPriorityClass(priority) {
+            if (!priority) return 'priority-media';
             const normalized = priority.toLowerCase().trim();
-            if (normalized.includes('alta')) return 'priority-alta';
-            if (normalized.includes('média') || normalized.includes('media')) return 'priority-media';
-            if (normalized.includes('baixa')) return 'priority-baixa';
+            if (normalized.includes('alta') || normalized.includes('high') || normalized.includes('crítica') || normalized.includes('critica')) return 'priority-alta';
+            if (normalized.includes('média') || normalized.includes('media') || normalized.includes('medium')) return 'priority-media';
+            if (normalized.includes('baixa') || normalized.includes('low')) return 'priority-baixa';
             return 'priority-media';
         }
 
@@ -472,7 +493,7 @@
 
             const criticalProjects = projects.filter(p => {
                 const status = normalizeStatus(p.status);
-                const priority = p.priority.toUpperCase();
+                const priority = (p.priority || '').toUpperCase();
                 return status === 'Atrasado' || status === 'Não Iniciado' || priority === 'ALTA';
             });
 
@@ -484,10 +505,10 @@
                     <tr>
                         <td><strong>${project.name}</strong></td>
                         <td><span class="status-badge ${getStatusBadge(project.status)}">${normalizeStatus(project.status)}</span></td>
-                        <td>${project.responsible}</td>
+                        <td>${project.responsible || '-'}</td>
                         <td>${project.date || '-'}</td>
-                        <td><span class="${getPriorityClass(project.priority)}">${project.priority.toUpperCase()}</span></td>
-                        <td>${project.note}</td>
+                        <td><span class="${getPriorityClass(project.priority)}">${(project.priority || 'MÉDIA').toUpperCase()}</span></td>
+                        <td>${project.note || '-'}</td>
                     </tr>
                 `).join('');
             }
@@ -497,10 +518,10 @@
                 <tr>
                     <td><strong>${project.name}</strong></td>
                     <td><span class="status-badge ${getStatusBadge(project.status)}">${normalizeStatus(project.status)}</span></td>
-                    <td>${project.responsible}</td>
+                    <td>${project.responsible || '-'}</td>
                     <td>${project.date || '-'}</td>
-                    <td>${project.location}</td>
-                    <td><span class="${getPriorityClass(project.priority)}">${project.priority.toUpperCase()}</span></td>
+                    <td>${project.location || '-'}</td>
+                    <td><span class="${getPriorityClass(project.priority)}">${(project.priority || 'MÉDIA').toUpperCase()}</span></td>
                 </tr>
             `).join('');
         }
