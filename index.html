@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Executivo - Projetos</title>
+    <title>Dashboard Executivo - Controle</title>
     <style>
         * {
             margin: 0;
@@ -45,6 +45,19 @@
         .header-left p {
             color: #666;
             font-size: 14px;
+        }
+
+        .header-left .version-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-left: 10px;
         }
 
         .header-actions {
@@ -349,7 +362,7 @@
                 padding: 0;
             }
             
-            .btn, .header-actions, .setup-instructions {
+            .btn, .header-actions, .setup-instructions, .version-badge {
                 display: none;
             }
         }
@@ -370,7 +383,9 @@
     <div class="container">
         <div class="header">
             <div class="header-left">
-                <h1>📊 Dashboard Executivo - Controle de Projetos</h1>
+                <h1>📊 Dashboard Executivo - Controle de Projetos
+                    <span class="version-badge">Versão Admin</span>
+                </h1>
                 <p>Atualizado em: <span id="currentDate"></span></p>
             </div>
             <div class="header-actions">
