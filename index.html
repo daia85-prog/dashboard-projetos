@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Executivo - Controle</title>
+    <title>Status de Projetos - Infraestrutura</title>
     <style>
         * {
             margin: 0;
@@ -383,7 +383,7 @@
     <div class="container">
         <div class="header">
             <div class="header-left">
-                <h1>📊 Dashboard Executivo - Controle de Projetos
+                <h1>📊 Status de Projetos - Infraestrutura
                     <span class="version-badge">Versão Admin</span>
                 </h1>
                 <p>Atualizado em: <span id="currentDate"></span></p>
@@ -525,179 +525,3 @@ BETA	Em Andamento	Daiana	02/03/2026	Araçariguama - SP	MÉDIA	Aguardando valida�
                     if (projects.length > 0) {
                         showDashboard();
                     }
-                } catch (e) {
-                    console.error('Erro ao carregar dados salvos:', e);
-                }
-            }
-        });
-
-        function loadPastedData() {
-            const pastedText = document.getElementById('pasteArea').value.trim();
-            
-            if (!pastedText) {
-                alert('Por favor, cole os dados da planilha primeiro!');
-                return;
-            }
-
-            try {
-                projects = parsePastedData(pastedText);
-                
-                if (projects.length === 0) {
-                    alert('Não foram encontrados dados válidos. Certifique-se de copiar a planilha completa, incluindo os cabeçalhos.');
-                    return;
-                }
-
-                localStorage.setItem('dashboardProjects', JSON.stringify(projects));
-                
-                showDashboard();
-                
-                document.getElementById('successMessage').textContent = `${projects.length} projetos carregados com sucesso!`;
-                document.getElementById('successDiv').classList.remove('hidden');
-                
-                setTimeout(() => {
-                    document.getElementById('successDiv').classList.add('hidden');
-                }, 3000);
-
-            } catch (error) {
-                alert('Erro ao processar os dados. Certifique-se de copiar diretamente do Google Sheets.');
-                console.error('Erro:', error);
-            }
-        }
-
-        function parsePastedData(text) {
-            const lines = text.split('\n').filter(line => line.trim());
-            if (lines.length < 2) return [];
-
-            const data = [];
-
-            for (let i = 1; i < lines.length; i++) {
-                const values = lines[i].split('\t').map(v => v.trim());
-                
-                if (values.length >= 7 && values[0]) {
-                    const project = {
-                        name: values[0] || '',
-                        status: values[1] || '',
-                        responsible: values[2] || '',
-                        date: values[3] || '',
-                        location: values[4] || '-',
-                        priority: values[5] || 'MÉDIA',
-                        note: values[6] || '-'
-                    };
-                    data.push(project);
-                }
-            }
-
-            return data;
-        }
-
-        function showUpdateModal() {
-            document.getElementById('dashboardContent').classList.add('hidden');
-            document.getElementById('setupInstructions').classList.remove('hidden');
-            document.getElementById('updateBtn').style.display = 'none';
-            
-            document.getElementById('pasteArea').value = '';
-            document.getElementById('pasteArea').focus();
-        }
-
-        function showDashboard() {
-            document.getElementById('setupInstructions').classList.add('hidden');
-            document.getElementById('dashboardContent').classList.remove('hidden');
-            document.getElementById('updateBtn').style.display = 'flex';
-            
-            updateDashboard();
-        }
-
-        function normalizeStatus(status) {
-            const normalized = status.toLowerCase().trim();
-            if (normalized.includes('conclu')) return 'Concluído';
-            if (normalized.includes('andamento')) return 'Em Andamento';
-            if (normalized.includes('atras')) return 'Atrasado';
-            if (normalized.includes('aguard')) return 'Aguardando Cliente';
-            if (normalized.includes('iniciado') || normalized.includes('início')) return 'Não Iniciado';
-            return status;
-        }
-
-        function countByStatus(status) {
-            return projects.filter(p => normalizeStatus(p.status) === status).length;
-        }
-
-        function getStatusBadge(status) {
-            const normalized = normalizeStatus(status).toLowerCase().replace(/\s+/g, '-');
-            return 'badge-' + normalized;
-        }
-
-        function getPriorityClass(priority) {
-            const normalized = priority.toLowerCase().trim();
-            if (normalized.includes('alta')) return 'priority-alta';
-            if (normalized.includes('média') || normalized.includes('media')) return 'priority-media';
-            if (normalized.includes('baixa')) return 'priority-baixa';
-            return 'priority-media';
-        }
-
-        function updateDashboard() {
-            document.getElementById('totalProjects').textContent = projects.length;
-            document.getElementById('completedProjects').textContent = countByStatus('Concluído');
-            document.getElementById('ongoingProjects').textContent = countByStatus('Em Andamento');
-            document.getElementById('delayedProjects').textContent = countByStatus('Atrasado');
-            document.getElementById('waitingProjects').textContent = countByStatus('Aguardando Cliente');
-            document.getElementById('notStartedProjects').textContent = countByStatus('Não Iniciado');
-
-            const chartData = [
-                { label: 'Em Andamento', count: countByStatus('Em Andamento'), color: 'linear-gradient(90deg, #3b82f6, #2563eb)' },
-                { label: 'Concluídos', count: countByStatus('Concluído'), color: 'linear-gradient(90deg, #10b981, #059669)' },
-                { label: 'Atrasados', count: countByStatus('Atrasado'), color: 'linear-gradient(90deg, #ef4444, #dc2626)' },
-                { label: 'Aguardando', count: countByStatus('Aguardando Cliente'), color: 'linear-gradient(90deg, #8b5cf6, #7c3aed)' },
-                { label: 'Não Iniciados', count: countByStatus('Não Iniciado'), color: 'linear-gradient(90deg, #f59e0b, #d97706)' }
-            ];
-
-            const maxCount = Math.max(...chartData.map(d => d.count), 1);
-            const barChart = document.getElementById('barChart');
-            barChart.innerHTML = chartData.map(item => {
-                const width = maxCount > 0 ? (item.count / maxCount * 100) : 0;
-                return `
-                    <div class="bar-item">
-                        <div class="bar-label">${item.label}</div>
-                        <div class="bar-track">
-                            <div class="bar-fill" style="width: ${width}%; background: ${item.color};">${item.count}</div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            const criticalProjects = projects.filter(p => {
-                const status = normalizeStatus(p.status);
-                const priority = p.priority.toUpperCase();
-                return status === 'Atrasado' || status === 'Não Iniciado' || priority === 'ALTA';
-            });
-
-            const criticalTable = document.getElementById('criticalProjectsTable');
-            if (criticalProjects.length === 0) {
-                criticalTable.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #10b981; padding: 20px;">✅ Nenhum projeto crítico no momento!</td></tr>';
-            } else {
-                criticalTable.innerHTML = criticalProjects.map(project => `
-                    <tr>
-                        <td><strong>${project.name}</strong></td>
-                        <td><span class="status-badge ${getStatusBadge(project.status)}">${normalizeStatus(project.status)}</span></td>
-                        <td>${project.responsible}</td>
-                        <td>${project.date || '-'}</td>
-                        <td><span class="${getPriorityClass(project.priority)}">${project.priority.toUpperCase()}</span></td>
-                        <td>${project.note}</td>
-                    </tr>
-                `).join('');
-            }
-
-            const allTable = document.getElementById('allProjectsTable');
-            allTable.innerHTML = projects.map(project => `
-                <tr>
-                    <td><strong>${project.name}</strong></td>
-                    <td><span class="status-badge ${getStatusBadge(project.status)}">${normalizeStatus(project.status)}</span></td>
-                    <td>${project.responsible}</td>
-                    <td>${project.date || '-'}</td>
-                    <td>${project.location}</td>
-                    <td><span class="${getPriorityClass(project.priority)}">${project.priority.toUpperCase()}</span></td>
-                </tr>
-            `).join('');
-        }
-    </script>
-</body>
-</html>
