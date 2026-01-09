@@ -32,6 +32,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .header-left h1 {
@@ -43,6 +45,12 @@
         .header-left p {
             color: #666;
             font-size: 14px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .btn {
@@ -64,6 +72,15 @@
         .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-success:hover {
+            box-shadow: 0 6px 15px rgba(16, 185, 129, 0.5);
         }
 
         .loading {
@@ -108,12 +125,16 @@
             line-height: 1.6;
         }
 
-        .error code {
-            background: white;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: monospace;
-            font-size: 13px;
+        .success {
+            background: #d1fae5;
+            color: #065f46;
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border-left: 4px solid #10b981;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .setup-instructions {
@@ -135,12 +156,30 @@
             line-height: 2;
         }
 
-        .setup-instructions code {
-            background: #f3f4f6;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-family: monospace;
-            font-size: 13px;
+        .setup-instructions strong {
+            color: #667eea;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .input-group input {
+            flex: 1;
+            min-width: 300px;
+            padding: 12px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #5568d3;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
         .cards-grid {
@@ -188,6 +227,7 @@
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             margin-bottom: 25px;
+            overflow-x: auto;
         }
 
         .table-section h2 {
@@ -215,6 +255,7 @@
             text-transform: uppercase;
             font-size: 12px;
             letter-spacing: 1px;
+            white-space: nowrap;
         }
 
         td {
@@ -234,6 +275,7 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            white-space: nowrap;
         }
 
         .badge-concluido {
@@ -341,6 +383,25 @@
                 display: none;
             }
         }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .header-left, .header-actions {
+                width: 100%;
+            }
+
+            .input-group {
+                flex-direction: column;
+            }
+
+            .input-group input {
+                min-width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -350,40 +411,36 @@
                 <h1>📊 Dashboard Executivo - Controle de Projetos</h1>
                 <p>Atualizado em: <span id="currentDate"></span></p>
             </div>
-            <button class="btn" onclick="window.print()">
-                🖨️ Imprimir / Exportar PDF
-            </button>
+            <div class="header-actions">
+                <button class="btn btn-success" onclick="refreshData()" id="refreshBtn" style="display: none;">
+                    🔄 Atualizar Dados
+                </button>
+                <button class="btn" onclick="window.print()">
+                    🖨️ Imprimir / PDF
+                </button>
+            </div>
         </div>
 
         <div id="setupInstructions" class="setup-instructions">
-            <h3>📋 Configure sua Planilha do Google Sheets</h3>
+            <h3>🚀 Configuração Simples (Apenas 2 Passos!)</h3>
             <ol>
                 <li>Abra sua planilha no Google Sheets</li>
-                <li>Clique em <strong>Arquivo → Compartilhar → Publicar na Web</strong></li>
-                <li>Selecione a aba com os projetos</li>
-                <li>Escolha formato: <strong>CSV</strong></li>
-                <li>Clique em <strong>Publicar</strong></li>
-                <li>Copie o link que aparecer</li>
-                <li>Cole o link abaixo e clique em <strong>Carregar Dados</strong></li>
+                <li>Clique em <strong>"Compartilhar"</strong> → <strong>"Qualquer pessoa com o link"</strong> → Permissão: <strong>"Leitor"</strong></li>
+                <li>Copie o link da planilha (o link normal da barra de endereço)</li>
+                <li>Cole o link abaixo e clique em <strong>"Conectar"</strong></li>
             </ol>
-            <div style="margin-top: 20px;">
+            <div class="input-group">
                 <input 
                     type="text" 
                     id="sheetUrl" 
-                    placeholder="Cole aqui o link da planilha publicada..." 
-                    style="width: 70%; padding: 12px; border: 2px solid #667eea; border-radius: 8px; font-size: 14px;"
+                    placeholder="Cole aqui o link da planilha (ex: https://docs.google.com/spreadsheets/d/...)" 
                 >
-                <button 
-                    onclick="loadSheetData()" 
-                    style="padding: 12px 25px; background: #10b981; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-left: 10px;"
-                >
-                    ✅ Carregar Dados
+                <button class="btn btn-success" onclick="connectSheet()">
+                    ✅ Conectar Planilha
                 </button>
             </div>
             <p style="margin-top: 15px; color: #666; font-size: 13px;">
-                💡 <strong>Dica:</strong> A estrutura da planilha deve ter as colunas: 
-                <code>Projeto</code>, <code>Status</code>, <code>Responsável</code>, 
-                <code>Data_GoLive</code>, <code>Localização</code>, <code>Prioridade</code>, <code>Observação</code>
+                💡 <strong>Dica:</strong> Funciona com qualquer planilha pública do Google Sheets!
             </p>
         </div>
 
@@ -396,6 +453,14 @@
         <div id="errorDiv" class="error hidden">
             <h3>⚠️ Erro ao Carregar Dados</h3>
             <p id="errorMessage"></p>
+        </div>
+
+        <div id="successDiv" class="success hidden">
+            <span style="font-size: 24px;">✅</span>
+            <div>
+                <strong>Conectado com sucesso!</strong>
+                <p style="margin: 0; font-size: 13px;">Dashboard sincronizado com sua planilha</p>
+            </div>
         </div>
 
         <div id="dashboardContent" class="hidden">
@@ -469,6 +534,7 @@
 
     <script>
         let projects = [];
+        let currentSheetId = null;
 
         const hoje = new Date();
         const opcoes = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
@@ -478,30 +544,51 @@
             const savedUrl = localStorage.getItem('sheetUrl');
             if (savedUrl) {
                 document.getElementById('sheetUrl').value = savedUrl;
-                loadSheetData();
+                connectSheet();
             }
         });
 
-        async function loadSheetData() {
+        function extractSheetId(url) {
+            const match = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+            return match ? match[1] : null;
+        }
+
+        async function connectSheet() {
             const url = document.getElementById('sheetUrl').value.trim();
             
             if (!url) {
-                showError('Por favor, cole o link da planilha publicada.');
+                showError('Por favor, cole o link da planilha do Google Sheets.');
                 return;
             }
 
+            const sheetId = extractSheetId(url);
+            if (!sheetId) {
+                showError('Link inválido. Por favor, use o link completo da planilha do Google Sheets.');
+                return;
+            }
+
+            currentSheetId = sheetId;
             localStorage.setItem('sheetUrl', url);
+
+            await loadSheetData();
+        }
+
+        async function loadSheetData() {
+            if (!currentSheetId) return;
 
             document.getElementById('setupInstructions').classList.add('hidden');
             document.getElementById('errorDiv').classList.add('hidden');
+            document.getElementById('successDiv').classList.add('hidden');
             document.getElementById('dashboardContent').classList.add('hidden');
             document.getElementById('loadingDiv').classList.remove('hidden');
 
             try {
-                const response = await fetch(url);
+                const csvUrl = `https://docs.google.com/spreadsheets/d/${currentSheetId}/export?format=csv&gid=0`;
+                
+                const response = await fetch(csvUrl);
                 
                 if (!response.ok) {
-                    throw new Error('Não foi possível carregar a planilha. Verifique se ela está publicada corretamente.');
+                    throw new Error('Não foi possível acessar a planilha. Certifique-se de que ela está compartilhada como "Qualquer pessoa com o link pode visualizar".');
                 }
 
                 const csvText = await response.text();
@@ -512,15 +599,26 @@
                 }
 
                 document.getElementById('loadingDiv').classList.add('hidden');
+                document.getElementById('successDiv').classList.remove('hidden');
                 document.getElementById('dashboardContent').classList.remove('hidden');
+                document.getElementById('refreshBtn').style.display = 'flex';
                 
                 updateDashboard();
 
+                setTimeout(() => {
+                    document.getElementById('successDiv').classList.add('hidden');
+                }, 3000);
+
             } catch (error) {
-                showError(error.message + '<br><br>Certifique-se de que:<br>1. A planilha está publicada como CSV<br>2. O link está correto<br>3. A planilha tem as colunas corretas');
+                console.error('Erro:', error);
+                showError(error.message + '<br><br><strong>Certifique-se de que:</strong><br>1. A planilha está compartilhada como "Qualquer pessoa com o link"<br>2. O link está correto<br>3. A planilha tem as colunas: Projeto, Status, Responsável, Data_GoLive, Localização, Prioridade, Observação');
                 document.getElementById('loadingDiv').classList.add('hidden');
                 document.getElementById('setupInstructions').classList.remove('hidden');
             }
+        }
+
+        async function refreshData() {
+            await loadSheetData();
         }
 
         function showError(message) {
@@ -532,12 +630,29 @@
             const lines = csv.split('\n').filter(line => line.trim());
             if (lines.length < 2) return [];
 
-            const headers = lines[0].split('\t');
             const data = [];
 
             for (let i = 1; i < lines.length; i++) {
-                const values = lines[i].split('\t');
-                if (values.length >= 7) {
+                const line = lines[i];
+                const values = [];
+                let current = '';
+                let inQuotes = false;
+
+                for (let j = 0; j < line.length; j++) {
+                    const char = line[j];
+                    
+                    if (char === '"') {
+                        inQuotes = !inQuotes;
+                    } else if (char === ',' && !inQuotes) {
+                        values.push(current.trim());
+                        current = '';
+                    } else {
+                        current += char;
+                    }
+                }
+                values.push(current.trim());
+
+                if (values.length >= 7 && values[0]) {
                     const project = {
                         name: values[0] || '',
                         status: values[1] || '',
@@ -597,7 +712,7 @@
                 { label: 'Não Iniciados', count: countByStatus('Não Iniciado'), color: 'linear-gradient(90deg, #f59e0b, #d97706)' }
             ];
 
-            const maxCount = Math.max(...chartData.map(d => d.count));
+            const maxCount = Math.max(...chartData.map(d => d.count), 1);
             const barChart = document.getElementById('barChart');
             barChart.innerHTML = chartData.map(item => {
                 const width = maxCount > 0 ? (item.count / maxCount * 100) : 0;
@@ -618,16 +733,20 @@
             });
 
             const criticalTable = document.getElementById('criticalProjectsTable');
-            criticalTable.innerHTML = criticalProjects.map(project => `
-                <tr>
-                    <td><strong>${project.name}</strong></td>
-                    <td><span class="status-badge ${getStatusBadge(project.status)}">${normalizeStatus(project.status)}</span></td>
-                    <td>${project.responsible}</td>
-                    <td>${project.date || '-'}</td>
-                    <td><span class="${getPriorityClass(project.priority)}">${project.priority.toUpperCase()}</span></td>
-                    <td>${project.note}</td>
-                </tr>
-            `).join('');
+            if (criticalProjects.length === 0) {
+                criticalTable.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #10b981; padding: 20px;">✅ Nenhum projeto crítico no momento!</td></tr>';
+            } else {
+                criticalTable.innerHTML = criticalProjects.map(project => `
+                    <tr>
+                        <td><strong>${project.name}</strong></td>
+                        <td><span class="status-badge ${getStatusBadge(project.status)}">${normalizeStatus(project.status)}</span></td>
+                        <td>${project.responsible}</td>
+                        <td>${project.date || '-'}</td>
+                        <td><span class="${getPriorityClass(project.priority)}">${project.priority.toUpperCase()}</span></td>
+                        <td>${project.note}</td>
+                    </tr>
+                `).join('');
+            }
 
             const allTable = document.getElementById('allProjectsTable');
             allTable.innerHTML = projects.map(project => `
