@@ -47,19 +47,6 @@
             font-size: 14px;
         }
 
-        .header-left .version-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-left: 10px;
-        }
-
         .header-actions {
             display: flex;
             gap: 10px;
@@ -105,6 +92,15 @@
             box-shadow: 0 6px 15px rgba(245, 158, 11, 0.5);
         }
 
+        .btn-info {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            box-shadow: 0 4px 10px rgba(6, 182, 212, 0.4);
+        }
+
+        .btn-info:hover {
+            box-shadow: 0 6px 15px rgba(6, 182, 212, 0.5);
+        }
+
         .success {
             background: #d1fae5;
             color: #065f46;
@@ -127,6 +123,23 @@
             display: flex;
             align-items: center;
             gap: 10px;
+        }
+
+        .info-box {
+            background: #e0f2fe;
+            color: #075985;
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border-left: 4px solid #0ea5e9;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .info-box strong {
+            display: block;
+            margin-bottom: 5px;
         }
 
         .setup-instructions {
@@ -324,6 +337,17 @@
             margin-bottom: 25px;
         }
 
+        .chart-container h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 22px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
         .bar-chart {
             display: flex;
             flex-direction: column;
@@ -368,28 +392,13 @@
             display: none;
         }
 
-        .debug-info {
-            background: #fef3c7;
-            border: 1px solid #f59e0b;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 15px;
-            font-size: 12px;
-            font-family: monospace;
-        }
-
-        .debug-info h4 {
-            margin-bottom: 10px;
-            color: #92400e;
-        }
-
         @media print {
             body {
                 background: white;
                 padding: 0;
             }
             
-            .btn, .header-actions, .setup-instructions, .version-badge {
+            .btn, .header-actions, .setup-instructions, .info-box {
                 display: none;
             }
         }
@@ -414,8 +423,11 @@
                 <p>Atualizado em: <span id="currentDate"></span></p>
             </div>
             <div class="header-actions">
-                <button class="btn btn-warning" onclick="showUpdateModal()" id="updateBtn">
+                <button class="btn btn-warning" onclick="showUpdateModal()">
                     ✏️ Atualizar Dados
+                </button>
+                <button class="btn btn-info" onclick="exportJSON()" id="exportBtn" style="display: none;">
+                    📤 Exportar para GitHub
                 </button>
                 <button class="btn" onclick="window.print()">
                     🖨️ Imprimir / PDF
@@ -460,11 +472,6 @@ BETA	Em Andamento	Daiana	02/03/2026	Araçariguama - SP	MÉDIA	Aguardando valida�
             <p style="margin-top: 15px; color: #666; font-size: 13px;">
                 💡 <strong>Dica:</strong> Funciona com dados copiados diretamente do Google Sheets ou Excel!
             </p>
-
-            <div id="debugInfo" class="debug-info hidden">
-                <h4>🔍 Debug - Dados Detectados:</h4>
-                <pre id="debugContent"></pre>
-            </div>
         </div>
 
         <div id="errorDiv" class="error hidden">
@@ -480,6 +487,17 @@ BETA	Em Andamento	Daiana	02/03/2026	Araçariguama - SP	MÉDIA	Aguardando valida�
             <div>
                 <strong>Dashboard carregado com sucesso!</strong>
                 <p style="margin: 0; font-size: 13px;" id="successMessage"></p>
+            </div>
+        </div>
+
+        <div id="exportInfo" class="info-box hidden">
+            <span style="font-size: 24px;">💡</span>
+            <div>
+                <strong>Para compartilhar com seu gestor:</strong>
+                <p style="margin: 0; font-size: 13px;">
+                    Clique em <strong>"Exportar para GitHub"</strong>, baixe o arquivo <code>dados.json</code> e faça upload no seu repositório GitHub. 
+                    Assim a view do gestor será atualizada automaticamente!
+                </p>
             </div>
         </div>
 
@@ -581,6 +599,37 @@ BETA	Em Andamento	Daiana	02/03/2026	Araçariguama - SP	MÉDIA	Aguardando valida�
             }, 5000);
         }
 
+        function exportJSON() {
+            if (projects.length === 0) {
+                showError('Não há dados para exportar. Carregue os dados primeiro.');
+                return;
+            }
+
+            const dataToExport = {
+                lastUpdate: new Date().toISOString(),
+                projects: projects
+            };
+
+            const jsonString = JSON.stringify(dataToExport, null, 2);
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'dados.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            // Mostrar mensagem de sucesso
+            document.getElementById('successMessage').textContent = 'Arquivo dados.json baixado! Faça upload no GitHub para atualizar a view do gestor.';
+            document.getElementById('successDiv').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('successDiv').classList.add('hidden');
+            }, 5000);
+        }
+
         function loadPastedData() {
             const pastedText = document.getElementById('pasteArea').value.trim();
             
@@ -590,28 +639,13 @@ BETA	Em Andamento	Daiana	02/03/2026	Araçariguama - SP	MÉDIA	Aguardando valida�
             }
 
             try {
-                // Debug: mostrar dados brutos
-                console.log('Dados colados:', pastedText);
-                console.log('Caracteres especiais:', pastedText.includes('\t') ? 'Tem TAB' : 'Sem TAB');
-                
                 projects = parsePastedData(pastedText);
                 
                 if (projects.length === 0) {
-                    // Mostrar debug
-                    const lines = pastedText.split('\n');
-                    let debugText = `Total de linhas: ${lines.length}\n`;
-                    debugText += `Primeira linha: "${lines[0]}"\n`;
-                    debugText += `Colunas na primeira linha: ${lines[0].split('\t').length}\n`;
-                    debugText += `Tem TAB: ${pastedText.includes('\t')}\n`;
-                    
-                    document.getElementById('debugContent').textContent = debugText;
-                    document.getElementById('debugInfo').classList.remove('hidden');
-                    
                     showError('Não foram encontrados dados válidos. Verifique o formato dos dados.');
                     return;
                 }
 
-                document.getElementById('debugInfo').classList.add('hidden');
                 localStorage.setItem('dashboardProjects', JSON.stringify(projects));
                 
                 showDashboard();
@@ -629,32 +663,26 @@ BETA	Em Andamento	Daiana	02/03/2026	Araçariguama - SP	MÉDIA	Aguardando valida�
             }
         }
 
-        // Lista de palavras-chave que indicam cabeçalho
         const headerKeywords = ['projeto', 'status', 'responsável', 'responsavel', 'data', 'golive', 
                                 'go-live', 'go_live', 'localização', 'localizacao', 'prioridade', 
                                 'observação', 'observacao', 'obs', 'nota', 'nome'];
 
-        // Lista de status válidos para detectar se é dado ou cabeçalho
         const validStatuses = ['concluído', 'concluido', 'em andamento', 'andamento', 'atrasado', 
                                'aguardando', 'aguardando cliente', 'não iniciado', 'nao iniciado',
                                'bloqueado', 'cancelado', 'pausado', 'pendente'];
 
         function isHeaderRow(values) {
-            // Verifica se a primeira linha parece ser um cabeçalho
             const firstValue = (values[0] || '').toLowerCase().trim();
             const secondValue = (values[1] || '').toLowerCase().trim();
             
-            // Se a primeira coluna contém palavra-chave de cabeçalho
             if (headerKeywords.some(kw => firstValue.includes(kw))) {
                 return true;
             }
             
-            // Se a segunda coluna contém "status" (cabeçalho) ao invés de um status real
             if (secondValue === 'status') {
                 return true;
             }
             
-            // Se a segunda coluna contém um status válido, provavelmente é dado, não cabeçalho
             if (validStatuses.some(s => secondValue.includes(s))) {
                 return false;
             }
@@ -663,7 +691,6 @@ BETA	Em Andamento	Daiana	02/03/2026	Araçariguama - SP	MÉDIA	Aguardando valida�
         }
 
         function parsePastedData(text) {
-            // Normaliza quebras de linha
             text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
             
             const lines = text.split('\n').filter(line => line.trim());
@@ -672,24 +699,17 @@ BETA	Em Andamento	Daiana	02/03/2026	Araçariguama - SP	MÉDIA	Aguardando valida�
 
             const data = [];
             
-            // Detecta delimitador (tab ou múltiplos espaços)
             let delimiter = '\t';
             if (!lines[0].includes('\t')) {
-                // Tenta detectar múltiplos espaços como delimitador
                 delimiter = /\s{2,}/;
             }
             
-            // Verifica se a primeira linha é cabeçalho
             const firstLineValues = typeof delimiter === 'string' 
                 ? lines[0].split(delimiter) 
                 : lines[0].split(delimiter);
             
             const hasHeader = isHeaderRow(firstLineValues);
             const startIndex = hasHeader ? 1 : 0;
-            
-            console.log(`Detectado: ${hasHeader ? 'COM' : 'SEM'} cabeçalho`);
-            console.log(`Delimitador: ${delimiter === '\t' ? 'TAB' : 'ESPAÇOS'}`);
-            console.log(`Iniciando da linha: ${startIndex}`);
 
             for (let i = startIndex; i < lines.length; i++) {
                 const line = lines[i].trim();
@@ -702,10 +722,6 @@ BETA	Em Andamento	Daiana	02/03/2026	Araçariguama - SP	MÉDIA	Aguardando valida�
                     values = line.split(delimiter).map(v => v.trim());
                 }
                 
-                // Debug
-                console.log(`Linha ${i}: ${values.length} colunas ->`, values);
-                
-                // Aceita linhas com pelo menos 2 colunas (Projeto e Status)
                 if (values.length >= 2 && values[0]) {
                     const project = {
                         name: values[0] || '',
@@ -717,7 +733,6 @@ BETA	Em Andamento	Daiana	02/03/2026	Araçariguama - SP	MÉDIA	Aguardando valida�
                         note: values[6] || '-'
                     };
                     
-                    // Limpa valores que são apenas "-"
                     Object.keys(project).forEach(key => {
                         if (project[key] === '-' || project[key] === '' || project[key] === undefined) {
                             if (key === 'priority') {
@@ -732,14 +747,14 @@ BETA	Em Andamento	Daiana	02/03/2026	Araçariguama - SP	MÉDIA	Aguardando valida�
                 }
             }
 
-            console.log(`Total de projetos parseados: ${data.length}`);
             return data;
         }
 
         function showUpdateModal() {
             document.getElementById('dashboardContent').classList.add('hidden');
             document.getElementById('setupInstructions').classList.remove('hidden');
-            document.getElementById('debugInfo').classList.add('hidden');
+            document.getElementById('exportBtn').style.display = 'none';
+            document.getElementById('exportInfo').classList.add('hidden');
             
             document.getElementById('pasteArea').value = '';
             document.getElementById('pasteArea').focus();
@@ -748,6 +763,8 @@ BETA	Em Andamento	Daiana	02/03/2026	Araçariguama - SP	MÉDIA	Aguardando valida�
         function showDashboard() {
             document.getElementById('setupInstructions').classList.add('hidden');
             document.getElementById('dashboardContent').classList.remove('hidden');
+            document.getElementById('exportBtn').style.display = 'flex';
+            document.getElementById('exportInfo').classList.remove('hidden');
             
             updateDashboard();
         }
