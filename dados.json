@@ -1,0 +1,194 @@
+{
+  "lastUpdate": "2026-01-10T00:01:56.424Z",
+  "projects": [
+    {
+      "name": "BELEZA",
+      "status": "Concluído",
+      "responsible": "Daiana",
+      "date": "30/10/2025",
+      "location": "JARDIM IPE - SP",
+      "priority": "MÉDIA",
+      "note": "Projeto finalizado com sucesso"
+    },
+    {
+      "name": "ESPERANÇA",
+      "status": "Concluído",
+      "responsible": "Daiana",
+      "date": "15/01/2026",
+      "location": "Arujá - SP",
+      "priority": "MÉDIA",
+      "note": "Entrega realizada"
+    },
+    {
+      "name": "COUGAR",
+      "status": "Em Andamento",
+      "responsible": "Leandro PMO",
+      "date": "-",
+      "location": "-",
+      "priority": "MÉDIA",
+      "note": "Em desenvolvimento"
+    },
+    {
+      "name": "CANDELÁRIA",
+      "status": "Concluído",
+      "responsible": "Alen PMO",
+      "date": "05/01/2026",
+      "location": "A definir",
+      "priority": "MÉDIA",
+      "note": "Aguardando definições"
+    },
+    {
+      "name": "GAVIÃO",
+      "status": "Concluído",
+      "responsible": "Daiana",
+      "date": "01/12/2025",
+      "location": "Itajaí - SP",
+      "priority": "BAIXA",
+      "note": "Backup configurado"
+    },
+    {
+      "name": "BETA",
+      "status": "Em Andamento",
+      "responsible": "Daiana",
+      "date": "02/03/2026",
+      "location": "Araçariguama - SP",
+      "priority": "MÉDIA",
+      "note": "Aguardando validação do cliente"
+    },
+    {
+      "name": "OPTIMUS PRIME",
+      "status": "Aguardando Cliente",
+      "responsible": "Daiana",
+      "date": "27/10/2025",
+      "location": "Navegantes - SC",
+      "priority": "MÉDIA",
+      "note": "Pendente retorno cliente"
+    },
+    {
+      "name": "BP",
+      "status": "Atrasado",
+      "responsible": "Daiana",
+      "date": "02/03/2026",
+      "location": "-",
+      "priority": "ALTA",
+      "note": "Pendência com infraestrutura"
+    },
+    {
+      "name": "DIA",
+      "status": "Em Andamento",
+      "responsible": "Vinicius PMO",
+      "date": "26/01/2026",
+      "location": "-",
+      "priority": "MÉDIA",
+      "note": "Em progresso"
+    },
+    {
+      "name": "FLOWER",
+      "status": "Não Iniciado",
+      "responsible": "Alen PMO",
+      "date": "13/03/2026",
+      "location": "A definir",
+      "priority": "ALTA",
+      "note": "Aguardando kickoff do projeto"
+    },
+    {
+      "name": "CDSK",
+      "status": "Concluído",
+      "responsible": "Daiana",
+      "date": "19/02/2026",
+      "location": "RS",
+      "priority": "MÉDIA",
+      "note": "Desenvolvimento ativo"
+    },
+    {
+      "name": "ELETRO",
+      "status": "Em Andamento",
+      "responsible": "Daiana",
+      "date": "20/03/2026",
+      "location": "Joinville - SC",
+      "priority": "MÉDIA",
+      "note": "Em andamento"
+    },
+    {
+      "name": "BRF EMBU",
+      "status": "Não Iniciado",
+      "responsible": "Daiana",
+      "date": "-",
+      "location": "A definir",
+      "priority": "MÉDIA",
+      "note": "Aguardando definições"
+    },
+    {
+      "name": "BRF JUNDIAÍ",
+      "status": "Não Iniciado",
+      "responsible": "Daiana",
+      "date": "-",
+      "location": "A definir",
+      "priority": "MÉDIA",
+      "note": "Pendente cliente"
+    },
+    {
+      "name": "BRF UBERLÂNDIA",
+      "status": "Não Iniciado",
+      "responsible": "Daiana",
+      "date": "-",
+      "location": "A definir",
+      "priority": "ALTA",
+      "note": "Atrasado por recursos"
+    },
+    {
+      "name": "MASTER",
+      "status": "Não Iniciado",
+      "responsible": "Leandro PMO",
+      "date": "-",
+      "location": "A definir",
+      "priority": "ALTA",
+      "note": "Sem informações de início"
+    },
+    {
+      "name": "REVERSE",
+      "status": "Em Andamento",
+      "responsible": "Daiana",
+      "date": "23/02/2026",
+      "location": "Campinas - SP",
+      "priority": "MÉDIA",
+      "note": "Em desenvolvimento"
+    },
+    {
+      "name": "TITANO",
+      "status": "Em Andamento",
+      "responsible": "Daiana",
+      "date": "-",
+      "location": "A definir",
+      "priority": "MÉDIA",
+      "note": "Início recente"
+    },
+    {
+      "name": "OCOTPUS MS",
+      "status": "Atrasado",
+      "responsible": "-",
+      "date": "-",
+      "location": "-",
+      "priority": "ALTA",
+      "note": "Necessita atenção"
+    },
+    {
+      "name": "PROMOFARMA",
+      "status": "Concluído",
+      "responsible": "-",
+      "date": "-",
+      "location": "-",
+      "priority": "BAIXA",
+      "note": "Finalizado"
+    },
+    {
+      "name": "SUPER ABC",
+      "status": "Em Andamento",
+      "responsible": "-",
+      "date": "-",
+      "location": "-",
+      "priority": "MÉDIA",
+      "note": "Em progresso"
+    }
+  ]
+}
