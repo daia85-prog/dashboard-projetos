@@ -68,6 +68,40 @@
             box-shadow: 0 6px 15px rgba(102, 126, 234, 0.5);
         }
 
+        .loading {
+            background: white;
+            padding: 60px 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .loading h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .loading p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         .no-data {
             background: white;
             padding: 60px 30px;
@@ -314,17 +348,23 @@
         <div class="header">
             <div class="header-left">
                 <h1>📊 Status dos Projetos - Infraestrutura</h1>
-                <p>Atualizado em: <span id="currentDate"></span></p>
+                <p>Atualizado em: <span id="currentDate">Carregando...</span></p>
             </div>
             <button class="btn" onclick="window.print()">
                 🖨️ Imprimir / PDF
             </button>
         </div>
 
+        <div id="loadingMessage" class="loading">
+            <div class="spinner"></div>
+            <h3>Carregando dados...</h3>
+            <p>Aguarde enquanto os dados são carregados.</p>
+        </div>
+
         <div id="noDataMessage" class="no-data hidden">
-            <h3>📊 Dashboard Aguardando Dados</h3>
-            <p>Os dados do dashboard serão carregados automaticamente quando disponíveis.</p>
-            <p style="margin-top: 10px; font-size: 14px; color: #999;">Entre em contato com a administração para atualização dos dados.</p>
+            <h3>📊 Dados não disponíveis</h3>
+            <p>Os dados do dashboard ainda não foram publicados.</p>
+            <p style="margin-top: 10px; font-size: 14px; color: #999;">Entre em contato com a administração para verificar.</p>
         </div>
 
         <div id="dashboardContent" class="hidden">
@@ -399,30 +439,48 @@
     <script>
         let projects = [];
 
-        const hoje = new Date();
-        const opcoes = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-        document.getElementById('currentDate').textContent = hoje.toLocaleDateString('pt-BR', opcoes);
-
-        window.addEventListener('load', () => {
-            const savedData = localStorage.getItem('dashboardProjects');
-            if (savedData) {
-                try {
-                    projects = JSON.parse(savedData);
-                    if (projects.length > 0) {
-                        document.getElementById('noDataMessage').classList.add('hidden');
-                        document.getElementById('dashboardContent').classList.remove('hidden');
-                        updateDashboard();
-                    } else {
-                        document.getElementById('noDataMessage').classList.remove('hidden');
-                    }
-                } catch (e) {
-                    document.getElementById('noDataMessage').classList.remove('hidden');
-                    console.error('Erro ao carregar dados:', e);
+        // Carrega dados do arquivo JSON
+        async function loadData() {
+            try {
+                // Adiciona timestamp para evitar cache
+                const response = await fetch('dados.json?t=' + Date.now());
+                
+                if (!response.ok) {
+                    throw new Error('Arquivo não encontrado');
                 }
-            } else {
-                document.getElementById('noDataMessage').classList.remove('hidden');
+                
+                const data = await response.json();
+                
+                if (data.projects && data.projects.length > 0) {
+                    projects = data.projects;
+                    
+                    // Atualiza a data de atualização
+                    if (data.lastUpdate) {
+                        const updateDate = new Date(data.lastUpdate);
+                        const opcoes = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                        document.getElementById('currentDate').textContent = updateDate.toLocaleDateString('pt-BR', opcoes);
+                    }
+                    
+                    document.getElementById('loadingMessage').classList.add('hidden');
+                    document.getElementById('dashboardContent').classList.remove('hidden');
+                    updateDashboard();
+                } else {
+                    showNoData();
+                }
+            } catch (error) {
+                console.error('Erro ao carregar dados:', error);
+                showNoData();
             }
-        });
+        }
+
+        function showNoData() {
+            document.getElementById('loadingMessage').classList.add('hidden');
+            document.getElementById('noDataMessage').classList.remove('hidden');
+            
+            const hoje = new Date();
+            const opcoes = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+            document.getElementById('currentDate').textContent = hoje.toLocaleDateString('pt-BR', opcoes);
+        }
 
         function normalizeStatus(status) {
             if (!status) return 'Não Definido';
@@ -525,6 +583,9 @@
                 </tr>
             `).join('');
         }
+
+        // Carrega os dados ao iniciar
+        window.addEventListener('load', loadData);
     </script>
 </body>
 </html>
