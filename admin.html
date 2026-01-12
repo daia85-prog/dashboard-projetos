@@ -3,656 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Status dos Projetos</title>
+    <title>Admin - Dashboard Projetos</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            padding: 20px;
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .header {
-            background: rgba(255,255,255,0.95);
-            padding: 25px 30px;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-            margin-bottom: 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .header-left h1 {
-            color: #1a1a2e;
-            font-size: 26px;
-            margin-bottom: 5px;
-        }
-
-        .header-left p {
-            color: #666;
-            font-size: 13px;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
-        }
-
-        .btn-warning {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
-        }
-
-        .btn-info {
-            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
-            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
-        }
-
-        .btn-secondary {
-            background: linear-gradient(135deg, #64748b 0%, #475569 100%);
-            box-shadow: 0 4px 15px rgba(100, 116, 139, 0.4);
-        }
-
-        .btn-danger {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
-        }
-
-        .card {
-            background: rgba(255,255,255,0.95);
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            margin-bottom: 25px;
-        }
-
-        .card h3 {
-            color: #1a1a2e;
-            margin-bottom: 20px;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .instructions {
-            background: #f0f9ff;
-            border: 1px solid #bae6fd;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .instructions h4 {
-            color: #0369a1;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-
-        .instructions ol {
-            margin-left: 20px;
-            color: #0c4a6e;
-            font-size: 13px;
-            line-height: 1.8;
-        }
-
-        .instructions strong {
-            color: #0284c7;
-        }
-
-        .paste-area {
-            width: 100%;
-            min-height: 200px;
-            padding: 15px;
-            border: 2px dashed #667eea;
-            border-radius: 12px;
-            font-family: 'Consolas', monospace;
-            font-size: 12px;
-            resize: vertical;
-            margin-bottom: 15px;
-            background: #f8fafc;
-            transition: all 0.3s;
-        }
-
-        .paste-area:focus {
-            outline: none;
-            border-color: #764ba2;
-            background: white;
-            border-style: solid;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        /* Validation */
-        .validation-section {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #e5e7eb;
-        }
-
-        .validation-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .validation-header h4 {
-            color: #1a1a2e;
-            font-size: 16px;
-        }
-
-        .validation-status {
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .validation-status.success {
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        .validation-status.warning {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        .validation-status.error {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        .validation-items {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .validation-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 15px;
-            background: #f8fafc;
-            border-radius: 8px;
-            font-size: 13px;
-        }
-
-        .validation-item.ok {
-            background: #ecfdf5;
-            color: #065f46;
-        }
-
-        .validation-item.warning {
-            background: #fffbeb;
-            color: #92400e;
-        }
-
-        .validation-item.error {
-            background: #fef2f2;
-            color: #991b1b;
-        }
-
-        .validation-icon {
-            font-size: 18px;
-        }
-
-        /* Preview Table */
-        .preview-section {
-            margin-top: 25px;
-        }
-
-        .preview-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .preview-header h4 {
-            color: #1a1a2e;
-            font-size: 16px;
-        }
-
-        .preview-count {
-            background: #ede9fe;
-            color: #7c3aed;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .preview-table-container {
-            overflow-x: auto;
-            border-radius: 12px;
-            border: 1px solid #e5e7eb;
-        }
-
-        .preview-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12px;
-        }
-
-        .preview-table th {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 12px 10px;
-            text-align: left;
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 10px;
-            letter-spacing: 0.5px;
-        }
-
-        .preview-table td {
-            padding: 10px;
-            border-bottom: 1px solid #f1f5f9;
-        }
-
-        .preview-table tr:hover {
-            background: #f8fafc;
-        }
-
-        .preview-table tr.has-error {
-            background: #fef2f2;
-        }
-
-        .cell-error {
-            color: #ef4444;
-            font-weight: 600;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .badge-status {
-            background: #dbeafe;
-            color: #1e40af;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { background: white; padding: 25px 30px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .header h1 { color: #1a1a2e; font-size: 24px; }
+        .header p { color: #64748b; font-size: 13px; }
+        .btn { background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: all 0.3s; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102,126,234,0.4); }
+        .btn-secondary { background: linear-gradient(135deg, #64748b, #475569); }
+        .btn-success { background: linear-gradient(135deg, #10b981, #059669); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .card { background: white; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); margin-bottom: 25px; overflow: hidden; }
+        .card-header { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 20px 25px; }
+        .card-header h2 { font-size: 18px; display: flex; align-items: center; gap: 10px; }
+        .card-body { padding: 25px; }
+        textarea { width: 100%; height: 200px; border: 2px solid #e5e7eb; border-radius: 10px; padding: 15px; font-family: 'Consolas', monospace; font-size: 12px; resize: vertical; }
+        textarea:focus { outline: none; border-color: #667eea; }
+        .action-buttons { display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        .message { padding: 15px 20px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
+        .message.success { background: #d1fae5; color: #065f46; border-left: 4px solid #10b981; }
+        .message.error { background: #fee2e2; color: #991b1b; border-left: 4px solid #ef4444; }
+        .hidden { display: none; }
+        .validation-section { margin-top: 20px; padding: 20px; background: #f8fafc; border-radius: 10px; }
+        .validation-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .validation-status { padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .validation-status.success { background: #d1fae5; color: #065f46; }
+        .validation-status.warning { background: #fef3c7; color: #92400e; }
+        .validation-status.error { background: #fee2e2; color: #991b1b; }
+        .validation-item { padding: 10px 15px; margin: 5px 0; border-radius: 8px; font-size: 13px; display: flex; align-items: center; gap: 10px; }
+        .validation-item.ok { background: #ecfdf5; color: #065f46; }
+        .validation-item.warning { background: #fffbeb; color: #92400e; }
+        .validation-item.error { background: #fef2f2; color: #991b1b; }
+        .preview-section { margin-top: 20px; }
+        .preview-section h3 { margin-bottom: 15px; color: #1a1a2e; font-size: 16px; }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        th { background: #667eea; color: white; padding: 12px; text-align: left; }
+        td { padding: 10px 12px; border-bottom: 1px solid #e5e7eb; }
+        tr:hover { background: #f8fafc; }
+        .badge { padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+        .badge-status { background: #dbeafe; color: #1e40af; }
         .badge-rag-verde { background: #d1fae5; color: #065f46; }
         .badge-rag-amarelo { background: #fef3c7; color: #92400e; }
         .badge-rag-vermelho { background: #fee2e2; color: #991b1b; }
         .badge-rag-cinza { background: #f3f4f6; color: #374151; }
-
-        /* Messages */
-        .message {
-            padding: 15px 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .message.success {
-            background: #d1fae5;
-            color: #065f46;
-            border-left: 4px solid #10b981;
-        }
-
-        .message.error {
-            background: #fee2e2;
-            color: #991b1b;
-            border-left: 4px solid #ef4444;
-        }
-
-        .message.info {
-            background: #e0f2fe;
-            color: #075985;
-            border-left: 4px solid #0ea5e9;
-        }
-
-        .hidden { display: none; }
-
-        /* Checklist */
-        .column-checklist {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 8px;
-            margin-top: 15px;
-        }
-
-        .column-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 12px;
-            background: #f8fafc;
-            border-radius: 6px;
-            font-size: 12px;
-            color: #475569;
-        }
-
-        .column-item.found {
-            background: #ecfdf5;
-            color: #065f46;
-        }
-
-        .column-item.missing {
-            background: #fef2f2;
-            color: #991b1b;
-        }
-
-        @media (max-width: 768px) {
-            .header { flex-direction: column; align-items: stretch; }
-            .action-buttons { flex-direction: column; }
-            .btn { width: 100%; justify-content: center; }
-        }
+        .help-text { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 20px; margin-bottom: 20px; }
+        .help-text h4 { color: #1e40af; margin-bottom: 10px; }
+        .help-text ol { margin-left: 20px; color: #1e40af; }
+        .help-text li { margin: 8px 0; font-size: 13px; }
+        @media (max-width: 768px) { .header { flex-direction: column; } .action-buttons { flex-direction: column; } }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <div class="header-left">
-                <h1>🔧 Área Administrativa</h1>
-                <p>Gerenciamento do Dashboard de Projetos</p>
-            </div>
-            <div class="header-actions">
-                <a href="index.html" class="btn btn-secondary">← Voltar ao Dashboard</a>
-            </div>
+            <div><h1>🔧 Área Administrativa</h1><p>Gerenciamento do Dashboard</p></div>
+            <a href="index.html" class="btn btn-secondary">← Voltar</a>
         </div>
-
-        <!-- Messages -->
-        <div id="successMsg" class="message success hidden">
-            <span style="font-size: 24px;">✅</span>
-            <div><strong>Sucesso!</strong> <span id="successText"></span></div>
-        </div>
-
-        <div id="errorMsg" class="message error hidden">
-            <span style="font-size: 24px;">❌</span>
-            <div><strong>Erro!</strong> <span id="errorText"></span></div>
-        </div>
-
-        <!-- Upload Card -->
+        <div id="successMsg" class="message success hidden"><span>✅</span><div><strong>Sucesso!</strong> <span id="successText"></span></div></div>
+        <div id="errorMsg" class="message error hidden"><span>❌</span><div><strong>Erro!</strong> <span id="errorText"></span></div></div>
         <div class="card">
-            <h3>📤 Carregar Dados do Excel</h3>
-            
-            <div class="instructions">
-                <h4>📋 Como usar:</h4>
-                <ol>
-                    <li>Abra o arquivo <strong>Template_Projetos_Infra.xlsx</strong></li>
-                    <li>Selecione todos os dados (incluindo cabeçalhos) - <strong>Ctrl+A</strong></li>
-                    <li>Copie - <strong>Ctrl+C</strong></li>
-                    <li>Cole na caixa abaixo - <strong>Ctrl+V</strong></li>
-                    <li>Verifique a <strong>validação</strong> dos dados</li>
-                    <li>Clique em <strong>"Carregar e Validar"</strong></li>
-                </ol>
-            </div>
-
-            <textarea id="pasteArea" class="paste-area" placeholder="Cole aqui os dados copiados do Excel...
-
-Colunas esperadas (em ordem):
-Projeto | Status | RAG | Progresso | Etapa_Atual | Proximo_Passo | Bloqueador | Data_GoLive | Responsavel_Interno | Responsavel_Cliente | Localizacao | Dias_Sem_Atualizacao | Ultima_Atualizacao | Observacao" oninput="preValidate()"></textarea>
-
-            <div class="action-buttons">
-                <button class="btn btn-success" onclick="validateAndLoad()">✅ Carregar e Validar</button>
-                <button class="btn btn-secondary" onclick="clearAll()">🗑️ Limpar</button>
-            </div>
-
-            <!-- Column Detection -->
-            <div id="columnDetection" class="validation-section hidden">
-                <h4 style="margin-bottom: 10px; color: #1a1a2e;">📊 Colunas Detectadas</h4>
-                <div id="columnChecklist" class="column-checklist"></div>
-            </div>
-
-            <!-- Validation Section -->
-            <div id="validationSection" class="validation-section hidden">
-                <div class="validation-header">
-                    <h4>🔍 Validação dos Dados</h4>
-                    <span id="validationStatus" class="validation-status">Aguardando...</span>
+            <div class="card-header"><h2>📋 Importar Dados da Planilha</h2></div>
+            <div class="card-body">
+                <div class="help-text">
+                    <h4>📝 Como atualizar o dashboard:</h4>
+                    <ol>
+                        <li>Abra a planilha <strong>Template_Projetos_Infra.xlsx</strong></li>
+                        <li>Selecione todos os dados da aba "Projetos" (Ctrl+A)</li>
+                        <li>Copie (Ctrl+C)</li>
+                        <li>Cole na área abaixo (Ctrl+V)</li>
+                        <li>Clique em <strong>"Carregar e Validar"</strong></li>
+                        <li>Se estiver OK, clique em <strong>"Exportar dados.json"</strong></li>
+                        <li>Faça upload do arquivo no GitHub</li>
+                    </ol>
                 </div>
-                <div id="validationItems" class="validation-items"></div>
-            </div>
-
-            <!-- Preview Section -->
-            <div id="previewSection" class="preview-section hidden">
-                <div class="preview-header">
-                    <h4>👀 Preview dos Dados</h4>
-                    <span id="previewCount" class="preview-count">0 projetos</span>
+                <textarea id="dataInput" placeholder="Cole aqui os dados copiados da planilha Excel..."></textarea>
+                <div class="action-buttons">
+                    <button class="btn" onclick="processData()">📥 Carregar e Validar</button>
+                    <button class="btn btn-secondary" onclick="clearData()">🗑️ Limpar</button>
                 </div>
-                <div class="preview-table-container">
-                    <table class="preview-table">
-                        <thead>
-                            <tr>
-                                <th>Projeto</th>
-                                <th>Status</th>
-                                <th>RAG</th>
-                                <th>Progresso</th>
-                                <th>Etapa</th>
-                                <th>Go Live</th>
-                                <th>Responsável</th>
-                            </tr>
-                        </thead>
-                        <tbody id="previewTable"></tbody>
-                    </table>
+                <div id="validationSection" class="validation-section hidden">
+                    <div class="validation-header">
+                        <h3>📋 Validação</h3>
+                        <span class="validation-status" id="validationStatus">Verificando...</span>
+                    </div>
+                    <div id="validationItems"></div>
+                </div>
+                <div id="previewSection" class="preview-section hidden">
+                    <h3>👀 Preview (<span id="previewCount">0</span>)</h3>
+                    <div style="overflow-x: auto;">
+                        <table><thead><tr><th>Projeto</th><th>Status</th><th>RAG</th><th>%</th><th>Etapa</th><th>Go Live</th><th>Responsável</th></tr></thead><tbody id="previewTable"></tbody></table>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <!-- Export Card -->
         <div id="exportCard" class="card hidden">
-            <h3>📤 Exportar para GitHub</h3>
-            <p style="color: #64748b; margin-bottom: 20px; font-size: 14px;">
-                Os dados foram validados com sucesso! Agora exporte o arquivo <strong>dados.json</strong> e faça upload no GitHub para atualizar o dashboard.
-            </p>
-            <div class="action-buttons">
-                <button class="btn btn-info" onclick="exportJSON()">📥 Baixar dados.json</button>
-                <button class="btn btn-warning" onclick="openGitHub()">🔗 Abrir GitHub</button>
-            </div>
-        </div>
-
-        <!-- Current Data Card -->
-        <div class="card">
-            <h3>📊 Dados Atuais</h3>
-            <div id="currentDataInfo">
-                <p style="color: #64748b;">Carregando informações...</p>
+            <div class="card-header" style="background: linear-gradient(135deg, #10b981, #059669);"><h2>📤 Exportar Dados</h2></div>
+            <div class="card-body">
+                <p style="margin-bottom: 20px; color: #64748b;">Clique no botão abaixo para baixar o arquivo <strong>dados.json</strong>. Depois, faça upload no GitHub.</p>
+                <button class="btn btn-success" onclick="exportJSON()">⬇️ Exportar dados.json</button>
             </div>
         </div>
     </div>
-
     <script>
         let projects = [];
         let validationErrors = [];
         let validationWarnings = [];
-
-        const expectedColumns = [
-            'projeto', 'status', 'rag', 'progresso', 'etapa', 'proximo', 'bloqueador',
-            'golive', 'respinterno', 'respcliente', 'localizacao', 'diassematual', 'ultatual', 'obs'
-        ];
-
-        const validStatuses = ['em andamento', 'concluído', 'concluido', 'atrasado', 'aguardando cliente', 'aguardando', 'não iniciado', 'nao iniciado'];
+        const validStatuses = ['andamento', 'conclu', 'atras', 'aguard', 'não iniciado', 'nao iniciado', 'bloqueado'];
         const validRags = ['verde', 'amarelo', 'vermelho', 'cinza'];
 
-        // Load current data info
-        async function loadCurrentData() {
-            try {
-                const response = await fetch('dados.json?t=' + Date.now());
-                if (response.ok) {
-                    const data = await response.json();
-                    const updateDate = new Date(data.lastUpdate);
-                    const opcoes = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' };
-                    
-                    document.getElementById('currentDataInfo').innerHTML = `
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
-                            <div style="background: #f8fafc; padding: 15px; border-radius: 10px;">
-                                <div style="font-size: 24px; font-weight: bold; color: #667eea;">${data.projects?.length || 0}</div>
-                                <div style="font-size: 12px; color: #64748b;">Total de Projetos</div>
-                            </div>
-                            <div style="background: #f8fafc; padding: 15px; border-radius: 10px;">
-                                <div style="font-size: 14px; font-weight: bold; color: #1a1a2e;">${updateDate.toLocaleDateString('pt-BR', opcoes)}</div>
-                                <div style="font-size: 12px; color: #64748b;">Última Atualização</div>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    document.getElementById('currentDataInfo').innerHTML = '<p style="color: #f59e0b;">⚠️ Nenhum dado publicado ainda</p>';
-                }
-            } catch (e) {
-                document.getElementById('currentDataInfo').innerHTML = '<p style="color: #ef4444;">❌ Erro ao carregar dados</p>';
-            }
+        function showMessage(type, text) {
+            const el = document.getElementById(type === 'success' ? 'successMsg' : 'errorMsg');
+            document.getElementById(type === 'success' ? 'successText' : 'errorText').textContent = text;
+            el.classList.remove('hidden');
+            setTimeout(() => el.classList.add('hidden'), 5000);
         }
 
-        function preValidate() {
-            const text = document.getElementById('pasteArea').value.trim();
-            if (!text) {
-                document.getElementById('columnDetection').classList.add('hidden');
-                document.getElementById('validationSection').classList.add('hidden');
-                document.getElementById('previewSection').classList.add('hidden');
-                return;
-            }
-
-            const lines = text.split('\n').filter(l => l.trim());
-            if (lines.length < 2) return;
-
-            const headers = lines[0].split('\t').map(h => h.trim().toLowerCase().replace(/[_\s]/g, ''));
-            
-            // Show column detection
-            const requiredCols = ['projeto', 'status', 'rag', 'progresso'];
-            const optionalCols = ['etapa', 'proximo', 'bloqueador', 'golive', 'respinterno', 'respcliente', 'localizacao', 'diassematual', 'ultatual', 'obs'];
-            
-            let checklistHtml = '';
-            
-            requiredCols.forEach(col => {
-                const found = headers.some(h => h.includes(col) || col.includes(h));
-                checklistHtml += `<div class="column-item ${found ? 'found' : 'missing'}">
-                    ${found ? '✅' : '❌'} ${col} ${!found ? '(obrigatório)' : ''}
-                </div>`;
-            });
-            
-            optionalCols.forEach(col => {
-                const found = headers.some(h => h.includes(col) || col.includes(h));
-                checklistHtml += `<div class="column-item ${found ? 'found' : ''}">
-                    ${found ? '✅' : '⚪'} ${col}
-                </div>`;
-            });
-
-            document.getElementById('columnChecklist').innerHTML = checklistHtml;
-            document.getElementById('columnDetection').classList.remove('hidden');
+        function clearData() {
+            document.getElementById('dataInput').value = '';
+            document.getElementById('validationSection').classList.add('hidden');
+            document.getElementById('previewSection').classList.add('hidden');
+            document.getElementById('exportCard').classList.add('hidden');
+            projects = [];
         }
 
-        function validateAndLoad() {
-            const text = document.getElementById('pasteArea').value.trim();
-            if (!text) {
-                showMessage('error', 'Cole os dados da planilha primeiro!');
-                return;
-            }
-
+        function processData() {
             validationErrors = [];
             validationWarnings = [];
-
+            const text = document.getElementById('dataInput').value.trim();
+            if (!text) { showMessage('error', 'Cole os dados da planilha primeiro.'); return; }
             try {
                 projects = parseData(text);
-                
-                if (projects.length === 0) {
-                    showMessage('error', 'Nenhum dado válido encontrado.');
-                    return;
-                }
-
-                // Validate each project
-                projects.forEach((p, index) => {
-                    // Status validation
+                if (projects.length === 0) { showMessage('error', 'Nenhum projeto encontrado.'); return; }
+                projects.forEach((p, i) => {
                     const statusNorm = (p.status || '').toLowerCase();
-                    if (!validStatuses.some(s => statusNorm.includes(s))) {
-                        validationWarnings.push(`Linha ${index + 2}: Status "${p.status}" pode não ser reconhecido`);
-                    }
-
-                    // RAG validation
+                    if (!validStatuses.some(s => statusNorm.includes(s))) validationWarnings.push(`Linha ${i+2}: Status "${p.status}" pode não ser reconhecido`);
                     const ragNorm = (p.rag || '').toLowerCase();
-                    if (ragNorm && !validRags.includes(ragNorm)) {
-                        validationWarnings.push(`Linha ${index + 2}: RAG "${p.rag}" deve ser Verde, Amarelo, Vermelho ou Cinza`);
-                    }
-
-                    // Progresso validation
-                    if (p.progresso < 0 || p.progresso > 100) {
-                        validationErrors.push(`Linha ${index + 2}: Progresso ${p.progresso}% está fora do intervalo 0-100`);
-                    }
-
-                    // Projeto name validation
-                    if (!p.projeto || p.projeto.length < 2) {
-                        validationErrors.push(`Linha ${index + 2}: Nome do projeto inválido ou vazio`);
-                    }
+                    if (ragNorm && !validRags.includes(ragNorm)) validationWarnings.push(`Linha ${i+2}: RAG "${p.rag}" inválido`);
+                    if (p.progresso < 0 || p.progresso > 100) validationErrors.push(`Linha ${i+2}: Progresso ${p.progresso}% fora do intervalo`);
+                    if (!p.projeto || p.projeto.length < 2) validationErrors.push(`Linha ${i+2}: Nome do projeto inválido`);
                 });
-
                 showValidationResults();
                 showPreview();
-
                 if (validationErrors.length === 0) {
-                    localStorage.setItem('dashboardProjectsV2', JSON.stringify(projects));
                     document.getElementById('exportCard').classList.remove('hidden');
-                    showMessage('success', `${projects.length} projetos carregados com sucesso!`);
+                    showMessage('success', `${projects.length} projetos carregados!`);
                 }
-
-            } catch (e) {
-                showMessage('error', 'Erro ao processar dados: ' + e.message);
-                console.error(e);
-            }
+            } catch(e) { showMessage('error', 'Erro: ' + e.message); }
         }
 
         function parseData(text) {
             text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
             const lines = text.split('\n').filter(l => l.trim());
             if (lines.length < 2) return [];
-
             const data = [];
             const headers = lines[0].split('\t').map(h => h.trim().toLowerCase());
-
             const colMap = {
                 projeto: headers.findIndex(h => h.includes('projeto')),
                 status: headers.findIndex(h => h === 'status'),
@@ -661,155 +168,99 @@ Projeto | Status | RAG | Progresso | Etapa_Atual | Proximo_Passo | Bloqueador | 
                 etapa: headers.findIndex(h => h.includes('etapa')),
                 proximo: headers.findIndex(h => h.includes('proximo') || h.includes('próximo')),
                 bloqueador: headers.findIndex(h => h.includes('bloqueador')),
-                goliveOriginal: headers.findIndex(h => h.includes('golive_original') || h.includes('goliveoriginal')),
+                goliveOriginal: headers.findIndex(h => h.includes('golive_original') || h.includes('goliveoriginal') || h.includes('original')),
                 goliveAtual: headers.findIndex(h => h.includes('golive_atual') || h.includes('goliveatual')),
-                golive: headers.findIndex(h => (h.includes('golive') || h.includes('go_live') || h.includes('data_golive')) && !h.includes('original') && !h.includes('atual')),
-                respInterno: headers.findIndex(h => h.includes('interno')),
-                respCliente: headers.findIndex(h => h.includes('cliente') && h.includes('responsavel')),
+                golive: headers.findIndex(h => (h.includes('golive') || h.includes('go_live')) && !h.includes('original') && !h.includes('atual')),
+                respInterno: headers.findIndex(h => h.includes('responsavel_interno') || h.includes('interno')),
+                respCliente: headers.findIndex(h => h.includes('responsavel_cliente') || h.includes('cliente')),
                 localizacao: headers.findIndex(h => h.includes('localizacao') || h.includes('localização')),
                 diasSemAtual: headers.findIndex(h => h.includes('dias')),
                 ultAtual: headers.findIndex(h => h.includes('ultima') || h.includes('última')),
                 obs: headers.findIndex(h => h.includes('obs'))
             };
-
             for (let i = 1; i < lines.length; i++) {
                 const cols = lines[i].split('\t').map(c => c.trim());
                 const projeto = cols[colMap.projeto] || cols[0];
                 if (!projeto) continue;
-
-                // Suporte para formato antigo (só golive) e novo (goliveOriginal + goliveAtual)
                 let goliveOriginal, goliveAtual;
                 if (colMap.goliveOriginal >= 0 && colMap.goliveAtual >= 0) {
-                    // Formato novo
-                    goliveOriginal = cols[colMap.goliveOriginal] || '-';
-                    goliveAtual = cols[colMap.goliveAtual] || '-';
+                    goliveOriginal = formatDate(cols[colMap.goliveOriginal]) || '-';
+                    goliveAtual = formatDate(cols[colMap.goliveAtual]) || '-';
                 } else if (colMap.golive >= 0) {
-                    // Formato antigo - usa mesmo valor para ambos
-                    goliveOriginal = cols[colMap.golive] || '-';
-                    goliveAtual = cols[colMap.golive] || '-';
+                    goliveOriginal = formatDate(cols[colMap.golive]) || '-';
+                    goliveAtual = formatDate(cols[colMap.golive]) || '-';
                 } else {
-                    goliveOriginal = cols[7] || '-';
-                    goliveAtual = cols[8] || cols[7] || '-';
+                    goliveOriginal = formatDate(cols[7]) || '-';
+                    goliveAtual = formatDate(cols[8]) || formatDate(cols[7]) || '-';
                 }
-
+                const respIdx = colMap.goliveAtual >= 0 ? 9 : 8;
                 data.push({
                     projeto: projeto,
                     status: cols[colMap.status] || cols[1] || '',
-                    rag: (cols[colMap.rag] || cols[2] || 'Cinza').toLowerCase(),
+                    rag: (cols[colMap.rag] || cols[2] || 'cinza').toLowerCase(),
                     progresso: parseInt(cols[colMap.progresso] || cols[3] || '0') || 0,
                     etapa: cols[colMap.etapa] || cols[4] || '-',
                     proximo: cols[colMap.proximo] || cols[5] || '-',
                     bloqueador: cols[colMap.bloqueador] || cols[6] || '-',
                     goliveOriginal: goliveOriginal,
                     goliveAtual: goliveAtual,
-                    golive: goliveAtual, // Mantém compatibilidade
-                    respInterno: cols[colMap.respInterno] || cols[colMap.goliveAtual >= 0 ? 9 : 8] || '-',
-                    respCliente: cols[colMap.respCliente] || cols[colMap.goliveAtual >= 0 ? 10 : 9] || '-',
-                    localizacao: cols[colMap.localizacao] || cols[colMap.goliveAtual >= 0 ? 11 : 10] || '-',
-                    diasSemAtual: parseInt(cols[colMap.diasSemAtual] || cols[colMap.goliveAtual >= 0 ? 12 : 11] || '0') || 0,
-                    ultAtual: cols[colMap.ultAtual] || cols[colMap.goliveAtual >= 0 ? 13 : 12] || '-',
-                    obs: cols[colMap.obs] || cols[colMap.goliveAtual >= 0 ? 14 : 13] || '-'
+                    golive: goliveAtual,
+                    respInterno: cols[colMap.respInterno] || cols[respIdx] || '-',
+                    respCliente: cols[colMap.respCliente] || cols[respIdx+1] || '-',
+                    localizacao: cols[colMap.localizacao] || cols[respIdx+2] || '-',
+                    diasSemAtual: parseInt(cols[colMap.diasSemAtual] || cols[respIdx+3] || '0') || 0,
+                    ultAtual: formatDate(cols[colMap.ultAtual] || cols[respIdx+4]) || '-',
+                    obs: cols[colMap.obs] || cols[respIdx+5] || '-'
                 });
             }
             return data;
+        }
+
+        function formatDate(val) {
+            if (!val || val === '-' || val === '') return null;
+            if (typeof val === 'number') {
+                const d = new Date((val - 25569) * 86400 * 1000);
+                return d.toLocaleDateString('pt-BR');
+            }
+            if (val.includes('/')) return val;
+            if (val.includes('-')) {
+                const parts = val.split('-');
+                if (parts[0].length === 4) return `${parts[2]}/${parts[1]}/${parts[0]}`;
+            }
+            return val;
         }
 
         function showValidationResults() {
             const section = document.getElementById('validationSection');
             const items = document.getElementById('validationItems');
             const status = document.getElementById('validationStatus');
-
-            let html = '';
-
-            // Success items
-            html += `<div class="validation-item ok">
-                <span class="validation-icon">✅</span>
-                <span>${projects.length} projetos encontrados</span>
-            </div>`;
-
-            // Warnings
-            validationWarnings.forEach(w => {
-                html += `<div class="validation-item warning">
-                    <span class="validation-icon">⚠️</span>
-                    <span>${w}</span>
-                </div>`;
-            });
-
-            // Errors
-            validationErrors.forEach(e => {
-                html += `<div class="validation-item error">
-                    <span class="validation-icon">❌</span>
-                    <span>${e}</span>
-                </div>`;
-            });
-
+            let html = `<div class="validation-item ok">✅ ${projects.length} projetos encontrados</div>`;
+            validationWarnings.forEach(w => { html += `<div class="validation-item warning">⚠️ ${w}</div>`; });
+            validationErrors.forEach(e => { html += `<div class="validation-item error">❌ ${e}</div>`; });
             items.innerHTML = html;
-
-            if (validationErrors.length > 0) {
-                status.textContent = `${validationErrors.length} erro(s)`;
-                status.className = 'validation-status error';
-            } else if (validationWarnings.length > 0) {
-                status.textContent = `${validationWarnings.length} aviso(s)`;
-                status.className = 'validation-status warning';
-            } else {
-                status.textContent = 'Tudo OK!';
-                status.className = 'validation-status success';
-            }
-
+            if (validationErrors.length > 0) { status.textContent = `${validationErrors.length} erro(s)`; status.className = 'validation-status error'; }
+            else if (validationWarnings.length > 0) { status.textContent = `${validationWarnings.length} aviso(s)`; status.className = 'validation-status warning'; }
+            else { status.textContent = 'Tudo OK!'; status.className = 'validation-status success'; }
             section.classList.remove('hidden');
         }
 
         function showPreview() {
-            const section = document.getElementById('previewSection');
-            const table = document.getElementById('previewTable');
-            const count = document.getElementById('previewCount');
-
-            count.textContent = `${projects.length} projetos`;
-
-            table.innerHTML = projects.slice(0, 10).map((p, i) => {
-                const hasError = validationErrors.some(e => e.includes(`Linha ${i + 2}`));
-                const goliveAlterado = p.goliveOriginal !== p.goliveAtual && p.goliveOriginal !== '-' && p.goliveAtual !== '-';
-                const goliveDisplay = goliveAlterado 
-                    ? `<span title="Original: ${p.goliveOriginal}" style="color: #92400e; font-weight: bold;">⚠️ ${p.goliveAtual}</span>`
-                    : p.goliveAtual || p.golive;
-                return `<tr class="${hasError ? 'has-error' : ''}">
-                    <td><strong>${p.projeto}</strong></td>
-                    <td><span class="badge badge-status">${p.status}</span></td>
-                    <td><span class="badge badge-rag-${p.rag}">${p.rag}</span></td>
-                    <td>${p.progresso}%</td>
-                    <td>${p.etapa}</td>
-                    <td>${goliveDisplay}</td>
-                    <td>${p.respInterno}</td>
-                </tr>`;
-            }).join('');
-
-            if (projects.length > 10) {
-                table.innerHTML += `<tr><td colspan="7" style="text-align: center; color: #64748b;">... e mais ${projects.length - 10} projetos</td></tr>`;
-            }
-
-            section.classList.remove('hidden');
-        }
-
-        function clearAll() {
-            document.getElementById('pasteArea').value = '';
-            document.getElementById('columnDetection').classList.add('hidden');
-            document.getElementById('validationSection').classList.add('hidden');
-            document.getElementById('previewSection').classList.add('hidden');
-            document.getElementById('exportCard').classList.add('hidden');
-            projects = [];
+            document.getElementById('previewCount').textContent = `${projects.length} projetos`;
+            const goliveAlterado = (p) => p.goliveOriginal !== p.goliveAtual && p.goliveOriginal !== '-' && p.goliveAtual !== '-';
+            document.getElementById('previewTable').innerHTML = projects.slice(0, 10).map(p => `<tr>
+                <td><strong>${p.projeto}</strong></td>
+                <td><span class="badge badge-status">${p.status}</span></td>
+                <td><span class="badge badge-rag-${p.rag}">${p.rag}</span></td>
+                <td>${p.progresso}%</td>
+                <td>${p.etapa}</td>
+                <td>${goliveAlterado(p) ? `<span style="color:#92400e;font-weight:bold;">⚠️ ${p.goliveAtual}</span>` : p.goliveAtual}</td>
+                <td>${p.respInterno}</td>
+            </tr>`).join('');
+            document.getElementById('previewSection').classList.remove('hidden');
         }
 
         function exportJSON() {
-            if (projects.length === 0) {
-                showMessage('error', 'Carregue os dados primeiro!');
-                return;
-            }
-
-            const data = {
-                lastUpdate: new Date().toISOString(),
-                projects: projects
-            };
-
+            const data = { lastUpdate: new Date().toISOString(), projects: projects };
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -817,26 +268,8 @@ Projeto | Status | RAG | Progresso | Etapa_Atual | Proximo_Passo | Bloqueador | 
             a.download = 'dados.json';
             a.click();
             URL.revokeObjectURL(url);
-
-            showMessage('success', 'Arquivo dados.json baixado! Faça upload no GitHub.');
+            showMessage('success', 'Arquivo dados.json exportado! Faça upload no GitHub.');
         }
-
-        function openGitHub() {
-            window.open('https://github.com/daia85-prog/dashboard-projetos', '_blank');
-        }
-
-        function showMessage(type, text) {
-            const msgId = type === 'success' ? 'successMsg' : 'errorMsg';
-            const textId = type === 'success' ? 'successText' : 'errorText';
-            
-            document.querySelectorAll('.message').forEach(m => m.classList.add('hidden'));
-            document.getElementById(textId).textContent = text;
-            document.getElementById(msgId).classList.remove('hidden');
-            
-            setTimeout(() => document.getElementById(msgId).classList.add('hidden'), 5000);
-        }
-
-        window.addEventListener('load', loadCurrentData);
     </script>
 </body>
 </html>

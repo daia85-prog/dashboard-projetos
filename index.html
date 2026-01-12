@@ -5,12 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Status dos Projetos - Infraestrutura</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
@@ -20,30 +15,10 @@
             justify-content: center;
             padding: 20px;
         }
-
-        .container {
-            max-width: 950px;
-            width: 100%;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
-            color: white;
-            font-size: 36px;
-            margin-bottom: 10px;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        }
-
-        .header p {
-            color: rgba(255,255,255,0.7);
-            font-size: 16px;
-        }
-
-        /* Info Bar */
+        .container { max-width: 950px; width: 100%; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { color: white; font-size: 36px; margin-bottom: 10px; text-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+        .header p { color: rgba(255,255,255,0.7); font-size: 16px; }
         .info-bar {
             background: rgba(255,255,255,0.1);
             backdrop-filter: blur(10px);
@@ -57,45 +32,16 @@
             gap: 15px;
             border: 1px solid rgba(255,255,255,0.1);
         }
-
-        .info-item {
-            text-align: center;
-        }
-
-        .info-item .number {
-            font-size: 28px;
-            font-weight: 700;
-            color: white;
-        }
-
-        .info-item .label {
-            font-size: 11px;
-            color: rgba(255,255,255,0.6);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
+        .info-item { text-align: center; }
+        .info-item .number { font-size: 28px; font-weight: 700; color: white; }
+        .info-item .label { font-size: 11px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px; }
         .info-item.total .number { color: #a78bfa; }
         .info-item.concluido .number { color: #34d399; }
         .info-item.andamento .number { color: #60a5fa; }
         .info-item.critico .number { color: #f87171; }
-
-        .update-info {
-            text-align: right;
-        }
-
-        .update-info .date {
-            color: white;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .update-info .time-ago {
-            color: rgba(255,255,255,0.5);
-            font-size: 12px;
-        }
-
-        /* Alert Box */
+        .update-info { text-align: right; }
+        .update-info .date { color: white; font-size: 14px; font-weight: 600; }
+        .update-info .time-ago { color: rgba(255,255,255,0.5); font-size: 12px; }
         .alert-box {
             background: linear-gradient(135deg, #fef2f2, #fee2e2);
             border: 2px solid #fca5a5;
@@ -107,74 +53,22 @@
             gap: 20px;
             animation: pulse 2s infinite;
         }
-
         .alert-box.success {
             background: linear-gradient(135deg, #ecfdf5, #d1fae5);
             border-color: #6ee7b7;
             animation: none;
         }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.01); }
-        }
-
-        .alert-icon {
-            font-size: 40px;
-        }
-
-        .alert-content h3 {
-            color: #991b1b;
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
-
-        .alert-box.success .alert-content h3 {
-            color: #065f46;
-        }
-
-        .alert-content p {
-            color: #7f1d1d;
-            font-size: 13px;
-        }
-
-        .alert-box.success .alert-content p {
-            color: #047857;
-        }
-
-        .alert-badges {
-            display: flex;
-            gap: 10px;
-            margin-left: auto;
-        }
-
-        .alert-badge {
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .alert-badge.atrasado {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        .alert-badge.bloqueado {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        /* Cards */
-        .cards-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-        }
-
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.01); } }
+        .alert-icon { font-size: 40px; }
+        .alert-content h3 { color: #991b1b; font-size: 16px; margin-bottom: 5px; }
+        .alert-box.success .alert-content h3 { color: #065f46; }
+        .alert-content p { color: #7f1d1d; font-size: 13px; }
+        .alert-box.success .alert-content p { color: #047857; }
+        .alert-badges { display: flex; gap: 10px; margin-left: auto; }
+        .alert-badge { padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+        .alert-badge.atrasado { background: #fee2e2; color: #991b1b; }
+        .alert-badge.bloqueado { background: #fef3c7; color: #92400e; }
+        .cards-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
         .card {
             background: rgba(255,255,255,0.95);
             border-radius: 24px;
@@ -186,216 +80,35 @@
             position: relative;
             overflow: hidden;
         }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 6px;
-        }
-
-        .card.simples::before {
-            background: linear-gradient(90deg, #667eea, #764ba2);
-        }
-
-        .card.detalhada::before {
-            background: linear-gradient(90deg, #10b981, #059669);
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
-        }
-
-        .card-icon {
-            width: 80px;
-            height: 80px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-            margin: 0 auto 25px;
-        }
-
-        .card.simples .card-icon {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-        }
-
-        .card.detalhada .card-icon {
-            background: linear-gradient(135deg, #10b981, #059669);
-        }
-
-        .card h2 {
-            color: #1a1a2e;
-            font-size: 24px;
-            margin-bottom: 15px;
-        }
-
-        .card p {
-            color: #64748b;
-            font-size: 14px;
-            line-height: 1.7;
-            margin-bottom: 25px;
-        }
-
-        .card ul {
-            text-align: left;
-            list-style: none;
-            margin-bottom: 30px;
-        }
-
-        .card ul li {
-            padding: 8px 0;
-            color: #475569;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .card ul li::before {
-            content: '✓';
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            font-size: 11px;
-            font-weight: bold;
-        }
-
-        .card.simples ul li::before {
-            background: #ede9fe;
-            color: #7c3aed;
-        }
-
-        .card.detalhada ul li::before {
-            background: #d1fae5;
-            color: #059669;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 14px 32px;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 600;
-            text-decoration: none;
-            color: white;
-            transition: all 0.3s ease;
-            width: 100%;
-        }
-
-        .card.simples .btn {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        .card.simples .btn:hover {
-            box-shadow: 0 6px 30px rgba(102, 126, 234, 0.6);
-            transform: translateY(-2px);
-        }
-
-        .card.detalhada .btn {
-            background: linear-gradient(135deg, #10b981, #059669);
-            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
-        }
-
-        .card.detalhada .btn:hover {
-            box-shadow: 0 6px 30px rgba(16, 185, 129, 0.6);
-            transform: translateY(-2px);
-        }
-
-        .badge {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .card.simples .badge {
-            background: #ede9fe;
-            color: #7c3aed;
-        }
-
-        .card.detalhada .badge {
-            background: #d1fae5;
-            color: #059669;
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            color: rgba(255,255,255,0.5);
-            font-size: 13px;
-        }
-
-        .footer a {
-            color: rgba(255,255,255,0.7);
-            text-decoration: none;
-        }
-
-        .footer a:hover {
-            color: white;
-        }
-
+        .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; }
+        .card.simples::before { background: linear-gradient(90deg, #667eea, #764ba2); }
+        .card.detalhada::before { background: linear-gradient(90deg, #10b981, #059669); }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 30px 80px rgba(0,0,0,0.4); }
+        .card-icon { width: 80px; height: 80px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 36px; margin: 0 auto 25px; }
+        .card.simples .card-icon { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .card.detalhada .card-icon { background: linear-gradient(135deg, #10b981, #059669); }
+        .card h2 { color: #1a1a2e; font-size: 24px; margin-bottom: 15px; }
+        .card p { color: #64748b; font-size: 14px; line-height: 1.7; margin-bottom: 25px; }
+        .card ul { text-align: left; list-style: none; margin-bottom: 30px; }
+        .card ul li { padding: 8px 0; color: #475569; font-size: 13px; display: flex; align-items: center; gap: 10px; }
+        .card ul li::before { content: '✓'; display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; font-size: 11px; font-weight: bold; }
+        .card.simples ul li::before { background: #ede9fe; color: #7c3aed; }
+        .card.detalhada ul li::before { background: #d1fae5; color: #059669; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 32px; border-radius: 12px; font-size: 15px; font-weight: 600; text-decoration: none; color: white; transition: all 0.3s ease; width: 100%; }
+        .card.simples .btn { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .card.detalhada .btn { background: linear-gradient(135deg, #10b981, #059669); }
+        .badge { position: absolute; top: 20px; right: 20px; padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+        .card.simples .badge { background: #ede9fe; color: #7c3aed; }
+        .card.detalhada .badge { background: #d1fae5; color: #059669; }
+        .footer { text-align: center; margin-top: 40px; color: rgba(255,255,255,0.5); font-size: 13px; }
+        .footer a { color: rgba(255,255,255,0.7); text-decoration: none; }
         .hidden { display: none; }
-
-        /* Loading */
-        .loading-bar {
-            background: rgba(255,255,255,0.1);
-            border-radius: 16px;
-            padding: 40px;
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .loading-bar p {
-            color: rgba(255,255,255,0.7);
-        }
-
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 28px;
-            }
-
-            .cards-container {
-                grid-template-columns: 1fr;
-            }
-
-            .card {
-                padding: 30px 20px;
-            }
-
-            .info-bar {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .update-info {
-                text-align: center;
-            }
-
-            .alert-box {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .alert-badges {
-                margin-left: 0;
-            }
+            .header h1 { font-size: 28px; }
+            .cards-container { grid-template-columns: 1fr; }
+            .info-bar { flex-direction: column; text-align: center; }
+            .alert-box { flex-direction: column; text-align: center; }
+            .alert-badges { margin-left: 0; }
         }
     </style>
 </head>
@@ -405,180 +118,55 @@
             <h1>📊 Status dos Projetos - Infraestrutura</h1>
             <p>Selecione o tipo de visualização desejada</p>
         </div>
-
-        <!-- Loading -->
-        <div id="loadingBar" class="loading-bar">
-            <p>Carregando informações...</p>
+        <div id="infoBar" class="info-bar">
+            <div class="info-item total"><div class="number" id="totalCount">-</div><div class="label">Projetos</div></div>
+            <div class="info-item concluido"><div class="number" id="concluidoCount">-</div><div class="label">Concluídos</div></div>
+            <div class="info-item andamento"><div class="number" id="andamentoCount">-</div><div class="label">Em Andamento</div></div>
+            <div class="info-item critico"><div class="number" id="criticoCount">-</div><div class="label">Críticos</div></div>
+            <div class="update-info"><div class="date" id="updateDate">Carregando...</div><div class="time-ago" id="timeAgo"></div></div>
         </div>
-
-        <!-- Info Bar -->
-        <div id="infoBar" class="info-bar hidden">
-            <div class="info-item total">
-                <div class="number" id="totalCount">0</div>
-                <div class="label">Projetos</div>
-            </div>
-            <div class="info-item concluido">
-                <div class="number" id="concluidoCount">0</div>
-                <div class="label">Concluídos</div>
-            </div>
-            <div class="info-item andamento">
-                <div class="number" id="andamentoCount">0</div>
-                <div class="label">Em Andamento</div>
-            </div>
-            <div class="info-item critico">
-                <div class="number" id="criticoCount">0</div>
-                <div class="label">Críticos</div>
-            </div>
-            <div class="update-info">
-                <div class="date" id="updateDate">--</div>
-                <div class="time-ago" id="timeAgo">--</div>
-            </div>
-        </div>
-
-        <!-- Alert Box -->
         <div id="alertBox" class="alert-box hidden">
-            <div class="alert-icon">⚠️</div>
+            <div class="alert-icon" id="alertIcon">⚠️</div>
             <div class="alert-content">
                 <h3 id="alertTitle">Projetos requerem atenção!</h3>
-                <p id="alertText">Existem projetos atrasados ou com bloqueios que precisam de ação.</p>
+                <p id="alertText">Existem projetos atrasados ou bloqueados.</p>
             </div>
             <div class="alert-badges" id="alertBadges">
-                <span class="alert-badge atrasado" id="badgeAtrasados">
-                    <span>🔴</span> <span id="atrasadosNum">0</span> atrasados
-                </span>
-                <span class="alert-badge bloqueado" id="badgeBloqueados">
-                    <span>🟡</span> <span id="bloqueadosNum">0</span> bloqueados
-                </span>
+                <span class="alert-badge atrasado" id="badgeAtrasados">🔴 <span id="atrasadosNum">0</span> atrasados</span>
+                <span class="alert-badge bloqueado" id="badgeBloqueados">🟡 <span id="bloqueadosNum">0</span> bloqueados</span>
             </div>
         </div>
-
         <div class="cards-container">
-            <!-- Visão Simples -->
             <div class="card simples" onclick="window.location.href='view-simples.html'">
-                <span class="badge">Clássica</span>
+                <span class="badge">Resumida</span>
                 <div class="card-icon">📋</div>
                 <h2>Visão Resumida</h2>
-                <p>Dashboard consolidado com visão geral de todos os projetos em uma única tabela.</p>
+                <p>Dashboard consolidado com visão geral.</p>
                 <ul>
                     <li>Cards com totais por status</li>
-                    <li>Gráfico de distribuição</li>
-                    <li>Tabela única com todos os projetos</li>
-                    <li>Projetos críticos em destaque</li>
-                    <li>Layout clean e direto</li>
+                    <li>Gráficos de distribuição</li>
+                    <li>Tabela única consolidada</li>
+                    <li>Filtros e ordenação</li>
                 </ul>
-                <a href="view-simples.html" class="btn">
-                    Acessar Visão Resumida →
-                </a>
+                <a href="view-simples.html" class="btn">Acessar →</a>
             </div>
-
-            <!-- Visão Detalhada -->
             <div class="card detalhada" onclick="window.location.href='view-detalhada.html'">
                 <span class="badge">Completa</span>
                 <div class="card-icon">📈</div>
                 <h2>Visão Detalhada</h2>
-                <p>Dashboard segmentado por status com informações específicas para cada categoria.</p>
+                <p>Dashboard segmentado por status.</p>
                 <ul>
-                    <li>Seções separadas por status</li>
-                    <li>Barras de progresso visuais</li>
-                    <li>Indicadores RAG (🔴🟡🟢)</li>
-                    <li>Bloqueadores em destaque</li>
-                    <li>Filtros e busca avançada</li>
+                    <li>Seções por status</li>
+                    <li>Timeline de Go Lives</li>
+                    <li>Indicadores RAG</li>
+                    <li>Detalhes completos</li>
                 </ul>
-                <a href="view-detalhada.html" class="btn">
-                    Acessar Visão Detalhada →
-                </a>
+                <a href="view-detalhada.html" class="btn">Acessar →</a>
             </div>
         </div>
-
-        <div class="footer">
-            <p>Infraestrutura TI • <a href="admin.html">Área Administrativa</a></p>
-        </div>
+        <div class="footer"><p>Infraestrutura TI • <a href="admin.html">Área Administrativa</a></p></div>
     </div>
-
     <script>
-        async function loadData() {
-            try {
-                const response = await fetch('dados.json?t=' + Date.now());
-                if (!response.ok) throw new Error('Arquivo não encontrado');
-                
-                const data = await response.json();
-                
-                if (data.projects && data.projects.length > 0) {
-                    const projects = data.projects;
-                    
-                    // Contagens
-                    const total = projects.length;
-                    const concluidos = projects.filter(p => normalizeStatus(p.status) === 'Concluído').length;
-                    const andamento = projects.filter(p => normalizeStatus(p.status) === 'Em Andamento').length;
-                    const atrasados = projects.filter(p => normalizeStatus(p.status) === 'Atrasado').length;
-                    const bloqueados = projects.filter(p => p.bloqueador && p.bloqueador !== '-').length;
-                    const criticos = projects.filter(p => {
-                        const status = normalizeStatus(p.status);
-                        return status === 'Atrasado' || p.rag === 'vermelho' || (p.diasSemAtual > 14 && status !== 'Concluído');
-                    }).length;
-
-                    // Atualizar contadores
-                    document.getElementById('totalCount').textContent = total;
-                    document.getElementById('concluidoCount').textContent = concluidos;
-                    document.getElementById('andamentoCount').textContent = andamento;
-                    document.getElementById('criticoCount').textContent = criticos;
-
-                    // Data de atualização
-                    if (data.lastUpdate) {
-                        const updateDate = new Date(data.lastUpdate);
-                        const opcoes = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' };
-                        document.getElementById('updateDate').textContent = updateDate.toLocaleDateString('pt-BR', opcoes);
-                        
-                        // Tempo atrás
-                        const agora = new Date();
-                        const diff = agora - updateDate;
-                        const horas = Math.floor(diff / (1000 * 60 * 60));
-                        const dias = Math.floor(horas / 24);
-                        
-                        let timeAgo = '';
-                        if (dias > 0) {
-                            timeAgo = `há ${dias} dia${dias > 1 ? 's' : ''}`;
-                        } else if (horas > 0) {
-                            timeAgo = `há ${horas} hora${horas > 1 ? 's' : ''}`;
-                        } else {
-                            timeAgo = 'agora mesmo';
-                        }
-                        document.getElementById('timeAgo').textContent = timeAgo;
-                    }
-
-                    // Alert box
-                    if (criticos > 0) {
-                        document.getElementById('alertBox').classList.remove('hidden');
-                        document.getElementById('atrasadosNum').textContent = atrasados;
-                        document.getElementById('bloqueadosNum').textContent = bloqueados;
-                        
-                        if (atrasados === 0) {
-                            document.getElementById('badgeAtrasados').style.display = 'none';
-                        }
-                        if (bloqueados === 0) {
-                            document.getElementById('badgeBloqueados').style.display = 'none';
-                        }
-                    } else {
-                        // Mostrar alerta de sucesso
-                        const alertBox = document.getElementById('alertBox');
-                        alertBox.classList.remove('hidden');
-                        alertBox.classList.add('success');
-                        document.getElementById('alertTitle').textContent = 'Tudo em ordem!';
-                        document.getElementById('alertText').textContent = 'Nenhum projeto requer atenção imediata.';
-                        document.querySelector('.alert-icon').textContent = '✅';
-                        document.getElementById('alertBadges').style.display = 'none';
-                    }
-
-                    // Mostrar info bar
-                    document.getElementById('loadingBar').classList.add('hidden');
-                    document.getElementById('infoBar').classList.remove('hidden');
-                }
-            } catch (e) {
-                console.error('Erro:', e);
-                document.getElementById('loadingBar').innerHTML = '<p style="color: rgba(255,255,255,0.5);">Dados não disponíveis</p>';
-            }
-        }
-
         function normalizeStatus(status) {
             if (!status) return 'Não Definido';
             const s = status.toLowerCase().trim();
@@ -586,10 +174,46 @@
             if (s.includes('andamento')) return 'Em Andamento';
             if (s.includes('atras')) return 'Atrasado';
             if (s.includes('aguard')) return 'Aguardando Cliente';
-            if (s.includes('iniciado')) return 'Não Iniciado';
+            if (s.includes('não') || s.includes('nao')) return 'Não Iniciado';
             return status;
         }
-
+        async function loadData() {
+            try {
+                const response = await fetch('dados.json?t=' + Date.now());
+                if (!response.ok) throw new Error('Não encontrado');
+                const data = await response.json();
+                if (data.projects && data.projects.length > 0) {
+                    const p = data.projects;
+                    document.getElementById('totalCount').textContent = p.length;
+                    document.getElementById('concluidoCount').textContent = p.filter(x => normalizeStatus(x.status) === 'Concluído').length;
+                    document.getElementById('andamentoCount').textContent = p.filter(x => normalizeStatus(x.status) === 'Em Andamento').length;
+                    const atrasados = p.filter(x => normalizeStatus(x.status) === 'Atrasado').length;
+                    const bloqueados = p.filter(x => x.bloqueador && x.bloqueador !== '-' && x.bloqueador.trim() !== '').length;
+                    const criticos = p.filter(x => normalizeStatus(x.status) === 'Atrasado' || (x.rag && x.rag.toLowerCase() === 'vermelho')).length;
+                    document.getElementById('criticoCount').textContent = criticos;
+                    if (data.lastUpdate) {
+                        const d = new Date(data.lastUpdate);
+                        document.getElementById('updateDate').textContent = d.toLocaleDateString('pt-BR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+                        const diff = Math.floor((new Date() - d) / (1000*60*60*24));
+                        document.getElementById('timeAgo').textContent = diff > 0 ? `há ${diff} dia(s)` : 'hoje';
+                    }
+                    const alertBox = document.getElementById('alertBox');
+                    alertBox.classList.remove('hidden');
+                    if (criticos > 0) {
+                        document.getElementById('atrasadosNum').textContent = atrasados;
+                        document.getElementById('bloqueadosNum').textContent = bloqueados;
+                        if (atrasados === 0) document.getElementById('badgeAtrasados').style.display = 'none';
+                        if (bloqueados === 0) document.getElementById('badgeBloqueados').style.display = 'none';
+                    } else {
+                        alertBox.classList.add('success');
+                        document.getElementById('alertIcon').textContent = '✅';
+                        document.getElementById('alertTitle').textContent = 'Tudo em ordem!';
+                        document.getElementById('alertText').textContent = 'Nenhum projeto crítico.';
+                        document.getElementById('alertBadges').style.display = 'none';
+                    }
+                }
+            } catch(e) { document.getElementById('updateDate').textContent = 'Dados não disponíveis'; }
+        }
         window.addEventListener('load', loadData);
     </script>
 </body>

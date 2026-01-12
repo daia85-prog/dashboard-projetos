@@ -3,1210 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Status dos Projetos - Infraestrutura</title>
+    <title>Visão Detalhada - Infraestrutura</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            padding: 20px;
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-
-        /* Header */
-        .header {
-            background: rgba(255,255,255,0.95);
-            padding: 25px 30px;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-            margin-bottom: 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .header-left h1 {
-            color: #1a1a2e;
-            font-size: 26px;
-            margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .header-left p {
-            color: #666;
-            font-size: 13px;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
-        }
-
-        .btn-secondary {
-            background: linear-gradient(135deg, #64748b 0%, #475569 100%);
-            box-shadow: 0 4px 15px rgba(100, 116, 139, 0.4);
-        }
-
-        /* Filters Section */
-        .filters-section {
-            background: rgba(255,255,255,0.95);
-            padding: 20px 25px;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            margin-bottom: 25px;
-        }
-
-        .filters-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .filters-header h3 {
-            color: #1a1a2e;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .filters-toggle {
-            background: none;
-            border: none;
-            color: #667eea;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .filters-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto;
-            gap: 15px;
-            align-items: end;
-        }
-
-        .filter-group label {
-            display: block;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #64748b;
-            margin-bottom: 6px;
-            font-weight: 600;
-        }
-
-        .filter-group input,
-        .filter-group select {
-            width: 100%;
-            padding: 10px 14px;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            font-size: 13px;
-            transition: border-color 0.3s;
-        }
-
-        .filter-group input:focus,
-        .filter-group select:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .btn-clear {
-            background: #f3f4f6;
-            color: #64748b;
-            box-shadow: none;
-            padding: 10px 16px;
-        }
-
-        .btn-clear:hover {
-            background: #e5e7eb;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .active-filters {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #e5e7eb;
-        }
-
-        .filter-tag {
-            background: #ede9fe;
-            color: #7c3aed;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .filter-tag button {
-            background: none;
-            border: none;
-            color: #7c3aed;
-            cursor: pointer;
-            font-size: 14px;
-            line-height: 1;
-        }
-
-        /* Charts Section */
-        .charts-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            margin-bottom: 25px;
-        }
-
-        .chart-card {
-            background: rgba(255,255,255,0.95);
-            padding: 25px;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-        }
-
-        .chart-card h3 {
-            color: #1a1a2e;
-            font-size: 16px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* Pie Chart */
-        .pie-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 30px;
-        }
-
-        .pie-chart {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            position: relative;
-        }
-
-        .pie-legend {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 13px;
-            color: #475569;
-        }
-
-        .legend-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        /* Timeline Chart */
-        .timeline-chart {
-            position: relative;
-            padding: 20px 0;
-        }
-
-        .timeline-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 10px 0;
-            border-bottom: 1px solid #f1f5f9;
-        }
-
-        .timeline-item:last-child {
-            border-bottom: none;
-        }
-
-        .timeline-date {
-            min-width: 80px;
-            font-size: 12px;
-            color: #64748b;
-            font-weight: 600;
-        }
-
-        .timeline-bar {
-            flex: 1;
-            height: 24px;
-            background: #e5e7eb;
-            border-radius: 12px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .timeline-fill {
-            height: 100%;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            padding: 0 10px;
-            font-size: 11px;
-            color: white;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .timeline-fill.verde { background: linear-gradient(90deg, #10b981, #059669); }
-        .timeline-fill.amarelo { background: linear-gradient(90deg, #f59e0b, #d97706); }
-        .timeline-fill.vermelho { background: linear-gradient(90deg, #ef4444, #dc2626); }
-        .timeline-fill.cinza { background: linear-gradient(90deg, #6b7280, #4b5563); }
-
-        /* Summary Cards */
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .summary-card {
-            background: rgba(255,255,255,0.95);
-            padding: 20px;
-            border-radius: 16px;
-            text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            transition: transform 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .summary-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-        }
-
-        .summary-card:hover {
-            transform: translateY(-5px);
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 20px; min-height: 100vh; }
+        .container { max-width: 1600px; margin: 0 auto; }
+        .header { background: rgba(255,255,255,0.95); padding: 25px 30px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .header h1 { color: #1a1a2e; font-size: 26px; }
+        .header p { color: #64748b; font-size: 13px; }
+        .btn { background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 12px 20px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-secondary { background: linear-gradient(135deg, #64748b, #475569); }
+        .hidden { display: none; }
+        .loading, .no-data { background: rgba(255,255,255,0.95); padding: 60px; border-radius: 16px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+        .spinner { width: 50px; height: 50px; border: 4px solid #e5e7eb; border-top: 4px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .summary-card { background: rgba(255,255,255,0.95); padding: 20px; border-radius: 16px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.2); position: relative; overflow: hidden; }
+        .summary-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
         .summary-card.total::before { background: linear-gradient(90deg, #667eea, #764ba2); }
-        .summary-card.concluido::before { background: linear-gradient(90deg, #10b981, #059669); }
-        .summary-card.andamento::before { background: linear-gradient(90deg, #3b82f6, #2563eb); }
-        .summary-card.atrasado::before { background: linear-gradient(90deg, #ef4444, #dc2626); }
-        .summary-card.aguardando::before { background: linear-gradient(90deg, #f59e0b, #d97706); }
-        .summary-card.nao-iniciado::before { background: linear-gradient(90deg, #6b7280, #4b5563); }
-
-        .summary-number {
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .summary-card.total .summary-number { color: #667eea; }
-        .summary-card.concluido .summary-number { color: #10b981; }
-        .summary-card.andamento .summary-number { color: #3b82f6; }
-        .summary-card.atrasado .summary-number { color: #ef4444; }
-        .summary-card.aguardando .summary-number { color: #f59e0b; }
-        .summary-card.nao-iniciado .summary-number { color: #6b7280; }
-
-        .summary-label {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #666;
-            font-weight: 600;
-        }
-
-        /* Sections */
-        .section {
-            background: rgba(255,255,255,0.95);
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            margin-bottom: 25px;
-            overflow: hidden;
-        }
-
-        .section-header {
-            padding: 20px 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .section-header h2 {
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #1a1a2e;
-        }
-
-        .section-header .count-badge {
-            background: #e5e7eb;
-            color: #374151;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .section.atencao .section-header { background: linear-gradient(135deg, #fef2f2, #fee2e2); }
-        .section.atencao .section-header h2 { color: #991b1b; }
-        .section.atencao .count-badge { background: #ef4444; color: white; }
-
-        .section.andamento .section-header { background: linear-gradient(135deg, #eff6ff, #dbeafe); }
-        .section.andamento .section-header h2 { color: #1e40af; }
-        .section.andamento .count-badge { background: #3b82f6; color: white; }
-
-        .section.aguardando .section-header { background: linear-gradient(135deg, #fffbeb, #fef3c7); }
-        .section.aguardando .section-header h2 { color: #92400e; }
-        .section.aguardando .count-badge { background: #f59e0b; color: white; }
-
-        .section.nao-iniciado .section-header { background: linear-gradient(135deg, #f9fafb, #f3f4f6); }
-        .section.nao-iniciado .section-header h2 { color: #374151; }
-        .section.nao-iniciado .count-badge { background: #6b7280; color: white; }
-
-        .section.concluido .section-header { background: linear-gradient(135deg, #ecfdf5, #d1fae5); }
-        .section.concluido .section-header h2 { color: #065f46; }
-        .section.concluido .count-badge { background: #10b981; color: white; }
-
-        .section-body {
-            padding: 0;
-            overflow-x: auto;
-        }
-
-        /* Tables */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th {
-            background: #f8fafc;
-            padding: 14px 16px;
-            text-align: left;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #64748b;
-            font-weight: 600;
-            border-bottom: 2px solid #e2e8f0;
-            cursor: pointer;
-            user-select: none;
-            transition: background 0.2s;
-        }
-
-        th:hover {
-            background: #f1f5f9;
-        }
-
-        th.sortable::after {
-            content: ' ↕';
-            opacity: 0.3;
-        }
-
-        th.sorted-asc::after {
-            content: ' ↑';
-            opacity: 1;
-        }
-
-        th.sorted-desc::after {
-            content: ' ↓';
-            opacity: 1;
-        }
-
-        td {
-            padding: 14px 16px;
-            border-bottom: 1px solid #f1f5f9;
-            font-size: 13px;
-            color: #334155;
-        }
-
-        tr:hover {
-            background: #f8fafc;
-        }
-
-        tr.clickable {
-            cursor: pointer;
-        }
-
-        .project-name {
-            font-weight: 600;
-            color: #1e293b;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .trend-indicator {
-            font-size: 14px;
-        }
-
+        .summary-card.concluido::before { background: #10b981; }
+        .summary-card.andamento::before { background: #3b82f6; }
+        .summary-card.atrasado::before { background: #ef4444; }
+        .summary-card.aguardando::before { background: #f59e0b; }
+        .summary-card.nao-iniciado::before { background: #6b7280; }
+        .summary-card .number { font-size: 32px; font-weight: 700; margin: 10px 0 5px; }
+        .summary-card.total .number { color: #667eea; }
+        .summary-card.concluido .number { color: #10b981; }
+        .summary-card.andamento .number { color: #3b82f6; }
+        .summary-card.atrasado .number { color: #ef4444; }
+        .summary-card.aguardando .number { color: #f59e0b; }
+        .summary-card.nao-iniciado .number { color: #6b7280; }
+        .summary-card .label { font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; }
+        .filters-section { background: rgba(255,255,255,0.95); padding: 20px 25px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); margin-bottom: 25px; }
+        .filters-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto; gap: 15px; align-items: end; }
+        .filter-group label { display: block; font-size: 11px; text-transform: uppercase; color: #64748b; margin-bottom: 6px; font-weight: 600; }
+        .filter-group input, .filter-group select { width: 100%; padding: 10px 14px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 13px; }
+        .filter-group input:focus, .filter-group select:focus { outline: none; border-color: #667eea; }
+        .btn-clear { background: #f3f4f6; color: #64748b; box-shadow: none; padding: 10px 16px; }
+        .charts-section { display: grid; grid-template-columns: 1fr 2fr; gap: 25px; margin-bottom: 25px; }
+        .chart-card { background: rgba(255,255,255,0.95); padding: 25px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+        .chart-card h3 { color: #1a1a2e; font-size: 16px; margin-bottom: 20px; }
+        .pie-container { display: flex; align-items: center; justify-content: center; gap: 25px; }
+        .pie-chart { width: 150px; height: 150px; border-radius: 50%; position: relative; }
+        .pie-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: white; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .pie-center .number { font-size: 24px; font-weight: 700; color: #1a1a2e; }
+        .pie-center .label { font-size: 10px; color: #64748b; }
+        .pie-legend { display: flex; flex-direction: column; gap: 8px; }
+        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #475569; }
+        .legend-dot { width: 12px; height: 12px; border-radius: 3px; }
+        .timeline-chart { display: flex; flex-direction: column; gap: 12px; }
+        .timeline-item { display: flex; align-items: center; gap: 15px; }
+        .timeline-date { min-width: 90px; font-size: 12px; color: #64748b; font-weight: 600; }
+        .timeline-bar { flex: 1; height: 30px; border-radius: 8px; display: flex; align-items: center; padding: 0 12px; font-size: 12px; font-weight: 600; color: white; }
+        .timeline-bar.verde { background: linear-gradient(90deg, #10b981, #059669); }
+        .timeline-bar.amarelo { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .timeline-bar.vermelho { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .section { background: rgba(255,255,255,0.95); border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); margin-bottom: 25px; overflow: hidden; }
+        .section-header { padding: 18px 25px; display: flex; justify-content: space-between; align-items: center; }
+        .section-header.atencao { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .section-header.andamento { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .section-header.aguardando { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .section-header.nao-iniciado { background: linear-gradient(135deg, #6b7280, #4b5563); }
+        .section-header.concluido { background: linear-gradient(135deg, #10b981, #059669); }
+        .section-header h2 { color: white; font-size: 16px; display: flex; align-items: center; gap: 10px; }
+        .section-badge { background: rgba(255,255,255,0.2); color: white; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+        .section-content { padding: 0; }
+        .table-container { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #f8fafc; color: #475569; padding: 12px 16px; text-align: left; font-weight: 600; text-transform: uppercase; font-size: 11px; cursor: pointer; white-space: nowrap; }
+        th:hover { background: #f1f5f9; }
+        th.sortable::after { content: ' ↕'; opacity: 0.5; }
+        th.sorted-asc::after { content: ' ↑'; opacity: 1; }
+        th.sorted-desc::after { content: ' ↓'; opacity: 1; }
+        td { padding: 14px 16px; border-bottom: 1px solid #f1f5f9; font-size: 13px; color: #334155; }
+        tr:hover { background: #f8fafc; }
+        tr.clickable { cursor: pointer; }
+        .project-name { font-weight: 600; color: #1e293b; display: flex; align-items: center; gap: 8px; }
         .trend-up { color: #10b981; }
         .trend-down { color: #ef4444; }
         .trend-stable { color: #6b7280; }
-
-        /* RAG indicators */
-        .rag {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .rag-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-
+        .rag { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; }
+        .rag-dot { width: 10px; height: 10px; border-radius: 50%; }
         .rag.verde { background: #dcfce7; color: #166534; }
         .rag.verde .rag-dot { background: #22c55e; }
-
         .rag.amarelo { background: #fef9c3; color: #854d0e; }
         .rag.amarelo .rag-dot { background: #eab308; }
-
         .rag.vermelho { background: #fee2e2; color: #991b1b; }
         .rag.vermelho .rag-dot { background: #ef4444; }
-
         .rag.cinza { background: #f3f4f6; color: #4b5563; }
         .rag.cinza .rag-dot { background: #9ca3af; }
-
-        /* Progress bar */
-        .progress-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .progress-bar {
-            flex: 1;
-            height: 8px;
-            background: #e5e7eb;
-            border-radius: 4px;
-            overflow: hidden;
-            min-width: 80px;
-        }
-
-        .progress-fill {
-            height: 100%;
-            border-radius: 4px;
-            transition: width 0.5s ease;
-        }
-
+        .progress-container { display: flex; align-items: center; gap: 10px; }
+        .progress-bar { flex: 1; height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden; min-width: 60px; }
+        .progress-fill { height: 100%; border-radius: 4px; }
         .progress-fill.low { background: linear-gradient(90deg, #ef4444, #f87171); }
         .progress-fill.medium { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
         .progress-fill.high { background: linear-gradient(90deg, #10b981, #34d399); }
-
-        .progress-text {
-            font-size: 12px;
-            font-weight: 600;
-            min-width: 40px;
-            color: #475569;
-        }
-
-        /* Status badges */
-        .status-badge {
-            display: inline-block;
-            padding: 5px 12px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .status-badge.em-andamento { background: #dbeafe; color: #1e40af; }
-        .status-badge.concluido { background: #d1fae5; color: #065f46; }
-        .status-badge.atrasado { background: #fee2e2; color: #991b1b; }
-        .status-badge.aguardando-cliente { background: #fef3c7; color: #92400e; }
-        .status-badge.nao-iniciado { background: #f3f4f6; color: #374151; }
-
-        /* Blocker tag */
-        .blocker {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            background: #fef2f2;
-            color: #991b1b;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 12px;
-            max-width: 250px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .blocker::before {
-            content: '⚠️';
-            font-size: 11px;
-        }
-
-        /* Days indicator */
-        .days-indicator {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .days-indicator.ok { background: #d1fae5; color: #065f46; }
-        .days-indicator.warning { background: #fef3c7; color: #92400e; }
-        .days-indicator.danger { background: #fee2e2; color: #991b1b; }
-
-        /* Modal */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s;
-        }
-
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal {
-            background: white;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 700px;
-            max-height: 90vh;
-            overflow-y: auto;
-            transform: scale(0.9);
-            transition: transform 0.3s;
-        }
-
-        .modal-overlay.active .modal {
-            transform: scale(1);
-        }
-
-        .modal-header {
-            padding: 25px;
-            border-bottom: 1px solid #e5e7eb;
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-        }
-
-        .modal-header h2 {
-            color: #1a1a2e;
-            font-size: 22px;
-            margin-bottom: 5px;
-        }
-
-        .modal-header p {
-            color: #64748b;
-            font-size: 13px;
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: #64748b;
-        }
-
-        .modal-body {
-            padding: 25px;
-        }
-
-        .project-info-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-
-        .info-box {
-            background: #f8fafc;
-            padding: 15px;
-            border-radius: 12px;
-        }
-
-        .info-box label {
-            display: block;
-            font-size: 11px;
-            text-transform: uppercase;
-            color: #64748b;
-            margin-bottom: 5px;
-            font-weight: 600;
-        }
-
-        .info-box span {
-            font-size: 15px;
-            color: #1e293b;
-            font-weight: 600;
-        }
-
-        /* Timeline vertical */
-        .timeline-vertical {
-            position: relative;
-            padding-left: 30px;
-        }
-
-        .timeline-vertical::before {
-            content: '';
-            position: absolute;
-            left: 10px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: #e5e7eb;
-        }
-
-        .timeline-step {
-            position: relative;
-            padding-bottom: 25px;
-        }
-
-        .timeline-step:last-child {
-            padding-bottom: 0;
-        }
-
-        .timeline-step::before {
-            content: '';
-            position: absolute;
-            left: -24px;
-            top: 4px;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #e5e7eb;
-            border: 2px solid white;
-        }
-
-        .timeline-step.completed::before {
-            background: #10b981;
-        }
-
-        .timeline-step.current::before {
-            background: #3b82f6;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
-        }
-
-        .timeline-step.pending::before {
-            background: #e5e7eb;
-        }
-
-        .timeline-step h4 {
-            font-size: 14px;
-            color: #1e293b;
-            margin-bottom: 4px;
-        }
-
-        .timeline-step p {
-            font-size: 12px;
-            color: #64748b;
-        }
-
+        .progress-text { font-size: 12px; font-weight: 600; min-width: 35px; color: #475569; }
+        .blocker-badge { background: #fee2e2; color: #991b1b; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .golive-alterado { display: inline-flex; align-items: center; gap: 5px; background: #fef3c7; color: #92400e; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; }
+        .golive-alterado .original { font-size: 10px; color: #78716c; text-decoration: line-through; }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s; }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal { background: white; border-radius: 20px; width: 90%; max-width: 700px; max-height: 90vh; overflow-y: auto; transform: scale(0.9); transition: transform 0.3s; }
+        .modal-overlay.active .modal { transform: scale(1); }
+        .modal-header { padding: 25px; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: start; }
+        .modal-header h2 { color: #1a1a2e; font-size: 22px; margin-bottom: 5px; }
+        .modal-header p { color: #64748b; font-size: 13px; }
+        .modal-close { background: none; border: none; font-size: 28px; cursor: pointer; color: #64748b; }
+        .modal-body { padding: 25px; }
+        .project-info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; }
+        .info-box { background: #f8fafc; padding: 15px; border-radius: 12px; }
+        .info-box label { display: block; font-size: 11px; text-transform: uppercase; color: #64748b; margin-bottom: 5px; font-weight: 600; }
+        .info-box span { font-size: 14px; color: #1e293b; font-weight: 600; }
+        .timeline-vertical { position: relative; padding-left: 30px; }
+        .timeline-vertical::before { content: ''; position: absolute; left: 10px; top: 0; bottom: 0; width: 2px; background: #e5e7eb; }
+        .timeline-step { position: relative; padding-bottom: 20px; }
+        .timeline-step:last-child { padding-bottom: 0; }
+        .timeline-step::before { content: ''; position: absolute; left: -24px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: #e5e7eb; border: 2px solid white; }
+        .timeline-step.completed::before { background: #10b981; }
+        .timeline-step.current::before { background: #3b82f6; box-shadow: 0 0 0 4px rgba(59,130,246,0.2); }
+        .timeline-step h4 { font-size: 14px; color: #1e293b; margin-bottom: 3px; }
+        .timeline-step p { font-size: 12px; color: #64748b; }
         .timeline-step.completed h4 { color: #065f46; }
         .timeline-step.current h4 { color: #1e40af; }
-
-        /* GoLive alterado */
-        .golive-alterado {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            background: #fef3c7;
-            color: #92400e;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .golive-alterado .original {
-            font-size: 10px;
-            color: #78716c;
-            text-decoration: line-through;
-        }
-
-        .golive-normal {
-            font-size: 13px;
-        }
-
-        .hidden { display: none; }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: #64748b;
-        }
-
-        .empty-state .icon {
-            font-size: 48px;
-            margin-bottom: 15px;
-        }
-
-        /* Loading */
-        .loading {
-            background: rgba(255,255,255,0.95);
-            padding: 60px;
-            border-radius: 16px;
-            text-align: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-        }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid #e5e7eb;
-            border-top: 4px solid #667eea;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .loading h3 { color: #1a1a2e; margin-bottom: 10px; }
-        .loading p { color: #64748b; }
-
-        .no-data {
-            background: rgba(255,255,255,0.95);
-            padding: 60px;
-            border-radius: 16px;
-            text-align: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-        }
-
-        .no-data h3 { color: #1a1a2e; margin-bottom: 10px; }
-        .no-data p { color: #64748b; }
-
-        .results-count {
-            color: #64748b;
-            font-size: 13px;
-            padding: 10px 16px;
-            background: #f8fafc;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        /* Print styles */
-        @media print {
-            body { background: white; padding: 10px; }
-            .btn, .header-actions, .filters-section, .modal-overlay { display: none; }
-            .section { box-shadow: none; border: 1px solid #e5e7eb; }
-        }
-
-        @media (max-width: 1200px) {
-            .charts-section {
-                grid-template-columns: 1fr;
-            }
-
-            .filters-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .header { flex-direction: column; align-items: stretch; }
-            .summary-grid { grid-template-columns: repeat(3, 1fr); }
-            td, th { padding: 10px 8px; font-size: 11px; }
-            .filters-grid { grid-template-columns: 1fr; }
-            .project-info-grid { grid-template-columns: 1fr; }
-            .pie-container { flex-direction: column; }
-        }
+        .empty-state { text-align: center; padding: 40px 20px; color: #64748b; }
+        .results-count { color: #64748b; font-size: 13px; padding: 10px 16px; background: #f8fafc; border-bottom: 1px solid #e5e7eb; }
+        @media print { body { background: white; padding: 10px; } .btn, .filters-section, .modal-overlay { display: none; } .section { box-shadow: none; border: 1px solid #e5e7eb; } }
+        @media (max-width: 1200px) { .charts-section { grid-template-columns: 1fr; } .filters-grid { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 768px) { .header { flex-direction: column; } .summary-grid { grid-template-columns: repeat(3, 1fr); } .filters-grid { grid-template-columns: 1fr; } .project-info-grid { grid-template-columns: 1fr; } .pie-container { flex-direction: column; } }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
         <div class="header">
-            <div class="header-left">
-                <h1>📊 Status dos Projetos - Infraestrutura</h1>
-                <p>Atualizado em: <span id="currentDate">Carregando...</span></p>
-            </div>
-            <div class="header-actions">
-                <a href="index.html" class="btn btn-secondary">← Voltar</a>
-                <button class="btn" onclick="window.print()">🖨️ Imprimir / PDF</button>
-            </div>
+            <div><h1>📈 Visão Detalhada - Infraestrutura</h1><p>Atualizado em: <span id="currentDate">Carregando...</span></p></div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;"><a href="index.html" class="btn btn-secondary">← Voltar</a><button class="btn" onclick="window.print()">🖨️ Imprimir</button></div>
         </div>
-
-        <!-- Loading -->
-        <div id="loading" class="loading">
-            <div class="spinner"></div>
-            <h3>Carregando dados...</h3>
-            <p>Aguarde um momento</p>
-        </div>
-
-        <!-- No Data -->
-        <div id="noData" class="no-data hidden">
-            <h3>📊 Dados não disponíveis</h3>
-            <p>Os dados ainda não foram publicados.</p>
-        </div>
-
-        <!-- Dashboard Content -->
+        <div id="loading" class="loading"><div class="spinner"></div><h3>Carregando dados...</h3></div>
+        <div id="noData" class="no-data hidden"><h3>📊 Dados não disponíveis</h3></div>
         <div id="dashboardContent" class="hidden">
-
-            <!-- Filters Section -->
-            <div class="filters-section">
-                <div class="filters-header">
-                    <h3>🔍 Filtros e Busca</h3>
-                    <button class="filters-toggle" onclick="clearFilters()">Limpar filtros</button>
-                </div>
-                <div class="filters-grid">
-                    <div class="filter-group">
-                        <label>Buscar projeto</label>
-                        <input type="text" id="searchInput" placeholder="Digite o nome do projeto..." oninput="applyFilters()">
-                    </div>
-                    <div class="filter-group">
-                        <label>Status</label>
-                        <select id="filterStatus" onchange="applyFilters()">
-                            <option value="">Todos</option>
-                            <option value="Em Andamento">Em Andamento</option>
-                            <option value="Concluído">Concluído</option>
-                            <option value="Atrasado">Atrasado</option>
-                            <option value="Aguardando Cliente">Aguardando</option>
-                            <option value="Não Iniciado">Não Iniciado</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label>RAG</label>
-                        <select id="filterRag" onchange="applyFilters()">
-                            <option value="">Todos</option>
-                            <option value="vermelho">🔴 Vermelho</option>
-                            <option value="amarelo">🟡 Amarelo</option>
-                            <option value="verde">🟢 Verde</option>
-                            <option value="cinza">⚪ Cinza</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label>Responsável</label>
-                        <select id="filterResponsavel" onchange="applyFilters()">
-                            <option value="">Todos</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label>Go Live</label>
-                        <select id="filterGoLive" onchange="applyFilters()">
-                            <option value="">Todos</option>
-                            <option value="atrasado">Atrasado</option>
-                            <option value="proximo">Próximos 30 dias</option>
-                            <option value="futuro">Mais de 30 dias</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <button class="btn btn-clear" onclick="clearFilters()">✕ Limpar</button>
-                    </div>
-                </div>
-                <div id="activeFilters" class="active-filters hidden"></div>
-            </div>
-
-            <!-- Summary Cards -->
             <div class="summary-grid">
-                <div class="summary-card total">
-                    <div class="summary-number" id="totalProjects">0</div>
-                    <div class="summary-label">Total Projetos</div>
-                </div>
-                <div class="summary-card concluido">
-                    <div class="summary-number" id="completedCount">0</div>
-                    <div class="summary-label">Concluídos</div>
-                </div>
-                <div class="summary-card andamento">
-                    <div class="summary-number" id="ongoingCount">0</div>
-                    <div class="summary-label">Em Andamento</div>
-                </div>
-                <div class="summary-card atrasado">
-                    <div class="summary-number" id="delayedCount">0</div>
-                    <div class="summary-label">Atrasados</div>
-                </div>
-                <div class="summary-card aguardando">
-                    <div class="summary-number" id="waitingCount">0</div>
-                    <div class="summary-label">Aguardando</div>
-                </div>
-                <div class="summary-card nao-iniciado">
-                    <div class="summary-number" id="notStartedCount">0</div>
-                    <div class="summary-label">Não Iniciados</div>
+                <div class="summary-card total"><div class="label">Total</div><div class="number" id="totalProjects">0</div></div>
+                <div class="summary-card concluido"><div class="label">Concluídos</div><div class="number" id="completedCount">0</div></div>
+                <div class="summary-card andamento"><div class="label">Em Andamento</div><div class="number" id="ongoingCount">0</div></div>
+                <div class="summary-card atrasado"><div class="label">Atrasados</div><div class="number" id="delayedCount">0</div></div>
+                <div class="summary-card aguardando"><div class="label">Aguardando</div><div class="number" id="waitingCount">0</div></div>
+                <div class="summary-card nao-iniciado"><div class="label">Não Iniciados</div><div class="number" id="notStartedCount">0</div></div>
+            </div>
+            <div class="filters-section">
+                <div class="filters-grid">
+                    <div class="filter-group"><label>Buscar projeto</label><input type="text" id="searchInput" placeholder="Digite o nome..." oninput="applyFilters()"></div>
+                    <div class="filter-group"><label>Status</label><select id="filterStatus" onchange="applyFilters()"><option value="">Todos</option><option value="Em Andamento">Em Andamento</option><option value="Concluído">Concluído</option><option value="Atrasado">Atrasado</option><option value="Aguardando Cliente">Aguardando</option><option value="Não Iniciado">Não Iniciado</option></select></div>
+                    <div class="filter-group"><label>RAG</label><select id="filterRag" onchange="applyFilters()"><option value="">Todos</option><option value="vermelho">🔴 Vermelho</option><option value="amarelo">🟡 Amarelo</option><option value="verde">🟢 Verde</option></select></div>
+                    <div class="filter-group"><label>Responsável</label><select id="filterResponsavel" onchange="applyFilters()"><option value="">Todos</option></select></div>
+                    <div class="filter-group"><label>Go Live</label><select id="filterGoLive" onchange="applyFilters()"><option value="">Todos</option><option value="atrasado">Go Live Atrasado</option><option value="proximo">Próximos 30 dias</option><option value="futuro">Mais de 30 dias</option></select></div>
+                    <div class="filter-group"><button class="btn btn-clear" onclick="clearFilters()">✕ Limpar</button></div>
                 </div>
             </div>
-
-            <!-- Charts Section -->
             <div class="charts-section">
-                <div class="chart-card">
-                    <h3>📊 Distribuição por Status</h3>
-                    <div class="pie-container">
-                        <div class="pie-chart" id="pieChart"></div>
-                        <div class="pie-legend" id="pieLegend"></div>
-                    </div>
-                </div>
-                <div class="chart-card">
-                    <h3>📅 Próximos Go Lives</h3>
-                    <div class="timeline-chart" id="timelineChart"></div>
-                </div>
+                <div class="chart-card"><h3>📊 Distribuição por Status</h3><div class="pie-container"><div class="pie-chart" id="pieChart"><div class="pie-center"><div class="number" id="pieTotal">0</div><div class="label">Projetos</div></div></div><div class="pie-legend" id="pieLegend"></div></div></div>
+                <div class="chart-card"><h3>📅 Próximos Go Lives</h3><div class="timeline-chart" id="timelineChart"></div></div>
             </div>
-
-            <!-- Atenção Imediata -->
-            <div id="atencaoSection" class="section atencao">
-                <div class="section-header">
-                    <h2>🚨 Atenção Imediata</h2>
-                    <span class="count-badge" id="atencaoCount">0</span>
-                </div>
-                <div class="section-body">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th class="sortable" data-sort="projeto">Projeto</th>
-                                <th class="sortable" data-sort="rag">RAG</th>
-                                <th class="sortable" data-sort="status">Status</th>
-                                <th>Bloqueador</th>
-                                <th class="sortable" data-sort="diasSemAtual">Dias s/ Atual.</th>
-                                <th>Ação Necessária</th>
-                            </tr>
-                        </thead>
-                        <tbody id="atencaoTable"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Em Andamento -->
-            <div id="andamentoSection" class="section andamento">
-                <div class="section-header">
-                    <h2>🔵 Em Andamento</h2>
-                    <span class="count-badge" id="andamentoCount">0</span>
-                </div>
-                <div class="section-body">
-                    <div class="results-count" id="andamentoResults"></div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th class="sortable" data-sort="projeto">Projeto</th>
-                                <th class="sortable" data-sort="progresso">Progresso</th>
-                                <th class="sortable" data-sort="etapa">Etapa Atual</th>
-                                <th>Próximo Passo</th>
-                                <th class="sortable" data-sort="golive">Go Live</th>
-                                <th class="sortable" data-sort="respInterno">Responsável</th>
-                            </tr>
-                        </thead>
-                        <tbody id="andamentoTable"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Aguardando Cliente -->
-            <div id="aguardandoSection" class="section aguardando">
-                <div class="section-header">
-                    <h2>🟡 Aguardando Cliente</h2>
-                    <span class="count-badge" id="aguardandoCount">0</span>
-                </div>
-                <div class="section-body">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th class="sortable" data-sort="projeto">Projeto</th>
-                                <th>O que Aguarda</th>
-                                <th class="sortable" data-sort="diasSemAtual">Dias Aguardando</th>
-                                <th>Contato Cliente</th>
-                                <th class="sortable" data-sort="golive">Go Live</th>
-                            </tr>
-                        </thead>
-                        <tbody id="aguardandoTable"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Não Iniciados -->
-            <div id="naoIniciadoSection" class="section nao-iniciado">
-                <div class="section-header">
-                    <h2>⚪ Não Iniciados</h2>
-                    <span class="count-badge" id="naoIniciadoCount">0</span>
-                </div>
-                <div class="section-body">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th class="sortable" data-sort="projeto">Projeto</th>
-                                <th>Próximo Passo</th>
-                                <th class="sortable" data-sort="golive">Go Live Previsto</th>
-                                <th class="sortable" data-sort="respInterno">Responsável</th>
-                            </tr>
-                        </thead>
-                        <tbody id="naoIniciadoTable"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Concluídos -->
-            <div id="concluidoSection" class="section concluido">
-                <div class="section-header">
-                    <h2>✅ Concluídos</h2>
-                    <span class="count-badge" id="concluidoCount">0</span>
-                </div>
-                <div class="section-body">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th class="sortable" data-sort="projeto">Projeto</th>
-                                <th>Localização</th>
-                                <th class="sortable" data-sort="ultAtual">Data Conclusão</th>
-                                <th class="sortable" data-sort="respInterno">Responsável</th>
-                            </tr>
-                        </thead>
-                        <tbody id="concluidoTable"></tbody>
-                    </table>
-                </div>
-            </div>
+            <div id="sectionsContainer"></div>
         </div>
     </div>
-
-    <!-- Modal -->
     <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
         <div class="modal" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <div>
-                    <h2 id="modalTitle">Nome do Projeto</h2>
-                    <p id="modalSubtitle">Detalhes do projeto</p>
-                </div>
-                <button class="modal-close" onclick="closeModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="project-info-grid" id="modalInfo"></div>
-                <h3 style="margin-bottom: 15px; color: #1a1a2e;">📋 Timeline do Projeto</h3>
-                <div class="timeline-vertical" id="modalTimeline"></div>
-            </div>
+            <div class="modal-header"><div><h2 id="modalTitle">Projeto</h2><p id="modalSubtitle">Detalhes</p></div><button class="modal-close" onclick="closeModal()">&times;</button></div>
+            <div class="modal-body"><div class="project-info-grid" id="modalInfo"></div><div><h3 style="margin-bottom:15px;">📋 Timeline</h3><div class="timeline-vertical" id="modalTimeline"></div></div></div>
         </div>
     </div>
-
     <script>
-        let projects = [];
-        let filteredProjects = [];
-        let sortConfig = { column: null, direction: 'asc' };
-
+        let projects = [], filteredProjects = [], sortConfig = { column: 'projeto', direction: 'asc' };
         async function loadData() {
             try {
                 const response = await fetch('dados.json?t=' + Date.now());
-                if (!response.ok) throw new Error('Arquivo não encontrado');
-                
+                if (!response.ok) throw new Error('Não encontrado');
                 const data = await response.json();
-                
                 if (data.projects && data.projects.length > 0) {
                     projects = data.projects;
                     filteredProjects = [...projects];
-                    
                     if (data.lastUpdate) {
-                        const updateDate = new Date(data.lastUpdate);
-                        const opcoes = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-                        document.getElementById('currentDate').textContent = updateDate.toLocaleDateString('pt-BR', opcoes);
+                        const d = new Date(data.lastUpdate);
+                        document.getElementById('currentDate').textContent = d.toLocaleDateString('pt-BR', {day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});
                     }
-                    
-                    // Populate responsavel filter
                     populateResponsavelFilter();
-                    
                     document.getElementById('loading').classList.add('hidden');
                     document.getElementById('dashboardContent').classList.remove('hidden');
                     updateDashboard();
                     renderCharts();
-                    setupSorting();
-                } else {
-                    showNoData();
-                }
-            } catch (e) {
-                console.error('Erro:', e);
-                showNoData();
-            }
+                } else { showNoData(); }
+            } catch(e) { showNoData(); }
         }
-
-        function showNoData() {
-            document.getElementById('loading').classList.add('hidden');
-            document.getElementById('noData').classList.remove('hidden');
-        }
-
+        function showNoData() { document.getElementById('loading').classList.add('hidden'); document.getElementById('noData').classList.remove('hidden'); }
         function populateResponsavelFilter() {
             const responsaveis = [...new Set(projects.map(p => p.respInterno).filter(r => r && r !== '-'))];
             const select = document.getElementById('filterResponsavel');
-            responsaveis.sort().forEach(r => {
-                const option = document.createElement('option');
-                option.value = r;
-                option.textContent = r;
-                select.appendChild(option);
-            });
+            responsaveis.sort().forEach(r => { const opt = document.createElement('option'); opt.value = r; opt.textContent = r; select.appendChild(opt); });
         }
-
-        function parseGoLiveDate(dateStr) {
-            if (!dateStr || dateStr === '-' || dateStr.toLowerCase().includes('definir')) return null;
-            
-            // Tenta formato DD/MM/YYYY
-            const parts = dateStr.split('/');
-            if (parts.length === 3) {
-                const day = parseInt(parts[0]);
-                const month = parseInt(parts[1]) - 1;
-                const year = parseInt(parts[2]);
-                if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
-                    return new Date(year, month, day);
-                }
-            }
-            
-            // Tenta parse direto
-            const parsed = new Date(dateStr);
-            return isNaN(parsed.getTime()) ? null : parsed;
-        }
-
         function normalizeStatus(status) {
             if (!status) return 'Não Definido';
             const s = status.toLowerCase().trim();
@@ -1214,113 +208,57 @@
             if (s.includes('andamento')) return 'Em Andamento';
             if (s.includes('atras')) return 'Atrasado';
             if (s.includes('aguard')) return 'Aguardando Cliente';
-            if (s.includes('iniciado') || s.includes('início') || s.includes('inicio')) return 'Não Iniciado';
+            if (s.includes('não') || s.includes('nao')) return 'Não Iniciado';
             return status;
         }
-
-        function getStatusClass(status) {
-            const s = normalizeStatus(status).toLowerCase().replace(/\s+/g, '-').replace(/í/g, 'i').replace(/ã/g, 'a');
-            return s;
-        }
-
-        function getRagHtml(rag) {
-            const r = (rag || 'cinza').toLowerCase();
-            let label = r.charAt(0).toUpperCase() + r.slice(1);
-            return `<span class="rag ${r}"><span class="rag-dot"></span>${label}</span>`;
-        }
-
+        function getRagHtml(rag) { const r = (rag || 'cinza').toLowerCase(); return `<span class="rag ${r}"><span class="rag-dot"></span>${r.charAt(0).toUpperCase() + r.slice(1)}</span>`; }
         function getProgressHtml(pct) {
-            const p = Math.min(100, Math.max(0, pct));
-            let cls = 'low';
-            if (p >= 70) cls = 'high';
-            else if (p >= 40) cls = 'medium';
-            return `
-                <div class="progress-container">
-                    <div class="progress-bar"><div class="progress-fill ${cls}" style="width: ${p}%"></div></div>
-                    <span class="progress-text">${p}%</span>
-                </div>
-            `;
+            const p = Math.min(100, Math.max(0, pct || 0));
+            let cls = 'low'; if (p >= 70) cls = 'high'; else if (p >= 40) cls = 'medium';
+            return `<div class="progress-container"><div class="progress-bar"><div class="progress-fill ${cls}" style="width:${p}%"></div></div><span class="progress-text">${p}%</span></div>`;
         }
-
-        function getDaysHtml(dias) {
-            let cls = 'ok';
-            if (dias > 14) cls = 'danger';
-            else if (dias > 7) cls = 'warning';
-            return `<span class="days-indicator ${cls}">${dias} dias</span>`;
+        function getGoLiveHtml(p) {
+            const orig = p.goliveOriginal || p.golive || '-', atual = p.goliveAtual || p.golive || '-';
+            if (orig === atual || orig === '-' || atual === '-' || !p.goliveOriginal) return `<span>${atual}</span>`;
+            return `<span class="golive-alterado">⚠️ ${atual} <span class="original">(era ${orig})</span></span>`;
         }
-
-        function getGoLiveHtml(project) {
-            const original = project.goliveOriginal || project.golive || '-';
-            const atual = project.goliveAtual || project.golive || '-';
-            
-            // Se são iguais ou um deles é indefinido, mostra normal
-            if (original === atual || original === '-' || atual === '-' || !project.goliveOriginal) {
-                return `<span class="golive-normal">${atual}</span>`;
+        function getTrendIndicator(p) {
+            if (p.diasSemAtual > 10) return '<span class="trend-down">↘️</span>';
+            if (p.diasSemAtual < 3 && p.progresso > 50) return '<span class="trend-up">↗️</span>';
+            return '<span class="trend-stable">→</span>';
+        }
+        function parseGoLiveDate(dateStr) {
+            if (!dateStr || dateStr === '-' || dateStr.toLowerCase().includes('definir')) return null;
+            const parts = dateStr.split('/');
+            if (parts.length === 3) {
+                const day = parseInt(parts[0]), month = parseInt(parts[1]) - 1, year = parseInt(parts[2]);
+                if (!isNaN(day) && !isNaN(month) && !isNaN(year)) return new Date(year, month, day);
             }
-            
-            // Se são diferentes, mostra com destaque
-            return `<span class="golive-alterado" title="Go Live alterado! Original: ${original}">
-                ⚠️ ${atual}
-                <span class="original">(era ${original})</span>
-            </span>`;
+            const parsed = new Date(dateStr);
+            return isNaN(parsed.getTime()) ? null : parsed;
         }
-
-        function getTrendIndicator(project) {
-            // Simulated trend based on days without update
-            if (project.diasSemAtual > 10) return '<span class="trend-indicator trend-down">↘️</span>';
-            if (project.diasSemAtual < 3 && project.progresso > 50) return '<span class="trend-indicator trend-up">↗️</span>';
-            return '<span class="trend-indicator trend-stable">→</span>';
-        }
-
         function applyFilters() {
             const search = document.getElementById('searchInput').value.toLowerCase().trim();
             const status = document.getElementById('filterStatus').value;
             const rag = document.getElementById('filterRag').value;
             const responsavel = document.getElementById('filterResponsavel').value;
             const goLive = document.getElementById('filterGoLive').value;
-
             filteredProjects = projects.filter(p => {
-                // Filtro de busca por nome
                 if (search && !p.projeto.toLowerCase().includes(search)) return false;
-                
-                // Filtro de status
                 if (status && normalizeStatus(p.status) !== status) return false;
-                
-                // Filtro de RAG
                 if (rag && (p.rag || '').toLowerCase() !== rag.toLowerCase()) return false;
-                
-                // Filtro de responsável
                 if (responsavel && (p.respInterno || '').trim() !== responsavel.trim()) return false;
-                
-                // Filtro de Go Live
                 if (goLive) {
-                    const goLiveDate = parseGoLiveDate(p.golive);
-                    const hoje = new Date();
-                    hoje.setHours(0, 0, 0, 0);
-                    
-                    if (goLive === 'atrasado') {
-                        // Go Live já passou e projeto não está concluído
-                        if (!goLiveDate || goLiveDate >= hoje || normalizeStatus(p.status) === 'Concluído') return false;
-                    } else if (goLive === 'proximo') {
-                        // Próximos 30 dias
-                        const em30dias = new Date(hoje);
-                        em30dias.setDate(em30dias.getDate() + 30);
-                        if (!goLiveDate || goLiveDate < hoje || goLiveDate > em30dias) return false;
-                    } else if (goLive === 'futuro') {
-                        // Mais de 30 dias
-                        const em30dias = new Date(hoje);
-                        em30dias.setDate(em30dias.getDate() + 30);
-                        if (!goLiveDate || goLiveDate <= em30dias) return false;
-                    }
+                    const goLiveDate = parseGoLiveDate(p.goliveAtual || p.golive);
+                    const hoje = new Date(); hoje.setHours(0, 0, 0, 0);
+                    if (goLive === 'atrasado') { if (!goLiveDate || goLiveDate >= hoje || normalizeStatus(p.status) === 'Concluído') return false; }
+                    else if (goLive === 'proximo') { const em30 = new Date(hoje); em30.setDate(em30.getDate() + 30); if (!goLiveDate || goLiveDate < hoje || goLiveDate > em30) return false; }
+                    else if (goLive === 'futuro') { const em30 = new Date(hoje); em30.setDate(em30.getDate() + 30); if (!goLiveDate || goLiveDate <= em30) return false; }
                 }
-                
                 return true;
             });
-
-            updateActiveFilters();
             updateDashboard();
         }
-
         function clearFilters() {
             document.getElementById('searchInput').value = '';
             document.getElementById('filterStatus').value = '';
@@ -1328,338 +266,76 @@
             document.getElementById('filterResponsavel').value = '';
             document.getElementById('filterGoLive').value = '';
             filteredProjects = [...projects];
-            document.getElementById('activeFilters').classList.add('hidden');
             updateDashboard();
         }
-
-        function updateActiveFilters() {
-            const container = document.getElementById('activeFilters');
-            const filters = [];
-            
-            if (document.getElementById('searchInput').value) {
-                filters.push({ label: 'Busca: ' + document.getElementById('searchInput').value, field: 'searchInput' });
-            }
-            if (document.getElementById('filterStatus').value) {
-                filters.push({ label: 'Status: ' + document.getElementById('filterStatus').value, field: 'filterStatus' });
-            }
-            if (document.getElementById('filterRag').value) {
-                filters.push({ label: 'RAG: ' + document.getElementById('filterRag').value, field: 'filterRag' });
-            }
-            if (document.getElementById('filterResponsavel').value) {
-                filters.push({ label: 'Responsável: ' + document.getElementById('filterResponsavel').value, field: 'filterResponsavel' });
-            }
-
-            if (filters.length > 0) {
-                container.innerHTML = filters.map(f => 
-                    `<span class="filter-tag">${f.label} <button onclick="removeFilter('${f.field}')">&times;</button></span>`
-                ).join('');
-                container.classList.remove('hidden');
-            } else {
-                container.classList.add('hidden');
-            }
-        }
-
-        function removeFilter(field) {
-            document.getElementById(field).value = '';
-            applyFilters();
-        }
-
-        function setupSorting() {
-            document.querySelectorAll('th.sortable').forEach(th => {
-                th.addEventListener('click', () => {
-                    const column = th.dataset.sort;
-                    if (sortConfig.column === column) {
-                        sortConfig.direction = sortConfig.direction === 'asc' ? 'desc' : 'asc';
-                    } else {
-                        sortConfig.column = column;
-                        sortConfig.direction = 'asc';
-                    }
-                    
-                    document.querySelectorAll('th.sortable').forEach(t => {
-                        t.classList.remove('sorted-asc', 'sorted-desc');
-                    });
-                    th.classList.add(sortConfig.direction === 'asc' ? 'sorted-asc' : 'sorted-desc');
-                    
-                    updateDashboard();
-                });
-            });
-        }
-
-        function sortProjects(arr) {
-            if (!sortConfig.column) return arr;
-            
-            return [...arr].sort((a, b) => {
-                let aVal = a[sortConfig.column];
-                let bVal = b[sortConfig.column];
-                
-                if (typeof aVal === 'string') aVal = aVal.toLowerCase();
-                if (typeof bVal === 'string') bVal = bVal.toLowerCase();
-                
-                if (aVal < bVal) return sortConfig.direction === 'asc' ? -1 : 1;
-                if (aVal > bVal) return sortConfig.direction === 'asc' ? 1 : -1;
-                return 0;
-            });
-        }
-
         function updateDashboard() {
-            const data = filteredProjects;
-            
-            const concluidos = data.filter(p => normalizeStatus(p.status) === 'Concluído');
-            const andamento = data.filter(p => normalizeStatus(p.status) === 'Em Andamento');
-            const atrasados = data.filter(p => normalizeStatus(p.status) === 'Atrasado');
-            const aguardando = data.filter(p => normalizeStatus(p.status) === 'Aguardando Cliente');
-            const naoIniciados = data.filter(p => normalizeStatus(p.status) === 'Não Iniciado');
-
-            const atencao = data.filter(p => {
-                const status = normalizeStatus(p.status);
-                return status === 'Atrasado' || 
-                       p.rag === 'vermelho' || 
-                       (p.diasSemAtual > 14 && status !== 'Concluído');
-            });
-
-            // Update counts
-            document.getElementById('totalProjects').textContent = data.length;
-            document.getElementById('completedCount').textContent = concluidos.length;
-            document.getElementById('ongoingCount').textContent = andamento.length;
-            document.getElementById('delayedCount').textContent = atrasados.length;
-            document.getElementById('waitingCount').textContent = aguardando.length;
-            document.getElementById('notStartedCount').textContent = naoIniciados.length;
-
-            document.getElementById('atencaoCount').textContent = atencao.length;
-            document.getElementById('andamentoCount').textContent = andamento.length;
-            document.getElementById('aguardandoCount').textContent = aguardando.length;
-            document.getElementById('naoIniciadoCount').textContent = naoIniciados.length;
-            document.getElementById('concluidoCount').textContent = concluidos.length;
-
-            // Results count
-            const andamentoResults = document.getElementById('andamentoResults');
-            if (filteredProjects.length !== projects.length) {
-                andamentoResults.textContent = `Mostrando ${andamento.length} de ${projects.filter(p => normalizeStatus(p.status) === 'Em Andamento').length} projetos`;
-                andamentoResults.style.display = 'block';
-            } else {
-                andamentoResults.style.display = 'none';
-            }
-
-            // Render tables
-            renderAtencaoTable(sortProjects(atencao));
-            renderAndamentoTable(sortProjects(andamento));
-            renderAguardandoTable(sortProjects(aguardando));
-            renderNaoIniciadoTable(sortProjects(naoIniciados));
-            renderConcluidoTable(sortProjects(concluidos));
+            document.getElementById('totalProjects').textContent = projects.length;
+            document.getElementById('completedCount').textContent = projects.filter(p => normalizeStatus(p.status) === 'Concluído').length;
+            document.getElementById('ongoingCount').textContent = projects.filter(p => normalizeStatus(p.status) === 'Em Andamento').length;
+            document.getElementById('delayedCount').textContent = projects.filter(p => normalizeStatus(p.status) === 'Atrasado').length;
+            document.getElementById('waitingCount').textContent = projects.filter(p => normalizeStatus(p.status) === 'Aguardando Cliente').length;
+            document.getElementById('notStartedCount').textContent = projects.filter(p => normalizeStatus(p.status) === 'Não Iniciado').length;
+            renderSections();
         }
-
-        function renderAtencaoTable(data) {
-            const html = data.length === 0 
-                ? '<tr><td colspan="6" class="empty-state"><div class="icon">✅</div>Nenhum projeto requer atenção imediata!</td></tr>'
-                : data.map(p => `
-                    <tr class="clickable" onclick="openModal('${p.projeto}')">
-                        <td class="project-name">${p.projeto} ${getTrendIndicator(p)}</td>
-                        <td>${getRagHtml(p.rag)}</td>
-                        <td><span class="status-badge ${getStatusClass(p.status)}">${normalizeStatus(p.status)}</span></td>
-                        <td>${p.bloqueador !== '-' ? `<span class="blocker">${p.bloqueador}</span>` : '-'}</td>
-                        <td>${getDaysHtml(p.diasSemAtual)}</td>
-                        <td>${p.proximo}</td>
-                    </tr>
-                `).join('');
-            document.getElementById('atencaoTable').innerHTML = html;
-        }
-
-        function renderAndamentoTable(data) {
-            const html = data.length === 0
-                ? '<tr><td colspan="6" class="empty-state">Nenhum projeto em andamento</td></tr>'
-                : data.map(p => `
-                    <tr class="clickable" onclick="openModal('${p.projeto}')">
-                        <td class="project-name">${p.projeto} ${getTrendIndicator(p)}</td>
-                        <td>${getProgressHtml(p.progresso)}</td>
-                        <td>${p.etapa}</td>
-                        <td>${p.proximo}</td>
-                        <td>${getGoLiveHtml(p)}</td>
-                        <td>${p.respInterno}</td>
-                    </tr>
-                `).join('');
-            document.getElementById('andamentoTable').innerHTML = html;
-        }
-
-        function renderAguardandoTable(data) {
-            const html = data.length === 0
-                ? '<tr><td colspan="5" class="empty-state">Nenhum projeto aguardando cliente</td></tr>'
-                : data.map(p => `
-                    <tr class="clickable" onclick="openModal('${p.projeto}')">
-                        <td class="project-name">${p.projeto}</td>
-                        <td>${p.bloqueador !== '-' ? p.bloqueador : p.proximo}</td>
-                        <td>${getDaysHtml(p.diasSemAtual)}</td>
-                        <td>${p.respCliente}</td>
-                        <td>${getGoLiveHtml(p)}</td>
-                    </tr>
-                `).join('');
-            document.getElementById('aguardandoTable').innerHTML = html;
-        }
-
-        function renderNaoIniciadoTable(data) {
-            const html = data.length === 0
-                ? '<tr><td colspan="4" class="empty-state">Todos os projetos já foram iniciados</td></tr>'
-                : data.map(p => `
-                    <tr class="clickable" onclick="openModal('${p.projeto}')">
-                        <td class="project-name">${p.projeto}</td>
-                        <td>${p.proximo}</td>
-                        <td>${getGoLiveHtml(p)}</td>
-                        <td>${p.respInterno}</td>
-                    </tr>
-                `).join('');
-            document.getElementById('naoIniciadoTable').innerHTML = html;
-        }
-
-        function renderConcluidoTable(data) {
-            const html = data.length === 0
-                ? '<tr><td colspan="4" class="empty-state">Nenhum projeto concluído ainda</td></tr>'
-                : data.map(p => `
-                    <tr class="clickable" onclick="openModal('${p.projeto}')">
-                        <td class="project-name">${p.projeto}</td>
-                        <td>${p.localizacao}</td>
-                        <td>${p.ultAtual}</td>
-                        <td>${p.respInterno}</td>
-                    </tr>
-                `).join('');
-            document.getElementById('concluidoTable').innerHTML = html;
-        }
-
-        function renderCharts() {
-            // Pie Chart
-            const statusCounts = {
-                'Em Andamento': projects.filter(p => normalizeStatus(p.status) === 'Em Andamento').length,
-                'Concluído': projects.filter(p => normalizeStatus(p.status) === 'Concluído').length,
-                'Atrasado': projects.filter(p => normalizeStatus(p.status) === 'Atrasado').length,
-                'Aguardando': projects.filter(p => normalizeStatus(p.status) === 'Aguardando Cliente').length,
-                'Não Iniciado': projects.filter(p => normalizeStatus(p.status) === 'Não Iniciado').length
-            };
-
-            const colors = {
-                'Em Andamento': '#3b82f6',
-                'Concluído': '#10b981',
-                'Atrasado': '#ef4444',
-                'Aguardando': '#f59e0b',
-                'Não Iniciado': '#6b7280'
-            };
-
-            const total = Object.values(statusCounts).reduce((a, b) => a + b, 0);
-            let cumulativePercent = 0;
-            let gradientParts = [];
-
-            Object.entries(statusCounts).forEach(([status, count]) => {
-                if (count > 0) {
-                    const percent = (count / total) * 100;
-                    gradientParts.push(`${colors[status]} ${cumulativePercent}% ${cumulativePercent + percent}%`);
-                    cumulativePercent += percent;
-                }
-            });
-
-            document.getElementById('pieChart').style.background = `conic-gradient(${gradientParts.join(', ')})`;
-
-            // Legend
-            document.getElementById('pieLegend').innerHTML = Object.entries(statusCounts)
-                .filter(([_, count]) => count > 0)
-                .map(([status, count]) => `
-                    <div class="legend-item">
-                        <span class="legend-dot" style="background: ${colors[status]}"></span>
-                        <span>${status}: ${count}</span>
-                    </div>
-                `).join('');
-
-            // Timeline Chart
-            const projetosComGoLive = projects
-                .filter(p => p.golive && p.golive !== '-' && p.golive !== 'A definir' && normalizeStatus(p.status) !== 'Concluído')
-                .slice(0, 6);
-
-            document.getElementById('timelineChart').innerHTML = projetosComGoLive.length === 0
-                ? '<p style="color: #64748b; text-align: center;">Nenhum Go Live definido</p>'
-                : projetosComGoLive.map(p => `
-                    <div class="timeline-item">
-                        <div class="timeline-date">${p.golive}</div>
-                        <div class="timeline-bar">
-                            <div class="timeline-fill ${p.rag || 'cinza'}" style="width: ${p.progresso}%">
-                                ${p.projeto}
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-        }
-
-        function openModal(projectName) {
-            const project = projects.find(p => p.projeto === projectName);
-            if (!project) return;
-
-            const goliveOriginal = project.goliveOriginal || project.golive || '-';
-            const goliveAtual = project.goliveAtual || project.golive || '-';
-            const goliveAlterado = goliveOriginal !== goliveAtual && goliveOriginal !== '-' && project.goliveOriginal;
-
-            document.getElementById('modalTitle').textContent = project.projeto;
-            document.getElementById('modalSubtitle').textContent = `${normalizeStatus(project.status)} • Go Live: ${goliveAtual}`;
-
-            document.getElementById('modalInfo').innerHTML = `
-                <div class="info-box">
-                    <label>Status</label>
-                    <span>${getRagHtml(project.rag)} ${normalizeStatus(project.status)}</span>
-                </div>
-                <div class="info-box">
-                    <label>Progresso</label>
-                    <span>${project.progresso}%</span>
-                </div>
-                <div class="info-box">
-                    <label>Responsável</label>
-                    <span>${project.respInterno}</span>
-                </div>
-                <div class="info-box">
-                    <label>Go Live Original</label>
-                    <span>${goliveOriginal}</span>
-                </div>
-                <div class="info-box" style="${goliveAlterado ? 'background: #fef3c7;' : ''}">
-                    <label>Go Live Atual</label>
-                    <span style="${goliveAlterado ? 'color: #92400e; font-weight: bold;' : ''}">${goliveAlterado ? '⚠️ ' : ''}${goliveAtual}</span>
-                </div>
-                <div class="info-box">
-                    <label>Localização</label>
-                    <span>${project.localizacao}</span>
-                </div>
-                <div class="info-box">
-                    <label>Contato Cliente</label>
-                    <span>${project.respCliente || '-'}</span>
-                </div>
-                <div class="info-box">
-                    <label>Última Atualização</label>
-                    <span>${project.ultAtual} (${project.diasSemAtual} dias atrás)</span>
-                </div>
-            `;
-
-            // Timeline
-            const etapas = [
-                { nome: 'Kickoff', status: project.progresso > 0 ? 'completed' : 'pending' },
-                { nome: 'Documentação', status: project.progresso >= 20 ? 'completed' : (project.progresso > 0 ? 'current' : 'pending') },
-                { nome: 'Configuração Ambiente', status: project.progresso >= 40 ? 'completed' : (project.progresso >= 20 ? 'current' : 'pending') },
-                { nome: 'Validação Acessos', status: project.progresso >= 60 ? 'completed' : (project.progresso >= 40 ? 'current' : 'pending') },
-                { nome: 'Homologação', status: project.progresso >= 80 ? 'completed' : (project.progresso >= 60 ? 'current' : 'pending') },
-                { nome: 'Go Live', status: project.progresso >= 100 ? 'completed' : (project.progresso >= 80 ? 'current' : 'pending') }
+        function renderSections() {
+            const sections = [
+                { id: 'atencao', title: '🚨 Atenção Imediata', class: 'atencao', filter: p => normalizeStatus(p.status) === 'Atrasado' || (p.rag && p.rag.toLowerCase() === 'vermelho') },
+                { id: 'andamento', title: '🔄 Em Andamento', class: 'andamento', filter: p => normalizeStatus(p.status) === 'Em Andamento' && (!p.rag || p.rag.toLowerCase() !== 'vermelho') },
+                { id: 'aguardando', title: '⏳ Aguardando Cliente', class: 'aguardando', filter: p => normalizeStatus(p.status) === 'Aguardando Cliente' },
+                { id: 'nao-iniciado', title: '📋 Não Iniciados', class: 'nao-iniciado', filter: p => normalizeStatus(p.status) === 'Não Iniciado' },
+                { id: 'concluido', title: '✅ Concluídos', class: 'concluido', filter: p => normalizeStatus(p.status) === 'Concluído' }
             ];
-
-            document.getElementById('modalTimeline').innerHTML = etapas.map(e => `
-                <div class="timeline-step ${e.status}">
-                    <h4>${e.nome}</h4>
-                    <p>${e.status === 'completed' ? '✓ Concluído' : (e.status === 'current' ? '▶ Em andamento' : '○ Pendente')}</p>
-                </div>
-            `).join('');
-
+            const container = document.getElementById('sectionsContainer');
+            container.innerHTML = sections.map(s => {
+                const sProjects = filteredProjects.filter(s.filter);
+                return `<div class="section ${sProjects.length === 0 ? 'hidden' : ''}">
+                    <div class="section-header ${s.class}"><h2>${s.title}</h2><span class="section-badge">${sProjects.length}</span></div>
+                    <div class="section-content"><div class="table-container"><table><thead><tr>
+                        <th>Projeto</th><th>RAG</th><th>Progresso</th><th>Etapa</th><th>Próximo Passo</th><th>Go Live</th><th>Responsável</th>
+                    </tr></thead><tbody>${sProjects.map(p => `<tr class="clickable" onclick="openModal('${p.projeto.replace(/'/g, "\\'")}')">
+                        <td class="project-name">${p.projeto} ${getTrendIndicator(p)}</td>
+                        <td>${getRagHtml(p.rag)}</td><td>${getProgressHtml(p.progresso)}</td>
+                        <td>${p.etapa || '-'}</td><td>${p.proximo || '-'}</td><td>${getGoLiveHtml(p)}</td><td>${p.respInterno || '-'}</td>
+                    </tr>`).join('')}</tbody></table></div></div></div>`;
+            }).join('');
+        }
+        function renderCharts() {
+            const counts = {'Em Andamento': projects.filter(p => normalizeStatus(p.status) === 'Em Andamento').length, 'Concluído': projects.filter(p => normalizeStatus(p.status) === 'Concluído').length, 'Atrasado': projects.filter(p => normalizeStatus(p.status) === 'Atrasado').length, 'Aguardando': projects.filter(p => normalizeStatus(p.status) === 'Aguardando Cliente').length, 'Não Iniciado': projects.filter(p => normalizeStatus(p.status) === 'Não Iniciado').length};
+            const colors = {'Em Andamento':'#3b82f6','Concluído':'#10b981','Atrasado':'#ef4444','Aguardando':'#f59e0b','Não Iniciado':'#6b7280'};
+            const total = Object.values(counts).reduce((a,b) => a+b, 0);
+            document.getElementById('pieTotal').textContent = total;
+            let cumPct = 0, gradParts = [];
+            Object.entries(counts).forEach(([s, c]) => { if (c > 0) { const pct = (c/total)*100; gradParts.push(`${colors[s]} ${cumPct}% ${cumPct+pct}%`); cumPct += pct; }});
+            document.getElementById('pieChart').style.background = `conic-gradient(${gradParts.join(', ')})`;
+            document.getElementById('pieLegend').innerHTML = Object.entries(counts).filter(([_,c]) => c > 0).map(([s,c]) => `<div class="legend-item"><span class="legend-dot" style="background:${colors[s]}"></span><span>${s}: ${c}</span></div>`).join('');
+            const upcoming = projects.filter(p => (p.goliveAtual || p.golive) && (p.goliveAtual || p.golive) !== '-' && !p.golive?.includes('definir') && normalizeStatus(p.status) !== 'Concluído')
+                .sort((a, b) => { const dA = parseGoLiveDate(a.goliveAtual || a.golive), dB = parseGoLiveDate(b.goliveAtual || b.golive); return (dA || new Date(9999,0)) - (dB || new Date(9999,0)); }).slice(0, 6);
+            document.getElementById('timelineChart').innerHTML = upcoming.length === 0 ? '<div class="empty-state">Nenhum Go Live agendado</div>' :
+                upcoming.map(p => `<div class="timeline-item"><div class="timeline-date">${p.goliveAtual || p.golive}</div><div class="timeline-bar ${p.rag || 'cinza'}">${p.projeto}</div></div>`).join('');
+        }
+        function openModal(name) {
+            const p = projects.find(x => x.projeto === name);
+            if (!p) return;
+            const orig = p.goliveOriginal || p.golive || '-', atual = p.goliveAtual || p.golive || '-';
+            const alterado = orig !== atual && orig !== '-' && p.goliveOriginal;
+            document.getElementById('modalTitle').textContent = p.projeto;
+            document.getElementById('modalSubtitle').textContent = `${normalizeStatus(p.status)} • Go Live: ${atual}`;
+            document.getElementById('modalInfo').innerHTML = `
+                <div class="info-box"><label>Status</label><span>${getRagHtml(p.rag)} ${normalizeStatus(p.status)}</span></div>
+                <div class="info-box"><label>Progresso</label><span>${p.progresso || 0}%</span></div>
+                <div class="info-box"><label>Responsável</label><span>${p.respInterno || '-'}</span></div>
+                <div class="info-box"><label>Go Live Original</label><span>${orig}</span></div>
+                <div class="info-box" style="${alterado ? 'background:#fef3c7;' : ''}"><label>Go Live Atual</label><span style="${alterado ? 'color:#92400e;font-weight:bold;' : ''}">${alterado ? '⚠️ ' : ''}${atual}</span></div>
+                <div class="info-box"><label>Localização</label><span>${p.localizacao || '-'}</span></div>
+                <div class="info-box"><label>Contato Cliente</label><span>${p.respCliente || '-'}</span></div>
+                <div class="info-box"><label>Última Atualização</label><span>${p.ultAtual || '-'} (${p.diasSemAtual || 0} dias)</span></div>`;
+            const prog = p.progresso || 0;
+            const etapas = [{n:'Kickoff',s:prog>0?'completed':'pending'},{n:'Documentação',s:prog>=20?'completed':(prog>0?'current':'pending')},{n:'Configuração',s:prog>=40?'completed':(prog>=20?'current':'pending')},{n:'Validação',s:prog>=60?'completed':(prog>=40?'current':'pending')},{n:'Homologação',s:prog>=80?'completed':(prog>=60?'current':'pending')},{n:'Go Live',s:prog>=100?'completed':(prog>=80?'current':'pending')}];
+            document.getElementById('modalTimeline').innerHTML = etapas.map(e => `<div class="timeline-step ${e.s}"><h4>${e.n}</h4><p>${e.s==='completed'?'✓ Concluído':(e.s==='current'?'▶ Em andamento':'○ Pendente')}</p></div>`).join('');
             document.getElementById('modalOverlay').classList.add('active');
         }
-
-        function closeModal(event) {
-            if (event && event.target !== event.currentTarget) return;
-            document.getElementById('modalOverlay').classList.remove('active');
-        }
-
-        // Close modal on escape
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeModal();
-        });
-
+        function closeModal(e) { if (e && e.target !== e.currentTarget) return; document.getElementById('modalOverlay').classList.remove('active'); }
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
         window.addEventListener('load', loadData);
     </script>
 </body>
