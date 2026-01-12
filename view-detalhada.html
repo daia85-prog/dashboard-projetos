@@ -1165,6 +1165,25 @@
             });
         }
 
+        function parseGoLiveDate(dateStr) {
+            if (!dateStr || dateStr === '-' || dateStr.toLowerCase().includes('definir')) return null;
+            
+            // Tenta formato DD/MM/YYYY
+            const parts = dateStr.split('/');
+            if (parts.length === 3) {
+                const day = parseInt(parts[0]);
+                const month = parseInt(parts[1]) - 1;
+                const year = parseInt(parts[2]);
+                if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
+                    return new Date(year, month, day);
+                }
+            }
+            
+            // Tenta parse direto
+            const parsed = new Date(dateStr);
+            return isNaN(parsed.getTime()) ? null : parsed;
+        }
+
         function normalizeStatus(status) {
             if (!status) return 'Não Definido';
             const s = status.toLowerCase().trim();
@@ -1215,18 +1234,47 @@
         }
 
         function applyFilters() {
-            const search = document.getElementById('searchInput').value.toLowerCase();
+            const search = document.getElementById('searchInput').value.toLowerCase().trim();
             const status = document.getElementById('filterStatus').value;
             const rag = document.getElementById('filterRag').value;
             const responsavel = document.getElementById('filterResponsavel').value;
             const goLive = document.getElementById('filterGoLive').value;
 
             filteredProjects = projects.filter(p => {
+                // Filtro de busca por nome
                 if (search && !p.projeto.toLowerCase().includes(search)) return false;
+                
+                // Filtro de status
                 if (status && normalizeStatus(p.status) !== status) return false;
-                if (rag && p.rag !== rag) return false;
-                if (responsavel && p.respInterno !== responsavel) return false;
-                // GoLive filter logic would go here
+                
+                // Filtro de RAG
+                if (rag && (p.rag || '').toLowerCase() !== rag.toLowerCase()) return false;
+                
+                // Filtro de responsável
+                if (responsavel && (p.respInterno || '').trim() !== responsavel.trim()) return false;
+                
+                // Filtro de Go Live
+                if (goLive) {
+                    const goLiveDate = parseGoLiveDate(p.golive);
+                    const hoje = new Date();
+                    hoje.setHours(0, 0, 0, 0);
+                    
+                    if (goLive === 'atrasado') {
+                        // Go Live já passou e projeto não está concluído
+                        if (!goLiveDate || goLiveDate >= hoje || normalizeStatus(p.status) === 'Concluído') return false;
+                    } else if (goLive === 'proximo') {
+                        // Próximos 30 dias
+                        const em30dias = new Date(hoje);
+                        em30dias.setDate(em30dias.getDate() + 30);
+                        if (!goLiveDate || goLiveDate < hoje || goLiveDate > em30dias) return false;
+                    } else if (goLive === 'futuro') {
+                        // Mais de 30 dias
+                        const em30dias = new Date(hoje);
+                        em30dias.setDate(em30dias.getDate() + 30);
+                        if (!goLiveDate || goLiveDate <= em30dias) return false;
+                    }
+                }
+                
                 return true;
             });
 

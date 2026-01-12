@@ -1055,16 +1055,24 @@
         }
 
         function applyFilters() {
-            const search = document.getElementById('searchInput').value.toLowerCase();
+            const search = document.getElementById('searchInput').value.toLowerCase().trim();
             const status = document.getElementById('filterStatus').value;
             const rag = document.getElementById('filterRag').value;
             const resp = document.getElementById('filterResp').value;
 
             filteredProjects = projects.filter(p => {
+                // Filtro de busca por nome
                 if (search && !p.projeto.toLowerCase().includes(search)) return false;
+                
+                // Filtro de status
                 if (status && normalizeStatus(p.status) !== status) return false;
-                if (rag && p.rag !== rag) return false;
-                if (resp && p.respInterno !== resp) return false;
+                
+                // Filtro de RAG
+                if (rag && (p.rag || '').toLowerCase() !== rag.toLowerCase()) return false;
+                
+                // Filtro de responsável
+                if (resp && (p.respInterno || '').trim() !== resp.trim()) return false;
+                
                 return true;
             });
 
