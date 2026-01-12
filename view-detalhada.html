@@ -766,6 +766,29 @@
         .timeline-step.completed h4 { color: #065f46; }
         .timeline-step.current h4 { color: #1e40af; }
 
+        /* GoLive alterado */
+        .golive-alterado {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #fef3c7;
+            color: #92400e;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .golive-alterado .original {
+            font-size: 10px;
+            color: #78716c;
+            text-decoration: line-through;
+        }
+
+        .golive-normal {
+            font-size: 13px;
+        }
+
         .hidden { display: none; }
 
         .empty-state {
@@ -1226,6 +1249,22 @@
             return `<span class="days-indicator ${cls}">${dias} dias</span>`;
         }
 
+        function getGoLiveHtml(project) {
+            const original = project.goliveOriginal || project.golive || '-';
+            const atual = project.goliveAtual || project.golive || '-';
+            
+            // Se são iguais ou um deles é indefinido, mostra normal
+            if (original === atual || original === '-' || atual === '-' || !project.goliveOriginal) {
+                return `<span class="golive-normal">${atual}</span>`;
+            }
+            
+            // Se são diferentes, mostra com destaque
+            return `<span class="golive-alterado" title="Go Live alterado! Original: ${original}">
+                ⚠️ ${atual}
+                <span class="original">(era ${original})</span>
+            </span>`;
+        }
+
         function getTrendIndicator(project) {
             // Simulated trend based on days without update
             if (project.diasSemAtual > 10) return '<span class="trend-indicator trend-down">↘️</span>';
@@ -1434,7 +1473,7 @@
                         <td>${getProgressHtml(p.progresso)}</td>
                         <td>${p.etapa}</td>
                         <td>${p.proximo}</td>
-                        <td>${p.golive}</td>
+                        <td>${getGoLiveHtml(p)}</td>
                         <td>${p.respInterno}</td>
                     </tr>
                 `).join('');
@@ -1450,7 +1489,7 @@
                         <td>${p.bloqueador !== '-' ? p.bloqueador : p.proximo}</td>
                         <td>${getDaysHtml(p.diasSemAtual)}</td>
                         <td>${p.respCliente}</td>
-                        <td>${p.golive}</td>
+                        <td>${getGoLiveHtml(p)}</td>
                     </tr>
                 `).join('');
             document.getElementById('aguardandoTable').innerHTML = html;
@@ -1463,7 +1502,7 @@
                     <tr class="clickable" onclick="openModal('${p.projeto}')">
                         <td class="project-name">${p.projeto}</td>
                         <td>${p.proximo}</td>
-                        <td>${p.golive}</td>
+                        <td>${getGoLiveHtml(p)}</td>
                         <td>${p.respInterno}</td>
                     </tr>
                 `).join('');
@@ -1549,8 +1588,12 @@
             const project = projects.find(p => p.projeto === projectName);
             if (!project) return;
 
+            const goliveOriginal = project.goliveOriginal || project.golive || '-';
+            const goliveAtual = project.goliveAtual || project.golive || '-';
+            const goliveAlterado = goliveOriginal !== goliveAtual && goliveOriginal !== '-' && project.goliveOriginal;
+
             document.getElementById('modalTitle').textContent = project.projeto;
-            document.getElementById('modalSubtitle').textContent = `${normalizeStatus(project.status)} • Go Live: ${project.golive}`;
+            document.getElementById('modalSubtitle').textContent = `${normalizeStatus(project.status)} • Go Live: ${goliveAtual}`;
 
             document.getElementById('modalInfo').innerHTML = `
                 <div class="info-box">
@@ -1564,6 +1607,14 @@
                 <div class="info-box">
                     <label>Responsável</label>
                     <span>${project.respInterno}</span>
+                </div>
+                <div class="info-box">
+                    <label>Go Live Original</label>
+                    <span>${goliveOriginal}</span>
+                </div>
+                <div class="info-box" style="${goliveAlterado ? 'background: #fef3c7;' : ''}">
+                    <label>Go Live Atual</label>
+                    <span style="${goliveAlterado ? 'color: #92400e; font-weight: bold;' : ''}">${goliveAlterado ? '⚠️ ' : ''}${goliveAtual}</span>
                 </div>
                 <div class="info-box">
                     <label>Localização</label>

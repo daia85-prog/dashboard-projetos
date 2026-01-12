@@ -661,7 +661,9 @@ Projeto | Status | RAG | Progresso | Etapa_Atual | Proximo_Passo | Bloqueador | 
                 etapa: headers.findIndex(h => h.includes('etapa')),
                 proximo: headers.findIndex(h => h.includes('proximo') || h.includes('próximo')),
                 bloqueador: headers.findIndex(h => h.includes('bloqueador')),
-                golive: headers.findIndex(h => h.includes('golive') || h.includes('go_live') || h.includes('data_golive')),
+                goliveOriginal: headers.findIndex(h => h.includes('golive_original') || h.includes('goliveoriginal')),
+                goliveAtual: headers.findIndex(h => h.includes('golive_atual') || h.includes('goliveatual')),
+                golive: headers.findIndex(h => (h.includes('golive') || h.includes('go_live') || h.includes('data_golive')) && !h.includes('original') && !h.includes('atual')),
                 respInterno: headers.findIndex(h => h.includes('interno')),
                 respCliente: headers.findIndex(h => h.includes('cliente') && h.includes('responsavel')),
                 localizacao: headers.findIndex(h => h.includes('localizacao') || h.includes('localização')),
@@ -675,6 +677,21 @@ Projeto | Status | RAG | Progresso | Etapa_Atual | Proximo_Passo | Bloqueador | 
                 const projeto = cols[colMap.projeto] || cols[0];
                 if (!projeto) continue;
 
+                // Suporte para formato antigo (só golive) e novo (goliveOriginal + goliveAtual)
+                let goliveOriginal, goliveAtual;
+                if (colMap.goliveOriginal >= 0 && colMap.goliveAtual >= 0) {
+                    // Formato novo
+                    goliveOriginal = cols[colMap.goliveOriginal] || '-';
+                    goliveAtual = cols[colMap.goliveAtual] || '-';
+                } else if (colMap.golive >= 0) {
+                    // Formato antigo - usa mesmo valor para ambos
+                    goliveOriginal = cols[colMap.golive] || '-';
+                    goliveAtual = cols[colMap.golive] || '-';
+                } else {
+                    goliveOriginal = cols[7] || '-';
+                    goliveAtual = cols[8] || cols[7] || '-';
+                }
+
                 data.push({
                     projeto: projeto,
                     status: cols[colMap.status] || cols[1] || '',
@@ -683,13 +700,15 @@ Projeto | Status | RAG | Progresso | Etapa_Atual | Proximo_Passo | Bloqueador | 
                     etapa: cols[colMap.etapa] || cols[4] || '-',
                     proximo: cols[colMap.proximo] || cols[5] || '-',
                     bloqueador: cols[colMap.bloqueador] || cols[6] || '-',
-                    golive: cols[colMap.golive] || cols[7] || '-',
-                    respInterno: cols[colMap.respInterno] || cols[8] || '-',
-                    respCliente: cols[colMap.respCliente] || cols[9] || '-',
-                    localizacao: cols[colMap.localizacao] || cols[10] || '-',
-                    diasSemAtual: parseInt(cols[colMap.diasSemAtual] || cols[11] || '0') || 0,
-                    ultAtual: cols[colMap.ultAtual] || cols[12] || '-',
-                    obs: cols[colMap.obs] || cols[13] || '-'
+                    goliveOriginal: goliveOriginal,
+                    goliveAtual: goliveAtual,
+                    golive: goliveAtual, // Mantém compatibilidade
+                    respInterno: cols[colMap.respInterno] || cols[colMap.goliveAtual >= 0 ? 9 : 8] || '-',
+                    respCliente: cols[colMap.respCliente] || cols[colMap.goliveAtual >= 0 ? 10 : 9] || '-',
+                    localizacao: cols[colMap.localizacao] || cols[colMap.goliveAtual >= 0 ? 11 : 10] || '-',
+                    diasSemAtual: parseInt(cols[colMap.diasSemAtual] || cols[colMap.goliveAtual >= 0 ? 12 : 11] || '0') || 0,
+                    ultAtual: cols[colMap.ultAtual] || cols[colMap.goliveAtual >= 0 ? 13 : 12] || '-',
+                    obs: cols[colMap.obs] || cols[colMap.goliveAtual >= 0 ? 14 : 13] || '-'
                 });
             }
             return data;
@@ -749,13 +768,17 @@ Projeto | Status | RAG | Progresso | Etapa_Atual | Proximo_Passo | Bloqueador | 
 
             table.innerHTML = projects.slice(0, 10).map((p, i) => {
                 const hasError = validationErrors.some(e => e.includes(`Linha ${i + 2}`));
+                const goliveAlterado = p.goliveOriginal !== p.goliveAtual && p.goliveOriginal !== '-' && p.goliveAtual !== '-';
+                const goliveDisplay = goliveAlterado 
+                    ? `<span title="Original: ${p.goliveOriginal}" style="color: #92400e; font-weight: bold;">⚠️ ${p.goliveAtual}</span>`
+                    : p.goliveAtual || p.golive;
                 return `<tr class="${hasError ? 'has-error' : ''}">
                     <td><strong>${p.projeto}</strong></td>
                     <td><span class="badge badge-status">${p.status}</span></td>
                     <td><span class="badge badge-rag-${p.rag}">${p.rag}</span></td>
                     <td>${p.progresso}%</td>
                     <td>${p.etapa}</td>
-                    <td>${p.golive}</td>
+                    <td>${goliveDisplay}</td>
                     <td>${p.respInterno}</td>
                 </tr>`;
             }).join('');

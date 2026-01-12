@@ -578,6 +578,29 @@
         .days-indicator.warning { background: #fef3c7; color: #92400e; }
         .days-indicator.danger { background: #fee2e2; color: #991b1b; }
 
+        /* GoLive alterado */
+        .golive-alterado {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #fef3c7;
+            color: #92400e;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .golive-alterado .original {
+            font-size: 10px;
+            color: #78716c;
+            text-decoration: line-through;
+        }
+
+        .golive-normal {
+            font-size: 13px;
+        }
+
         /* Modal */
         .modal-overlay {
             position: fixed;
@@ -1029,6 +1052,20 @@
             return `<span class="days-indicator ${cls}">${d} dias</span>`;
         }
 
+        function getGoLiveHtml(project) {
+            const original = project.goliveOriginal || project.golive || '-';
+            const atual = project.goliveAtual || project.golive || '-';
+            
+            if (original === atual || original === '-' || atual === '-' || !project.goliveOriginal) {
+                return `<span class="golive-normal">${atual}</span>`;
+            }
+            
+            return `<span class="golive-alterado" title="Original: ${original}">
+                ⚠️ ${atual}
+                <span class="original">(era ${original})</span>
+            </span>`;
+        }
+
         function getTrendIndicator(project) {
             if (project.diasSemAtual > 10) return '<span class="trend-indicator trend-down">↘️</span>';
             if (project.diasSemAtual < 3 && project.progresso > 50) return '<span class="trend-indicator trend-up">↗️</span>';
@@ -1149,7 +1186,7 @@
                         <td><span class="status-badge ${getStatusClass(p.status)}">${normalizeStatus(p.status)}</span></td>
                         <td>${getRagHtml(p.rag)}</td>
                         <td>${getProgressHtml(p.progresso)}</td>
-                        <td>${p.golive || '-'}</td>
+                        <td>${getGoLiveHtml(p)}</td>
                         <td>${getDaysHtml(p.diasSemAtual)}</td>
                         <td>${p.respInterno || '-'}</td>
                         <td>${p.localizacao || '-'}</td>
@@ -1228,8 +1265,12 @@
             const project = projects.find(p => p.projeto === projectName);
             if (!project) return;
 
+            const goliveOriginal = project.goliveOriginal || project.golive || '-';
+            const goliveAtual = project.goliveAtual || project.golive || '-';
+            const goliveAlterado = goliveOriginal !== goliveAtual && goliveOriginal !== '-' && project.goliveOriginal;
+
             document.getElementById('modalTitle').textContent = project.projeto;
-            document.getElementById('modalSubtitle').textContent = `${normalizeStatus(project.status)} • Go Live: ${project.golive || 'A definir'}`;
+            document.getElementById('modalSubtitle').textContent = `${normalizeStatus(project.status)} • Go Live: ${goliveAtual}`;
 
             document.getElementById('modalInfo').innerHTML = `
                 <div class="info-box">
@@ -1243,6 +1284,14 @@
                 <div class="info-box">
                     <label>Responsável</label>
                     <span>${project.respInterno || '-'}</span>
+                </div>
+                <div class="info-box">
+                    <label>Go Live Original</label>
+                    <span>${goliveOriginal}</span>
+                </div>
+                <div class="info-box" style="${goliveAlterado ? 'background: #fef3c7;' : ''}">
+                    <label>Go Live Atual</label>
+                    <span style="${goliveAlterado ? 'color: #92400e; font-weight: bold;' : ''}">${goliveAlterado ? '⚠️ ' : ''}${goliveAtual}</span>
                 </div>
                 <div class="info-box">
                     <label>Localização</label>
