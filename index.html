@@ -22,13 +22,13 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 950px;
             width: 100%;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 30px;
         }
 
         .header h1 {
@@ -43,6 +43,132 @@
             font-size: 16px;
         }
 
+        /* Info Bar */
+        .info-bar {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 20px 30px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .info-item {
+            text-align: center;
+        }
+
+        .info-item .number {
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .info-item .label {
+            font-size: 11px;
+            color: rgba(255,255,255,0.6);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-item.total .number { color: #a78bfa; }
+        .info-item.concluido .number { color: #34d399; }
+        .info-item.andamento .number { color: #60a5fa; }
+        .info-item.critico .number { color: #f87171; }
+
+        .update-info {
+            text-align: right;
+        }
+
+        .update-info .date {
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .update-info .time-ago {
+            color: rgba(255,255,255,0.5);
+            font-size: 12px;
+        }
+
+        /* Alert Box */
+        .alert-box {
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+            border: 2px solid #fca5a5;
+            border-radius: 16px;
+            padding: 20px 25px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        .alert-box.success {
+            background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+            border-color: #6ee7b7;
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.01); }
+        }
+
+        .alert-icon {
+            font-size: 40px;
+        }
+
+        .alert-content h3 {
+            color: #991b1b;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .alert-box.success .alert-content h3 {
+            color: #065f46;
+        }
+
+        .alert-content p {
+            color: #7f1d1d;
+            font-size: 13px;
+        }
+
+        .alert-box.success .alert-content p {
+            color: #047857;
+        }
+
+        .alert-badges {
+            display: flex;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        .alert-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .alert-badge.atrasado {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .alert-badge.bloqueado {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        /* Cards */
         .cards-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -225,6 +351,21 @@
             color: white;
         }
 
+        .hidden { display: none; }
+
+        /* Loading */
+        .loading-bar {
+            background: rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .loading-bar p {
+            color: rgba(255,255,255,0.7);
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 28px;
@@ -237,6 +378,24 @@
             .card {
                 padding: 30px 20px;
             }
+
+            .info-bar {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .update-info {
+                text-align: center;
+            }
+
+            .alert-box {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .alert-badges {
+                margin-left: 0;
+            }
         }
     </style>
 </head>
@@ -245,6 +404,52 @@
         <div class="header">
             <h1>📊 Status dos Projetos - Infraestrutura</h1>
             <p>Selecione o tipo de visualização desejada</p>
+        </div>
+
+        <!-- Loading -->
+        <div id="loadingBar" class="loading-bar">
+            <p>Carregando informações...</p>
+        </div>
+
+        <!-- Info Bar -->
+        <div id="infoBar" class="info-bar hidden">
+            <div class="info-item total">
+                <div class="number" id="totalCount">0</div>
+                <div class="label">Projetos</div>
+            </div>
+            <div class="info-item concluido">
+                <div class="number" id="concluidoCount">0</div>
+                <div class="label">Concluídos</div>
+            </div>
+            <div class="info-item andamento">
+                <div class="number" id="andamentoCount">0</div>
+                <div class="label">Em Andamento</div>
+            </div>
+            <div class="info-item critico">
+                <div class="number" id="criticoCount">0</div>
+                <div class="label">Críticos</div>
+            </div>
+            <div class="update-info">
+                <div class="date" id="updateDate">--</div>
+                <div class="time-ago" id="timeAgo">--</div>
+            </div>
+        </div>
+
+        <!-- Alert Box -->
+        <div id="alertBox" class="alert-box hidden">
+            <div class="alert-icon">⚠️</div>
+            <div class="alert-content">
+                <h3 id="alertTitle">Projetos requerem atenção!</h3>
+                <p id="alertText">Existem projetos atrasados ou com bloqueios que precisam de ação.</p>
+            </div>
+            <div class="alert-badges" id="alertBadges">
+                <span class="alert-badge atrasado" id="badgeAtrasados">
+                    <span>🔴</span> <span id="atrasadosNum">0</span> atrasados
+                </span>
+                <span class="alert-badge bloqueado" id="badgeBloqueados">
+                    <span>🟡</span> <span id="bloqueadosNum">0</span> bloqueados
+                </span>
+            </div>
         </div>
 
         <div class="cards-container">
@@ -268,7 +473,7 @@
 
             <!-- Visão Detalhada -->
             <div class="card detalhada" onclick="window.location.href='view-detalhada.html'">
-                <span class="badge">Nova</span>
+                <span class="badge">Completa</span>
                 <div class="card-icon">📈</div>
                 <h2>Visão Detalhada</h2>
                 <p>Dashboard segmentado por status com informações específicas para cada categoria.</p>
@@ -277,7 +482,7 @@
                     <li>Barras de progresso visuais</li>
                     <li>Indicadores RAG (🔴🟡🟢)</li>
                     <li>Bloqueadores em destaque</li>
-                    <li>Dias sem atualização</li>
+                    <li>Filtros e busca avançada</li>
                 </ul>
                 <a href="view-detalhada.html" class="btn">
                     Acessar Visão Detalhada →
@@ -289,5 +494,103 @@
             <p>Infraestrutura TI • <a href="admin.html">Área Administrativa</a></p>
         </div>
     </div>
+
+    <script>
+        async function loadData() {
+            try {
+                const response = await fetch('dados.json?t=' + Date.now());
+                if (!response.ok) throw new Error('Arquivo não encontrado');
+                
+                const data = await response.json();
+                
+                if (data.projects && data.projects.length > 0) {
+                    const projects = data.projects;
+                    
+                    // Contagens
+                    const total = projects.length;
+                    const concluidos = projects.filter(p => normalizeStatus(p.status) === 'Concluído').length;
+                    const andamento = projects.filter(p => normalizeStatus(p.status) === 'Em Andamento').length;
+                    const atrasados = projects.filter(p => normalizeStatus(p.status) === 'Atrasado').length;
+                    const bloqueados = projects.filter(p => p.bloqueador && p.bloqueador !== '-').length;
+                    const criticos = projects.filter(p => {
+                        const status = normalizeStatus(p.status);
+                        return status === 'Atrasado' || p.rag === 'vermelho' || (p.diasSemAtual > 14 && status !== 'Concluído');
+                    }).length;
+
+                    // Atualizar contadores
+                    document.getElementById('totalCount').textContent = total;
+                    document.getElementById('concluidoCount').textContent = concluidos;
+                    document.getElementById('andamentoCount').textContent = andamento;
+                    document.getElementById('criticoCount').textContent = criticos;
+
+                    // Data de atualização
+                    if (data.lastUpdate) {
+                        const updateDate = new Date(data.lastUpdate);
+                        const opcoes = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+                        document.getElementById('updateDate').textContent = updateDate.toLocaleDateString('pt-BR', opcoes);
+                        
+                        // Tempo atrás
+                        const agora = new Date();
+                        const diff = agora - updateDate;
+                        const horas = Math.floor(diff / (1000 * 60 * 60));
+                        const dias = Math.floor(horas / 24);
+                        
+                        let timeAgo = '';
+                        if (dias > 0) {
+                            timeAgo = `há ${dias} dia${dias > 1 ? 's' : ''}`;
+                        } else if (horas > 0) {
+                            timeAgo = `há ${horas} hora${horas > 1 ? 's' : ''}`;
+                        } else {
+                            timeAgo = 'agora mesmo';
+                        }
+                        document.getElementById('timeAgo').textContent = timeAgo;
+                    }
+
+                    // Alert box
+                    if (criticos > 0) {
+                        document.getElementById('alertBox').classList.remove('hidden');
+                        document.getElementById('atrasadosNum').textContent = atrasados;
+                        document.getElementById('bloqueadosNum').textContent = bloqueados;
+                        
+                        if (atrasados === 0) {
+                            document.getElementById('badgeAtrasados').style.display = 'none';
+                        }
+                        if (bloqueados === 0) {
+                            document.getElementById('badgeBloqueados').style.display = 'none';
+                        }
+                    } else {
+                        // Mostrar alerta de sucesso
+                        const alertBox = document.getElementById('alertBox');
+                        alertBox.classList.remove('hidden');
+                        alertBox.classList.add('success');
+                        document.getElementById('alertTitle').textContent = 'Tudo em ordem!';
+                        document.getElementById('alertText').textContent = 'Nenhum projeto requer atenção imediata.';
+                        document.querySelector('.alert-icon').textContent = '✅';
+                        document.getElementById('alertBadges').style.display = 'none';
+                    }
+
+                    // Mostrar info bar
+                    document.getElementById('loadingBar').classList.add('hidden');
+                    document.getElementById('infoBar').classList.remove('hidden');
+                }
+            } catch (e) {
+                console.error('Erro:', e);
+                document.getElementById('loadingBar').innerHTML = '<p style="color: rgba(255,255,255,0.5);">Dados não disponíveis</p>';
+            }
+        }
+
+        function normalizeStatus(status) {
+            if (!status) return 'Não Definido';
+            const s = status.toLowerCase().trim();
+            if (s.includes('conclu')) return 'Concluído';
+            if (s.includes('andamento')) return 'Em Andamento';
+            if (s.includes('atras')) return 'Atrasado';
+            if (s.includes('aguard')) return 'Aguardando Cliente';
+            if (s.includes('iniciado')) return 'Não Iniciado';
+            return status;
+        }
+
+        window.addEventListener('load', loadData);
+    </script>
 </body>
 </html>

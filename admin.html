@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Status dos Projetos - Infraestrutura</title>
+    <title>Admin - Status dos Projetos</title>
     <style>
         * {
             margin: 0;
@@ -19,11 +19,10 @@
         }
 
         .container {
-            max-width: 1600px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
-        /* Header */
         .header {
             background: rgba(255,255,255,0.95);
             padding: 25px 30px;
@@ -41,9 +40,6 @@
             color: #1a1a2e;
             font-size: 26px;
             margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
         .header-left p {
@@ -71,6 +67,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            text-decoration: none;
         }
 
         .btn:hover {
@@ -93,274 +90,17 @@
             box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
         }
 
-        /* Cards de resumo */
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
+        .btn-secondary {
+            background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+            box-shadow: 0 4px 15px rgba(100, 116, 139, 0.4);
         }
 
-        .summary-card {
-            background: rgba(255,255,255,0.95);
-            padding: 20px;
-            border-radius: 16px;
-            text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            transition: transform 0.3s ease;
-            position: relative;
-            overflow: hidden;
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
         }
 
-        .summary-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-        }
-
-        .summary-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .summary-card.total::before { background: linear-gradient(90deg, #667eea, #764ba2); }
-        .summary-card.concluido::before { background: linear-gradient(90deg, #10b981, #059669); }
-        .summary-card.andamento::before { background: linear-gradient(90deg, #3b82f6, #2563eb); }
-        .summary-card.atrasado::before { background: linear-gradient(90deg, #ef4444, #dc2626); }
-        .summary-card.aguardando::before { background: linear-gradient(90deg, #f59e0b, #d97706); }
-        .summary-card.nao-iniciado::before { background: linear-gradient(90deg, #6b7280, #4b5563); }
-
-        .summary-number {
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .summary-card.total .summary-number { color: #667eea; }
-        .summary-card.concluido .summary-number { color: #10b981; }
-        .summary-card.andamento .summary-number { color: #3b82f6; }
-        .summary-card.atrasado .summary-number { color: #ef4444; }
-        .summary-card.aguardando .summary-number { color: #f59e0b; }
-        .summary-card.nao-iniciado .summary-number { color: #6b7280; }
-
-        .summary-label {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #666;
-            font-weight: 600;
-        }
-
-        /* Seções */
-        .section {
-            background: rgba(255,255,255,0.95);
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            margin-bottom: 25px;
-            overflow: hidden;
-        }
-
-        .section-header {
-            padding: 20px 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .section-header h2 {
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #1a1a2e;
-        }
-
-        .section-header .count-badge {
-            background: #e5e7eb;
-            color: #374151;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .section.atencao .section-header { background: linear-gradient(135deg, #fef2f2, #fee2e2); }
-        .section.atencao .section-header h2 { color: #991b1b; }
-        .section.atencao .count-badge { background: #ef4444; color: white; }
-
-        .section.andamento .section-header { background: linear-gradient(135deg, #eff6ff, #dbeafe); }
-        .section.andamento .section-header h2 { color: #1e40af; }
-        .section.andamento .count-badge { background: #3b82f6; color: white; }
-
-        .section.aguardando .section-header { background: linear-gradient(135deg, #fffbeb, #fef3c7); }
-        .section.aguardando .section-header h2 { color: #92400e; }
-        .section.aguardando .count-badge { background: #f59e0b; color: white; }
-
-        .section.nao-iniciado .section-header { background: linear-gradient(135deg, #f9fafb, #f3f4f6); }
-        .section.nao-iniciado .section-header h2 { color: #374151; }
-        .section.nao-iniciado .count-badge { background: #6b7280; color: white; }
-
-        .section.concluido .section-header { background: linear-gradient(135deg, #ecfdf5, #d1fae5); }
-        .section.concluido .section-header h2 { color: #065f46; }
-        .section.concluido .count-badge { background: #10b981; color: white; }
-
-        .section-body {
-            padding: 0;
-        }
-
-        /* Tabelas */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th {
-            background: #f8fafc;
-            padding: 14px 16px;
-            text-align: left;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #64748b;
-            font-weight: 600;
-            border-bottom: 2px solid #e2e8f0;
-        }
-
-        td {
-            padding: 14px 16px;
-            border-bottom: 1px solid #f1f5f9;
-            font-size: 13px;
-            color: #334155;
-        }
-
-        tr:hover {
-            background: #f8fafc;
-        }
-
-        .project-name {
-            font-weight: 600;
-            color: #1e293b;
-        }
-
-        /* RAG indicators */
-        .rag {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .rag-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-
-        .rag.verde { background: #dcfce7; color: #166534; }
-        .rag.verde .rag-dot { background: #22c55e; }
-
-        .rag.amarelo { background: #fef9c3; color: #854d0e; }
-        .rag.amarelo .rag-dot { background: #eab308; }
-
-        .rag.vermelho { background: #fee2e2; color: #991b1b; }
-        .rag.vermelho .rag-dot { background: #ef4444; }
-
-        .rag.cinza { background: #f3f4f6; color: #4b5563; }
-        .rag.cinza .rag-dot { background: #9ca3af; }
-
-        /* Progress bar */
-        .progress-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .progress-bar {
-            flex: 1;
-            height: 8px;
-            background: #e5e7eb;
-            border-radius: 4px;
-            overflow: hidden;
-            min-width: 80px;
-        }
-
-        .progress-fill {
-            height: 100%;
-            border-radius: 4px;
-            transition: width 0.5s ease;
-        }
-
-        .progress-fill.low { background: linear-gradient(90deg, #ef4444, #f87171); }
-        .progress-fill.medium { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
-        .progress-fill.high { background: linear-gradient(90deg, #10b981, #34d399); }
-
-        .progress-text {
-            font-size: 12px;
-            font-weight: 600;
-            min-width: 40px;
-            color: #475569;
-        }
-
-        /* Status badges */
-        .status-badge {
-            display: inline-block;
-            padding: 5px 12px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .status-badge.em-andamento { background: #dbeafe; color: #1e40af; }
-        .status-badge.concluido { background: #d1fae5; color: #065f46; }
-        .status-badge.atrasado { background: #fee2e2; color: #991b1b; }
-        .status-badge.aguardando { background: #fef3c7; color: #92400e; }
-        .status-badge.nao-iniciado { background: #f3f4f6; color: #374151; }
-
-        /* Blocker tag */
-        .blocker {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            background: #fef2f2;
-            color: #991b1b;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 12px;
-            max-width: 250px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .blocker::before {
-            content: '⚠️';
-            font-size: 11px;
-        }
-
-        /* Days indicator */
-        .days-indicator {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .days-indicator.ok { background: #d1fae5; color: #065f46; }
-        .days-indicator.warning { background: #fef3c7; color: #92400e; }
-        .days-indicator.danger { background: #fee2e2; color: #991b1b; }
-
-        /* Setup section */
-        .setup-section {
+        .card {
             background: rgba(255,255,255,0.95);
             padding: 30px;
             border-radius: 16px;
@@ -368,26 +108,43 @@
             margin-bottom: 25px;
         }
 
-        .setup-section h3 {
+        .card h3 {
             color: #1a1a2e;
             margin-bottom: 20px;
-            font-size: 20px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .setup-section ol {
-            margin-left: 20px;
-            line-height: 2;
+        .instructions {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 12px;
+            padding: 20px;
             margin-bottom: 20px;
-            color: #475569;
         }
 
-        .setup-section strong {
-            color: #667eea;
+        .instructions h4 {
+            color: #0369a1;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            color: #0c4a6e;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .instructions strong {
+            color: #0284c7;
         }
 
         .paste-area {
             width: 100%;
-            min-height: 180px;
+            min-height: 200px;
             padding: 15px;
             border: 2px dashed #667eea;
             border-radius: 12px;
@@ -396,12 +153,14 @@
             resize: vertical;
             margin-bottom: 15px;
             background: #f8fafc;
+            transition: all 0.3s;
         }
 
         .paste-area:focus {
             outline: none;
             border-color: #764ba2;
             background: white;
+            border-style: solid;
         }
 
         .action-buttons {
@@ -409,6 +168,168 @@
             gap: 10px;
             flex-wrap: wrap;
         }
+
+        /* Validation */
+        .validation-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .validation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .validation-header h4 {
+            color: #1a1a2e;
+            font-size: 16px;
+        }
+
+        .validation-status {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .validation-status.success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .validation-status.warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .validation-status.error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .validation-items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .validation-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            background: #f8fafc;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        .validation-item.ok {
+            background: #ecfdf5;
+            color: #065f46;
+        }
+
+        .validation-item.warning {
+            background: #fffbeb;
+            color: #92400e;
+        }
+
+        .validation-item.error {
+            background: #fef2f2;
+            color: #991b1b;
+        }
+
+        .validation-icon {
+            font-size: 18px;
+        }
+
+        /* Preview Table */
+        .preview-section {
+            margin-top: 25px;
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .preview-header h4 {
+            color: #1a1a2e;
+            font-size: 16px;
+        }
+
+        .preview-count {
+            background: #ede9fe;
+            color: #7c3aed;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .preview-table-container {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .preview-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .preview-table th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 10px;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .preview-table td {
+            padding: 10px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .preview-table tr:hover {
+            background: #f8fafc;
+        }
+
+        .preview-table tr.has-error {
+            background: #fef2f2;
+        }
+
+        .cell-error {
+            color: #ef4444;
+            font-weight: 600;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-status {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-rag-verde { background: #d1fae5; color: #065f46; }
+        .badge-rag-amarelo { background: #fef3c7; color: #92400e; }
+        .badge-rag-vermelho { background: #fee2e2; color: #991b1b; }
+        .badge-rag-cinza { background: #f3f4f6; color: #374151; }
 
         /* Messages */
         .message {
@@ -440,73 +361,58 @@
 
         .hidden { display: none; }
 
-        /* Empty state */
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: #64748b;
+        /* Checklist */
+        .column-checklist {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 8px;
+            margin-top: 15px;
         }
 
-        .empty-state .icon {
-            font-size: 48px;
-            margin-bottom: 15px;
+        .column-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: #f8fafc;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #475569;
         }
 
-        /* Responsive */
-        @media print {
-            body { background: white; padding: 10px; }
-            .btn, .header-actions, .setup-section, .message { display: none; }
-            .section { box-shadow: none; border: 1px solid #e5e7eb; }
+        .column-item.found {
+            background: #ecfdf5;
+            color: #065f46;
+        }
+
+        .column-item.missing {
+            background: #fef2f2;
+            color: #991b1b;
         }
 
         @media (max-width: 768px) {
             .header { flex-direction: column; align-items: stretch; }
-            .summary-grid { grid-template-columns: repeat(3, 1fr); }
-            td, th { padding: 10px 8px; font-size: 11px; }
+            .action-buttons { flex-direction: column; }
+            .btn { width: 100%; justify-content: center; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
         <div class="header">
             <div class="header-left">
-                <h1>📊 Status dos Projetos - Infraestrutura</h1>
-                <p>Atualizado em: <span id="currentDate"></span></p>
+                <h1>🔧 Área Administrativa</h1>
+                <p>Gerenciamento do Dashboard de Projetos</p>
             </div>
             <div class="header-actions">
-                <button class="btn btn-warning" onclick="showSetup()">✏️ Atualizar Dados</button>
-                <button class="btn btn-info" onclick="exportJSON()">📤 Exportar GitHub</button>
-                <button class="btn" onclick="window.print()">🖨️ Imprimir / PDF</button>
-            </div>
-        </div>
-
-        <!-- Setup Section -->
-        <div id="setupSection" class="setup-section">
-            <h3>🚀 Cole os dados da planilha Excel</h3>
-            <ol>
-                <li>Abra o arquivo <strong>Template_Projetos_Infra.xlsx</strong></li>
-                <li>Selecione todos os dados (incluindo cabeçalhos) - <strong>Ctrl+A</strong></li>
-                <li>Copie - <strong>Ctrl+C</strong></li>
-                <li>Cole na caixa abaixo - <strong>Ctrl+V</strong></li>
-                <li>Clique em <strong>"Carregar Dashboard"</strong></li>
-            </ol>
-
-            <textarea id="pasteArea" class="paste-area" placeholder="Cole aqui os dados copiados do Excel...
-
-Colunas esperadas:
-Projeto | Status | RAG | Progresso | Etapa_Atual | Proximo_Passo | Bloqueador | Data_GoLive | Responsavel_Interno | Responsavel_Cliente | Localizacao | Dias_Sem_Atualizacao | Ultima_Atualizacao | Observacao"></textarea>
-
-            <div class="action-buttons">
-                <button class="btn btn-success" onclick="loadData()">✅ Carregar Dashboard</button>
-                <button class="btn" onclick="document.getElementById('pasteArea').value = ''">🗑️ Limpar</button>
+                <a href="index.html" class="btn btn-secondary">← Voltar ao Dashboard</a>
             </div>
         </div>
 
         <!-- Messages -->
         <div id="successMsg" class="message success hidden">
             <span style="font-size: 24px;">✅</span>
-            <div><strong>Dados carregados!</strong> <span id="successText"></span></div>
+            <div><strong>Sucesso!</strong> <span id="successText"></span></div>
         </div>
 
         <div id="errorMsg" class="message error hidden">
@@ -514,216 +420,225 @@ Projeto | Status | RAG | Progresso | Etapa_Atual | Proximo_Passo | Bloqueador | 
             <div><strong>Erro!</strong> <span id="errorText"></span></div>
         </div>
 
-        <div id="infoMsg" class="message info hidden">
-            <span style="font-size: 24px;">💡</span>
-            <div><strong>Dica:</strong> Clique em "Exportar GitHub" para atualizar a view do gestor.</div>
+        <!-- Upload Card -->
+        <div class="card">
+            <h3>📤 Carregar Dados do Excel</h3>
+            
+            <div class="instructions">
+                <h4>📋 Como usar:</h4>
+                <ol>
+                    <li>Abra o arquivo <strong>Template_Projetos_Infra.xlsx</strong></li>
+                    <li>Selecione todos os dados (incluindo cabeçalhos) - <strong>Ctrl+A</strong></li>
+                    <li>Copie - <strong>Ctrl+C</strong></li>
+                    <li>Cole na caixa abaixo - <strong>Ctrl+V</strong></li>
+                    <li>Verifique a <strong>validação</strong> dos dados</li>
+                    <li>Clique em <strong>"Carregar e Validar"</strong></li>
+                </ol>
+            </div>
+
+            <textarea id="pasteArea" class="paste-area" placeholder="Cole aqui os dados copiados do Excel...
+
+Colunas esperadas (em ordem):
+Projeto | Status | RAG | Progresso | Etapa_Atual | Proximo_Passo | Bloqueador | Data_GoLive | Responsavel_Interno | Responsavel_Cliente | Localizacao | Dias_Sem_Atualizacao | Ultima_Atualizacao | Observacao" oninput="preValidate()"></textarea>
+
+            <div class="action-buttons">
+                <button class="btn btn-success" onclick="validateAndLoad()">✅ Carregar e Validar</button>
+                <button class="btn btn-secondary" onclick="clearAll()">🗑️ Limpar</button>
+            </div>
+
+            <!-- Column Detection -->
+            <div id="columnDetection" class="validation-section hidden">
+                <h4 style="margin-bottom: 10px; color: #1a1a2e;">📊 Colunas Detectadas</h4>
+                <div id="columnChecklist" class="column-checklist"></div>
+            </div>
+
+            <!-- Validation Section -->
+            <div id="validationSection" class="validation-section hidden">
+                <div class="validation-header">
+                    <h4>🔍 Validação dos Dados</h4>
+                    <span id="validationStatus" class="validation-status">Aguardando...</span>
+                </div>
+                <div id="validationItems" class="validation-items"></div>
+            </div>
+
+            <!-- Preview Section -->
+            <div id="previewSection" class="preview-section hidden">
+                <div class="preview-header">
+                    <h4>👀 Preview dos Dados</h4>
+                    <span id="previewCount" class="preview-count">0 projetos</span>
+                </div>
+                <div class="preview-table-container">
+                    <table class="preview-table">
+                        <thead>
+                            <tr>
+                                <th>Projeto</th>
+                                <th>Status</th>
+                                <th>RAG</th>
+                                <th>Progresso</th>
+                                <th>Etapa</th>
+                                <th>Go Live</th>
+                                <th>Responsável</th>
+                            </tr>
+                        </thead>
+                        <tbody id="previewTable"></tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
-        <!-- Dashboard Content -->
-        <div id="dashboardContent" class="hidden">
-            <!-- Summary Cards -->
-            <div class="summary-grid">
-                <div class="summary-card total">
-                    <div class="summary-number" id="totalProjects">0</div>
-                    <div class="summary-label">Total Projetos</div>
-                </div>
-                <div class="summary-card concluido">
-                    <div class="summary-number" id="completedCount">0</div>
-                    <div class="summary-label">Concluídos</div>
-                </div>
-                <div class="summary-card andamento">
-                    <div class="summary-number" id="ongoingCount">0</div>
-                    <div class="summary-label">Em Andamento</div>
-                </div>
-                <div class="summary-card atrasado">
-                    <div class="summary-number" id="delayedCount">0</div>
-                    <div class="summary-label">Atrasados</div>
-                </div>
-                <div class="summary-card aguardando">
-                    <div class="summary-number" id="waitingCount">0</div>
-                    <div class="summary-label">Aguardando</div>
-                </div>
-                <div class="summary-card nao-iniciado">
-                    <div class="summary-number" id="notStartedCount">0</div>
-                    <div class="summary-label">Não Iniciados</div>
-                </div>
+        <!-- Export Card -->
+        <div id="exportCard" class="card hidden">
+            <h3>📤 Exportar para GitHub</h3>
+            <p style="color: #64748b; margin-bottom: 20px; font-size: 14px;">
+                Os dados foram validados com sucesso! Agora exporte o arquivo <strong>dados.json</strong> e faça upload no GitHub para atualizar o dashboard.
+            </p>
+            <div class="action-buttons">
+                <button class="btn btn-info" onclick="exportJSON()">📥 Baixar dados.json</button>
+                <button class="btn btn-warning" onclick="openGitHub()">🔗 Abrir GitHub</button>
             </div>
+        </div>
 
-            <!-- Atenção Imediata -->
-            <div id="atencaoSection" class="section atencao">
-                <div class="section-header">
-                    <h2>🚨 Atenção Imediata</h2>
-                    <span class="count-badge" id="atencaoCount">0</span>
-                </div>
-                <div class="section-body">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Projeto</th>
-                                <th>RAG</th>
-                                <th>Status</th>
-                                <th>Bloqueador</th>
-                                <th>Dias s/ Atualização</th>
-                                <th>Ação Necessária</th>
-                            </tr>
-                        </thead>
-                        <tbody id="atencaoTable"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Em Andamento -->
-            <div id="andamentoSection" class="section andamento">
-                <div class="section-header">
-                    <h2>🔵 Em Andamento</h2>
-                    <span class="count-badge" id="andamentoCount">0</span>
-                </div>
-                <div class="section-body">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Projeto</th>
-                                <th>Progresso</th>
-                                <th>Etapa Atual</th>
-                                <th>Próximo Passo</th>
-                                <th>Go Live</th>
-                                <th>Responsável</th>
-                            </tr>
-                        </thead>
-                        <tbody id="andamentoTable"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Aguardando Cliente -->
-            <div id="aguardandoSection" class="section aguardando">
-                <div class="section-header">
-                    <h2>🟡 Aguardando Cliente</h2>
-                    <span class="count-badge" id="aguardandoCount">0</span>
-                </div>
-                <div class="section-body">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Projeto</th>
-                                <th>O que Aguarda</th>
-                                <th>Dias Aguardando</th>
-                                <th>Contato Cliente</th>
-                                <th>Go Live</th>
-                            </tr>
-                        </thead>
-                        <tbody id="aguardandoTable"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Não Iniciados -->
-            <div id="naoIniciadoSection" class="section nao-iniciado">
-                <div class="section-header">
-                    <h2>⚪ Não Iniciados</h2>
-                    <span class="count-badge" id="naoIniciadoCount">0</span>
-                </div>
-                <div class="section-body">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Projeto</th>
-                                <th>Próximo Passo</th>
-                                <th>Go Live Previsto</th>
-                                <th>Responsável</th>
-                            </tr>
-                        </thead>
-                        <tbody id="naoIniciadoTable"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Concluídos -->
-            <div id="concluidoSection" class="section concluido">
-                <div class="section-header">
-                    <h2>✅ Concluídos</h2>
-                    <span class="count-badge" id="concluidoCount">0</span>
-                </div>
-                <div class="section-body">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Projeto</th>
-                                <th>Localização</th>
-                                <th>Data Conclusão</th>
-                                <th>Responsável</th>
-                            </tr>
-                        </thead>
-                        <tbody id="concluidoTable"></tbody>
-                    </table>
-                </div>
+        <!-- Current Data Card -->
+        <div class="card">
+            <h3>📊 Dados Atuais</h3>
+            <div id="currentDataInfo">
+                <p style="color: #64748b;">Carregando informações...</p>
             </div>
         </div>
     </div>
 
     <script>
         let projects = [];
+        let validationErrors = [];
+        let validationWarnings = [];
 
-        // Data atual
-        const hoje = new Date();
-        const opcoes = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-        document.getElementById('currentDate').textContent = hoje.toLocaleDateString('pt-BR', opcoes);
+        const expectedColumns = [
+            'projeto', 'status', 'rag', 'progresso', 'etapa', 'proximo', 'bloqueador',
+            'golive', 'respinterno', 'respcliente', 'localizacao', 'diassematual', 'ultatual', 'obs'
+        ];
 
-        // Carregar dados salvos
-        window.addEventListener('load', () => {
-            const savedData = localStorage.getItem('dashboardProjectsV2');
-            if (savedData) {
-                try {
-                    projects = JSON.parse(savedData);
-                    if (projects.length > 0) {
-                        showDashboard();
-                    }
-                } catch (e) {
-                    console.error('Erro ao carregar:', e);
+        const validStatuses = ['em andamento', 'concluído', 'concluido', 'atrasado', 'aguardando cliente', 'aguardando', 'não iniciado', 'nao iniciado'];
+        const validRags = ['verde', 'amarelo', 'vermelho', 'cinza'];
+
+        // Load current data info
+        async function loadCurrentData() {
+            try {
+                const response = await fetch('dados.json?t=' + Date.now());
+                if (response.ok) {
+                    const data = await response.json();
+                    const updateDate = new Date(data.lastUpdate);
+                    const opcoes = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+                    
+                    document.getElementById('currentDataInfo').innerHTML = `
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+                            <div style="background: #f8fafc; padding: 15px; border-radius: 10px;">
+                                <div style="font-size: 24px; font-weight: bold; color: #667eea;">${data.projects?.length || 0}</div>
+                                <div style="font-size: 12px; color: #64748b;">Total de Projetos</div>
+                            </div>
+                            <div style="background: #f8fafc; padding: 15px; border-radius: 10px;">
+                                <div style="font-size: 14px; font-weight: bold; color: #1a1a2e;">${updateDate.toLocaleDateString('pt-BR', opcoes)}</div>
+                                <div style="font-size: 12px; color: #64748b;">Última Atualização</div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    document.getElementById('currentDataInfo').innerHTML = '<p style="color: #f59e0b;">⚠️ Nenhum dado publicado ainda</p>';
                 }
+            } catch (e) {
+                document.getElementById('currentDataInfo').innerHTML = '<p style="color: #ef4444;">❌ Erro ao carregar dados</p>';
             }
-        });
-
-        function showSetup() {
-            document.getElementById('setupSection').classList.remove('hidden');
-            document.getElementById('dashboardContent').classList.add('hidden');
-            document.getElementById('infoMsg').classList.add('hidden');
-            document.getElementById('pasteArea').value = '';
-            document.getElementById('pasteArea').focus();
         }
 
-        function showDashboard() {
-            document.getElementById('setupSection').classList.add('hidden');
-            document.getElementById('dashboardContent').classList.remove('hidden');
-            document.getElementById('infoMsg').classList.remove('hidden');
-            updateDashboard();
+        function preValidate() {
+            const text = document.getElementById('pasteArea').value.trim();
+            if (!text) {
+                document.getElementById('columnDetection').classList.add('hidden');
+                document.getElementById('validationSection').classList.add('hidden');
+                document.getElementById('previewSection').classList.add('hidden');
+                return;
+            }
+
+            const lines = text.split('\n').filter(l => l.trim());
+            if (lines.length < 2) return;
+
+            const headers = lines[0].split('\t').map(h => h.trim().toLowerCase().replace(/[_\s]/g, ''));
+            
+            // Show column detection
+            const requiredCols = ['projeto', 'status', 'rag', 'progresso'];
+            const optionalCols = ['etapa', 'proximo', 'bloqueador', 'golive', 'respinterno', 'respcliente', 'localizacao', 'diassematual', 'ultatual', 'obs'];
+            
+            let checklistHtml = '';
+            
+            requiredCols.forEach(col => {
+                const found = headers.some(h => h.includes(col) || col.includes(h));
+                checklistHtml += `<div class="column-item ${found ? 'found' : 'missing'}">
+                    ${found ? '✅' : '❌'} ${col} ${!found ? '(obrigatório)' : ''}
+                </div>`;
+            });
+            
+            optionalCols.forEach(col => {
+                const found = headers.some(h => h.includes(col) || col.includes(h));
+                checklistHtml += `<div class="column-item ${found ? 'found' : ''}">
+                    ${found ? '✅' : '⚪'} ${col}
+                </div>`;
+            });
+
+            document.getElementById('columnChecklist').innerHTML = checklistHtml;
+            document.getElementById('columnDetection').classList.remove('hidden');
         }
 
-        function showMessage(type, text) {
-            const msgId = type === 'success' ? 'successMsg' : 'errorMsg';
-            const textId = type === 'success' ? 'successText' : 'errorText';
-            document.getElementById(textId).textContent = text;
-            document.getElementById(msgId).classList.remove('hidden');
-            setTimeout(() => document.getElementById(msgId).classList.add('hidden'), 4000);
-        }
-
-        function loadData() {
+        function validateAndLoad() {
             const text = document.getElementById('pasteArea').value.trim();
             if (!text) {
                 showMessage('error', 'Cole os dados da planilha primeiro!');
                 return;
             }
 
+            validationErrors = [];
+            validationWarnings = [];
+
             try {
                 projects = parseData(text);
+                
                 if (projects.length === 0) {
                     showMessage('error', 'Nenhum dado válido encontrado.');
                     return;
                 }
 
-                localStorage.setItem('dashboardProjectsV2', JSON.stringify(projects));
-                showMessage('success', `${projects.length} projetos carregados!`);
-                showDashboard();
+                // Validate each project
+                projects.forEach((p, index) => {
+                    // Status validation
+                    const statusNorm = (p.status || '').toLowerCase();
+                    if (!validStatuses.some(s => statusNorm.includes(s))) {
+                        validationWarnings.push(`Linha ${index + 2}: Status "${p.status}" pode não ser reconhecido`);
+                    }
+
+                    // RAG validation
+                    const ragNorm = (p.rag || '').toLowerCase();
+                    if (ragNorm && !validRags.includes(ragNorm)) {
+                        validationWarnings.push(`Linha ${index + 2}: RAG "${p.rag}" deve ser Verde, Amarelo, Vermelho ou Cinza`);
+                    }
+
+                    // Progresso validation
+                    if (p.progresso < 0 || p.progresso > 100) {
+                        validationErrors.push(`Linha ${index + 2}: Progresso ${p.progresso}% está fora do intervalo 0-100`);
+                    }
+
+                    // Projeto name validation
+                    if (!p.projeto || p.projeto.length < 2) {
+                        validationErrors.push(`Linha ${index + 2}: Nome do projeto inválido ou vazio`);
+                    }
+                });
+
+                showValidationResults();
+                showPreview();
+
+                if (validationErrors.length === 0) {
+                    localStorage.setItem('dashboardProjectsV2', JSON.stringify(projects));
+                    document.getElementById('exportCard').classList.remove('hidden');
+                    showMessage('success', `${projects.length} projetos carregados com sucesso!`);
+                }
+
             } catch (e) {
                 showMessage('error', 'Erro ao processar dados: ' + e.message);
                 console.error(e);
@@ -738,7 +653,6 @@ Projeto | Status | RAG | Progresso | Etapa_Atual | Proximo_Passo | Bloqueador | 
             const data = [];
             const headers = lines[0].split('\t').map(h => h.trim().toLowerCase());
 
-            // Mapear índices
             const colMap = {
                 projeto: headers.findIndex(h => h.includes('projeto')),
                 status: headers.findIndex(h => h === 'status'),
@@ -763,7 +677,7 @@ Projeto | Status | RAG | Progresso | Etapa_Atual | Proximo_Passo | Bloqueador | 
 
                 data.push({
                     projeto: projeto,
-                    status: normalizeStatus(cols[colMap.status] || cols[1] || ''),
+                    status: cols[colMap.status] || cols[1] || '',
                     rag: (cols[colMap.rag] || cols[2] || 'Cinza').toLowerCase(),
                     progresso: parseInt(cols[colMap.progresso] || cols[3] || '0') || 0,
                     etapa: cols[colMap.etapa] || cols[4] || '-',
@@ -781,148 +695,85 @@ Projeto | Status | RAG | Progresso | Etapa_Atual | Proximo_Passo | Bloqueador | 
             return data;
         }
 
-        function normalizeStatus(status) {
-            if (!status) return 'Não Definido';
-            const s = status.toLowerCase().trim();
-            if (s.includes('conclu')) return 'Concluído';
-            if (s.includes('andamento')) return 'Em Andamento';
-            if (s.includes('atras')) return 'Atrasado';
-            if (s.includes('aguard')) return 'Aguardando Cliente';
-            if (s.includes('iniciado') || s.includes('início') || s.includes('inicio')) return 'Não Iniciado';
-            return status;
-        }
+        function showValidationResults() {
+            const section = document.getElementById('validationSection');
+            const items = document.getElementById('validationItems');
+            const status = document.getElementById('validationStatus');
 
-        function getStatusClass(status) {
-            const s = normalizeStatus(status).toLowerCase().replace(/\s+/g, '-').replace(/í/g, 'i').replace(/ã/g, 'a');
-            return s;
-        }
+            let html = '';
 
-        function getRagHtml(rag) {
-            const r = (rag || 'cinza').toLowerCase();
-            let label = r.charAt(0).toUpperCase() + r.slice(1);
-            return `<span class="rag ${r}"><span class="rag-dot"></span>${label}</span>`;
-        }
+            // Success items
+            html += `<div class="validation-item ok">
+                <span class="validation-icon">✅</span>
+                <span>${projects.length} projetos encontrados</span>
+            </div>`;
 
-        function getProgressHtml(pct) {
-            const p = Math.min(100, Math.max(0, pct));
-            let cls = 'low';
-            if (p >= 70) cls = 'high';
-            else if (p >= 40) cls = 'medium';
-            return `
-                <div class="progress-container">
-                    <div class="progress-bar"><div class="progress-fill ${cls}" style="width: ${p}%"></div></div>
-                    <span class="progress-text">${p}%</span>
-                </div>
-            `;
-        }
-
-        function getDaysHtml(dias) {
-            let cls = 'ok';
-            if (dias > 14) cls = 'danger';
-            else if (dias > 7) cls = 'warning';
-            return `<span class="days-indicator ${cls}">${dias} dias</span>`;
-        }
-
-        function updateDashboard() {
-            const concluidos = projects.filter(p => normalizeStatus(p.status) === 'Concluído');
-            const andamento = projects.filter(p => normalizeStatus(p.status) === 'Em Andamento');
-            const atrasados = projects.filter(p => normalizeStatus(p.status) === 'Atrasado');
-            const aguardando = projects.filter(p => normalizeStatus(p.status) === 'Aguardando Cliente');
-            const naoIniciados = projects.filter(p => normalizeStatus(p.status) === 'Não Iniciado');
-
-            // Atenção: Atrasados + RAG Vermelho + Muitos dias sem atualização
-            const atencao = projects.filter(p => {
-                const status = normalizeStatus(p.status);
-                return status === 'Atrasado' || 
-                       p.rag === 'vermelho' || 
-                       (p.diasSemAtual > 14 && status !== 'Concluído');
+            // Warnings
+            validationWarnings.forEach(w => {
+                html += `<div class="validation-item warning">
+                    <span class="validation-icon">⚠️</span>
+                    <span>${w}</span>
+                </div>`;
             });
 
-            // Update counts
-            document.getElementById('totalProjects').textContent = projects.length;
-            document.getElementById('completedCount').textContent = concluidos.length;
-            document.getElementById('ongoingCount').textContent = andamento.length;
-            document.getElementById('delayedCount').textContent = atrasados.length;
-            document.getElementById('waitingCount').textContent = aguardando.length;
-            document.getElementById('notStartedCount').textContent = naoIniciados.length;
+            // Errors
+            validationErrors.forEach(e => {
+                html += `<div class="validation-item error">
+                    <span class="validation-icon">❌</span>
+                    <span>${e}</span>
+                </div>`;
+            });
 
-            document.getElementById('atencaoCount').textContent = atencao.length;
-            document.getElementById('andamentoCount').textContent = andamento.length;
-            document.getElementById('aguardandoCount').textContent = aguardando.length;
-            document.getElementById('naoIniciadoCount').textContent = naoIniciados.length;
-            document.getElementById('concluidoCount').textContent = concluidos.length;
+            items.innerHTML = html;
 
-            // Atenção table
-            const atencaoHtml = atencao.length === 0 
-                ? '<tr><td colspan="6" class="empty-state"><div class="icon">✅</div>Nenhum projeto requer atenção imediata!</td></tr>'
-                : atencao.map(p => `
-                    <tr>
-                        <td class="project-name">${p.projeto}</td>
-                        <td>${getRagHtml(p.rag)}</td>
-                        <td><span class="status-badge ${getStatusClass(p.status)}">${p.status}</span></td>
-                        <td>${p.bloqueador !== '-' ? `<span class="blocker">${p.bloqueador}</span>` : '-'}</td>
-                        <td>${getDaysHtml(p.diasSemAtual)}</td>
-                        <td>${p.proximo}</td>
-                    </tr>
-                `).join('');
-            document.getElementById('atencaoTable').innerHTML = atencaoHtml;
+            if (validationErrors.length > 0) {
+                status.textContent = `${validationErrors.length} erro(s)`;
+                status.className = 'validation-status error';
+            } else if (validationWarnings.length > 0) {
+                status.textContent = `${validationWarnings.length} aviso(s)`;
+                status.className = 'validation-status warning';
+            } else {
+                status.textContent = 'Tudo OK!';
+                status.className = 'validation-status success';
+            }
 
-            // Andamento table
-            const andamentoHtml = andamento.length === 0
-                ? '<tr><td colspan="6" class="empty-state">Nenhum projeto em andamento</td></tr>'
-                : andamento.map(p => `
-                    <tr>
-                        <td class="project-name">${p.projeto}</td>
-                        <td>${getProgressHtml(p.progresso)}</td>
-                        <td>${p.etapa}</td>
-                        <td>${p.proximo}</td>
-                        <td>${p.golive}</td>
-                        <td>${p.respInterno}</td>
-                    </tr>
-                `).join('');
-            document.getElementById('andamentoTable').innerHTML = andamentoHtml;
+            section.classList.remove('hidden');
+        }
 
-            // Aguardando table
-            const aguardandoHtml = aguardando.length === 0
-                ? '<tr><td colspan="5" class="empty-state">Nenhum projeto aguardando cliente</td></tr>'
-                : aguardando.map(p => `
-                    <tr>
-                        <td class="project-name">${p.projeto}</td>
-                        <td>${p.bloqueador !== '-' ? p.bloqueador : p.proximo}</td>
-                        <td>${getDaysHtml(p.diasSemAtual)}</td>
-                        <td>${p.respCliente}</td>
-                        <td>${p.golive}</td>
-                    </tr>
-                `).join('');
-            document.getElementById('aguardandoTable').innerHTML = aguardandoHtml;
+        function showPreview() {
+            const section = document.getElementById('previewSection');
+            const table = document.getElementById('previewTable');
+            const count = document.getElementById('previewCount');
 
-            // Não iniciados table
-            const naoIniciadoHtml = naoIniciados.length === 0
-                ? '<tr><td colspan="4" class="empty-state">Todos os projetos já foram iniciados</td></tr>'
-                : naoIniciados.map(p => `
-                    <tr>
-                        <td class="project-name">${p.projeto}</td>
-                        <td>${p.proximo}</td>
-                        <td>${p.golive}</td>
-                        <td>${p.respInterno}</td>
-                    </tr>
-                `).join('');
-            document.getElementById('naoIniciadoTable').innerHTML = naoIniciadoHtml;
+            count.textContent = `${projects.length} projetos`;
 
-            // Concluídos table
-            const concluidoHtml = concluidos.length === 0
-                ? '<tr><td colspan="4" class="empty-state">Nenhum projeto concluído ainda</td></tr>'
-                : concluidos.map(p => `
-                    <tr>
-                        <td class="project-name">${p.projeto}</td>
-                        <td>${p.localizacao}</td>
-                        <td>${p.ultAtual}</td>
-                        <td>${p.respInterno}</td>
-                    </tr>
-                `).join('');
-            document.getElementById('concluidoTable').innerHTML = concluidoHtml;
+            table.innerHTML = projects.slice(0, 10).map((p, i) => {
+                const hasError = validationErrors.some(e => e.includes(`Linha ${i + 2}`));
+                return `<tr class="${hasError ? 'has-error' : ''}">
+                    <td><strong>${p.projeto}</strong></td>
+                    <td><span class="badge badge-status">${p.status}</span></td>
+                    <td><span class="badge badge-rag-${p.rag}">${p.rag}</span></td>
+                    <td>${p.progresso}%</td>
+                    <td>${p.etapa}</td>
+                    <td>${p.golive}</td>
+                    <td>${p.respInterno}</td>
+                </tr>`;
+            }).join('');
 
-            // Hide empty sections? (opcional - manter visíveis por ora)
+            if (projects.length > 10) {
+                table.innerHTML += `<tr><td colspan="7" style="text-align: center; color: #64748b;">... e mais ${projects.length - 10} projetos</td></tr>`;
+            }
+
+            section.classList.remove('hidden');
+        }
+
+        function clearAll() {
+            document.getElementById('pasteArea').value = '';
+            document.getElementById('columnDetection').classList.add('hidden');
+            document.getElementById('validationSection').classList.add('hidden');
+            document.getElementById('previewSection').classList.add('hidden');
+            document.getElementById('exportCard').classList.add('hidden');
+            projects = [];
         }
 
         function exportJSON() {
@@ -946,6 +797,23 @@ Projeto | Status | RAG | Progresso | Etapa_Atual | Proximo_Passo | Bloqueador | 
 
             showMessage('success', 'Arquivo dados.json baixado! Faça upload no GitHub.');
         }
+
+        function openGitHub() {
+            window.open('https://github.com/daia85-prog/dashboard-projetos', '_blank');
+        }
+
+        function showMessage(type, text) {
+            const msgId = type === 'success' ? 'successMsg' : 'errorMsg';
+            const textId = type === 'success' ? 'successText' : 'errorText';
+            
+            document.querySelectorAll('.message').forEach(m => m.classList.add('hidden'));
+            document.getElementById(textId).textContent = text;
+            document.getElementById(msgId).classList.remove('hidden');
+            
+            setTimeout(() => document.getElementById(msgId).classList.add('hidden'), 5000);
+        }
+
+        window.addEventListener('load', loadCurrentData);
     </script>
 </body>
 </html>
