@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status dos Projetos - Infraestrutura</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255,255,255,0.95);
+            padding: 25px 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .header-left h1 {
+            color: #1a1a2e;
+            font-size: 26px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-left p {
+            color: #666;
+            font-size: 13px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
+        }
+
+        /* Cards de resumo */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .summary-card {
+            background: rgba(255,255,255,0.95);
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .summary-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .summary-card.total::before { background: linear-gradient(90deg, #667eea, #764ba2); }
+        .summary-card.concluido::before { background: linear-gradient(90deg, #10b981, #059669); }
+        .summary-card.andamento::before { background: linear-gradient(90deg, #3b82f6, #2563eb); }
+        .summary-card.atrasado::before { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .summary-card.aguardando::before { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .summary-card.nao-iniciado::before { background: linear-gradient(90deg, #6b7280, #4b5563); }
+
+        .summary-number {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .summary-card.total .summary-number { color: #667eea; }
+        .summary-card.concluido .summary-number { color: #10b981; }
+        .summary-card.andamento .summary-number { color: #3b82f6; }
+        .summary-card.atrasado .summary-number { color: #ef4444; }
+        .summary-card.aguardando .summary-number { color: #f59e0b; }
+        .summary-card.nao-iniciado .summary-number { color: #6b7280; }
+
+        .summary-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            font-weight: 600;
+        }
+
+        /* Seções */
+        .section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .section-header h2 {
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #1a1a2e;
+        }
+
+        .section-header .count-badge {
+            background: #e5e7eb;
+            color: #374151;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .section.atencao .section-header { background: linear-gradient(135deg, #fef2f2, #fee2e2); }
+        .section.atencao .section-header h2 { color: #991b1b; }
+        .section.atencao .count-badge { background: #ef4444; color: white; }
+
+        .section.andamento .section-header { background: linear-gradient(135deg, #eff6ff, #dbeafe); }
+        .section.andamento .section-header h2 { color: #1e40af; }
+        .section.andamento .count-badge { background: #3b82f6; color: white; }
+
+        .section.aguardando .section-header { background: linear-gradient(135deg, #fffbeb, #fef3c7); }
+        .section.aguardando .section-header h2 { color: #92400e; }
+        .section.aguardando .count-badge { background: #f59e0b; color: white; }
+
+        .section.nao-iniciado .section-header { background: linear-gradient(135deg, #f9fafb, #f3f4f6); }
+        .section.nao-iniciado .section-header h2 { color: #374151; }
+        .section.nao-iniciado .count-badge { background: #6b7280; color: white; }
+
+        .section.concluido .section-header { background: linear-gradient(135deg, #ecfdf5, #d1fae5); }
+        .section.concluido .section-header h2 { color: #065f46; }
+        .section.concluido .count-badge { background: #10b981; color: white; }
+
+        .section-body {
+            padding: 0;
+        }
+
+        /* Tabelas */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f8fafc;
+            padding: 14px 16px;
+            text-align: left;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #64748b;
+            font-weight: 600;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 13px;
+            color: #334155;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .project-name {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        /* RAG indicators */
+        .rag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .rag-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .rag.verde { background: #dcfce7; color: #166534; }
+        .rag.verde .rag-dot { background: #22c55e; }
+
+        .rag.amarelo { background: #fef9c3; color: #854d0e; }
+        .rag.amarelo .rag-dot { background: #eab308; }
+
+        .rag.vermelho { background: #fee2e2; color: #991b1b; }
+        .rag.vermelho .rag-dot { background: #ef4444; }
+
+        .rag.cinza { background: #f3f4f6; color: #4b5563; }
+        .rag.cinza .rag-dot { background: #9ca3af; }
+
+        /* Progress bar */
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            min-width: 80px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-fill.low { background: linear-gradient(90deg, #ef4444, #f87171); }
+        .progress-fill.medium { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+        .progress-fill.high { background: linear-gradient(90deg, #10b981, #34d399); }
+
+        .progress-text {
+            font-size: 12px;
+            font-weight: 600;
+            min-width: 40px;
+            color: #475569;
+        }
+
+        /* Status badges */
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-badge.em-andamento { background: #dbeafe; color: #1e40af; }
+        .status-badge.concluido { background: #d1fae5; color: #065f46; }
+        .status-badge.atrasado { background: #fee2e2; color: #991b1b; }
+        .status-badge.aguardando { background: #fef3c7; color: #92400e; }
+        .status-badge.nao-iniciado { background: #f3f4f6; color: #374151; }
+
+        /* Blocker tag */
+        .blocker {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #fef2f2;
+            color: #991b1b;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            max-width: 250px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .blocker::before {
+            content: '⚠️';
+            font-size: 11px;
+        }
+
+        /* Days indicator */
+        .days-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .days-indicator.ok { background: #d1fae5; color: #065f46; }
+        .days-indicator.warning { background: #fef3c7; color: #92400e; }
+        .days-indicator.danger { background: #fee2e2; color: #991b1b; }
+
+        /* Setup section */
+        .setup-section {
+            background: rgba(255,255,255,0.95);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            margin-bottom: 25px;
+        }
+
+        .setup-section h3 {
+            color: #1a1a2e;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .setup-section ol {
+            margin-left: 20px;
+            line-height: 2;
+            margin-bottom: 20px;
+            color: #475569;
+        }
+
+        .setup-section strong {
+            color: #667eea;
+        }
+
+        .paste-area {
+            width: 100%;
+            min-height: 180px;
+            padding: 15px;
+            border: 2px dashed #667eea;
+            border-radius: 12px;
+            font-family: 'Consolas', monospace;
+            font-size: 12px;
+            resize: vertical;
+            margin-bottom: 15px;
+            background: #f8fafc;
+        }
+
+        .paste-area:focus {
+            outline: none;
+            border-color: #764ba2;
+            background: white;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* Messages */
+        .message {
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .message.success {
+            background: #d1fae5;
+            color: #065f46;
+            border-left: 4px solid #10b981;
+        }
+
+        .message.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border-left: 4px solid #ef4444;
+        }
+
+        .message.info {
+            background: #e0f2fe;
+            color: #075985;
+            border-left: 4px solid #0ea5e9;
+        }
+
+        .hidden { display: none; }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #64748b;
+        }
+
+        .empty-state .icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        /* Responsive */
+        @media print {
+            body { background: white; padding: 10px; }
+            .btn, .header-actions, .setup-section, .message { display: none; }
+            .section { box-shadow: none; border: 1px solid #e5e7eb; }
+        }
+
+        @media (max-width: 768px) {
+            .header { flex-direction: column; align-items: stretch; }
+            .summary-grid { grid-template-columns: repeat(3, 1fr); }
+            td, th { padding: 10px 8px; font-size: 11px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <h1>📊 Status dos Projetos - Infraestrutura</h1>
+                <p>Atualizado em: <span id="currentDate"></span></p>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-warning" onclick="showSetup()">✏️ Atualizar Dados</button>
+                <button class="btn btn-info" onclick="exportJSON()">📤 Exportar GitHub</button>
+                <button class="btn" onclick="window.print()">🖨️ Imprimir / PDF</button>
+            </div>
+        </div>
+
+        <!-- Setup Section -->
+        <div id="setupSection" class="setup-section">
+            <h3>🚀 Cole os dados da planilha Excel</h3>
+            <ol>
+                <li>Abra o arquivo <strong>Template_Projetos_Infra.xlsx</strong></li>
+                <li>Selecione todos os dados (incluindo cabeçalhos) - <strong>Ctrl+A</strong></li>
+                <li>Copie - <strong>Ctrl+C</strong></li>
+                <li>Cole na caixa abaixo - <strong>Ctrl+V</strong></li>
+                <li>Clique em <strong>"Carregar Dashboard"</strong></li>
+            </ol>
+
+            <textarea id="pasteArea" class="paste-area" placeholder="Cole aqui os dados copiados do Excel...
+
+Colunas esperadas:
+Projeto | Status | RAG | Progresso | Etapa_Atual | Proximo_Passo | Bloqueador | Data_GoLive | Responsavel_Interno | Responsavel_Cliente | Localizacao | Dias_Sem_Atualizacao | Ultima_Atualizacao | Observacao"></textarea>
+
+            <div class="action-buttons">
+                <button class="btn btn-success" onclick="loadData()">✅ Carregar Dashboard</button>
+                <button class="btn" onclick="document.getElementById('pasteArea').value = ''">🗑️ Limpar</button>
+            </div>
+        </div>
+
+        <!-- Messages -->
+        <div id="successMsg" class="message success hidden">
+            <span style="font-size: 24px;">✅</span>
+            <div><strong>Dados carregados!</strong> <span id="successText"></span></div>
+        </div>
+
+        <div id="errorMsg" class="message error hidden">
+            <span style="font-size: 24px;">❌</span>
+            <div><strong>Erro!</strong> <span id="errorText"></span></div>
+        </div>
+
+        <div id="infoMsg" class="message info hidden">
+            <span style="font-size: 24px;">💡</span>
+            <div><strong>Dica:</strong> Clique em "Exportar GitHub" para atualizar a view do gestor.</div>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div id="dashboardContent" class="hidden">
+            <!-- Summary Cards -->
+            <div class="summary-grid">
+                <div class="summary-card total">
+                    <div class="summary-number" id="totalProjects">0</div>
+                    <div class="summary-label">Total Projetos</div>
+                </div>
+                <div class="summary-card concluido">
+                    <div class="summary-number" id="completedCount">0</div>
+                    <div class="summary-label">Concluídos</div>
+                </div>
+                <div class="summary-card andamento">
+                    <div class="summary-number" id="ongoingCount">0</div>
+                    <div class="summary-label">Em Andamento</div>
+                </div>
+                <div class="summary-card atrasado">
+                    <div class="summary-number" id="delayedCount">0</div>
+                    <div class="summary-label">Atrasados</div>
+                </div>
+                <div class="summary-card aguardando">
+                    <div class="summary-number" id="waitingCount">0</div>
+                    <div class="summary-label">Aguardando</div>
+                </div>
+                <div class="summary-card nao-iniciado">
+                    <div class="summary-number" id="notStartedCount">0</div>
+                    <div class="summary-label">Não Iniciados</div>
+                </div>
+            </div>
+
+            <!-- Atenção Imediata -->
+            <div id="atencaoSection" class="section atencao">
+                <div class="section-header">
+                    <h2>🚨 Atenção Imediata</h2>
+                    <span class="count-badge" id="atencaoCount">0</span>
+                </div>
+                <div class="section-body">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Projeto</th>
+                                <th>RAG</th>
+                                <th>Status</th>
+                                <th>Bloqueador</th>
+                                <th>Dias s/ Atualização</th>
+                                <th>Ação Necessária</th>
+                            </tr>
+                        </thead>
+                        <tbody id="atencaoTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Em Andamento -->
+            <div id="andamentoSection" class="section andamento">
+                <div class="section-header">
+                    <h2>🔵 Em Andamento</h2>
+                    <span class="count-badge" id="andamentoCount">0</span>
+                </div>
+                <div class="section-body">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Projeto</th>
+                                <th>Progresso</th>
+                                <th>Etapa Atual</th>
+                                <th>Próximo Passo</th>
+                                <th>Go Live</th>
+                                <th>Responsável</th>
+                            </tr>
+                        </thead>
+                        <tbody id="andamentoTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Aguardando Cliente -->
+            <div id="aguardandoSection" class="section aguardando">
+                <div class="section-header">
+                    <h2>🟡 Aguardando Cliente</h2>
+                    <span class="count-badge" id="aguardandoCount">0</span>
+                </div>
+                <div class="section-body">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Projeto</th>
+                                <th>O que Aguarda</th>
+                                <th>Dias Aguardando</th>
+                                <th>Contato Cliente</th>
+                                <th>Go Live</th>
+                            </tr>
+                        </thead>
+                        <tbody id="aguardandoTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Não Iniciados -->
+            <div id="naoIniciadoSection" class="section nao-iniciado">
+                <div class="section-header">
+                    <h2>⚪ Não Iniciados</h2>
+                    <span class="count-badge" id="naoIniciadoCount">0</span>
+                </div>
+                <div class="section-body">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Projeto</th>
+                                <th>Próximo Passo</th>
+                                <th>Go Live Previsto</th>
+                                <th>Responsável</th>
+                            </tr>
+                        </thead>
+                        <tbody id="naoIniciadoTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Concluídos -->
+            <div id="concluidoSection" class="section concluido">
+                <div class="section-header">
+                    <h2>✅ Concluídos</h2>
+                    <span class="count-badge" id="concluidoCount">0</span>
+                </div>
+                <div class="section-body">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Projeto</th>
+                                <th>Localização</th>
+                                <th>Data Conclusão</th>
+                                <th>Responsável</th>
+                            </tr>
+                        </thead>
+                        <tbody id="concluidoTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let projects = [];
+
+        // Data atual
+        const hoje = new Date();
+        const opcoes = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+        document.getElementById('currentDate').textContent = hoje.toLocaleDateString('pt-BR', opcoes);
+
+        // Carregar dados salvos
+        window.addEventListener('load', () => {
+            const savedData = localStorage.getItem('dashboardProjectsV2');
+            if (savedData) {
+                try {
+                    projects = JSON.parse(savedData);
+                    if (projects.length > 0) {
+                        showDashboard();
+                    }
+                } catch (e) {
+                    console.error('Erro ao carregar:', e);
+                }
+            }
+        });
+
+        function showSetup() {
+            document.getElementById('setupSection').classList.remove('hidden');
+            document.getElementById('dashboardContent').classList.add('hidden');
+            document.getElementById('infoMsg').classList.add('hidden');
+            document.getElementById('pasteArea').value = '';
+            document.getElementById('pasteArea').focus();
+        }
+
+        function showDashboard() {
+            document.getElementById('setupSection').classList.add('hidden');
+            document.getElementById('dashboardContent').classList.remove('hidden');
+            document.getElementById('infoMsg').classList.remove('hidden');
+            updateDashboard();
+        }
+
+        function showMessage(type, text) {
+            const msgId = type === 'success' ? 'successMsg' : 'errorMsg';
+            const textId = type === 'success' ? 'successText' : 'errorText';
+            document.getElementById(textId).textContent = text;
+            document.getElementById(msgId).classList.remove('hidden');
+            setTimeout(() => document.getElementById(msgId).classList.add('hidden'), 4000);
+        }
+
+        function loadData() {
+            const text = document.getElementById('pasteArea').value.trim();
+            if (!text) {
+                showMessage('error', 'Cole os dados da planilha primeiro!');
+                return;
+            }
+
+            try {
+                projects = parseData(text);
+                if (projects.length === 0) {
+                    showMessage('error', 'Nenhum dado válido encontrado.');
+                    return;
+                }
+
+                localStorage.setItem('dashboardProjectsV2', JSON.stringify(projects));
+                showMessage('success', `${projects.length} projetos carregados!`);
+                showDashboard();
+            } catch (e) {
+                showMessage('error', 'Erro ao processar dados: ' + e.message);
+                console.error(e);
+            }
+        }
+
+        function parseData(text) {
+            text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+            const lines = text.split('\n').filter(l => l.trim());
+            if (lines.length < 2) return [];
+
+            const data = [];
+            const headers = lines[0].split('\t').map(h => h.trim().toLowerCase());
+
+            // Mapear índices
+            const colMap = {
+                projeto: headers.findIndex(h => h.includes('projeto')),
+                status: headers.findIndex(h => h === 'status'),
+                rag: headers.findIndex(h => h.includes('rag')),
+                progresso: headers.findIndex(h => h.includes('progresso')),
+                etapa: headers.findIndex(h => h.includes('etapa')),
+                proximo: headers.findIndex(h => h.includes('proximo') || h.includes('próximo')),
+                bloqueador: headers.findIndex(h => h.includes('bloqueador')),
+                golive: headers.findIndex(h => h.includes('golive') || h.includes('go_live') || h.includes('data_golive')),
+                respInterno: headers.findIndex(h => h.includes('interno')),
+                respCliente: headers.findIndex(h => h.includes('cliente') && h.includes('responsavel')),
+                localizacao: headers.findIndex(h => h.includes('localizacao') || h.includes('localização')),
+                diasSemAtual: headers.findIndex(h => h.includes('dias')),
+                ultAtual: headers.findIndex(h => h.includes('ultima') || h.includes('última')),
+                obs: headers.findIndex(h => h.includes('obs'))
+            };
+
+            for (let i = 1; i < lines.length; i++) {
+                const cols = lines[i].split('\t').map(c => c.trim());
+                const projeto = cols[colMap.projeto] || cols[0];
+                if (!projeto) continue;
+
+                data.push({
+                    projeto: projeto,
+                    status: normalizeStatus(cols[colMap.status] || cols[1] || ''),
+                    rag: (cols[colMap.rag] || cols[2] || 'Cinza').toLowerCase(),
+                    progresso: parseInt(cols[colMap.progresso] || cols[3] || '0') || 0,
+                    etapa: cols[colMap.etapa] || cols[4] || '-',
+                    proximo: cols[colMap.proximo] || cols[5] || '-',
+                    bloqueador: cols[colMap.bloqueador] || cols[6] || '-',
+                    golive: cols[colMap.golive] || cols[7] || '-',
+                    respInterno: cols[colMap.respInterno] || cols[8] || '-',
+                    respCliente: cols[colMap.respCliente] || cols[9] || '-',
+                    localizacao: cols[colMap.localizacao] || cols[10] || '-',
+                    diasSemAtual: parseInt(cols[colMap.diasSemAtual] || cols[11] || '0') || 0,
+                    ultAtual: cols[colMap.ultAtual] || cols[12] || '-',
+                    obs: cols[colMap.obs] || cols[13] || '-'
+                });
+            }
+            return data;
+        }
+
+        function normalizeStatus(status) {
+            if (!status) return 'Não Definido';
+            const s = status.toLowerCase().trim();
+            if (s.includes('conclu')) return 'Concluído';
+            if (s.includes('andamento')) return 'Em Andamento';
+            if (s.includes('atras')) return 'Atrasado';
+            if (s.includes('aguard')) return 'Aguardando Cliente';
+            if (s.includes('iniciado') || s.includes('início') || s.includes('inicio')) return 'Não Iniciado';
+            return status;
+        }
+
+        function getStatusClass(status) {
+            const s = normalizeStatus(status).toLowerCase().replace(/\s+/g, '-').replace(/í/g, 'i').replace(/ã/g, 'a');
+            return s;
+        }
+
+        function getRagHtml(rag) {
+            const r = (rag || 'cinza').toLowerCase();
+            let label = r.charAt(0).toUpperCase() + r.slice(1);
+            return `<span class="rag ${r}"><span class="rag-dot"></span>${label}</span>`;
+        }
+
+        function getProgressHtml(pct) {
+            const p = Math.min(100, Math.max(0, pct));
+            let cls = 'low';
+            if (p >= 70) cls = 'high';
+            else if (p >= 40) cls = 'medium';
+            return `
+                <div class="progress-container">
+                    <div class="progress-bar"><div class="progress-fill ${cls}" style="width: ${p}%"></div></div>
+                    <span class="progress-text">${p}%</span>
+                </div>
+            `;
+        }
+
+        function getDaysHtml(dias) {
+            let cls = 'ok';
+            if (dias > 14) cls = 'danger';
+            else if (dias > 7) cls = 'warning';
+            return `<span class="days-indicator ${cls}">${dias} dias</span>`;
+        }
+
+        function updateDashboard() {
+            const concluidos = projects.filter(p => normalizeStatus(p.status) === 'Concluído');
+            const andamento = projects.filter(p => normalizeStatus(p.status) === 'Em Andamento');
+            const atrasados = projects.filter(p => normalizeStatus(p.status) === 'Atrasado');
+            const aguardando = projects.filter(p => normalizeStatus(p.status) === 'Aguardando Cliente');
+            const naoIniciados = projects.filter(p => normalizeStatus(p.status) === 'Não Iniciado');
+
+            // Atenção: Atrasados + RAG Vermelho + Muitos dias sem atualização
+            const atencao = projects.filter(p => {
+                const status = normalizeStatus(p.status);
+                return status === 'Atrasado' || 
+                       p.rag === 'vermelho' || 
+                       (p.diasSemAtual > 14 && status !== 'Concluído');
+            });
+
+            // Update counts
+            document.getElementById('totalProjects').textContent = projects.length;
+            document.getElementById('completedCount').textContent = concluidos.length;
+            document.getElementById('ongoingCount').textContent = andamento.length;
+            document.getElementById('delayedCount').textContent = atrasados.length;
+            document.getElementById('waitingCount').textContent = aguardando.length;
+            document.getElementById('notStartedCount').textContent = naoIniciados.length;
+
+            document.getElementById('atencaoCount').textContent = atencao.length;
+            document.getElementById('andamentoCount').textContent = andamento.length;
+            document.getElementById('aguardandoCount').textContent = aguardando.length;
+            document.getElementById('naoIniciadoCount').textContent = naoIniciados.length;
+            document.getElementById('concluidoCount').textContent = concluidos.length;
+
+            // Atenção table
+            const atencaoHtml = atencao.length === 0 
+                ? '<tr><td colspan="6" class="empty-state"><div class="icon">✅</div>Nenhum projeto requer atenção imediata!</td></tr>'
+                : atencao.map(p => `
+                    <tr>
+                        <td class="project-name">${p.projeto}</td>
+                        <td>${getRagHtml(p.rag)}</td>
+                        <td><span class="status-badge ${getStatusClass(p.status)}">${p.status}</span></td>
+                        <td>${p.bloqueador !== '-' ? `<span class="blocker">${p.bloqueador}</span>` : '-'}</td>
+                        <td>${getDaysHtml(p.diasSemAtual)}</td>
+                        <td>${p.proximo}</td>
+                    </tr>
+                `).join('');
+            document.getElementById('atencaoTable').innerHTML = atencaoHtml;
+
+            // Andamento table
+            const andamentoHtml = andamento.length === 0
+                ? '<tr><td colspan="6" class="empty-state">Nenhum projeto em andamento</td></tr>'
+                : andamento.map(p => `
+                    <tr>
+                        <td class="project-name">${p.projeto}</td>
+                        <td>${getProgressHtml(p.progresso)}</td>
+                        <td>${p.etapa}</td>
+                        <td>${p.proximo}</td>
+                        <td>${p.golive}</td>
+                        <td>${p.respInterno}</td>
+                    </tr>
+                `).join('');
+            document.getElementById('andamentoTable').innerHTML = andamentoHtml;
+
+            // Aguardando table
+            const aguardandoHtml = aguardando.length === 0
+                ? '<tr><td colspan="5" class="empty-state">Nenhum projeto aguardando cliente</td></tr>'
+                : aguardando.map(p => `
+                    <tr>
+                        <td class="project-name">${p.projeto}</td>
+                        <td>${p.bloqueador !== '-' ? p.bloqueador : p.proximo}</td>
+                        <td>${getDaysHtml(p.diasSemAtual)}</td>
+                        <td>${p.respCliente}</td>
+                        <td>${p.golive}</td>
+                    </tr>
+                `).join('');
+            document.getElementById('aguardandoTable').innerHTML = aguardandoHtml;
+
+            // Não iniciados table
+            const naoIniciadoHtml = naoIniciados.length === 0
+                ? '<tr><td colspan="4" class="empty-state">Todos os projetos já foram iniciados</td></tr>'
+                : naoIniciados.map(p => `
+                    <tr>
+                        <td class="project-name">${p.projeto}</td>
+                        <td>${p.proximo}</td>
+                        <td>${p.golive}</td>
+                        <td>${p.respInterno}</td>
+                    </tr>
+                `).join('');
+            document.getElementById('naoIniciadoTable').innerHTML = naoIniciadoHtml;
+
+            // Concluídos table
+            const concluidoHtml = concluidos.length === 0
+                ? '<tr><td colspan="4" class="empty-state">Nenhum projeto concluído ainda</td></tr>'
+                : concluidos.map(p => `
+                    <tr>
+                        <td class="project-name">${p.projeto}</td>
+                        <td>${p.localizacao}</td>
+                        <td>${p.ultAtual}</td>
+                        <td>${p.respInterno}</td>
+                    </tr>
+                `).join('');
+            document.getElementById('concluidoTable').innerHTML = concluidoHtml;
+
+            // Hide empty sections? (opcional - manter visíveis por ora)
+        }
+
+        function exportJSON() {
+            if (projects.length === 0) {
+                showMessage('error', 'Carregue os dados primeiro!');
+                return;
+            }
+
+            const data = {
+                lastUpdate: new Date().toISOString(),
+                projects: projects
+            };
+
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'dados.json';
+            a.click();
+            URL.revokeObjectURL(url);
+
+            showMessage('success', 'Arquivo dados.json baixado! Faça upload no GitHub.');
+        }
+    </script>
+</body>
+</html>
