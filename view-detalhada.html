@@ -3,22 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visão Detalhada - Infraestrutura</title>
+    <title>Visão Detalhada - Infraestrutura v5</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 20px; min-height: 100vh; }
         .container { max-width: 1600px; margin: 0 auto; }
         .header { background: rgba(255,255,255,0.95); padding: 25px 30px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
-        .header h1 { color: #1a1a2e; font-size: 26px; }
+        .header h1 { color: #1a1a2e; font-size: 24px; }
         .header p { color: #64748b; font-size: 13px; }
         .btn { background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 12px 20px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
         .btn-secondary { background: linear-gradient(135deg, #64748b, #475569); }
         .hidden { display: none; }
-        .loading, .no-data { background: rgba(255,255,255,0.95); padding: 60px; border-radius: 16px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+        .loading { background: rgba(255,255,255,0.95); padding: 60px; border-radius: 16px; text-align: center; }
         .spinner { width: 50px; height: 50px; border: 4px solid #e5e7eb; border-top: 4px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 25px; }
-        .summary-card { background: rgba(255,255,255,0.95); padding: 20px; border-radius: 16px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.2); position: relative; overflow: hidden; }
+        
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .summary-card { background: rgba(255,255,255,0.95); padding: 18px; border-radius: 16px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.2); position: relative; overflow: hidden; }
         .summary-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
         .summary-card.total::before { background: linear-gradient(90deg, #667eea, #764ba2); }
         .summary-card.concluido::before { background: #10b981; }
@@ -26,121 +27,124 @@
         .summary-card.atrasado::before { background: #ef4444; }
         .summary-card.aguardando::before { background: #f59e0b; }
         .summary-card.nao-iniciado::before { background: #6b7280; }
-        .summary-card .number { font-size: 32px; font-weight: 700; margin: 10px 0 5px; }
+        .summary-card.parados::before { background: #dc2626; }
+        .summary-card .number { font-size: 28px; font-weight: 700; margin: 8px 0 4px; }
         .summary-card.total .number { color: #667eea; }
         .summary-card.concluido .number { color: #10b981; }
         .summary-card.andamento .number { color: #3b82f6; }
         .summary-card.atrasado .number { color: #ef4444; }
         .summary-card.aguardando .number { color: #f59e0b; }
         .summary-card.nao-iniciado .number { color: #6b7280; }
-        .summary-card .label { font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; }
+        .summary-card.parados .number { color: #dc2626; }
+        .summary-card .label { font-size: 10px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; }
+        
         .filters-section { background: rgba(255,255,255,0.95); padding: 20px 25px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); margin-bottom: 25px; }
         .filters-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto; gap: 15px; align-items: end; }
         .filter-group label { display: block; font-size: 11px; text-transform: uppercase; color: #64748b; margin-bottom: 6px; font-weight: 600; }
         .filter-group input, .filter-group select { width: 100%; padding: 10px 14px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 13px; }
-        .filter-group input:focus, .filter-group select:focus { outline: none; border-color: #667eea; }
         .btn-clear { background: #f3f4f6; color: #64748b; box-shadow: none; padding: 10px 16px; }
+        
         .charts-section { display: grid; grid-template-columns: 1fr 2fr; gap: 25px; margin-bottom: 25px; }
         .chart-card { background: rgba(255,255,255,0.95); padding: 25px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
-        .chart-card h3 { color: #1a1a2e; font-size: 16px; margin-bottom: 20px; }
-        .pie-container { display: flex; align-items: center; justify-content: center; gap: 25px; }
-        .pie-chart { width: 150px; height: 150px; border-radius: 50%; position: relative; }
-        .pie-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: white; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .pie-center .number { font-size: 24px; font-weight: 700; color: #1a1a2e; }
-        .pie-center .label { font-size: 10px; color: #64748b; }
-        .pie-legend { display: flex; flex-direction: column; gap: 8px; }
-        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #475569; }
-        .legend-dot { width: 12px; height: 12px; border-radius: 3px; }
-        .timeline-chart { display: flex; flex-direction: column; gap: 12px; }
+        .chart-card h3 { color: #1a1a2e; font-size: 14px; margin-bottom: 20px; }
+        .pie-container { display: flex; align-items: center; justify-content: center; gap: 20px; }
+        .pie-chart { width: 120px; height: 120px; border-radius: 50%; position: relative; }
+        .pie-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: white; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .pie-center .number { font-size: 18px; font-weight: 700; color: #1a1a2e; }
+        .pie-center .label { font-size: 8px; color: #64748b; }
+        .pie-legend { display: flex; flex-direction: column; gap: 6px; }
+        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 11px; color: #475569; }
+        .legend-dot { width: 10px; height: 10px; border-radius: 3px; }
+        
+        .timeline-chart { display: flex; flex-direction: column; gap: 10px; }
         .timeline-item { display: flex; align-items: center; gap: 15px; }
-        .timeline-date { min-width: 90px; font-size: 12px; color: #64748b; font-weight: 600; }
-        .timeline-bar { flex: 1; height: 30px; border-radius: 8px; display: flex; align-items: center; padding: 0 12px; font-size: 12px; font-weight: 600; color: white; }
+        .timeline-date { min-width: 85px; font-size: 11px; color: #64748b; font-weight: 600; }
+        .timeline-bar { flex: 1; height: 28px; border-radius: 8px; display: flex; align-items: center; padding: 0 12px; font-size: 11px; font-weight: 600; color: white; }
         .timeline-bar.verde { background: linear-gradient(90deg, #10b981, #059669); }
         .timeline-bar.amarelo { background: linear-gradient(90deg, #f59e0b, #d97706); }
         .timeline-bar.vermelho { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .timeline-bar.cinza { background: linear-gradient(90deg, #6b7280, #4b5563); }
+        
         .section { background: rgba(255,255,255,0.95); border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); margin-bottom: 25px; overflow: hidden; }
-        .section-header { padding: 18px 25px; display: flex; justify-content: space-between; align-items: center; }
+        .section-header { padding: 16px 25px; display: flex; justify-content: space-between; align-items: center; }
         .section-header.atencao { background: linear-gradient(135deg, #ef4444, #dc2626); }
         .section-header.andamento { background: linear-gradient(135deg, #3b82f6, #2563eb); }
         .section-header.aguardando { background: linear-gradient(135deg, #f59e0b, #d97706); }
         .section-header.nao-iniciado { background: linear-gradient(135deg, #6b7280, #4b5563); }
         .section-header.concluido { background: linear-gradient(135deg, #10b981, #059669); }
-        .section-header h2 { color: white; font-size: 16px; display: flex; align-items: center; gap: 10px; }
+        .section-header h2 { color: white; font-size: 15px; display: flex; align-items: center; gap: 10px; }
         .section-badge { background: rgba(255,255,255,0.2); color: white; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; }
-        .section-content { padding: 0; }
+        
         .table-container { overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; }
-        th { background: #f8fafc; color: #475569; padding: 12px 16px; text-align: left; font-weight: 600; text-transform: uppercase; font-size: 11px; cursor: pointer; white-space: nowrap; }
-        th:hover { background: #f1f5f9; }
-        th.sortable::after { content: ' ↕'; opacity: 0.5; }
-        th.sorted-asc::after { content: ' ↑'; opacity: 1; }
-        th.sorted-desc::after { content: ' ↓'; opacity: 1; }
-        td { padding: 14px 16px; border-bottom: 1px solid #f1f5f9; font-size: 13px; color: #334155; }
+        th { background: #f8fafc; color: #475569; padding: 12px 14px; text-align: left; font-weight: 600; text-transform: uppercase; font-size: 10px; white-space: nowrap; }
+        td { padding: 12px 14px; border-bottom: 1px solid #f1f5f9; font-size: 12px; color: #334155; }
         tr:hover { background: #f8fafc; }
         tr.clickable { cursor: pointer; }
-        .project-name { font-weight: 600; color: #1e293b; display: flex; align-items: center; gap: 8px; }
-        .trend-up { color: #10b981; }
-        .trend-down { color: #ef4444; }
-        .trend-stable { color: #6b7280; }
-        .rag { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; }
-        .rag-dot { width: 10px; height: 10px; border-radius: 50%; }
-        .rag.verde { background: #dcfce7; color: #166534; }
-        .rag.verde .rag-dot { background: #22c55e; }
-        .rag.amarelo { background: #fef9c3; color: #854d0e; }
-        .rag.amarelo .rag-dot { background: #eab308; }
-        .rag.vermelho { background: #fee2e2; color: #991b1b; }
-        .rag.vermelho .rag-dot { background: #ef4444; }
-        .rag.cinza { background: #f3f4f6; color: #4b5563; }
-        .rag.cinza .rag-dot { background: #9ca3af; }
-        .progress-container { display: flex; align-items: center; gap: 10px; }
-        .progress-bar { flex: 1; height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden; min-width: 60px; }
-        .progress-fill { height: 100%; border-radius: 4px; }
+        .project-name { font-weight: 600; color: #1e293b; }
+        
+        .situacao { display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; }
+        .situacao-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .situacao.verde { background: #dcfce7; color: #166534; }
+        .situacao.verde .situacao-dot { background: #22c55e; }
+        .situacao.amarelo { background: #fef9c3; color: #854d0e; }
+        .situacao.amarelo .situacao-dot { background: #eab308; }
+        .situacao.vermelho { background: #fee2e2; color: #991b1b; }
+        .situacao.vermelho .situacao-dot { background: #ef4444; }
+        .situacao.cinza { background: #f3f4f6; color: #4b5563; }
+        .situacao.cinza .situacao-dot { background: #9ca3af; }
+        
+        .progress-container { display: flex; align-items: center; gap: 8px; }
+        .progress-bar { flex: 1; height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden; min-width: 50px; }
+        .progress-fill { height: 100%; border-radius: 3px; }
         .progress-fill.low { background: linear-gradient(90deg, #ef4444, #f87171); }
         .progress-fill.medium { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
         .progress-fill.high { background: linear-gradient(90deg, #10b981, #34d399); }
-        .progress-text { font-size: 12px; font-weight: 600; min-width: 35px; color: #475569; }
-        .blocker-badge { background: #fee2e2; color: #991b1b; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .golive-alterado { display: inline-flex; align-items: center; gap: 5px; background: #fef3c7; color: #92400e; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; }
-        .golive-alterado .original { font-size: 10px; color: #78716c; text-decoration: line-through; }
+        .progress-text { font-size: 11px; font-weight: 600; min-width: 30px; color: #475569; }
+        
+        .golive-alterado { display: inline-flex; align-items: center; gap: 4px; background: #fef3c7; color: #92400e; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; }
+        
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s; }
         .modal-overlay.active { opacity: 1; visibility: visible; }
         .modal { background: white; border-radius: 20px; width: 90%; max-width: 700px; max-height: 90vh; overflow-y: auto; transform: scale(0.9); transition: transform 0.3s; }
         .modal-overlay.active .modal { transform: scale(1); }
         .modal-header { padding: 25px; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: start; }
-        .modal-header h2 { color: #1a1a2e; font-size: 22px; margin-bottom: 5px; }
-        .modal-header p { color: #64748b; font-size: 13px; }
+        .modal-header h2 { color: #1a1a2e; font-size: 20px; margin-bottom: 5px; }
+        .modal-header p { color: #64748b; font-size: 12px; }
         .modal-close { background: none; border: none; font-size: 28px; cursor: pointer; color: #64748b; }
         .modal-body { padding: 25px; }
-        .project-info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; }
-        .info-box { background: #f8fafc; padding: 15px; border-radius: 12px; }
-        .info-box label { display: block; font-size: 11px; text-transform: uppercase; color: #64748b; margin-bottom: 5px; font-weight: 600; }
-        .info-box span { font-size: 14px; color: #1e293b; font-weight: 600; }
-        .timeline-vertical { position: relative; padding-left: 30px; }
-        .timeline-vertical::before { content: ''; position: absolute; left: 10px; top: 0; bottom: 0; width: 2px; background: #e5e7eb; }
-        .timeline-step { position: relative; padding-bottom: 20px; }
-        .timeline-step:last-child { padding-bottom: 0; }
-        .timeline-step::before { content: ''; position: absolute; left: -24px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: #e5e7eb; border: 2px solid white; }
-        .timeline-step.completed::before { background: #10b981; }
-        .timeline-step.current::before { background: #3b82f6; box-shadow: 0 0 0 4px rgba(59,130,246,0.2); }
-        .timeline-step h4 { font-size: 14px; color: #1e293b; margin-bottom: 3px; }
-        .timeline-step p { font-size: 12px; color: #64748b; }
-        .timeline-step.completed h4 { color: #065f46; }
-        .timeline-step.current h4 { color: #1e40af; }
-        .empty-state { text-align: center; padding: 40px 20px; color: #64748b; }
-        .results-count { color: #64748b; font-size: 13px; padding: 10px 16px; background: #f8fafc; border-bottom: 1px solid #e5e7eb; }
-        @media print { body { background: white; padding: 10px; } .btn, .filters-section, .modal-overlay { display: none; } .section { box-shadow: none; border: 1px solid #e5e7eb; } }
+        .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .info-box { background: #f8fafc; padding: 12px; border-radius: 10px; }
+        .info-box label { display: block; font-size: 9px; text-transform: uppercase; color: #64748b; margin-bottom: 4px; font-weight: 600; }
+        .info-box span { font-size: 12px; color: #1e293b; font-weight: 600; }
+        
+        .empty-state { text-align: center; padding: 30px 20px; color: #64748b; }
+        
+        /* Print Modal */
+        .print-modal { max-width: 400px; }
+        .print-options { display: flex; flex-direction: column; gap: 10px; margin: 15px 0; }
+        .print-option { display: flex; align-items: center; gap: 12px; padding: 12px; background: #f8fafc; border-radius: 10px; cursor: pointer; border: 2px solid transparent; }
+        .print-option:hover, .print-option.selected { background: #ede9fe; border-color: #667eea; }
+        .print-option input { display: none; }
+        .print-icon { font-size: 20px; }
+        .print-label { font-weight: 600; color: #1a1a2e; font-size: 13px; }
+        .print-desc { font-size: 11px; color: #64748b; }
+        
+        @media print { body { background: white; padding: 10px; } .btn, .filters-section, .modal-overlay, .charts-section, .header > div:last-child { display: none !important; } .section { box-shadow: none; border: 1px solid #e5e7eb; } }
         @media (max-width: 1200px) { .charts-section { grid-template-columns: 1fr; } .filters-grid { grid-template-columns: 1fr 1fr; } }
-        @media (max-width: 768px) { .header { flex-direction: column; } .summary-grid { grid-template-columns: repeat(3, 1fr); } .filters-grid { grid-template-columns: 1fr; } .project-info-grid { grid-template-columns: 1fr; } .pie-container { flex-direction: column; } }
+        @media (max-width: 768px) { .header { flex-direction: column; } .summary-grid { grid-template-columns: repeat(3, 1fr); } .filters-grid { grid-template-columns: 1fr; } .info-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <div><h1>📈 Visão Detalhada - Infraestrutura</h1><p>Atualizado em: <span id="currentDate">Carregando...</span></p></div>
-            <div style="display:flex;gap:10px;flex-wrap:wrap;"><a href="index.html" class="btn btn-secondary">← Voltar</a><button class="btn" onclick="window.print()">🖨️ Imprimir</button></div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <a href="index.html" class="btn btn-secondary">← Voltar</a>
+                <button class="btn" onclick="openPrintModal()">🖨️ Imprimir</button>
+            </div>
         </div>
         <div id="loading" class="loading"><div class="spinner"></div><h3>Carregando dados...</h3></div>
-        <div id="noData" class="no-data hidden"><h3>📊 Dados não disponíveis</h3></div>
         <div id="dashboardContent" class="hidden">
             <div class="summary-grid">
                 <div class="summary-card total"><div class="label">Total</div><div class="number" id="totalProjects">0</div></div>
@@ -149,32 +153,52 @@
                 <div class="summary-card atrasado"><div class="label">Atrasados</div><div class="number" id="delayedCount">0</div></div>
                 <div class="summary-card aguardando"><div class="label">Aguardando</div><div class="number" id="waitingCount">0</div></div>
                 <div class="summary-card nao-iniciado"><div class="label">Não Iniciados</div><div class="number" id="notStartedCount">0</div></div>
+                <div class="summary-card parados"><div class="label">Parados 15+ dias</div><div class="number" id="paradosCount">0</div></div>
             </div>
             <div class="filters-section">
                 <div class="filters-grid">
                     <div class="filter-group"><label>Buscar projeto</label><input type="text" id="searchInput" placeholder="Digite o nome..." oninput="applyFilters()"></div>
                     <div class="filter-group"><label>Status</label><select id="filterStatus" onchange="applyFilters()"><option value="">Todos</option><option value="Em Andamento">Em Andamento</option><option value="Concluído">Concluído</option><option value="Atrasado">Atrasado</option><option value="Aguardando Cliente">Aguardando</option><option value="Não Iniciado">Não Iniciado</option></select></div>
-                    <div class="filter-group"><label>RAG</label><select id="filterRag" onchange="applyFilters()"><option value="">Todos</option><option value="vermelho">🔴 Vermelho</option><option value="amarelo">🟡 Amarelo</option><option value="verde">🟢 Verde</option></select></div>
-                    <div class="filter-group"><label>Responsável</label><select id="filterResponsavel" onchange="applyFilters()"><option value="">Todos</option></select></div>
-                    <div class="filter-group"><label>Go Live</label><select id="filterGoLive" onchange="applyFilters()"><option value="">Todos</option><option value="atrasado">Go Live Atrasado</option><option value="proximo">Próximos 30 dias</option><option value="futuro">Mais de 30 dias</option></select></div>
+                    <div class="filter-group"><label>Situação</label><select id="filterSituacao" onchange="applyFilters()"><option value="">Todas</option><option value="vermelho">🔴 Vermelho</option><option value="amarelo">🟡 Amarelo</option><option value="verde">🟢 Verde</option></select></div>
+                    <div class="filter-group"><label>PMO Interno</label><select id="filterPMO" onchange="applyFilters()"><option value="">Todos</option></select></div>
+                    <div class="filter-group"><label>Parados</label><select id="filterParados" onchange="applyFilters()"><option value="">Todos</option><option value="15">15+ dias</option><option value="7">7+ dias</option></select></div>
                     <div class="filter-group"><button class="btn btn-clear" onclick="clearFilters()">✕ Limpar</button></div>
                 </div>
             </div>
             <div class="charts-section">
-                <div class="chart-card"><h3>📊 Distribuição por Status</h3><div class="pie-container"><div class="pie-chart" id="pieChart"><div class="pie-center"><div class="number" id="pieTotal">0</div><div class="label">Projetos</div></div></div><div class="pie-legend" id="pieLegend"></div></div></div>
+                <div class="chart-card"><h3>📊 Distribuição</h3><div class="pie-container"><div class="pie-chart" id="pieChart"><div class="pie-center"><div class="number" id="pieTotal">0</div><div class="label">Projetos</div></div></div><div class="pie-legend" id="pieLegend"></div></div></div>
                 <div class="chart-card"><h3>📅 Próximos Go Lives</h3><div class="timeline-chart" id="timelineChart"></div></div>
             </div>
             <div id="sectionsContainer"></div>
         </div>
     </div>
+    
+    <!-- Modal Detalhes -->
     <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
         <div class="modal" onclick="event.stopPropagation()">
             <div class="modal-header"><div><h2 id="modalTitle">Projeto</h2><p id="modalSubtitle">Detalhes</p></div><button class="modal-close" onclick="closeModal()">&times;</button></div>
-            <div class="modal-body"><div class="project-info-grid" id="modalInfo"></div><div><h3 style="margin-bottom:15px;">📋 Timeline</h3><div class="timeline-vertical" id="modalTimeline"></div></div></div>
+            <div class="modal-body"><div class="info-grid" id="modalInfo"></div></div>
         </div>
     </div>
+    
+    <!-- Modal Impressão -->
+    <div class="modal-overlay" id="printModalOverlay" onclick="closePrintModal(event)">
+        <div class="modal print-modal" onclick="event.stopPropagation()">
+            <div class="modal-header"><div><h2>🖨️ Opções de Impressão</h2></div><button class="modal-close" onclick="closePrintModal()">&times;</button></div>
+            <div class="modal-body">
+                <div class="print-options">
+                    <label class="print-option selected" onclick="selectPrintOption(this, 'current')"><input type="radio" name="print" value="current" checked><span class="print-icon">📄</span><div><div class="print-label">Página atual</div><div class="print-desc">Projetos filtrados</div></div></label>
+                    <label class="print-option" onclick="selectPrintOption(this, 'all')"><input type="radio" name="print" value="all"><span class="print-icon">📑</span><div><div class="print-label">Todos os projetos</div><div class="print-desc">Sem filtros</div></div></label>
+                    <label class="print-option" onclick="selectPrintOption(this, 'criticos')"><input type="radio" name="print" value="criticos"><span class="print-icon">🚨</span><div><div class="print-label">Apenas críticos</div><div class="print-desc">Atrasados ou vermelhos</div></div></label>
+                </div>
+                <button class="btn" style="width:100%;" onclick="executePrint()">🖨️ Imprimir</button>
+            </div>
+        </div>
+    </div>
+    
     <script>
-        let projects = [], filteredProjects = [], sortConfig = { column: 'projeto', direction: 'asc' };
+        let projects = [], filteredProjects = [], printOption = 'current';
+        
         async function loadData() {
             try {
                 const response = await fetch('dados.json?t=' + Date.now());
@@ -187,7 +211,7 @@
                         const d = new Date(data.lastUpdate);
                         document.getElementById('currentDate').textContent = d.toLocaleDateString('pt-BR', {day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});
                     }
-                    populateResponsavelFilter();
+                    populateFilters();
                     document.getElementById('loading').classList.add('hidden');
                     document.getElementById('dashboardContent').classList.remove('hidden');
                     updateDashboard();
@@ -195,12 +219,15 @@
                 } else { showNoData(); }
             } catch(e) { showNoData(); }
         }
-        function showNoData() { document.getElementById('loading').classList.add('hidden'); document.getElementById('noData').classList.remove('hidden'); }
-        function populateResponsavelFilter() {
-            const responsaveis = [...new Set(projects.map(p => p.respInterno).filter(r => r && r !== '-'))];
-            const select = document.getElementById('filterResponsavel');
-            responsaveis.sort().forEach(r => { const opt = document.createElement('option'); opt.value = r; opt.textContent = r; select.appendChild(opt); });
+        
+        function showNoData() { document.getElementById('loading').innerHTML = '<h3>📊 Dados não disponíveis</h3>'; }
+        
+        function populateFilters() {
+            const pmos = [...new Set(projects.map(p => p.pmoInterno || p.respInterno).filter(r => r && r !== '-'))];
+            const select = document.getElementById('filterPMO');
+            pmos.sort().forEach(r => { const opt = document.createElement('option'); opt.value = r; opt.textContent = r; select.appendChild(opt); });
         }
+        
         function normalizeStatus(status) {
             if (!status) return 'Não Definido';
             const s = status.toLowerCase().trim();
@@ -211,63 +238,52 @@
             if (s.includes('não') || s.includes('nao')) return 'Não Iniciado';
             return status;
         }
-        function getRagHtml(rag) { const r = (rag || 'cinza').toLowerCase(); return `<span class="rag ${r}"><span class="rag-dot"></span>${r.charAt(0).toUpperCase() + r.slice(1)}</span>`; }
+        
+        function getSituacaoHtml(sit) { 
+            const s = (sit || 'cinza').toLowerCase(); 
+            return `<span class="situacao ${s}"><span class="situacao-dot"></span>${s.charAt(0).toUpperCase()+s.slice(1)}</span>`; 
+        }
+        
         function getProgressHtml(pct) {
             const p = Math.min(100, Math.max(0, pct || 0));
             let cls = 'low'; if (p >= 70) cls = 'high'; else if (p >= 40) cls = 'medium';
             return `<div class="progress-container"><div class="progress-bar"><div class="progress-fill ${cls}" style="width:${p}%"></div></div><span class="progress-text">${p}%</span></div>`;
         }
+        
         function getGoLiveHtml(p) {
             const orig = p.goliveOriginal || p.golive || '-', atual = p.goliveAtual || p.golive || '-';
-            if (orig === atual || orig === '-' || atual === '-' || !p.goliveOriginal) return `<span>${atual}</span>`;
-            return `<span class="golive-alterado">⚠️ ${atual} <span class="original">(era ${orig})</span></span>`;
+            if (orig === atual || orig === '-' || atual === '-') return `<span>${atual}</span>`;
+            return `<span class="golive-alterado">⚠️ ${atual}</span>`;
         }
-        function getTrendIndicator(p) {
-            if (p.diasSemAtual > 10) return '<span class="trend-down">↘️</span>';
-            if (p.diasSemAtual < 3 && p.progresso > 50) return '<span class="trend-up">↗️</span>';
-            return '<span class="trend-stable">→</span>';
-        }
-        function parseGoLiveDate(dateStr) {
-            if (!dateStr || dateStr === '-' || dateStr.toLowerCase().includes('definir')) return null;
-            const parts = dateStr.split('/');
-            if (parts.length === 3) {
-                const day = parseInt(parts[0]), month = parseInt(parts[1]) - 1, year = parseInt(parts[2]);
-                if (!isNaN(day) && !isNaN(month) && !isNaN(year)) return new Date(year, month, day);
-            }
-            const parsed = new Date(dateStr);
-            return isNaN(parsed.getTime()) ? null : parsed;
-        }
+        
         function applyFilters() {
             const search = document.getElementById('searchInput').value.toLowerCase().trim();
             const status = document.getElementById('filterStatus').value;
-            const rag = document.getElementById('filterRag').value;
-            const responsavel = document.getElementById('filterResponsavel').value;
-            const goLive = document.getElementById('filterGoLive').value;
+            const situacao = document.getElementById('filterSituacao').value;
+            const pmo = document.getElementById('filterPMO').value;
+            const parados = document.getElementById('filterParados').value;
+            
             filteredProjects = projects.filter(p => {
                 if (search && !p.projeto.toLowerCase().includes(search)) return false;
                 if (status && normalizeStatus(p.status) !== status) return false;
-                if (rag && (p.rag || '').toLowerCase() !== rag.toLowerCase()) return false;
-                if (responsavel && (p.respInterno || '').trim() !== responsavel.trim()) return false;
-                if (goLive) {
-                    const goLiveDate = parseGoLiveDate(p.goliveAtual || p.golive);
-                    const hoje = new Date(); hoje.setHours(0, 0, 0, 0);
-                    if (goLive === 'atrasado') { if (!goLiveDate || goLiveDate >= hoje || normalizeStatus(p.status) === 'Concluído') return false; }
-                    else if (goLive === 'proximo') { const em30 = new Date(hoje); em30.setDate(em30.getDate() + 30); if (!goLiveDate || goLiveDate < hoje || goLiveDate > em30) return false; }
-                    else if (goLive === 'futuro') { const em30 = new Date(hoje); em30.setDate(em30.getDate() + 30); if (!goLiveDate || goLiveDate <= em30) return false; }
-                }
+                if (situacao && (p.situacao || p.rag || '').toLowerCase() !== situacao.toLowerCase()) return false;
+                if (pmo && (p.pmoInterno || p.respInterno || '').trim() !== pmo.trim()) return false;
+                if (parados && (p.diasSemAtual || 0) < parseInt(parados)) return false;
                 return true;
             });
             updateDashboard();
         }
+        
         function clearFilters() {
             document.getElementById('searchInput').value = '';
             document.getElementById('filterStatus').value = '';
-            document.getElementById('filterRag').value = '';
-            document.getElementById('filterResponsavel').value = '';
-            document.getElementById('filterGoLive').value = '';
+            document.getElementById('filterSituacao').value = '';
+            document.getElementById('filterPMO').value = '';
+            document.getElementById('filterParados').value = '';
             filteredProjects = [...projects];
             updateDashboard();
         }
+        
         function updateDashboard() {
             document.getElementById('totalProjects').textContent = projects.length;
             document.getElementById('completedCount').textContent = projects.filter(p => normalizeStatus(p.status) === 'Concluído').length;
@@ -275,13 +291,15 @@
             document.getElementById('delayedCount').textContent = projects.filter(p => normalizeStatus(p.status) === 'Atrasado').length;
             document.getElementById('waitingCount').textContent = projects.filter(p => normalizeStatus(p.status) === 'Aguardando Cliente').length;
             document.getElementById('notStartedCount').textContent = projects.filter(p => normalizeStatus(p.status) === 'Não Iniciado').length;
+            document.getElementById('paradosCount').textContent = projects.filter(p => (p.diasSemAtual || 0) > 15).length;
             renderSections();
         }
+        
         function renderSections() {
             const sections = [
-                { id: 'atencao', title: '🚨 Atenção Imediata', class: 'atencao', filter: p => normalizeStatus(p.status) === 'Atrasado' || (p.rag && p.rag.toLowerCase() === 'vermelho') },
-                { id: 'andamento', title: '🔄 Em Andamento', class: 'andamento', filter: p => normalizeStatus(p.status) === 'Em Andamento' && (!p.rag || p.rag.toLowerCase() !== 'vermelho') },
-                { id: 'aguardando', title: '⏳ Aguardando Cliente', class: 'aguardando', filter: p => normalizeStatus(p.status) === 'Aguardando Cliente' },
+                { id: 'atencao', title: '🚨 Atenção Imediata', class: 'atencao', filter: p => normalizeStatus(p.status) === 'Atrasado' || (p.situacao || p.rag || '').toLowerCase() === 'vermelho' || (p.diasSemAtual || 0) > 15 },
+                { id: 'andamento', title: '🔄 Em Andamento', class: 'andamento', filter: p => normalizeStatus(p.status) === 'Em Andamento' && (p.situacao || p.rag || '').toLowerCase() !== 'vermelho' && (p.diasSemAtual || 0) <= 15 },
+                { id: 'aguardando', title: '⏳ Aguardando Cliente', class: 'aguardando', filter: p => normalizeStatus(p.status) === 'Aguardando Cliente' && (p.situacao || p.rag || '').toLowerCase() !== 'vermelho' },
                 { id: 'nao-iniciado', title: '📋 Não Iniciados', class: 'nao-iniciado', filter: p => normalizeStatus(p.status) === 'Não Iniciado' },
                 { id: 'concluido', title: '✅ Concluídos', class: 'concluido', filter: p => normalizeStatus(p.status) === 'Concluído' }
             ];
@@ -290,17 +308,23 @@
                 const sProjects = filteredProjects.filter(s.filter);
                 return `<div class="section ${sProjects.length === 0 ? 'hidden' : ''}">
                     <div class="section-header ${s.class}"><h2>${s.title}</h2><span class="section-badge">${sProjects.length}</span></div>
-                    <div class="section-content"><div class="table-container"><table><thead><tr>
-                        <th>Projeto</th><th>RAG</th><th>Progresso</th><th>Etapa</th><th>Próximo Passo</th><th>Go Live</th><th>Responsável</th>
+                    <div class="table-container"><table><thead><tr>
+                        <th>Projeto</th><th>Localização</th><th>Go Live</th><th>Situação</th><th>Progresso</th><th>Etapa</th><th>PMO</th><th>Dias Parado</th>
                     </tr></thead><tbody>${sProjects.map(p => `<tr class="clickable" onclick="openModal('${p.projeto.replace(/'/g, "\\'")}')">
-                        <td class="project-name">${p.projeto} ${getTrendIndicator(p)}</td>
-                        <td>${getRagHtml(p.rag)}</td><td>${getProgressHtml(p.progresso)}</td>
-                        <td>${p.etapa || '-'}</td><td>${p.proximo || '-'}</td><td>${getGoLiveHtml(p)}</td><td>${p.respInterno || '-'}</td>
-                    </tr>`).join('')}</tbody></table></div></div></div>`;
+                        <td class="project-name">${p.projeto}</td>
+                        <td>${p.localizacao || '-'}</td>
+                        <td>${getGoLiveHtml(p)}</td>
+                        <td>${getSituacaoHtml(p.situacao || p.rag)}</td>
+                        <td>${getProgressHtml(p.progresso)}</td>
+                        <td>${p.etapa || '-'}</td>
+                        <td>${p.pmoInterno || p.respInterno || '-'}</td>
+                        <td>${(p.diasSemAtual || 0) > 15 ? `<span style="color:#991b1b;font-weight:bold;">${p.diasSemAtual} dias</span>` : `${p.diasSemAtual || 0} dias`}</td>
+                    </tr>`).join('')}</tbody></table></div></div>`;
             }).join('');
         }
+        
         function renderCharts() {
-            const counts = {'Em Andamento': projects.filter(p => normalizeStatus(p.status) === 'Em Andamento').length, 'Concluído': projects.filter(p => normalizeStatus(p.status) === 'Concluído').length, 'Atrasado': projects.filter(p => normalizeStatus(p.status) === 'Atrasado').length, 'Aguardando': projects.filter(p => normalizeStatus(p.status) === 'Aguardando Cliente').length, 'Não Iniciado': projects.filter(p => normalizeStatus(p.status) === 'Não Iniciado').length};
+            const counts = {'Em Andamento': projects.filter(p => normalizeStatus(p.status) === 'Em Andamento').length,'Concluído': projects.filter(p => normalizeStatus(p.status) === 'Concluído').length,'Atrasado': projects.filter(p => normalizeStatus(p.status) === 'Atrasado').length,'Aguardando': projects.filter(p => normalizeStatus(p.status) === 'Aguardando Cliente').length,'Não Iniciado': projects.filter(p => normalizeStatus(p.status) === 'Não Iniciado').length};
             const colors = {'Em Andamento':'#3b82f6','Concluído':'#10b981','Atrasado':'#ef4444','Aguardando':'#f59e0b','Não Iniciado':'#6b7280'};
             const total = Object.values(counts).reduce((a,b) => a+b, 0);
             document.getElementById('pieTotal').textContent = total;
@@ -308,34 +332,46 @@
             Object.entries(counts).forEach(([s, c]) => { if (c > 0) { const pct = (c/total)*100; gradParts.push(`${colors[s]} ${cumPct}% ${cumPct+pct}%`); cumPct += pct; }});
             document.getElementById('pieChart').style.background = `conic-gradient(${gradParts.join(', ')})`;
             document.getElementById('pieLegend').innerHTML = Object.entries(counts).filter(([_,c]) => c > 0).map(([s,c]) => `<div class="legend-item"><span class="legend-dot" style="background:${colors[s]}"></span><span>${s}: ${c}</span></div>`).join('');
-            const upcoming = projects.filter(p => (p.goliveAtual || p.golive) && (p.goliveAtual || p.golive) !== '-' && !p.golive?.includes('definir') && normalizeStatus(p.status) !== 'Concluído')
-                .sort((a, b) => { const dA = parseGoLiveDate(a.goliveAtual || a.golive), dB = parseGoLiveDate(b.goliveAtual || b.golive); return (dA || new Date(9999,0)) - (dB || new Date(9999,0)); }).slice(0, 6);
+            
+            const parseDate = (d) => { if (!d || d === '-') return null; const parts = d.split('/'); return parts.length === 3 ? new Date(parts[2], parts[1]-1, parts[0]) : null; };
+            const upcoming = projects.filter(p => (p.goliveAtual || p.golive) && (p.goliveAtual || p.golive) !== '-' && normalizeStatus(p.status) !== 'Concluído')
+                .sort((a, b) => (parseDate(a.goliveAtual || a.golive) || new Date(9999,0)) - (parseDate(b.goliveAtual || b.golive) || new Date(9999,0))).slice(0, 6);
             document.getElementById('timelineChart').innerHTML = upcoming.length === 0 ? '<div class="empty-state">Nenhum Go Live agendado</div>' :
-                upcoming.map(p => `<div class="timeline-item"><div class="timeline-date">${p.goliveAtual || p.golive}</div><div class="timeline-bar ${p.rag || 'cinza'}">${p.projeto}</div></div>`).join('');
+                upcoming.map(p => `<div class="timeline-item"><div class="timeline-date">${p.goliveAtual || p.golive}</div><div class="timeline-bar ${p.situacao || p.rag || 'cinza'}">${p.projeto}</div></div>`).join('');
         }
+        
         function openModal(name) {
             const p = projects.find(x => x.projeto === name);
             if (!p) return;
-            const orig = p.goliveOriginal || p.golive || '-', atual = p.goliveAtual || p.golive || '-';
-            const alterado = orig !== atual && orig !== '-' && p.goliveOriginal;
             document.getElementById('modalTitle').textContent = p.projeto;
-            document.getElementById('modalSubtitle').textContent = `${normalizeStatus(p.status)} • Go Live: ${atual}`;
+            document.getElementById('modalSubtitle').textContent = `${normalizeStatus(p.status)} • ${p.localizacao || 'Local não definido'}`;
             document.getElementById('modalInfo').innerHTML = `
-                <div class="info-box"><label>Status</label><span>${getRagHtml(p.rag)} ${normalizeStatus(p.status)}</span></div>
+                <div class="info-box"><label>Etapa</label><span>${p.etapa || '-'}</span></div>
                 <div class="info-box"><label>Progresso</label><span>${p.progresso || 0}%</span></div>
-                <div class="info-box"><label>Responsável</label><span>${p.respInterno || '-'}</span></div>
-                <div class="info-box"><label>Go Live Original</label><span>${orig}</span></div>
-                <div class="info-box" style="${alterado ? 'background:#fef3c7;' : ''}"><label>Go Live Atual</label><span style="${alterado ? 'color:#92400e;font-weight:bold;' : ''}">${alterado ? '⚠️ ' : ''}${atual}</span></div>
-                <div class="info-box"><label>Localização</label><span>${p.localizacao || '-'}</span></div>
-                <div class="info-box"><label>Contato Cliente</label><span>${p.respCliente || '-'}</span></div>
-                <div class="info-box"><label>Última Atualização</label><span>${p.ultAtual || '-'} (${p.diasSemAtual || 0} dias)</span></div>`;
-            const prog = p.progresso || 0;
-            const etapas = [{n:'Kickoff',s:prog>0?'completed':'pending'},{n:'Documentação',s:prog>=20?'completed':(prog>0?'current':'pending')},{n:'Configuração',s:prog>=40?'completed':(prog>=20?'current':'pending')},{n:'Validação',s:prog>=60?'completed':(prog>=40?'current':'pending')},{n:'Homologação',s:prog>=80?'completed':(prog>=60?'current':'pending')},{n:'Go Live',s:prog>=100?'completed':(prog>=80?'current':'pending')}];
-            document.getElementById('modalTimeline').innerHTML = etapas.map(e => `<div class="timeline-step ${e.s}"><h4>${e.n}</h4><p>${e.s==='completed'?'✓ Concluído':(e.s==='current'?'▶ Em andamento':'○ Pendente')}</p></div>`).join('');
+                <div class="info-box"><label>Situação</label><span>${getSituacaoHtml(p.situacao || p.rag)}</span></div>
+                <div class="info-box"><label>Go Live Original</label><span>${p.goliveOriginal || '-'}</span></div>
+                <div class="info-box"><label>Go Live Atual</label><span>${p.goliveAtual || p.golive || '-'}</span></div>
+                <div class="info-box"><label>Dias Parado</label><span>${p.diasSemAtual || 0} dias</span></div>
+                <div class="info-box"><label>PMO Interno</label><span>${p.pmoInterno || p.respInterno || '-'}</span></div>
+                <div class="info-box"><label>Infra Interno</label><span>${p.infraInterno || '-'}</span></div>
+                <div class="info-box"><label>PMO Cliente</label><span>${p.pmoCliente || p.respCliente || '-'}</span></div>
+                <div class="info-box"><label>Próximo Passo</label><span>${p.proximo || '-'}</span></div>
+                <div class="info-box"><label>Bloqueador</label><span style="${p.bloqueador && p.bloqueador !== '-' ? 'color:#991b1b;' : ''}">${p.bloqueador || '-'}</span></div>
+                <div class="info-box"><label>Última Atualização</label><span>${p.ultAtual || '-'}</span></div>`;
             document.getElementById('modalOverlay').classList.add('active');
         }
+        
         function closeModal(e) { if (e && e.target !== e.currentTarget) return; document.getElementById('modalOverlay').classList.remove('active'); }
-        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+        function openPrintModal() { document.getElementById('printModalOverlay').classList.add('active'); }
+        function closePrintModal(e) { if (e && e.target !== e.currentTarget) return; document.getElementById('printModalOverlay').classList.remove('active'); }
+        function selectPrintOption(el, option) { document.querySelectorAll('.print-option').forEach(o => o.classList.remove('selected')); el.classList.add('selected'); printOption = option; }
+        function executePrint() {
+            closePrintModal();
+            if (printOption === 'all') { filteredProjects = [...projects]; updateDashboard(); }
+            else if (printOption === 'criticos') { filteredProjects = projects.filter(p => normalizeStatus(p.status) === 'Atrasado' || (p.situacao || p.rag || '').toLowerCase() === 'vermelho'); updateDashboard(); }
+            setTimeout(() => window.print(), 300);
+        }
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closePrintModal(); } });
         window.addEventListener('load', loadData);
     </script>
 </body>

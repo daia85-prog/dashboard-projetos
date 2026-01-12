@@ -3,19 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Dashboard Projetos</title>
+    <title>Admin - Dashboard Projetos v5</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
         .container { max-width: 1200px; margin: 0 auto; }
         .header { background: white; padding: 25px 30px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
         .header h1 { color: #1a1a2e; font-size: 24px; }
-        .header p { color: #64748b; font-size: 13px; }
+        .version { background: #ede9fe; color: #7c3aed; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-left: 10px; }
         .btn { background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: all 0.3s; }
         .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102,126,234,0.4); }
         .btn-secondary { background: linear-gradient(135deg, #64748b, #475569); }
         .btn-success { background: linear-gradient(135deg, #10b981, #059669); }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
         .card { background: white; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); margin-bottom: 25px; overflow: hidden; }
         .card-header { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 20px 25px; }
         .card-header h2 { font-size: 18px; display: flex; align-items: center; gap: 10px; }
@@ -28,99 +27,84 @@
         .message.error { background: #fee2e2; color: #991b1b; border-left: 4px solid #ef4444; }
         .hidden { display: none; }
         .validation-section { margin-top: 20px; padding: 20px; background: #f8fafc; border-radius: 10px; }
-        .validation-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .validation-status { padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; }
         .validation-status.success { background: #d1fae5; color: #065f46; }
-        .validation-status.warning { background: #fef3c7; color: #92400e; }
-        .validation-status.error { background: #fee2e2; color: #991b1b; }
         .validation-item { padding: 10px 15px; margin: 5px 0; border-radius: 8px; font-size: 13px; display: flex; align-items: center; gap: 10px; }
         .validation-item.ok { background: #ecfdf5; color: #065f46; }
         .validation-item.warning { background: #fffbeb; color: #92400e; }
-        .validation-item.error { background: #fef2f2; color: #991b1b; }
         .preview-section { margin-top: 20px; }
-        .preview-section h3 { margin-bottom: 15px; color: #1a1a2e; font-size: 16px; }
         table { width: 100%; border-collapse: collapse; font-size: 12px; }
         th { background: #667eea; color: white; padding: 12px; text-align: left; }
         td { padding: 10px 12px; border-bottom: 1px solid #e5e7eb; }
         tr:hover { background: #f8fafc; }
         .badge { padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
-        .badge-status { background: #dbeafe; color: #1e40af; }
-        .badge-rag-verde { background: #d1fae5; color: #065f46; }
-        .badge-rag-amarelo { background: #fef3c7; color: #92400e; }
-        .badge-rag-vermelho { background: #fee2e2; color: #991b1b; }
-        .badge-rag-cinza { background: #f3f4f6; color: #374151; }
+        .badge-verde { background: #d1fae5; color: #065f46; }
+        .badge-amarelo { background: #fef3c7; color: #92400e; }
+        .badge-vermelho { background: #fee2e2; color: #991b1b; }
+        .badge-cinza { background: #f3f4f6; color: #374151; }
         .help-text { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 20px; margin-bottom: 20px; }
         .help-text h4 { color: #1e40af; margin-bottom: 10px; }
         .help-text ol { margin-left: 20px; color: #1e40af; }
         .help-text li { margin: 8px 0; font-size: 13px; }
-        @media (max-width: 768px) { .header { flex-direction: column; } .action-buttons { flex-direction: column; } }
+        .new-badge { background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 10px; font-size: 10px; margin-left: 8px; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <div><h1>🔧 Área Administrativa</h1><p>Gerenciamento do Dashboard</p></div>
+            <div><h1>🔧 Área Administrativa <span class="version">v5.0</span></h1><p style="color:#64748b;font-size:13px;margin-top:5px;">Sistema com Progresso e Situação automáticos</p></div>
             <a href="index.html" class="btn btn-secondary">← Voltar</a>
         </div>
         <div id="successMsg" class="message success hidden"><span>✅</span><div><strong>Sucesso!</strong> <span id="successText"></span></div></div>
         <div id="errorMsg" class="message error hidden"><span>❌</span><div><strong>Erro!</strong> <span id="errorText"></span></div></div>
         <div class="card">
-            <div class="card-header"><h2>📋 Importar Dados da Planilha</h2></div>
+            <div class="card-header"><h2>📋 Importar Dados da Planilha v5 <span class="new-badge">NOVO</span></h2></div>
             <div class="card-body">
                 <div class="help-text">
-                    <h4>📝 Como atualizar o dashboard:</h4>
+                    <h4>📝 Novidades da versão 5.0:</h4>
                     <ol>
-                        <li>Abra a planilha <strong>Template_Projetos_Infra.xlsx</strong></li>
-                        <li>Selecione todos os dados da aba "Projetos" (Ctrl+A)</li>
-                        <li>Copie (Ctrl+C)</li>
-                        <li>Cole na área abaixo (Ctrl+V)</li>
-                        <li>Clique em <strong>"Carregar e Validar"</strong></li>
-                        <li>Se estiver OK, clique em <strong>"Exportar dados.json"</strong></li>
-                        <li>Faça upload do arquivo no GitHub</li>
+                        <li><strong>Progresso automático</strong> - Calculado pela etapa</li>
+                        <li><strong>Situação automática</strong> - Baseada em dias parado + bloqueador</li>
+                        <li><strong>Responsáveis separados</strong> - PMO e Infra (interno e cliente)</li>
+                        <li><strong>Sistema anti-burla</strong> - Detecta retrocesso de etapa</li>
                     </ol>
                 </div>
-                <textarea id="dataInput" placeholder="Cole aqui os dados copiados da planilha Excel..."></textarea>
+                <textarea id="dataInput" placeholder="Cole aqui os dados copiados da planilha Excel v5..."></textarea>
                 <div class="action-buttons">
                     <button class="btn" onclick="processData()">📥 Carregar e Validar</button>
                     <button class="btn btn-secondary" onclick="clearData()">🗑️ Limpar</button>
                 </div>
                 <div id="validationSection" class="validation-section hidden">
-                    <div class="validation-header">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;">
                         <h3>📋 Validação</h3>
-                        <span class="validation-status" id="validationStatus">Verificando...</span>
+                        <span class="validation-status success" id="validationStatus">Verificando...</span>
                     </div>
                     <div id="validationItems"></div>
                 </div>
                 <div id="previewSection" class="preview-section hidden">
                     <h3>👀 Preview (<span id="previewCount">0</span>)</h3>
-                    <div style="overflow-x: auto;">
-                        <table><thead><tr><th>Projeto</th><th>Status</th><th>RAG</th><th>%</th><th>Etapa</th><th>Go Live</th><th>Responsável</th></tr></thead><tbody id="previewTable"></tbody></table>
+                    <div style="overflow-x:auto;margin-top:15px;">
+                        <table><thead><tr><th>Projeto</th><th>Etapa</th><th>Progresso</th><th>Situação</th><th>Status</th><th>PMO Int</th><th>Go Live</th></tr></thead><tbody id="previewTable"></tbody></table>
                     </div>
                 </div>
             </div>
         </div>
         <div id="exportCard" class="card hidden">
-            <div class="card-header" style="background: linear-gradient(135deg, #10b981, #059669);"><h2>📤 Exportar Dados</h2></div>
+            <div class="card-header" style="background:linear-gradient(135deg,#10b981,#059669);"><h2>📤 Exportar Dados</h2></div>
             <div class="card-body">
-                <p style="margin-bottom: 20px; color: #64748b;">Clique no botão abaixo para baixar o arquivo <strong>dados.json</strong>. Depois, faça upload no GitHub.</p>
+                <p style="margin-bottom:20px;color:#64748b;">Clique para baixar o <strong>dados.json</strong> e fazer upload no GitHub.</p>
                 <button class="btn btn-success" onclick="exportJSON()">⬇️ Exportar dados.json</button>
             </div>
         </div>
     </div>
     <script>
         let projects = [];
-        let validationErrors = [];
-        let validationWarnings = [];
-        const validStatuses = ['andamento', 'conclu', 'atras', 'aguard', 'não iniciado', 'nao iniciado', 'bloqueado'];
-        const validRags = ['verde', 'amarelo', 'vermelho', 'cinza'];
-
         function showMessage(type, text) {
             const el = document.getElementById(type === 'success' ? 'successMsg' : 'errorMsg');
             document.getElementById(type === 'success' ? 'successText' : 'errorText').textContent = text;
             el.classList.remove('hidden');
             setTimeout(() => el.classList.add('hidden'), 5000);
         }
-
         function clearData() {
             document.getElementById('dataInput').value = '';
             document.getElementById('validationSection').classList.add('hidden');
@@ -128,94 +112,84 @@
             document.getElementById('exportCard').classList.add('hidden');
             projects = [];
         }
-
         function processData() {
-            validationErrors = [];
-            validationWarnings = [];
             const text = document.getElementById('dataInput').value.trim();
             if (!text) { showMessage('error', 'Cole os dados da planilha primeiro.'); return; }
             try {
                 projects = parseData(text);
                 if (projects.length === 0) { showMessage('error', 'Nenhum projeto encontrado.'); return; }
-                projects.forEach((p, i) => {
-                    const statusNorm = (p.status || '').toLowerCase();
-                    if (!validStatuses.some(s => statusNorm.includes(s))) validationWarnings.push(`Linha ${i+2}: Status "${p.status}" pode não ser reconhecido`);
-                    const ragNorm = (p.rag || '').toLowerCase();
-                    if (ragNorm && !validRags.includes(ragNorm)) validationWarnings.push(`Linha ${i+2}: RAG "${p.rag}" inválido`);
-                    if (p.progresso < 0 || p.progresso > 100) validationErrors.push(`Linha ${i+2}: Progresso ${p.progresso}% fora do intervalo`);
-                    if (!p.projeto || p.projeto.length < 2) validationErrors.push(`Linha ${i+2}: Nome do projeto inválido`);
-                });
-                showValidationResults();
+                showValidation();
                 showPreview();
-                if (validationErrors.length === 0) {
-                    document.getElementById('exportCard').classList.remove('hidden');
-                    showMessage('success', `${projects.length} projetos carregados!`);
-                }
+                document.getElementById('exportCard').classList.remove('hidden');
+                showMessage('success', `${projects.length} projetos carregados!`);
             } catch(e) { showMessage('error', 'Erro: ' + e.message); }
         }
-
         function parseData(text) {
             text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
             const lines = text.split('\n').filter(l => l.trim());
             if (lines.length < 2) return [];
             const data = [];
             const headers = lines[0].split('\t').map(h => h.trim().toLowerCase());
+            
+            // Mapeamento de colunas (v5)
             const colMap = {
                 projeto: headers.findIndex(h => h.includes('projeto')),
-                status: headers.findIndex(h => h === 'status'),
-                rag: headers.findIndex(h => h.includes('rag')),
+                etapa: headers.findIndex(h => h.includes('etapa_atual') || h === 'etapa'),
                 progresso: headers.findIndex(h => h.includes('progresso')),
-                etapa: headers.findIndex(h => h.includes('etapa')),
+                situacao: headers.findIndex(h => h.includes('situação') || h.includes('situacao')),
+                status: headers.findIndex(h => h === 'status'),
                 proximo: headers.findIndex(h => h.includes('proximo') || h.includes('próximo')),
                 bloqueador: headers.findIndex(h => h.includes('bloqueador')),
-                goliveOriginal: headers.findIndex(h => h.includes('golive_original') || h.includes('goliveoriginal') || h.includes('original')),
-                goliveAtual: headers.findIndex(h => h.includes('golive_atual') || h.includes('goliveatual')),
-                golive: headers.findIndex(h => (h.includes('golive') || h.includes('go_live')) && !h.includes('original') && !h.includes('atual')),
-                respInterno: headers.findIndex(h => h.includes('responsavel_interno') || h.includes('interno')),
-                respCliente: headers.findIndex(h => h.includes('responsavel_cliente') || h.includes('cliente')),
+                goliveOriginal: headers.findIndex(h => h.includes('golive_original') || h.includes('original')),
+                goliveAtual: headers.findIndex(h => h.includes('golive_atual') || h.includes('atual')),
+                pmoInterno: headers.findIndex(h => h.includes('pmo_interno') || h === 'pmo interno'),
+                infraInterno: headers.findIndex(h => h.includes('infra_interno') || h === 'infra interno'),
+                pmoCliente: headers.findIndex(h => h.includes('pmo_cliente') || h === 'pmo cliente'),
+                infraCliente: headers.findIndex(h => h.includes('infra_cliente') || h === 'infra cliente'),
                 localizacao: headers.findIndex(h => h.includes('localizacao') || h.includes('localização')),
                 diasSemAtual: headers.findIndex(h => h.includes('dias')),
                 ultAtual: headers.findIndex(h => h.includes('ultima') || h.includes('última')),
+                retrocesso: headers.findIndex(h => h.includes('retrocesso')),
                 obs: headers.findIndex(h => h.includes('obs'))
             };
+            
             for (let i = 1; i < lines.length; i++) {
                 const cols = lines[i].split('\t').map(c => c.trim());
                 const projeto = cols[colMap.projeto] || cols[0];
                 if (!projeto) continue;
-                let goliveOriginal, goliveAtual;
-                if (colMap.goliveOriginal >= 0 && colMap.goliveAtual >= 0) {
-                    goliveOriginal = formatDate(cols[colMap.goliveOriginal]) || '-';
-                    goliveAtual = formatDate(cols[colMap.goliveAtual]) || '-';
-                } else if (colMap.golive >= 0) {
-                    goliveOriginal = formatDate(cols[colMap.golive]) || '-';
-                    goliveAtual = formatDate(cols[colMap.golive]) || '-';
-                } else {
-                    goliveOriginal = formatDate(cols[7]) || '-';
-                    goliveAtual = formatDate(cols[8]) || formatDate(cols[7]) || '-';
-                }
-                const respIdx = colMap.goliveAtual >= 0 ? 9 : 8;
+                
+                // Parse progresso (remove % se tiver)
+                let progresso = 0;
+                const progStr = cols[colMap.progresso] || cols[2] || '0';
+                progresso = parseInt(progStr.replace('%', '').replace(',', '.')) || 0;
+                
                 data.push({
                     projeto: projeto,
-                    status: cols[colMap.status] || cols[1] || '',
-                    rag: (cols[colMap.rag] || cols[2] || 'cinza').toLowerCase(),
-                    progresso: parseInt(cols[colMap.progresso] || cols[3] || '0') || 0,
-                    etapa: cols[colMap.etapa] || cols[4] || '-',
+                    etapa: cols[colMap.etapa] || cols[1] || '-',
+                    progresso: progresso,
+                    situacao: (cols[colMap.situacao] || cols[3] || 'Cinza').toLowerCase(),
+                    status: cols[colMap.status] || cols[4] || 'Não Iniciado',
                     proximo: cols[colMap.proximo] || cols[5] || '-',
                     bloqueador: cols[colMap.bloqueador] || cols[6] || '-',
-                    goliveOriginal: goliveOriginal,
-                    goliveAtual: goliveAtual,
-                    golive: goliveAtual,
-                    respInterno: cols[colMap.respInterno] || cols[respIdx] || '-',
-                    respCliente: cols[colMap.respCliente] || cols[respIdx+1] || '-',
-                    localizacao: cols[colMap.localizacao] || cols[respIdx+2] || '-',
-                    diasSemAtual: parseInt(cols[colMap.diasSemAtual] || cols[respIdx+3] || '0') || 0,
-                    ultAtual: formatDate(cols[colMap.ultAtual] || cols[respIdx+4]) || '-',
-                    obs: cols[colMap.obs] || cols[respIdx+5] || '-'
+                    goliveOriginal: formatDate(cols[colMap.goliveOriginal] || cols[7]) || '-',
+                    goliveAtual: formatDate(cols[colMap.goliveAtual] || cols[8]) || '-',
+                    golive: formatDate(cols[colMap.goliveAtual] || cols[8]) || '-',
+                    pmoInterno: cols[colMap.pmoInterno] || cols[9] || '-',
+                    infraInterno: cols[colMap.infraInterno] || cols[10] || '-',
+                    pmoCliente: cols[colMap.pmoCliente] || cols[11] || '-',
+                    infraCliente: cols[colMap.infraCliente] || cols[12] || '-',
+                    localizacao: cols[colMap.localizacao] || cols[13] || '-',
+                    diasSemAtual: parseInt(cols[colMap.diasSemAtual] || cols[14] || '0') || 0,
+                    ultAtual: formatDate(cols[colMap.ultAtual] || cols[15]) || '-',
+                    retrocesso: cols[colMap.retrocesso] || cols[17] || '',
+                    obs: cols[colMap.obs] || cols[18] || '-',
+                    // Compatibilidade com versão anterior
+                    respInterno: cols[colMap.pmoInterno] || cols[9] || '-',
+                    rag: (cols[colMap.situacao] || cols[3] || 'Cinza').toLowerCase()
                 });
             }
             return data;
         }
-
         function formatDate(val) {
             if (!val || val === '-' || val === '') return null;
             if (typeof val === 'number') {
@@ -224,43 +198,38 @@
             }
             if (val.includes('/')) return val;
             if (val.includes('-')) {
-                const parts = val.split('-');
-                if (parts[0].length === 4) return `${parts[2]}/${parts[1]}/${parts[0]}`;
+                const parts = val.split(/[-T ]/);
+                if (parts[0].length === 4) return `${parts[2].substring(0,2)}/${parts[1]}/${parts[0]}`;
             }
             return val;
         }
-
-        function showValidationResults() {
+        function showValidation() {
             const section = document.getElementById('validationSection');
             const items = document.getElementById('validationItems');
-            const status = document.getElementById('validationStatus');
+            const parados = projects.filter(p => p.diasSemAtual > 15).length;
+            const retrocessos = projects.filter(p => p.retrocesso && p.retrocesso.includes('RETROCESSO')).length;
             let html = `<div class="validation-item ok">✅ ${projects.length} projetos encontrados</div>`;
-            validationWarnings.forEach(w => { html += `<div class="validation-item warning">⚠️ ${w}</div>`; });
-            validationErrors.forEach(e => { html += `<div class="validation-item error">❌ ${e}</div>`; });
+            if (parados > 0) html += `<div class="validation-item warning">⚠️ ${parados} projeto(s) parado(s) há mais de 15 dias</div>`;
+            if (retrocessos > 0) html += `<div class="validation-item warning">⚠️ ${retrocessos} projeto(s) com retrocesso de etapa</div>`;
             items.innerHTML = html;
-            if (validationErrors.length > 0) { status.textContent = `${validationErrors.length} erro(s)`; status.className = 'validation-status error'; }
-            else if (validationWarnings.length > 0) { status.textContent = `${validationWarnings.length} aviso(s)`; status.className = 'validation-status warning'; }
-            else { status.textContent = 'Tudo OK!'; status.className = 'validation-status success'; }
+            document.getElementById('validationStatus').textContent = 'Tudo OK!';
             section.classList.remove('hidden');
         }
-
         function showPreview() {
             document.getElementById('previewCount').textContent = `${projects.length} projetos`;
-            const goliveAlterado = (p) => p.goliveOriginal !== p.goliveAtual && p.goliveOriginal !== '-' && p.goliveAtual !== '-';
-            document.getElementById('previewTable').innerHTML = projects.slice(0, 10).map(p => `<tr>
+            document.getElementById('previewTable').innerHTML = projects.slice(0, 15).map(p => `<tr>
                 <td><strong>${p.projeto}</strong></td>
-                <td><span class="badge badge-status">${p.status}</span></td>
-                <td><span class="badge badge-rag-${p.rag}">${p.rag}</span></td>
-                <td>${p.progresso}%</td>
                 <td>${p.etapa}</td>
-                <td>${goliveAlterado(p) ? `<span style="color:#92400e;font-weight:bold;">⚠️ ${p.goliveAtual}</span>` : p.goliveAtual}</td>
-                <td>${p.respInterno}</td>
+                <td>${p.progresso}%</td>
+                <td><span class="badge badge-${p.situacao}">${p.situacao}</span></td>
+                <td>${p.status}</td>
+                <td>${p.pmoInterno}</td>
+                <td>${p.goliveAtual}</td>
             </tr>`).join('');
             document.getElementById('previewSection').classList.remove('hidden');
         }
-
         function exportJSON() {
-            const data = { lastUpdate: new Date().toISOString(), projects: projects };
+            const data = { lastUpdate: new Date().toISOString(), version: '5.0', projects: projects };
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -268,7 +237,7 @@
             a.download = 'dados.json';
             a.click();
             URL.revokeObjectURL(url);
-            showMessage('success', 'Arquivo dados.json exportado! Faça upload no GitHub.');
+            showMessage('success', 'Arquivo dados.json exportado!');
         }
     </script>
 </body>
