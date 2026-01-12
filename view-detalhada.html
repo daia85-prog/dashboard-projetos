@@ -72,6 +72,18 @@
             box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
         }
 
+        .btn-secondary {
+            background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+            box-shadow: 0 4px 15px rgba(100, 116, 139, 0.4);
+            text-decoration: none;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
         /* Loading */
         .loading {
             background: rgba(255,255,255,0.95);
@@ -412,7 +424,10 @@
                 <h1>📊 Status dos Projetos - Infraestrutura</h1>
                 <p>Atualizado em: <span id="currentDate">Carregando...</span></p>
             </div>
-            <button class="btn" onclick="window.print()">🖨️ Imprimir / PDF</button>
+            <div class="header-actions">
+                <a href="index.html" class="btn btn-secondary">← Voltar</a>
+                <button class="btn" onclick="window.print()">🖨️ Imprimir / PDF</button>
+            </div>
         </div>
 
         <!-- Loading -->
