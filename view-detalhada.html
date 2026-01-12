@@ -19,7 +19,8 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
         .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 15px; margin-bottom: 25px; }
-        .summary-card { background: rgba(255,255,255,0.95); padding: 18px; border-radius: 16px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.2); position: relative; overflow: hidden; }
+        .summary-card { background: rgba(255,255,255,0.95); padding: 18px; border-radius: 16px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.2); position: relative; overflow: hidden; cursor: pointer; transition: all 0.3s; }
+        .summary-card:hover { transform: translateY(-3px); }
         .summary-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
         .summary-card.total::before { background: linear-gradient(90deg, #667eea, #764ba2); }
         .summary-card.concluido::before { background: #10b981; }
@@ -37,6 +38,7 @@
         .summary-card.nao-iniciado .number { color: #6b7280; }
         .summary-card.parados .number { color: #dc2626; }
         .summary-card .label { font-size: 10px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; }
+        .summary-card.active { box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.5); }
         
         .filters-section { background: rgba(255,255,255,0.95); padding: 20px 25px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); margin-bottom: 25px; }
         .filters-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto; gap: 15px; align-items: end; }
@@ -120,7 +122,6 @@
         
         .empty-state { text-align: center; padding: 30px 20px; color: #64748b; }
         
-        /* Print Modal */
         .print-modal { max-width: 400px; }
         .print-options { display: flex; flex-direction: column; gap: 10px; margin: 15px 0; }
         .print-option { display: flex; align-items: center; gap: 12px; padding: 12px; background: #f8fafc; border-radius: 10px; cursor: pointer; border: 2px solid transparent; }
@@ -147,13 +148,13 @@
         <div id="loading" class="loading"><div class="spinner"></div><h3>Carregando dados...</h3></div>
         <div id="dashboardContent" class="hidden">
             <div class="summary-grid">
-                <div class="summary-card total"><div class="label">Total</div><div class="number" id="totalProjects">0</div></div>
-                <div class="summary-card concluido"><div class="label">Concluídos</div><div class="number" id="completedCount">0</div></div>
-                <div class="summary-card andamento"><div class="label">Em Andamento</div><div class="number" id="ongoingCount">0</div></div>
-                <div class="summary-card atrasado"><div class="label">Atrasados</div><div class="number" id="delayedCount">0</div></div>
-                <div class="summary-card aguardando"><div class="label">Aguardando</div><div class="number" id="waitingCount">0</div></div>
-                <div class="summary-card nao-iniciado"><div class="label">Não Iniciados</div><div class="number" id="notStartedCount">0</div></div>
-                <div class="summary-card parados"><div class="label">Parados 15+ dias</div><div class="number" id="paradosCount">0</div></div>
+                <div class="summary-card total" onclick="filterByStatus('')"><div class="label">Total</div><div class="number" id="totalProjects">0</div></div>
+                <div class="summary-card concluido" onclick="filterByStatus('Concluído')"><div class="label">Concluídos</div><div class="number" id="completedCount">0</div></div>
+                <div class="summary-card andamento" onclick="filterByStatus('Em Andamento')"><div class="label">Em Andamento</div><div class="number" id="ongoingCount">0</div></div>
+                <div class="summary-card atrasado" onclick="filterByStatus('Atrasado')"><div class="label">Atrasados</div><div class="number" id="delayedCount">0</div></div>
+                <div class="summary-card aguardando" onclick="filterByStatus('Aguardando Cliente')"><div class="label">Aguardando</div><div class="number" id="waitingCount">0</div></div>
+                <div class="summary-card nao-iniciado" onclick="filterByStatus('Não Iniciado')"><div class="label">Não Iniciados</div><div class="number" id="notStartedCount">0</div></div>
+                <div class="summary-card parados" onclick="filterByParados()"><div class="label">Parados 15+ dias</div><div class="number" id="paradosCount">0</div></div>
             </div>
             <div class="filters-section">
                 <div class="filters-grid">
@@ -173,7 +174,6 @@
         </div>
     </div>
     
-    <!-- Modal Detalhes -->
     <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
         <div class="modal" onclick="event.stopPropagation()">
             <div class="modal-header"><div><h2 id="modalTitle">Projeto</h2><p id="modalSubtitle">Detalhes</p></div><button class="modal-close" onclick="closeModal()">&times;</button></div>
@@ -181,7 +181,6 @@
         </div>
     </div>
     
-    <!-- Modal Impressão -->
     <div class="modal-overlay" id="printModalOverlay" onclick="closePrintModal(event)">
         <div class="modal print-modal" onclick="event.stopPropagation()">
             <div class="modal-header"><div><h2>🖨️ Opções de Impressão</h2></div><button class="modal-close" onclick="closePrintModal()">&times;</button></div>
@@ -215,7 +214,6 @@
                     document.getElementById('loading').classList.add('hidden');
                     document.getElementById('dashboardContent').classList.remove('hidden');
                     updateDashboard();
-                    renderCharts();
                 } else { showNoData(); }
             } catch(e) { showNoData(); }
         }
@@ -256,6 +254,30 @@
             return `<span class="golive-alterado">⚠️ ${atual}</span>`;
         }
         
+        function filterByStatus(status) {
+            document.getElementById('filterStatus').value = status;
+            document.getElementById('filterParados').value = '';
+            applyFilters();
+            highlightCard(status);
+        }
+        
+        function filterByParados() {
+            document.getElementById('filterParados').value = '15';
+            document.getElementById('filterStatus').value = '';
+            applyFilters();
+            document.querySelectorAll('.summary-card').forEach(c => c.classList.remove('active'));
+            document.querySelector('.summary-card.parados').classList.add('active');
+        }
+        
+        function highlightCard(status) {
+            document.querySelectorAll('.summary-card').forEach(c => c.classList.remove('active'));
+            if (status) {
+                const map = {'Concluído':'concluido','Em Andamento':'andamento','Atrasado':'atrasado','Aguardando Cliente':'aguardando','Não Iniciado':'nao-iniciado'};
+                const card = document.querySelector(`.summary-card.${map[status]}`);
+                if (card) card.classList.add('active');
+            }
+        }
+        
         function applyFilters() {
             const search = document.getElementById('searchInput').value.toLowerCase().trim();
             const status = document.getElementById('filterStatus').value;
@@ -280,18 +302,22 @@
             document.getElementById('filterSituacao').value = '';
             document.getElementById('filterPMO').value = '';
             document.getElementById('filterParados').value = '';
+            document.querySelectorAll('.summary-card').forEach(c => c.classList.remove('active'));
             filteredProjects = [...projects];
             updateDashboard();
         }
         
         function updateDashboard() {
-            document.getElementById('totalProjects').textContent = projects.length;
-            document.getElementById('completedCount').textContent = projects.filter(p => normalizeStatus(p.status) === 'Concluído').length;
-            document.getElementById('ongoingCount').textContent = projects.filter(p => normalizeStatus(p.status) === 'Em Andamento').length;
-            document.getElementById('delayedCount').textContent = projects.filter(p => normalizeStatus(p.status) === 'Atrasado').length;
-            document.getElementById('waitingCount').textContent = projects.filter(p => normalizeStatus(p.status) === 'Aguardando Cliente').length;
-            document.getElementById('notStartedCount').textContent = projects.filter(p => normalizeStatus(p.status) === 'Não Iniciado').length;
-            document.getElementById('paradosCount').textContent = projects.filter(p => (p.diasSemAtual || 0) > 15).length;
+            // CARDS - Agora mostram os FILTRADOS
+            document.getElementById('totalProjects').textContent = filteredProjects.length;
+            document.getElementById('completedCount').textContent = filteredProjects.filter(p => normalizeStatus(p.status) === 'Concluído').length;
+            document.getElementById('ongoingCount').textContent = filteredProjects.filter(p => normalizeStatus(p.status) === 'Em Andamento').length;
+            document.getElementById('delayedCount').textContent = filteredProjects.filter(p => normalizeStatus(p.status) === 'Atrasado').length;
+            document.getElementById('waitingCount').textContent = filteredProjects.filter(p => normalizeStatus(p.status) === 'Aguardando Cliente').length;
+            document.getElementById('notStartedCount').textContent = filteredProjects.filter(p => normalizeStatus(p.status) === 'Não Iniciado').length;
+            document.getElementById('paradosCount').textContent = filteredProjects.filter(p => (p.diasSemAtual || 0) > 15).length;
+            
+            renderCharts();
             renderSections();
         }
         
@@ -324,17 +350,25 @@
         }
         
         function renderCharts() {
-            const counts = {'Em Andamento': projects.filter(p => normalizeStatus(p.status) === 'Em Andamento').length,'Concluído': projects.filter(p => normalizeStatus(p.status) === 'Concluído').length,'Atrasado': projects.filter(p => normalizeStatus(p.status) === 'Atrasado').length,'Aguardando': projects.filter(p => normalizeStatus(p.status) === 'Aguardando Cliente').length,'Não Iniciado': projects.filter(p => normalizeStatus(p.status) === 'Não Iniciado').length};
+            // Pie chart - FILTRADOS
+            const counts = {'Em Andamento': filteredProjects.filter(p => normalizeStatus(p.status) === 'Em Andamento').length,'Concluído': filteredProjects.filter(p => normalizeStatus(p.status) === 'Concluído').length,'Atrasado': filteredProjects.filter(p => normalizeStatus(p.status) === 'Atrasado').length,'Aguardando': filteredProjects.filter(p => normalizeStatus(p.status) === 'Aguardando Cliente').length,'Não Iniciado': filteredProjects.filter(p => normalizeStatus(p.status) === 'Não Iniciado').length};
             const colors = {'Em Andamento':'#3b82f6','Concluído':'#10b981','Atrasado':'#ef4444','Aguardando':'#f59e0b','Não Iniciado':'#6b7280'};
             const total = Object.values(counts).reduce((a,b) => a+b, 0);
             document.getElementById('pieTotal').textContent = total;
-            let cumPct = 0, gradParts = [];
-            Object.entries(counts).forEach(([s, c]) => { if (c > 0) { const pct = (c/total)*100; gradParts.push(`${colors[s]} ${cumPct}% ${cumPct+pct}%`); cumPct += pct; }});
-            document.getElementById('pieChart').style.background = `conic-gradient(${gradParts.join(', ')})`;
-            document.getElementById('pieLegend').innerHTML = Object.entries(counts).filter(([_,c]) => c > 0).map(([s,c]) => `<div class="legend-item"><span class="legend-dot" style="background:${colors[s]}"></span><span>${s}: ${c}</span></div>`).join('');
             
+            if (total === 0) {
+                document.getElementById('pieChart').style.background = '#e5e7eb';
+                document.getElementById('pieLegend').innerHTML = '<div style="color:#64748b;">Sem dados</div>';
+            } else {
+                let cumPct = 0, gradParts = [];
+                Object.entries(counts).forEach(([s, c]) => { if (c > 0) { const pct = (c/total)*100; gradParts.push(`${colors[s]} ${cumPct}% ${cumPct+pct}%`); cumPct += pct; }});
+                document.getElementById('pieChart').style.background = `conic-gradient(${gradParts.join(', ')})`;
+                document.getElementById('pieLegend').innerHTML = Object.entries(counts).filter(([_,c]) => c > 0).map(([s,c]) => `<div class="legend-item"><span class="legend-dot" style="background:${colors[s]}"></span><span>${s}: ${c}</span></div>`).join('');
+            }
+            
+            // Timeline - FILTRADOS
             const parseDate = (d) => { if (!d || d === '-') return null; const parts = d.split('/'); return parts.length === 3 ? new Date(parts[2], parts[1]-1, parts[0]) : null; };
-            const upcoming = projects.filter(p => (p.goliveAtual || p.golive) && (p.goliveAtual || p.golive) !== '-' && normalizeStatus(p.status) !== 'Concluído')
+            const upcoming = filteredProjects.filter(p => (p.goliveAtual || p.golive) && (p.goliveAtual || p.golive) !== '-' && normalizeStatus(p.status) !== 'Concluído')
                 .sort((a, b) => (parseDate(a.goliveAtual || a.golive) || new Date(9999,0)) - (parseDate(b.goliveAtual || b.golive) || new Date(9999,0))).slice(0, 6);
             document.getElementById('timelineChart').innerHTML = upcoming.length === 0 ? '<div class="empty-state">Nenhum Go Live agendado</div>' :
                 upcoming.map(p => `<div class="timeline-item"><div class="timeline-date">${p.goliveAtual || p.golive}</div><div class="timeline-bar ${p.situacao || p.rag || 'cinza'}">${p.projeto}</div></div>`).join('');

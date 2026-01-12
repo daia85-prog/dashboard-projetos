@@ -47,7 +47,7 @@
         .filter-group input:focus, .filter-group select:focus { outline: none; border-color: #667eea; }
         .btn-clear { background: #f3f4f6; color: #64748b; box-shadow: none; padding: 10px 16px; }
         
-        .charts-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 25px; margin-bottom: 25px; }
+        .charts-row { display: grid; grid-template-columns: 1fr 2fr; gap: 25px; margin-bottom: 25px; }
         .chart-card { background: white; padding: 25px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); }
         .chart-card h3 { color: #1a1a2e; font-size: 14px; margin-bottom: 20px; }
         .pie-container { display: flex; align-items: center; justify-content: center; gap: 20px; }
@@ -59,24 +59,15 @@
         .legend-item { display: flex; align-items: center; gap: 8px; font-size: 11px; color: #475569; }
         .legend-dot { width: 10px; height: 10px; border-radius: 3px; }
         
-        .parados-list { display: flex; flex-direction: column; gap: 8px; }
-        .parado-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: #fef2f2; border-radius: 8px; border-left: 3px solid #ef4444; }
-        .parado-item .nome { font-weight: 600; color: #991b1b; font-size: 12px; }
-        .parado-item .dias { background: #fee2e2; color: #991b1b; padding: 3px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
-        .parado-item.warning { background: #fffbeb; border-left-color: #f59e0b; }
-        .parado-item.warning .nome { color: #92400e; }
-        .parado-item.warning .dias { background: #fef3c7; color: #92400e; }
-        
-        .bar-chart { display: flex; flex-direction: column; gap: 10px; }
-        .bar-item { display: flex; align-items: center; gap: 12px; }
-        .bar-label { min-width: 80px; font-weight: 600; font-size: 11px; color: #374151; }
-        .bar-track { flex: 1; height: 24px; background: #f3f4f6; border-radius: 12px; overflow: hidden; }
-        .bar-fill { height: 100%; border-radius: 12px; display: flex; align-items: center; padding: 0 10px; font-size: 11px; font-weight: 600; color: white; justify-content: flex-end; transition: width 0.8s; }
-        .bar-fill.andamento { background: linear-gradient(90deg, #3b82f6, #2563eb); }
-        .bar-fill.concluido { background: linear-gradient(90deg, #10b981, #059669); }
-        .bar-fill.atrasado { background: linear-gradient(90deg, #ef4444, #dc2626); }
-        .bar-fill.aguardando { background: linear-gradient(90deg, #f59e0b, #d97706); }
-        .bar-fill.nao-iniciado { background: linear-gradient(90deg, #6b7280, #4b5563); }
+        .parados-chart { display: flex; flex-direction: column; gap: 10px; }
+        .parado-bar { display: flex; align-items: center; gap: 12px; }
+        .parado-label { min-width: 120px; font-size: 12px; font-weight: 600; color: #374151; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .parado-track { flex: 1; height: 28px; background: #f3f4f6; border-radius: 8px; overflow: hidden; position: relative; }
+        .parado-fill { height: 100%; border-radius: 8px; display: flex; align-items: center; justify-content: flex-end; padding: 0 10px; font-size: 11px; font-weight: 600; color: white; transition: width 0.8s; }
+        .parado-fill.critical { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .parado-fill.warning { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .parado-fill.ok { background: linear-gradient(90deg, #10b981, #059669); }
+        .no-parados { text-align: center; padding: 30px; color: #10b981; font-weight: 600; }
         
         .table-section { background: white; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); overflow: hidden; }
         .table-header { padding: 20px 25px; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center; }
@@ -135,7 +126,6 @@
         .info-box label { display: block; font-size: 10px; text-transform: uppercase; color: #64748b; margin-bottom: 5px; font-weight: 600; }
         .info-box span { font-size: 13px; color: #1e293b; font-weight: 600; }
         
-        /* Print Modal */
         .print-modal { max-width: 400px; }
         .print-options { display: flex; flex-direction: column; gap: 12px; margin: 20px 0; }
         .print-option { display: flex; align-items: center; gap: 12px; padding: 15px; background: #f8fafc; border-radius: 10px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; }
@@ -183,9 +173,8 @@
                 </div>
             </div>
             <div class="charts-row">
-                <div class="chart-card"><h3>📊 Distribuição</h3><div class="pie-container"><div class="pie-chart" id="pieChart"><div class="pie-center"><div class="number" id="pieTotal">0</div><div class="label">Projetos</div></div></div><div class="pie-legend" id="pieLegend"></div></div></div>
-                <div class="chart-card"><h3>⚠️ Projetos Parados</h3><div class="parados-list" id="paradosList"></div></div>
-                <div class="chart-card"><h3>📈 Por Status</h3><div class="bar-chart" id="barChart"></div></div>
+                <div class="chart-card"><h3>📊 Distribuição por Status</h3><div class="pie-container"><div class="pie-chart" id="pieChart"><div class="pie-center"><div class="number" id="pieTotal">0</div><div class="label">Projetos</div></div></div><div class="pie-legend" id="pieLegend"></div></div></div>
+                <div class="chart-card"><h3>⚠️ Projetos Parados (dias sem atualização)</h3><div class="parados-chart" id="paradosChart"></div></div>
             </div>
             <div class="table-section">
                 <div class="table-header"><h2>📋 Todos os Projetos</h2><span class="results-badge" id="resultsCount">0 projetos</span></div>
@@ -209,7 +198,6 @@
         </div>
     </div>
     
-    <!-- Modal Detalhes -->
     <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
         <div class="modal" onclick="event.stopPropagation()">
             <div class="modal-header"><div><h2 id="modalTitle">Projeto</h2><p id="modalSubtitle">Detalhes</p></div><button class="modal-close" onclick="closeModal()">&times;</button></div>
@@ -217,27 +205,14 @@
         </div>
     </div>
     
-    <!-- Modal Impressão -->
     <div class="modal-overlay" id="printModalOverlay" onclick="closePrintModal(event)">
         <div class="modal print-modal" onclick="event.stopPropagation()">
             <div class="modal-header"><div><h2>🖨️ Opções de Impressão</h2></div><button class="modal-close" onclick="closePrintModal()">&times;</button></div>
             <div class="modal-body">
                 <div class="print-options">
-                    <label class="print-option selected" onclick="selectPrintOption(this, 'current')">
-                        <input type="radio" name="print" value="current" checked>
-                        <span class="print-icon">📄</span>
-                        <div><div class="print-label">Página atual</div><div class="print-desc">Imprime apenas a tabela filtrada</div></div>
-                    </label>
-                    <label class="print-option" onclick="selectPrintOption(this, 'all')">
-                        <input type="radio" name="print" value="all">
-                        <span class="print-icon">📑</span>
-                        <div><div class="print-label">Todos os projetos</div><div class="print-desc">Imprime todos os projetos sem filtro</div></div>
-                    </label>
-                    <label class="print-option" onclick="selectPrintOption(this, 'criticos')">
-                        <input type="radio" name="print" value="criticos">
-                        <span class="print-icon">🚨</span>
-                        <div><div class="print-label">Apenas críticos</div><div class="print-desc">Projetos atrasados ou vermelhos</div></div>
-                    </label>
+                    <label class="print-option selected" onclick="selectPrintOption(this, 'current')"><input type="radio" name="print" value="current" checked><span class="print-icon">📄</span><div><div class="print-label">Página atual</div><div class="print-desc">Imprime apenas a tabela filtrada</div></div></label>
+                    <label class="print-option" onclick="selectPrintOption(this, 'all')"><input type="radio" name="print" value="all"><span class="print-icon">📑</span><div><div class="print-label">Todos os projetos</div><div class="print-desc">Imprime todos os projetos sem filtro</div></div></label>
+                    <label class="print-option" onclick="selectPrintOption(this, 'criticos')"><input type="radio" name="print" value="criticos"><span class="print-icon">🚨</span><div><div class="print-label">Apenas críticos</div><div class="print-desc">Projetos atrasados ou vermelhos</div></div></label>
                 </div>
                 <button class="btn" style="width:100%;" onclick="executePrint()">🖨️ Imprimir</button>
             </div>
@@ -263,7 +238,6 @@
                     document.getElementById('loading').classList.add('hidden');
                     document.getElementById('dashboardContent').classList.remove('hidden');
                     updateDashboard();
-                    renderCharts();
                 } else { showNoData(); }
             } catch(e) { showNoData(); }
         }
@@ -369,20 +343,23 @@
         }
         
         function updateDashboard() {
-            // Cards
-            document.getElementById('totalProjects').textContent = projects.length;
-            document.getElementById('completedCount').textContent = projects.filter(p => normalizeStatus(p.status) === 'Concluído').length;
-            document.getElementById('ongoingCount').textContent = projects.filter(p => normalizeStatus(p.status) === 'Em Andamento').length;
-            document.getElementById('delayedCount').textContent = projects.filter(p => normalizeStatus(p.status) === 'Atrasado').length;
-            document.getElementById('waitingCount').textContent = projects.filter(p => normalizeStatus(p.status) === 'Aguardando Cliente').length;
-            document.getElementById('notStartedCount').textContent = projects.filter(p => normalizeStatus(p.status) === 'Não Iniciado').length;
-            document.getElementById('paradosCount').textContent = projects.filter(p => (p.diasSemAtual || 0) > 15).length;
+            // CARDS - Agora mostram os FILTRADOS
+            document.getElementById('totalProjects').textContent = filteredProjects.length;
+            document.getElementById('completedCount').textContent = filteredProjects.filter(p => normalizeStatus(p.status) === 'Concluído').length;
+            document.getElementById('ongoingCount').textContent = filteredProjects.filter(p => normalizeStatus(p.status) === 'Em Andamento').length;
+            document.getElementById('delayedCount').textContent = filteredProjects.filter(p => normalizeStatus(p.status) === 'Atrasado').length;
+            document.getElementById('waitingCount').textContent = filteredProjects.filter(p => normalizeStatus(p.status) === 'Aguardando Cliente').length;
+            document.getElementById('notStartedCount').textContent = filteredProjects.filter(p => normalizeStatus(p.status) === 'Não Iniciado').length;
+            document.getElementById('paradosCount').textContent = filteredProjects.filter(p => (p.diasSemAtual || 0) > 15).length;
             
             // Results count
             document.getElementById('resultsCount').textContent = filteredProjects.length === projects.length ? 
                 `${projects.length} projetos` : `${filteredProjects.length} de ${projects.length}`;
             
-            // Table - NOVA ORDEM: Projeto, Localização, Go Live, Status, Situação, Progresso, Etapa, PMO, Dias
+            // Gráficos também atualizam com filtro
+            renderCharts();
+            
+            // Table
             document.getElementById('projectsTable').innerHTML = filteredProjects.length === 0 ? 
                 '<tr><td colspan="9" class="empty-state">Nenhum projeto encontrado</td></tr>' :
                 filteredProjects.map(p => `<tr class="clickable" onclick="openModal('${p.projeto.replace(/'/g, "\\'")}')">
@@ -399,47 +376,56 @@
         }
         
         function renderCharts() {
-            // Pie chart
+            // Pie chart - Baseado nos FILTRADOS
             const counts = {
-                'Em Andamento': projects.filter(p => normalizeStatus(p.status) === 'Em Andamento').length,
-                'Concluído': projects.filter(p => normalizeStatus(p.status) === 'Concluído').length,
-                'Atrasado': projects.filter(p => normalizeStatus(p.status) === 'Atrasado').length,
-                'Aguardando': projects.filter(p => normalizeStatus(p.status) === 'Aguardando Cliente').length,
-                'Não Iniciado': projects.filter(p => normalizeStatus(p.status) === 'Não Iniciado').length
+                'Em Andamento': filteredProjects.filter(p => normalizeStatus(p.status) === 'Em Andamento').length,
+                'Concluído': filteredProjects.filter(p => normalizeStatus(p.status) === 'Concluído').length,
+                'Atrasado': filteredProjects.filter(p => normalizeStatus(p.status) === 'Atrasado').length,
+                'Aguardando': filteredProjects.filter(p => normalizeStatus(p.status) === 'Aguardando Cliente').length,
+                'Não Iniciado': filteredProjects.filter(p => normalizeStatus(p.status) === 'Não Iniciado').length
             };
             const colors = {'Em Andamento':'#3b82f6','Concluído':'#10b981','Atrasado':'#ef4444','Aguardando':'#f59e0b','Não Iniciado':'#6b7280'};
             const total = Object.values(counts).reduce((a,b) => a+b, 0);
             document.getElementById('pieTotal').textContent = total;
             
-            let cumPct = 0, gradParts = [];
-            Object.entries(counts).forEach(([s, c]) => { 
-                if (c > 0) { 
-                    const pct = (c/total)*100; 
-                    gradParts.push(`${colors[s]} ${cumPct}% ${cumPct+pct}%`); 
-                    cumPct += pct; 
-                }
-            });
-            document.getElementById('pieChart').style.background = `conic-gradient(${gradParts.join(', ')})`;
-            document.getElementById('pieLegend').innerHTML = Object.entries(counts).filter(([_,c]) => c > 0)
-                .map(([s,c]) => `<div class="legend-item"><span class="legend-dot" style="background:${colors[s]}"></span><span>${s}: ${c}</span></div>`).join('');
+            if (total === 0) {
+                document.getElementById('pieChart').style.background = '#e5e7eb';
+                document.getElementById('pieLegend').innerHTML = '<div style="color:#64748b;">Sem dados</div>';
+            } else {
+                let cumPct = 0, gradParts = [];
+                Object.entries(counts).forEach(([s, c]) => { 
+                    if (c > 0) { 
+                        const pct = (c/total)*100; 
+                        gradParts.push(`${colors[s]} ${cumPct}% ${cumPct+pct}%`); 
+                        cumPct += pct; 
+                    }
+                });
+                document.getElementById('pieChart').style.background = `conic-gradient(${gradParts.join(', ')})`;
+                document.getElementById('pieLegend').innerHTML = Object.entries(counts).filter(([_,c]) => c > 0)
+                    .map(([s,c]) => `<div class="legend-item"><span class="legend-dot" style="background:${colors[s]}"></span><span>${s}: ${c}</span></div>`).join('');
+            }
             
-            // Projetos parados
-            const parados = projects.filter(p => (p.diasSemAtual || 0) > 7 && normalizeStatus(p.status) !== 'Concluído')
-                .sort((a, b) => (b.diasSemAtual || 0) - (a.diasSemAtual || 0)).slice(0, 5);
-            document.getElementById('paradosList').innerHTML = parados.length === 0 ? 
-                '<div style="text-align:center;color:#64748b;padding:20px;">✅ Nenhum projeto parado!</div>' :
-                parados.map(p => `<div class="parado-item ${(p.diasSemAtual || 0) > 15 ? '' : 'warning'}">
-                    <span class="nome">${p.projeto}</span>
-                    <span class="dias">${p.diasSemAtual} dias</span>
-                </div>`).join('');
+            // Gráfico de PROJETOS PARADOS - Baseado nos FILTRADOS
+            const parados = filteredProjects.filter(p => (p.diasSemAtual || 0) > 0 && normalizeStatus(p.status) !== 'Concluído')
+                .sort((a, b) => (b.diasSemAtual || 0) - (a.diasSemAtual || 0)).slice(0, 8);
             
-            // Bar chart
-            const max = Math.max(...Object.values(counts), 1);
-            const bars = [['Em Andamento', counts['Em Andamento'], 'andamento'], ['Concluídos', counts['Concluído'], 'concluido'], 
-                          ['Atrasados', counts['Atrasado'], 'atrasado'], ['Aguardando', counts['Aguardando'], 'aguardando'],
-                          ['Não Iniciados', counts['Não Iniciado'], 'nao-iniciado']];
-            document.getElementById('barChart').innerHTML = bars.map(([l,c,cl]) => 
-                `<div class="bar-item"><div class="bar-label">${l}</div><div class="bar-track"><div class="bar-fill ${cl}" style="width:${(c/max)*100}%">${c}</div></div></div>`).join('');
+            const maxDias = Math.max(...parados.map(p => p.diasSemAtual || 0), 30);
+            
+            document.getElementById('paradosChart').innerHTML = parados.length === 0 ? 
+                '<div class="no-parados">✅ Nenhum projeto parado!</div>' :
+                parados.map(p => {
+                    const dias = p.diasSemAtual || 0;
+                    const pct = (dias / maxDias) * 100;
+                    let cls = 'ok';
+                    if (dias > 15) cls = 'critical';
+                    else if (dias > 7) cls = 'warning';
+                    return `<div class="parado-bar">
+                        <div class="parado-label" title="${p.projeto}">${p.projeto}</div>
+                        <div class="parado-track">
+                            <div class="parado-fill ${cls}" style="width:${pct}%">${dias} dias</div>
+                        </div>
+                    </div>`;
+                }).join('');
         }
         
         function openModal(name) {
@@ -464,28 +450,15 @@
         }
         
         function closeModal(e) { if (e && e.target !== e.currentTarget) return; document.getElementById('modalOverlay').classList.remove('active'); }
-        
         function openPrintModal() { document.getElementById('printModalOverlay').classList.add('active'); }
-        function closePrintModal(e) { if (e && e.target !== e.currentTarget) return; document.getElementById('printModalOverlay').classList.remove('active'); }
-        
-        function selectPrintOption(el, option) {
-            document.querySelectorAll('.print-option').forEach(o => o.classList.remove('selected'));
-            el.classList.add('selected');
-            printOption = option;
-        }
-        
+        function closePrintModal(e) { if (e && e.target !== e.currentTarget) return; document.getElementById('printModalOverlay').classList.remove('hidden'); document.getElementById('printModalOverlay').classList.remove('active'); }
+        function selectPrintOption(el, option) { document.querySelectorAll('.print-option').forEach(o => o.classList.remove('selected')); el.classList.add('selected'); printOption = option; }
         function executePrint() {
             closePrintModal();
-            if (printOption === 'all') {
-                filteredProjects = [...projects];
-                updateDashboard();
-            } else if (printOption === 'criticos') {
-                filteredProjects = projects.filter(p => normalizeStatus(p.status) === 'Atrasado' || (p.situacao || p.rag || '').toLowerCase() === 'vermelho');
-                updateDashboard();
-            }
+            if (printOption === 'all') { filteredProjects = [...projects]; updateDashboard(); }
+            else if (printOption === 'criticos') { filteredProjects = projects.filter(p => normalizeStatus(p.status) === 'Atrasado' || (p.situacao || p.rag || '').toLowerCase() === 'vermelho'); updateDashboard(); }
             setTimeout(() => window.print(), 300);
         }
-        
         document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closePrintModal(); } });
         window.addEventListener('load', loadData);
     </script>
