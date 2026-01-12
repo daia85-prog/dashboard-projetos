@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Status dos Projetos - Infraestrutura</title>
+    <title>Visão Resumida - Infraestrutura</title>
     <style>
         * {
             margin: 0;
@@ -19,15 +19,16 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1500px;
             margin: 0 auto;
         }
 
+        /* Header */
         .header {
             background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 25px 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
             margin-bottom: 25px;
             display: flex;
             justify-content: space-between;
@@ -37,14 +38,17 @@
         }
 
         .header-left h1 {
-            color: #333;
-            font-size: 28px;
+            color: #1a1a2e;
+            font-size: 26px;
             margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .header-left p {
             color: #666;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .header-actions {
@@ -57,12 +61,12 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-size: 14px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
@@ -72,26 +76,21 @@
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(102, 126, 234, 0.5);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
         }
 
         .btn-secondary {
             background: linear-gradient(135deg, #64748b 0%, #475569 100%);
-            box-shadow: 0 4px 10px rgba(100, 116, 139, 0.4);
+            box-shadow: 0 4px 15px rgba(100, 116, 139, 0.4);
         }
 
-        .loading {
+        /* Loading & No Data */
+        .loading, .no-data {
             background: white;
             padding: 60px 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
             text-align: center;
-        }
-
-        .loading h3 {
-            color: #333;
-            margin-bottom: 15px;
-            font-size: 24px;
         }
 
         .spinner {
@@ -101,7 +100,7 @@
             border-top: 4px solid #667eea;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 20px auto;
+            margin: 0 auto 20px;
         }
 
         @keyframes spin {
@@ -109,69 +108,314 @@
             100% { transform: rotate(360deg); }
         }
 
-        .no-data {
-            background: white;
-            padding: 60px 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            text-align: center;
-        }
+        .hidden { display: none; }
 
-        .no-data h3 { color: #333; margin-bottom: 15px; }
-        .no-data p { color: #666; }
-
+        /* Summary Cards */
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px;
             margin-bottom: 25px;
         }
 
         .card {
             background: white;
             padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
             text-align: center;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
         }
 
-        .card:hover { transform: translateY(-5px); }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .card.total::before { background: linear-gradient(90deg, #667eea, #764ba2); }
+        .card.concluido::before { background: linear-gradient(90deg, #10b981, #059669); }
+        .card.andamento::before { background: linear-gradient(90deg, #3b82f6, #2563eb); }
+        .card.atrasado::before { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .card.aguardando::before { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .card.nao-iniciado::before { background: linear-gradient(90deg, #6b7280, #4b5563); }
 
         .card-number {
-            font-size: 42px;
+            font-size: 36px;
             font-weight: bold;
-            margin: 10px 0;
+            margin: 10px 0 5px;
         }
+
+        .card.total .card-number { color: #667eea; }
+        .card.concluido .card-number { color: #10b981; }
+        .card.andamento .card-number { color: #3b82f6; }
+        .card.atrasado .card-number { color: #ef4444; }
+        .card.aguardando .card-number { color: #f59e0b; }
+        .card.nao-iniciado .card-number { color: #6b7280; }
 
         .card-label {
-            color: #666;
-            font-size: 14px;
+            color: #64748b;
+            font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 1px;
+            font-weight: 600;
         }
 
-        .concluido { color: #10b981; }
-        .andamento { color: #3b82f6; }
-        .atrasado { color: #ef4444; }
-        .bloqueado { color: #f59e0b; }
-        .aguardando { color: #8b5cf6; }
+        .card.active {
+            ring: 3px solid;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.5);
+        }
 
-        .table-section {
+        /* Filters */
+        .filters-section {
+            background: white;
+            padding: 20px 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            margin-bottom: 25px;
+        }
+
+        .filters-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .filters-header h3 {
+            color: #1a1a2e;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr auto;
+            gap: 15px;
+            align-items: end;
+        }
+
+        .filter-group label {
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #64748b;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 13px;
+            transition: all 0.3s;
+        }
+
+        .filter-group input:focus,
+        .filter-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn-clear {
+            background: #f3f4f6;
+            color: #64748b;
+            box-shadow: none;
+            padding: 10px 16px;
+        }
+
+        .btn-clear:hover {
+            background: #e5e7eb;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Charts Row */
+        .charts-row {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .chart-card {
             background: white;
             padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            margin-bottom: 25px;
-            overflow-x: auto;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
         }
 
-        .table-section h2 {
-            color: #333;
+        .chart-card h3 {
+            color: #1a1a2e;
+            font-size: 16px;
             margin-bottom: 20px;
-            font-size: 22px;
-            border-bottom: 3px solid #667eea;
-            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Pie Chart */
+        .pie-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        .pie-chart {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .pie-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pie-center .number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .pie-center .label {
+            font-size: 10px;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+
+        .pie-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #475569;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+
+        /* Bar Chart */
+        .bar-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .bar-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .bar-label {
+            min-width: 100px;
+            font-weight: 600;
+            font-size: 13px;
+            color: #374151;
+        }
+
+        .bar-track {
+            flex: 1;
+            height: 28px;
+            background: #f3f4f6;
+            border-radius: 14px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+            transition: width 0.8s ease;
+            justify-content: flex-end;
+        }
+
+        .bar-fill.andamento { background: linear-gradient(90deg, #3b82f6, #2563eb); }
+        .bar-fill.concluido { background: linear-gradient(90deg, #10b981, #059669); }
+        .bar-fill.atrasado { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .bar-fill.aguardando { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .bar-fill.nao-iniciado { background: linear-gradient(90deg, #6b7280, #4b5563); }
+
+        /* Table Section */
+        .table-section {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-header h2 {
+            color: #1a1a2e;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .results-badge {
+            background: #ede9fe;
+            color: #7c3aed;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .table-container {
+            overflow-x: auto;
         }
 
         table {
@@ -182,108 +426,351 @@
         th {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 15px;
+            padding: 14px 16px;
             text-align: left;
             font-weight: 600;
             text-transform: uppercase;
-            font-size: 12px;
-            letter-spacing: 1px;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+
+        th:hover {
+            background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
+        }
+
+        th.sortable::after {
+            content: ' ↕';
+            opacity: 0.5;
+        }
+
+        th.sorted-asc::after {
+            content: ' ↑';
+            opacity: 1;
+        }
+
+        th.sorted-desc::after {
+            content: ' ↓';
+            opacity: 1;
         }
 
         td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #e5e7eb;
+            padding: 14px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 13px;
+            color: #334155;
         }
 
-        tr:hover { background: #f9fafb; }
+        tr:hover {
+            background: #f8fafc;
+        }
 
+        tr.clickable {
+            cursor: pointer;
+        }
+
+        .project-name {
+            font-weight: 600;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .trend-indicator {
+            font-size: 14px;
+        }
+
+        .trend-up { color: #10b981; }
+        .trend-down { color: #ef4444; }
+        .trend-stable { color: #6b7280; }
+
+        /* Status badges */
         .status-badge {
             display: inline-block;
-            padding: 6px 14px;
+            padding: 6px 12px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             text-transform: uppercase;
         }
 
-        .badge-concluido { background: #d1fae5; color: #065f46; }
-        .badge-em-andamento { background: #dbeafe; color: #1e40af; }
-        .badge-atrasado { background: #fee2e2; color: #991b1b; }
-        .badge-aguardando-cliente { background: #fef3c7; color: #92400e; }
-        .badge-nao-iniciado { background: #f3f4f6; color: #374151; }
+        .status-badge.em-andamento { background: #dbeafe; color: #1e40af; }
+        .status-badge.concluido { background: #d1fae5; color: #065f46; }
+        .status-badge.atrasado { background: #fee2e2; color: #991b1b; }
+        .status-badge.aguardando-cliente { background: #fef3c7; color: #92400e; }
+        .status-badge.nao-iniciado { background: #f3f4f6; color: #374151; }
 
-        .priority-alta { color: #ef4444; font-weight: bold; }
-        .priority-media { color: #f59e0b; }
-        .priority-baixa { color: #10b981; }
+        /* RAG indicators */
+        .rag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+        }
 
-        .chart-container {
+        .rag-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .rag.verde { background: #dcfce7; color: #166534; }
+        .rag.verde .rag-dot { background: #22c55e; }
+        .rag.amarelo { background: #fef9c3; color: #854d0e; }
+        .rag.amarelo .rag-dot { background: #eab308; }
+        .rag.vermelho { background: #fee2e2; color: #991b1b; }
+        .rag.vermelho .rag-dot { background: #ef4444; }
+        .rag.cinza { background: #f3f4f6; color: #4b5563; }
+        .rag.cinza .rag-dot { background: #9ca3af; }
+
+        /* Progress bar */
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            min-width: 60px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-fill.low { background: linear-gradient(90deg, #ef4444, #f87171); }
+        .progress-fill.medium { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+        .progress-fill.high { background: linear-gradient(90deg, #10b981, #34d399); }
+
+        .progress-text {
+            font-size: 12px;
+            font-weight: 600;
+            min-width: 35px;
+            color: #475569;
+        }
+
+        /* Days indicator */
+        .days-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .days-indicator.ok { background: #d1fae5; color: #065f46; }
+        .days-indicator.warning { background: #fef3c7; color: #92400e; }
+        .days-indicator.danger { background: #fee2e2; color: #991b1b; }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
             background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: transform 0.3s;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
             padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+        }
+
+        .modal-header h2 {
+            color: #1a1a2e;
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        .modal-header p {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #64748b;
+            line-height: 1;
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        .project-info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
             margin-bottom: 25px;
         }
 
-        .chart-container h2 {
-            color: #333;
-            margin-bottom: 20px;
-            font-size: 22px;
-            border-bottom: 3px solid #667eea;
-            padding-bottom: 10px;
+        .info-box {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 12px;
         }
 
-        .bar-chart {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .bar-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .bar-label {
-            min-width: 120px;
+        .info-box label {
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #64748b;
+            margin-bottom: 5px;
             font-weight: 600;
+        }
+
+        .info-box span {
             font-size: 14px;
+            color: #1e293b;
+            font-weight: 600;
         }
 
-        .bar-track {
-            flex: 1;
-            height: 30px;
-            background: #f3f4f6;
-            border-radius: 15px;
-            overflow: hidden;
+        /* Timeline vertical */
+        .timeline-section h3 {
+            margin-bottom: 15px;
+            color: #1a1a2e;
+            font-size: 16px;
         }
 
-        .bar-fill {
-            height: 100%;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding-right: 10px;
-            color: white;
-            font-weight: bold;
+        .timeline-vertical {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline-vertical::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e5e7eb;
+        }
+
+        .timeline-step {
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .timeline-step:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-step::before {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 4px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            border: 2px solid white;
+        }
+
+        .timeline-step.completed::before { background: #10b981; }
+        .timeline-step.current::before { 
+            background: #3b82f6; 
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+        }
+
+        .timeline-step h4 {
+            font-size: 14px;
+            color: #1e293b;
+            margin-bottom: 3px;
+        }
+
+        .timeline-step p {
             font-size: 12px;
-            transition: width 1s ease;
+            color: #64748b;
         }
 
-        .hidden { display: none; }
+        .timeline-step.completed h4 { color: #065f46; }
+        .timeline-step.current h4 { color: #1e40af; }
 
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #64748b;
+        }
+
+        /* Print */
         @media print {
-            body { background: white; padding: 0; }
-            .btn, .header-actions { display: none; }
+            body { background: white; padding: 10px; }
+            .btn, .header-actions, .filters-section { display: none; }
+            .card, .chart-card, .table-section { box-shadow: none; border: 1px solid #e5e7eb; }
+        }
+
+        @media (max-width: 1024px) {
+            .charts-row { grid-template-columns: 1fr; }
+            .filters-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .header { flex-direction: column; }
+            .cards-grid { grid-template-columns: repeat(3, 1fr); }
+            .filters-grid { grid-template-columns: 1fr; }
+            .project-info-grid { grid-template-columns: 1fr; }
+            .pie-container { flex-direction: column; }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Header -->
         <div class="header">
             <div class="header-left">
-                <h1>📊 Status dos Projetos - Infraestrutura</h1>
+                <h1>📋 Visão Resumida - Infraestrutura</h1>
                 <p>Atualizado em: <span id="currentDate">Carregando...</span></p>
             </div>
             <div class="header-actions">
@@ -292,85 +779,161 @@
             </div>
         </div>
 
+        <!-- Loading -->
         <div id="loading" class="loading">
             <div class="spinner"></div>
             <h3>Carregando dados...</h3>
         </div>
 
+        <!-- No Data -->
         <div id="noData" class="no-data hidden">
             <h3>📊 Dados não disponíveis</h3>
             <p>Os dados ainda não foram publicados.</p>
         </div>
 
+        <!-- Dashboard Content -->
         <div id="dashboardContent" class="hidden">
+            <!-- Summary Cards -->
             <div class="cards-grid">
-                <div class="card">
-                    <div class="card-label">Total de Projetos</div>
-                    <div class="card-number" style="color: #667eea;" id="totalProjects">0</div>
+                <div class="card total" onclick="filterByStatus('')" title="Clique para ver todos">
+                    <div class="card-label">Total</div>
+                    <div class="card-number" id="totalProjects">0</div>
                 </div>
-                <div class="card">
+                <div class="card concluido" onclick="filterByStatus('Concluído')" title="Clique para filtrar">
                     <div class="card-label">Concluídos</div>
-                    <div class="card-number concluido" id="completedProjects">0</div>
+                    <div class="card-number" id="completedCount">0</div>
                 </div>
-                <div class="card">
+                <div class="card andamento" onclick="filterByStatus('Em Andamento')" title="Clique para filtrar">
                     <div class="card-label">Em Andamento</div>
-                    <div class="card-number andamento" id="ongoingProjects">0</div>
+                    <div class="card-number" id="ongoingCount">0</div>
                 </div>
-                <div class="card">
+                <div class="card atrasado" onclick="filterByStatus('Atrasado')" title="Clique para filtrar">
                     <div class="card-label">Atrasados</div>
-                    <div class="card-number atrasado" id="delayedProjects">0</div>
+                    <div class="card-number" id="delayedCount">0</div>
                 </div>
-                <div class="card">
+                <div class="card aguardando" onclick="filterByStatus('Aguardando Cliente')" title="Clique para filtrar">
                     <div class="card-label">Aguardando</div>
-                    <div class="card-number aguardando" id="waitingProjects">0</div>
+                    <div class="card-number" id="waitingCount">0</div>
                 </div>
-                <div class="card">
+                <div class="card nao-iniciado" onclick="filterByStatus('Não Iniciado')" title="Clique para filtrar">
                     <div class="card-label">Não Iniciados</div>
-                    <div class="card-number bloqueado" id="notStartedProjects">0</div>
+                    <div class="card-number" id="notStartedCount">0</div>
                 </div>
             </div>
 
-            <div class="chart-container">
-                <h2>📈 Distribuição por Status</h2>
-                <div class="bar-chart" id="barChart"></div>
+            <!-- Filters -->
+            <div class="filters-section">
+                <div class="filters-header">
+                    <h3>🔍 Filtrar Projetos</h3>
+                </div>
+                <div class="filters-grid">
+                    <div class="filter-group">
+                        <label>Buscar projeto</label>
+                        <input type="text" id="searchInput" placeholder="Digite o nome..." oninput="applyFilters()">
+                    </div>
+                    <div class="filter-group">
+                        <label>Status</label>
+                        <select id="filterStatus" onchange="applyFilters()">
+                            <option value="">Todos</option>
+                            <option value="Em Andamento">Em Andamento</option>
+                            <option value="Concluído">Concluído</option>
+                            <option value="Atrasado">Atrasado</option>
+                            <option value="Aguardando Cliente">Aguardando</option>
+                            <option value="Não Iniciado">Não Iniciado</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>RAG</label>
+                        <select id="filterRag" onchange="applyFilters()">
+                            <option value="">Todos</option>
+                            <option value="vermelho">🔴 Vermelho</option>
+                            <option value="amarelo">🟡 Amarelo</option>
+                            <option value="verde">🟢 Verde</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Responsável</label>
+                        <select id="filterResp" onchange="applyFilters()">
+                            <option value="">Todos</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <button class="btn btn-clear" onclick="clearFilters()">✕ Limpar</button>
+                    </div>
+                </div>
             </div>
 
-            <div class="table-section">
-                <h2>🚨 Projetos que Requerem Atenção Imediata</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Projeto</th>
-                            <th>Status</th>
-                            <th>Responsável</th>
-                            <th>Data Prevista</th>
-                            <th>Observação</th>
-                        </tr>
-                    </thead>
-                    <tbody id="criticalProjectsTable"></tbody>
-                </table>
+            <!-- Charts -->
+            <div class="charts-row">
+                <div class="chart-card">
+                    <h3>📊 Distribuição</h3>
+                    <div class="pie-container">
+                        <div class="pie-chart" id="pieChart">
+                            <div class="pie-center">
+                                <div class="number" id="pieTotal">0</div>
+                                <div class="label">Projetos</div>
+                            </div>
+                        </div>
+                        <div class="pie-legend" id="pieLegend"></div>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <h3>📈 Progresso por Status</h3>
+                    <div class="bar-chart" id="barChart"></div>
+                </div>
             </div>
 
+            <!-- Table -->
             <div class="table-section">
-                <h2>📋 Todos os Projetos</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Projeto</th>
-                            <th>Status</th>
-                            <th>Responsável</th>
-                            <th>Go Live</th>
-                            <th>Localização</th>
-                        </tr>
-                    </thead>
-                    <tbody id="allProjectsTable"></tbody>
-                </table>
+                <div class="table-header">
+                    <h2>📋 Todos os Projetos</h2>
+                    <span class="results-badge" id="resultsCount">0 projetos</span>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="sortable" data-sort="projeto">Projeto</th>
+                                <th class="sortable" data-sort="status">Status</th>
+                                <th class="sortable" data-sort="rag">RAG</th>
+                                <th class="sortable" data-sort="progresso">Progresso</th>
+                                <th class="sortable" data-sort="golive">Go Live</th>
+                                <th class="sortable" data-sort="diasSemAtual">Dias s/ Atual.</th>
+                                <th class="sortable" data-sort="respInterno">Responsável</th>
+                                <th>Localização</th>
+                            </tr>
+                        </thead>
+                        <tbody id="projectsTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div>
+                    <h2 id="modalTitle">Nome do Projeto</h2>
+                    <p id="modalSubtitle">Detalhes do projeto</p>
+                </div>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="project-info-grid" id="modalInfo"></div>
+                <div class="timeline-section">
+                    <h3>📋 Timeline do Projeto</h3>
+                    <div class="timeline-vertical" id="modalTimeline"></div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
         let projects = [];
+        let filteredProjects = [];
+        let sortConfig = { column: 'projeto', direction: 'asc' };
 
         async function loadData() {
             try {
@@ -381,16 +944,20 @@
                 
                 if (data.projects && data.projects.length > 0) {
                     projects = data.projects;
+                    filteredProjects = [...projects];
                     
                     if (data.lastUpdate) {
                         const updateDate = new Date(data.lastUpdate);
-                        const opcoes = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                        const opcoes = { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' };
                         document.getElementById('currentDate').textContent = updateDate.toLocaleDateString('pt-BR', opcoes);
                     }
                     
+                    populateResponsavelFilter();
                     document.getElementById('loading').classList.add('hidden');
                     document.getElementById('dashboardContent').classList.remove('hidden');
                     updateDashboard();
+                    renderCharts();
+                    setupSorting();
                 } else {
                     showNoData();
                 }
@@ -405,6 +972,17 @@
             document.getElementById('noData').classList.remove('hidden');
         }
 
+        function populateResponsavelFilter() {
+            const responsaveis = [...new Set(projects.map(p => p.respInterno).filter(r => r && r !== '-'))];
+            const select = document.getElementById('filterResp');
+            responsaveis.sort().forEach(r => {
+                const option = document.createElement('option');
+                option.value = r;
+                option.textContent = r;
+                select.appendChild(option);
+            });
+        }
+
         function normalizeStatus(status) {
             if (!status) return 'Não Definido';
             const s = status.toLowerCase().trim();
@@ -416,67 +994,291 @@
             return status;
         }
 
-        function countByStatus(status) {
-            return projects.filter(p => normalizeStatus(p.status) === status).length;
+        function getStatusClass(status) {
+            return normalizeStatus(status).toLowerCase()
+                .replace(/\s+/g, '-')
+                .replace(/í/g, 'i')
+                .replace(/ã/g, 'a')
+                .replace(/ú/g, 'u');
         }
 
-        function getStatusBadge(status) {
-            const s = normalizeStatus(status).toLowerCase().replace(/\s+/g, '-').replace(/í/g, 'i').replace(/ã/g, 'a');
-            return 'badge-' + s;
+        function getRagHtml(rag) {
+            const r = (rag || 'cinza').toLowerCase();
+            let label = r.charAt(0).toUpperCase() + r.slice(1);
+            return `<span class="rag ${r}"><span class="rag-dot"></span>${label}</span>`;
+        }
+
+        function getProgressHtml(pct) {
+            const p = Math.min(100, Math.max(0, pct || 0));
+            let cls = 'low';
+            if (p >= 70) cls = 'high';
+            else if (p >= 40) cls = 'medium';
+            return `
+                <div class="progress-container">
+                    <div class="progress-bar"><div class="progress-fill ${cls}" style="width: ${p}%"></div></div>
+                    <span class="progress-text">${p}%</span>
+                </div>
+            `;
+        }
+
+        function getDaysHtml(dias) {
+            const d = dias || 0;
+            let cls = 'ok';
+            if (d > 14) cls = 'danger';
+            else if (d > 7) cls = 'warning';
+            return `<span class="days-indicator ${cls}">${d} dias</span>`;
+        }
+
+        function getTrendIndicator(project) {
+            if (project.diasSemAtual > 10) return '<span class="trend-indicator trend-down">↘️</span>';
+            if (project.diasSemAtual < 3 && project.progresso > 50) return '<span class="trend-indicator trend-up">↗️</span>';
+            return '<span class="trend-indicator trend-stable">→</span>';
+        }
+
+        function filterByStatus(status) {
+            document.getElementById('filterStatus').value = status;
+            applyFilters();
+            
+            // Highlight active card
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+            if (status) {
+                const statusMap = {
+                    'Concluído': 'concluido',
+                    'Em Andamento': 'andamento',
+                    'Atrasado': 'atrasado',
+                    'Aguardando Cliente': 'aguardando',
+                    'Não Iniciado': 'nao-iniciado'
+                };
+                const card = document.querySelector(`.card.${statusMap[status]}`);
+                if (card) card.classList.add('active');
+            }
+        }
+
+        function applyFilters() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const status = document.getElementById('filterStatus').value;
+            const rag = document.getElementById('filterRag').value;
+            const resp = document.getElementById('filterResp').value;
+
+            filteredProjects = projects.filter(p => {
+                if (search && !p.projeto.toLowerCase().includes(search)) return false;
+                if (status && normalizeStatus(p.status) !== status) return false;
+                if (rag && p.rag !== rag) return false;
+                if (resp && p.respInterno !== resp) return false;
+                return true;
+            });
+
+            updateDashboard();
+        }
+
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('filterStatus').value = '';
+            document.getElementById('filterRag').value = '';
+            document.getElementById('filterResp').value = '';
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+            filteredProjects = [...projects];
+            updateDashboard();
+        }
+
+        function setupSorting() {
+            document.querySelectorAll('th.sortable').forEach(th => {
+                th.addEventListener('click', () => {
+                    const column = th.dataset.sort;
+                    if (sortConfig.column === column) {
+                        sortConfig.direction = sortConfig.direction === 'asc' ? 'desc' : 'asc';
+                    } else {
+                        sortConfig.column = column;
+                        sortConfig.direction = 'asc';
+                    }
+                    
+                    document.querySelectorAll('th.sortable').forEach(t => {
+                        t.classList.remove('sorted-asc', 'sorted-desc');
+                    });
+                    th.classList.add(sortConfig.direction === 'asc' ? 'sorted-asc' : 'sorted-desc');
+                    
+                    updateDashboard();
+                });
+            });
+        }
+
+        function sortProjects(arr) {
+            return [...arr].sort((a, b) => {
+                let aVal = a[sortConfig.column];
+                let bVal = b[sortConfig.column];
+                
+                if (typeof aVal === 'string') aVal = aVal.toLowerCase();
+                if (typeof bVal === 'string') bVal = bVal.toLowerCase();
+                
+                if (aVal < bVal) return sortConfig.direction === 'asc' ? -1 : 1;
+                if (aVal > bVal) return sortConfig.direction === 'asc' ? 1 : -1;
+                return 0;
+            });
         }
 
         function updateDashboard() {
+            // Counts from ALL projects (not filtered)
             document.getElementById('totalProjects').textContent = projects.length;
-            document.getElementById('completedProjects').textContent = countByStatus('Concluído');
-            document.getElementById('ongoingProjects').textContent = countByStatus('Em Andamento');
-            document.getElementById('delayedProjects').textContent = countByStatus('Atrasado');
-            document.getElementById('waitingProjects').textContent = countByStatus('Aguardando Cliente');
-            document.getElementById('notStartedProjects').textContent = countByStatus('Não Iniciado');
+            document.getElementById('completedCount').textContent = projects.filter(p => normalizeStatus(p.status) === 'Concluído').length;
+            document.getElementById('ongoingCount').textContent = projects.filter(p => normalizeStatus(p.status) === 'Em Andamento').length;
+            document.getElementById('delayedCount').textContent = projects.filter(p => normalizeStatus(p.status) === 'Atrasado').length;
+            document.getElementById('waitingCount').textContent = projects.filter(p => normalizeStatus(p.status) === 'Aguardando Cliente').length;
+            document.getElementById('notStartedCount').textContent = projects.filter(p => normalizeStatus(p.status) === 'Não Iniciado').length;
 
-            const chartData = [
-                { label: 'Em Andamento', count: countByStatus('Em Andamento'), color: 'linear-gradient(90deg, #3b82f6, #2563eb)' },
-                { label: 'Concluídos', count: countByStatus('Concluído'), color: 'linear-gradient(90deg, #10b981, #059669)' },
-                { label: 'Atrasados', count: countByStatus('Atrasado'), color: 'linear-gradient(90deg, #ef4444, #dc2626)' },
-                { label: 'Aguardando', count: countByStatus('Aguardando Cliente'), color: 'linear-gradient(90deg, #f59e0b, #d97706)' },
-                { label: 'Não Iniciados', count: countByStatus('Não Iniciado'), color: 'linear-gradient(90deg, #6b7280, #4b5563)' }
-            ];
+            // Results count
+            document.getElementById('resultsCount').textContent = 
+                filteredProjects.length === projects.length 
+                    ? `${projects.length} projetos` 
+                    : `${filteredProjects.length} de ${projects.length} projetos`;
 
-            const maxCount = Math.max(...chartData.map(d => d.count), 1);
-            document.getElementById('barChart').innerHTML = chartData.map(item => {
-                const width = maxCount > 0 ? (item.count / maxCount * 100) : 0;
-                return `<div class="bar-item">
-                    <div class="bar-label">${item.label}</div>
-                    <div class="bar-track">
-                        <div class="bar-fill" style="width: ${width}%; background: ${item.color};">${item.count}</div>
-                    </div>
-                </div>`;
-            }).join('');
+            // Table
+            const sorted = sortProjects(filteredProjects);
+            document.getElementById('projectsTable').innerHTML = sorted.length === 0
+                ? '<tr><td colspan="8" class="empty-state">Nenhum projeto encontrado</td></tr>'
+                : sorted.map(p => `
+                    <tr class="clickable" onclick="openModal('${p.projeto}')">
+                        <td class="project-name">${p.projeto} ${getTrendIndicator(p)}</td>
+                        <td><span class="status-badge ${getStatusClass(p.status)}">${normalizeStatus(p.status)}</span></td>
+                        <td>${getRagHtml(p.rag)}</td>
+                        <td>${getProgressHtml(p.progresso)}</td>
+                        <td>${p.golive || '-'}</td>
+                        <td>${getDaysHtml(p.diasSemAtual)}</td>
+                        <td>${p.respInterno || '-'}</td>
+                        <td>${p.localizacao || '-'}</td>
+                    </tr>
+                `).join('');
+        }
 
-            // Projetos críticos
-            const critical = projects.filter(p => {
-                const status = normalizeStatus(p.status);
-                return status === 'Atrasado' || status === 'Não Iniciado' || p.rag === 'vermelho';
+        function renderCharts() {
+            // Pie Chart
+            const statusCounts = {
+                'Em Andamento': projects.filter(p => normalizeStatus(p.status) === 'Em Andamento').length,
+                'Concluído': projects.filter(p => normalizeStatus(p.status) === 'Concluído').length,
+                'Atrasado': projects.filter(p => normalizeStatus(p.status) === 'Atrasado').length,
+                'Aguardando': projects.filter(p => normalizeStatus(p.status) === 'Aguardando Cliente').length,
+                'Não Iniciado': projects.filter(p => normalizeStatus(p.status) === 'Não Iniciado').length
+            };
+
+            const colors = {
+                'Em Andamento': '#3b82f6',
+                'Concluído': '#10b981',
+                'Atrasado': '#ef4444',
+                'Aguardando': '#f59e0b',
+                'Não Iniciado': '#6b7280'
+            };
+
+            const total = Object.values(statusCounts).reduce((a, b) => a + b, 0);
+            document.getElementById('pieTotal').textContent = total;
+
+            let cumulativePercent = 0;
+            let gradientParts = [];
+
+            Object.entries(statusCounts).forEach(([status, count]) => {
+                if (count > 0) {
+                    const percent = (count / total) * 100;
+                    gradientParts.push(`${colors[status]} ${cumulativePercent}% ${cumulativePercent + percent}%`);
+                    cumulativePercent += percent;
+                }
             });
 
-            document.getElementById('criticalProjectsTable').innerHTML = critical.length === 0
-                ? '<tr><td colspan="5" style="text-align: center; color: #10b981; padding: 20px;">✅ Nenhum projeto crítico!</td></tr>'
-                : critical.map(p => `<tr>
-                    <td><strong>${p.projeto}</strong></td>
-                    <td><span class="status-badge ${getStatusBadge(p.status)}">${normalizeStatus(p.status)}</span></td>
-                    <td>${p.respInterno || '-'}</td>
-                    <td>${p.golive || '-'}</td>
-                    <td>${p.obs || p.bloqueador || '-'}</td>
-                </tr>`).join('');
+            document.getElementById('pieChart').style.background = `conic-gradient(${gradientParts.join(', ')})`;
 
-            // Todos os projetos
-            document.getElementById('allProjectsTable').innerHTML = projects.map(p => `<tr>
-                <td><strong>${p.projeto}</strong></td>
-                <td><span class="status-badge ${getStatusBadge(p.status)}">${normalizeStatus(p.status)}</span></td>
-                <td>${p.respInterno || '-'}</td>
-                <td>${p.golive || '-'}</td>
-                <td>${p.localizacao || '-'}</td>
-            </tr>`).join('');
+            // Legend
+            document.getElementById('pieLegend').innerHTML = Object.entries(statusCounts)
+                .filter(([_, count]) => count > 0)
+                .map(([status, count]) => `
+                    <div class="legend-item">
+                        <span class="legend-dot" style="background: ${colors[status]}"></span>
+                        <span>${status}: ${count}</span>
+                    </div>
+                `).join('');
+
+            // Bar Chart
+            const maxCount = Math.max(...Object.values(statusCounts), 1);
+            const barData = [
+                { label: 'Em Andamento', count: statusCounts['Em Andamento'], class: 'andamento' },
+                { label: 'Concluídos', count: statusCounts['Concluído'], class: 'concluido' },
+                { label: 'Atrasados', count: statusCounts['Atrasado'], class: 'atrasado' },
+                { label: 'Aguardando', count: statusCounts['Aguardando'], class: 'aguardando' },
+                { label: 'Não Iniciados', count: statusCounts['Não Iniciado'], class: 'nao-iniciado' }
+            ];
+
+            document.getElementById('barChart').innerHTML = barData.map(item => {
+                const width = (item.count / maxCount) * 100;
+                return `
+                    <div class="bar-item">
+                        <div class="bar-label">${item.label}</div>
+                        <div class="bar-track">
+                            <div class="bar-fill ${item.class}" style="width: ${width}%">${item.count}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
+
+        function openModal(projectName) {
+            const project = projects.find(p => p.projeto === projectName);
+            if (!project) return;
+
+            document.getElementById('modalTitle').textContent = project.projeto;
+            document.getElementById('modalSubtitle').textContent = `${normalizeStatus(project.status)} • Go Live: ${project.golive || 'A definir'}`;
+
+            document.getElementById('modalInfo').innerHTML = `
+                <div class="info-box">
+                    <label>Status</label>
+                    <span>${getRagHtml(project.rag)} ${normalizeStatus(project.status)}</span>
+                </div>
+                <div class="info-box">
+                    <label>Progresso</label>
+                    <span>${project.progresso || 0}%</span>
+                </div>
+                <div class="info-box">
+                    <label>Responsável</label>
+                    <span>${project.respInterno || '-'}</span>
+                </div>
+                <div class="info-box">
+                    <label>Localização</label>
+                    <span>${project.localizacao || '-'}</span>
+                </div>
+                <div class="info-box">
+                    <label>Contato Cliente</label>
+                    <span>${project.respCliente || '-'}</span>
+                </div>
+                <div class="info-box">
+                    <label>Última Atualização</label>
+                    <span>${project.ultAtual || '-'} (${project.diasSemAtual || 0} dias)</span>
+                </div>
+            `;
+
+            // Timeline
+            const prog = project.progresso || 0;
+            const etapas = [
+                { nome: 'Kickoff', status: prog > 0 ? 'completed' : 'pending' },
+                { nome: 'Documentação', status: prog >= 20 ? 'completed' : (prog > 0 ? 'current' : 'pending') },
+                { nome: 'Configuração', status: prog >= 40 ? 'completed' : (prog >= 20 ? 'current' : 'pending') },
+                { nome: 'Validação', status: prog >= 60 ? 'completed' : (prog >= 40 ? 'current' : 'pending') },
+                { nome: 'Homologação', status: prog >= 80 ? 'completed' : (prog >= 60 ? 'current' : 'pending') },
+                { nome: 'Go Live', status: prog >= 100 ? 'completed' : (prog >= 80 ? 'current' : 'pending') }
+            ];
+
+            document.getElementById('modalTimeline').innerHTML = etapas.map(e => `
+                <div class="timeline-step ${e.status}">
+                    <h4>${e.nome}</h4>
+                    <p>${e.status === 'completed' ? '✓ Concluído' : (e.status === 'current' ? '▶ Em andamento' : '○ Pendente')}</p>
+                </div>
+            `).join('');
+
+            document.getElementById('modalOverlay').classList.add('active');
+        }
+
+        function closeModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
 
         window.addEventListener('load', loadData);
     </script>
