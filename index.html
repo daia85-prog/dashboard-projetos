@@ -3,101 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Status dos Projetos - Infraestrutura v5</title>
+    <title>Status dos Projetos - Infraestrutura v5.1</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .container { max-width: 950px; width: 100%; }
-        .header { text-align: center; margin-bottom: 30px; }
-        .header h1 { color: white; font-size: 32px; margin-bottom: 10px; text-shadow: 0 4px 20px rgba(0,0,0,0.3); }
-        .header p { color: rgba(255,255,255,0.7); font-size: 14px; }
-        .version-badge { display: inline-block; background: rgba(102,126,234,0.3); color: #a5b4fc; padding: 4px 12px; border-radius: 20px; font-size: 11px; margin-top: 10px; }
-        .info-bar { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 16px; padding: 20px 30px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; border: 1px solid rgba(255,255,255,0.1); }
+        .container { max-width: 1000px; width: 100%; }
+        .header { text-align: center; margin-bottom: 25px; }
+        .header h1 { color: white; font-size: 30px; margin-bottom: 8px; text-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+        .header p { color: rgba(255,255,255,0.7); font-size: 13px; }
+        .version-badge { display: inline-block; background: rgba(102,126,234,0.3); color: #a5b4fc; padding: 4px 12px; border-radius: 20px; font-size: 11px; margin-top: 8px; }
+        
+        /* KPIs */
+        .kpis-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px; }
+        .kpi-box { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 14px; padding: 16px; text-align: center; border: 1px solid rgba(255,255,255,0.1); }
+        .kpi-box .value { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+        .kpi-box.ontime .value { color: #34d399; }
+        .kpi-box.delta .value { color: #fbbf24; }
+        .kpi-box.taxa .value { color: #60a5fa; }
+        .kpi-box.aging .value { color: #a78bfa; }
+        .kpi-box .label { font-size: 10px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        /* Info Bar */
+        .info-bar { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 16px; padding: 18px 28px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; border: 1px solid rgba(255,255,255,0.1); }
         .info-item { text-align: center; }
-        .info-item .number { font-size: 26px; font-weight: 700; color: white; }
-        .info-item .label { font-size: 10px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px; }
+        .info-item .number { font-size: 24px; font-weight: 700; color: white; }
+        .info-item .label { font-size: 9px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.5px; }
         .info-item.total .number { color: #a78bfa; }
         .info-item.concluido .number { color: #34d399; }
         .info-item.andamento .number { color: #60a5fa; }
         .info-item.critico .number { color: #f87171; }
-        .info-item.parados .number { color: #fbbf24; }
         .update-info { text-align: right; }
-        .update-info .date { color: white; font-size: 13px; font-weight: 600; }
-        .update-info .time-ago { color: rgba(255,255,255,0.5); font-size: 11px; }
-        .alert-box { background: linear-gradient(135deg, #fef2f2, #fee2e2); border: 2px solid #fca5a5; border-radius: 16px; padding: 18px 25px; margin-bottom: 25px; display: flex; align-items: center; gap: 20px; }
+        .update-info .date { color: white; font-size: 12px; font-weight: 600; }
+        .update-info .time-ago { color: rgba(255,255,255,0.5); font-size: 10px; }
+        
+        /* Alert */
+        .alert-box { background: linear-gradient(135deg, #fef2f2, #fee2e2); border: 2px solid #fca5a5; border-radius: 14px; padding: 16px 22px; margin-bottom: 20px; display: flex; align-items: center; gap: 18px; }
         .alert-box.success { background: linear-gradient(135deg, #ecfdf5, #d1fae5); border-color: #6ee7b7; }
-        .alert-icon { font-size: 36px; }
-        .alert-content h3 { color: #991b1b; font-size: 15px; margin-bottom: 4px; }
+        .alert-icon { font-size: 32px; }
+        .alert-content h3 { color: #991b1b; font-size: 14px; margin-bottom: 3px; }
         .alert-box.success .alert-content h3 { color: #065f46; }
-        .alert-content p { color: #7f1d1d; font-size: 12px; }
+        .alert-content p { color: #7f1d1d; font-size: 11px; }
         .alert-box.success .alert-content p { color: #047857; }
-        .alert-badges { display: flex; gap: 10px; margin-left: auto; flex-wrap: wrap; }
-        .alert-badge { padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 600; display: flex; align-items: center; gap: 5px; }
+        .alert-badges { display: flex; gap: 8px; margin-left: auto; flex-wrap: wrap; }
+        .alert-badge { padding: 5px 12px; border-radius: 16px; font-size: 10px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
         .alert-badge.atrasado { background: #fee2e2; color: #991b1b; }
         .alert-badge.parados { background: #fef3c7; color: #92400e; }
-        .cards-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
-        .card { background: rgba(255,255,255,0.95); border-radius: 24px; padding: 35px 28px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3); transition: all 0.4s ease; cursor: pointer; position: relative; overflow: hidden; }
+        
+        /* Cards */
+        .cards-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 22px; }
+        .card { background: rgba(255,255,255,0.95); border-radius: 22px; padding: 32px 26px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3); transition: all 0.4s ease; cursor: pointer; position: relative; overflow: hidden; }
         .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; }
         .card.simples::before { background: linear-gradient(90deg, #667eea, #764ba2); }
         .card.detalhada::before { background: linear-gradient(90deg, #10b981, #059669); }
         .card:hover { transform: translateY(-8px); box-shadow: 0 30px 80px rgba(0,0,0,0.4); }
-        .card-icon { width: 70px; height: 70px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 20px; }
+        .card-icon { width: 65px; height: 65px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 0 auto 18px; }
         .card.simples .card-icon { background: linear-gradient(135deg, #667eea, #764ba2); }
         .card.detalhada .card-icon { background: linear-gradient(135deg, #10b981, #059669); }
-        .card h2 { color: #1a1a2e; font-size: 22px; margin-bottom: 12px; }
-        .card p { color: #64748b; font-size: 13px; line-height: 1.6; margin-bottom: 20px; }
-        .card ul { text-align: left; list-style: none; margin-bottom: 25px; }
-        .card ul li { padding: 7px 0; color: #475569; font-size: 12px; display: flex; align-items: center; gap: 10px; }
-        .card ul li::before { content: '✓'; display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; font-size: 10px; font-weight: bold; }
+        .card h2 { color: #1a1a2e; font-size: 20px; margin-bottom: 10px; }
+        .card p { color: #64748b; font-size: 12px; line-height: 1.5; margin-bottom: 18px; }
+        .card ul { text-align: left; list-style: none; margin-bottom: 22px; }
+        .card ul li { padding: 6px 0; color: #475569; font-size: 11px; display: flex; align-items: center; gap: 8px; }
+        .card ul li::before { content: '✓'; display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 50%; font-size: 9px; font-weight: bold; }
         .card.simples ul li::before { background: #ede9fe; color: #7c3aed; }
         .card.detalhada ul li::before { background: #d1fae5; color: #059669; }
-        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 28px; border-radius: 12px; font-size: 14px; font-weight: 600; text-decoration: none; color: white; transition: all 0.3s ease; width: 100%; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 11px 24px; border-radius: 10px; font-size: 13px; font-weight: 600; text-decoration: none; color: white; width: 100%; }
         .card.simples .btn { background: linear-gradient(135deg, #667eea, #764ba2); }
         .card.detalhada .btn { background: linear-gradient(135deg, #10b981, #059669); }
-        .badge { position: absolute; top: 18px; right: 18px; padding: 5px 12px; border-radius: 20px; font-size: 10px; font-weight: 600; text-transform: uppercase; }
+        .badge { position: absolute; top: 16px; right: 16px; padding: 4px 10px; border-radius: 16px; font-size: 9px; font-weight: 600; text-transform: uppercase; }
         .card.simples .badge { background: #ede9fe; color: #7c3aed; }
         .card.detalhada .badge { background: #d1fae5; color: #059669; }
-        .footer { text-align: center; margin-top: 35px; color: rgba(255,255,255,0.5); font-size: 12px; }
+        
+        .footer { text-align: center; margin-top: 30px; color: rgba(255,255,255,0.5); font-size: 11px; }
         .footer a { color: rgba(255,255,255,0.7); text-decoration: none; }
         .footer a:hover { color: white; }
         .hidden { display: none; }
-        @media (max-width: 768px) { .header h1 { font-size: 26px; } .cards-container { grid-template-columns: 1fr; } .info-bar { flex-direction: column; text-align: center; } .alert-box { flex-direction: column; text-align: center; } .alert-badges { margin-left: 0; } }
+        
+        @media (max-width: 768px) { .header h1 { font-size: 24px; } .cards-container { grid-template-columns: 1fr; } .info-bar { flex-direction: column; text-align: center; } .alert-box { flex-direction: column; text-align: center; } .kpis-row { grid-template-columns: repeat(2, 1fr); } }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1>📊 Status dos Projetos - Infraestrutura</h1>
-            <p>Selecione o tipo de visualização desejada</p>
-            <span class="version-badge">v5.0 - Automático</span>
+            <p>Painel de Gestão de Projetos</p>
+            <span class="version-badge">v5.1 - KPIs Avançados</span>
         </div>
+        
+        <!-- KPIs -->
+        <div class="kpis-row">
+            <div class="kpi-box ontime"><div class="value" id="kpiOntime">--%</div><div class="label">On-Time GoLive</div></div>
+            <div class="kpi-box delta"><div class="value" id="kpiDelta">--</div><div class="label">Delta Médio</div></div>
+            <div class="kpi-box taxa"><div class="value" id="kpiTaxa">--%</div><div class="label">Taxa Atualiz.</div></div>
+            <div class="kpi-box aging"><div class="value" id="kpiAging">--</div><div class="label">Aging Médio</div></div>
+        </div>
+        
+        <!-- Info Bar -->
         <div id="infoBar" class="info-bar">
             <div class="info-item total"><div class="number" id="totalCount">-</div><div class="label">Projetos</div></div>
             <div class="info-item concluido"><div class="number" id="concluidoCount">-</div><div class="label">Concluídos</div></div>
             <div class="info-item andamento"><div class="number" id="andamentoCount">-</div><div class="label">Em Andamento</div></div>
             <div class="info-item critico"><div class="number" id="criticoCount">-</div><div class="label">Críticos</div></div>
-            <div class="info-item parados"><div class="number" id="paradosCount">-</div><div class="label">Parados 15+</div></div>
             <div class="update-info"><div class="date" id="updateDate">Carregando...</div><div class="time-ago" id="timeAgo"></div></div>
         </div>
+        
+        <!-- Alert -->
         <div id="alertBox" class="alert-box hidden">
             <div class="alert-icon" id="alertIcon">⚠️</div>
-            <div class="alert-content"><h3 id="alertTitle">Projetos requerem atenção!</h3><p id="alertText">Existem projetos atrasados ou parados.</p></div>
+            <div class="alert-content"><h3 id="alertTitle">Projetos requerem atenção!</h3><p id="alertText">Existem projetos críticos.</p></div>
             <div class="alert-badges" id="alertBadges">
                 <span class="alert-badge atrasado" id="badgeAtrasados">🔴 <span id="atrasadosNum">0</span> atrasados</span>
-                <span class="alert-badge parados" id="badgeParados">🟡 <span id="paradosNum">0</span> parados</span>
+                <span class="alert-badge parados" id="badgeParados">🟡 <span id="paradosNum">0</span> parados 15+</span>
             </div>
         </div>
+        
+        <!-- Cards -->
         <div class="cards-container">
             <div class="card simples" onclick="window.location.href='view-simples.html'">
                 <span class="badge">Resumida</span>
                 <div class="card-icon">📋</div>
                 <h2>Visão Resumida</h2>
-                <p>Dashboard consolidado com visão geral.</p>
+                <p>Dashboard consolidado com KPIs e decisões.</p>
                 <ul>
-                    <li>Cards com totais por status</li>
-                    <li>Gráfico de projetos parados</li>
-                    <li>Tabela com nova ordem de colunas</li>
-                    <li>Filtros por situação e PMO</li>
+                    <li>KPIs: On-Time, Delta, Taxa, Aging</li>
+                    <li>Decisões Necessárias</li>
+                    <li>Top 5 Bloqueadores (Pareto)</li>
+                    <li>Projetos Parados</li>
                 </ul>
                 <a href="view-simples.html" class="btn">Acessar →</a>
             </div>
@@ -105,53 +135,72 @@
                 <span class="badge">Completa</span>
                 <div class="card-icon">📈</div>
                 <h2>Visão Detalhada</h2>
-                <p>Dashboard segmentado por status.</p>
+                <p>Dashboard segmentado por categoria.</p>
                 <ul>
-                    <li>Seções por status</li>
+                    <li>Seções por Status</li>
                     <li>Timeline de Go Lives</li>
-                    <li>Indicador de situação automático</li>
-                    <li>Detecção de projetos parados</li>
+                    <li>Decisões Necessárias</li>
+                    <li>Drill-down completo</li>
                 </ul>
                 <a href="view-detalhada.html" class="btn">Acessar →</a>
             </div>
         </div>
+        
         <div class="footer"><p>Infraestrutura TI • <a href="admin.html">Área Administrativa</a></p></div>
     </div>
+    
     <script>
-        function normalizeStatus(status) {
-            if (!status) return 'Não Definido';
-            const s = status.toLowerCase().trim();
-            if (s.includes('conclu')) return 'Concluído';
-            if (s.includes('andamento')) return 'Em Andamento';
-            if (s.includes('atras')) return 'Atrasado';
-            if (s.includes('aguard')) return 'Aguardando Cliente';
-            if (s.includes('não') || s.includes('nao')) return 'Não Iniciado';
-            return status;
-        }
+        function normalizeStatus(s) { if (!s) return ''; const st = s.toLowerCase(); if (st.includes('conclu')) return 'Concluído'; if (st.includes('andamento')) return 'Em Andamento'; if (st.includes('atras')) return 'Atrasado'; if (st.includes('aguard')) return 'Aguardando Cliente'; if (st.includes('não') || st.includes('nao')) return 'Não Iniciado'; return s; }
+        function parseDate(d) { if (!d || d === '-') return null; const parts = d.split('/'); return parts.length === 3 ? new Date(parts[2], parts[1]-1, parts[0]) : null; }
+        function isCritico(p) { return normalizeStatus(p.status) === 'Atrasado' || (p.situacao || p.rag || '').toLowerCase() === 'vermelho' || (p.diasSemAtual || 0) > 15 || (p.bloqueador && p.bloqueador !== '-' && p.bloqueador.length > 2); }
+        
         async function loadData() {
             try {
                 const response = await fetch('dados.json?t=' + Date.now());
-                if (!response.ok) throw new Error('Não encontrado');
                 const data = await response.json();
                 if (data.projects && data.projects.length > 0) {
                     const p = data.projects;
+                    
+                    // Counts
                     document.getElementById('totalCount').textContent = p.length;
                     document.getElementById('concluidoCount').textContent = p.filter(x => normalizeStatus(x.status) === 'Concluído').length;
                     document.getElementById('andamentoCount').textContent = p.filter(x => normalizeStatus(x.status) === 'Em Andamento').length;
-                    const atrasados = p.filter(x => normalizeStatus(x.status) === 'Atrasado').length;
-                    const parados = p.filter(x => (x.diasSemAtual || 0) > 15 && normalizeStatus(x.status) !== 'Concluído').length;
-                    const criticos = p.filter(x => normalizeStatus(x.status) === 'Atrasado' || (x.situacao || x.rag || '').toLowerCase() === 'vermelho').length;
-                    document.getElementById('criticoCount').textContent = criticos;
-                    document.getElementById('paradosCount').textContent = parados;
+                    const criticos = p.filter(x => isCritico(x));
+                    document.getElementById('criticoCount').textContent = criticos.length;
+                    
+                    // KPIs
+                    const comGoLive = p.filter(x => x.goliveOriginal && x.goliveOriginal !== '-' && (x.goliveAtual || x.golive) && (x.goliveAtual || x.golive) !== '-');
+                    const onTime = comGoLive.filter(x => x.goliveOriginal === (x.goliveAtual || x.golive));
+                    document.getElementById('kpiOntime').textContent = comGoLive.length > 0 ? Math.round((onTime.length / comGoLive.length) * 100) + '%' : 'N/A';
+                    
+                    let totalDelta = 0, countDelta = 0;
+                    comGoLive.forEach(x => { const orig = parseDate(x.goliveOriginal), atual = parseDate(x.goliveAtual || x.golive); if (orig && atual) { totalDelta += Math.round((atual - orig) / 86400000); countDelta++; } });
+                    const avgDelta = countDelta > 0 ? Math.round(totalDelta / countDelta) : null;
+                    document.getElementById('kpiDelta').textContent = avgDelta !== null ? (avgDelta > 0 ? '+' : '') + avgDelta + 'd' : 'N/A';
+                    
+                    const hoje = new Date(), seteDias = new Date(hoje.getTime() - 7*86400000);
+                    const naoConcluidos = p.filter(x => normalizeStatus(x.status) !== 'Concluído');
+                    const atualizados = naoConcluidos.filter(x => { const ult = parseDate(x.ultAtual); return ult && ult >= seteDias; });
+                    document.getElementById('kpiTaxa').textContent = naoConcluidos.length > 0 ? Math.round((atualizados.length / naoConcluidos.length) * 100) + '%' : '100%';
+                    
+                    const comDias = naoConcluidos.filter(x => typeof x.diasSemAtual === 'number');
+                    const avgAging = comDias.length > 0 ? Math.round(comDias.reduce((s, x) => s + x.diasSemAtual, 0) / comDias.length) : 0;
+                    document.getElementById('kpiAging').textContent = avgAging + 'd';
+                    
+                    // Date
                     if (data.lastUpdate) {
                         const d = new Date(data.lastUpdate);
                         document.getElementById('updateDate').textContent = d.toLocaleDateString('pt-BR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-                        const diff = Math.floor((new Date() - d) / (1000*60*60*24));
+                        const diff = Math.floor((new Date() - d) / 86400000);
                         document.getElementById('timeAgo').textContent = diff > 0 ? `há ${diff} dia(s)` : 'hoje';
                     }
+                    
+                    // Alert
+                    const atrasados = p.filter(x => normalizeStatus(x.status) === 'Atrasado').length;
+                    const parados = p.filter(x => (x.diasSemAtual || 0) > 15 && normalizeStatus(x.status) !== 'Concluído').length;
                     const alertBox = document.getElementById('alertBox');
                     alertBox.classList.remove('hidden');
-                    if (criticos > 0 || parados > 0) {
+                    if (criticos.length > 0) {
                         document.getElementById('atrasadosNum').textContent = atrasados;
                         document.getElementById('paradosNum').textContent = parados;
                         if (atrasados === 0) document.getElementById('badgeAtrasados').style.display = 'none';
@@ -160,7 +209,7 @@
                         alertBox.classList.add('success');
                         document.getElementById('alertIcon').textContent = '✅';
                         document.getElementById('alertTitle').textContent = 'Tudo em ordem!';
-                        document.getElementById('alertText').textContent = 'Nenhum projeto crítico ou parado.';
+                        document.getElementById('alertText').textContent = 'Nenhum projeto crítico.';
                         document.getElementById('alertBadges').style.display = 'none';
                     }
                 }
