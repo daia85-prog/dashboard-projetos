@@ -3,22 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visão Detalhada - Infraestrutura v5</title>
+    <title>Visão Detalhada - Infraestrutura v5.2</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 20px; min-height: 100vh; }
         .container { max-width: 1600px; margin: 0 auto; }
         .header { background: rgba(255,255,255,0.95); padding: 25px 30px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
-        .header h1 { color: #1a1a2e; font-size: 24px; }
-        .header p { color: #64748b; font-size: 13px; }
+        .header h1 { color: #1a1a2e; font-size: 24px; display: flex; align-items: center; gap: 10px; }
+        .header .version { background: #ede9fe; color: #7c3aed; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .header p { color: #64748b; font-size: 13px; margin-top: 5px; }
         .btn { background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 12px 20px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
         .btn-secondary { background: linear-gradient(135deg, #64748b, #475569); }
-        .hidden { display: none; }
+        .hidden { display: none !important; }
         .loading { background: rgba(255,255,255,0.95); padding: 60px; border-radius: 16px; text-align: center; }
         .spinner { width: 50px; height: 50px; border: 4px solid #e5e7eb; border-top: 4px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        /* KPIs */
+        /* KPIs - CORRIGIDO */
         .kpis-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; margin-bottom: 20px; }
         .kpi-card { background: rgba(255,255,255,0.95); padding: 16px 18px; border-radius: 14px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); position: relative; overflow: hidden; }
         .kpi-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
@@ -26,20 +27,20 @@
         .kpi-card.delta::before { background: linear-gradient(90deg, #f59e0b, #d97706); }
         .kpi-card.taxa::before { background: linear-gradient(90deg, #3b82f6, #2563eb); }
         .kpi-card.aging::before { background: linear-gradient(90deg, #8b5cf6, #7c3aed); }
-        .kpi-label { font-size: 10px; text-transform: uppercase; color: #64748b; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 6px; }
+        .kpi-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+        .kpi-label { font-size: 10px; text-transform: uppercase; color: #64748b; font-weight: 600; letter-spacing: 0.5px; }
+        .kpi-help { width: 16px; height: 16px; background: #f1f5f9; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #64748b; cursor: help; position: relative; }
+        .kpi-help:hover .kpi-tooltip { display: block; }
+        .kpi-tooltip { display: none; position: absolute; bottom: 100%; right: 0; margin-bottom: 8px; width: 180px; background: #1e293b; color: white; padding: 8px 10px; border-radius: 6px; font-size: 10px; line-height: 1.4; z-index: 100; }
         .kpi-value { font-size: 24px; font-weight: 700; }
         .kpi-card.ontime .kpi-value { color: #10b981; }
         .kpi-card.delta .kpi-value { color: #f59e0b; }
         .kpi-card.taxa .kpi-value { color: #3b82f6; }
         .kpi-card.aging .kpi-value { color: #8b5cf6; }
         .kpi-sub { font-size: 10px; color: #94a3b8; margin-top: 2px; }
-        .kpi-tooltip { position: absolute; top: 8px; right: 8px; width: 16px; height: 16px; background: #f1f5f9; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #64748b; cursor: help; }
-        .tooltip { position: relative; }
-        .tooltip .tooltip-text { visibility: hidden; width: 200px; background: #1e293b; color: white; text-align: left; border-radius: 8px; padding: 8px 10px; position: absolute; z-index: 100; bottom: 125%; left: 50%; transform: translateX(-50%); font-size: 10px; line-height: 1.4; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
-        .tooltip:hover .tooltip-text { visibility: visible; }
         
         /* Cards Status */
-        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-bottom: 20px; }
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(115px, 1fr)); gap: 12px; margin-bottom: 20px; }
         .summary-card { background: rgba(255,255,255,0.95); padding: 14px; border-radius: 14px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.2); position: relative; overflow: hidden; cursor: pointer; transition: all 0.3s; }
         .summary-card:hover { transform: translateY(-3px); }
         .summary-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
@@ -60,7 +61,9 @@
         .summary-card.critico .number { color: #dc2626; }
         .summary-card .label { font-size: 9px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
         .summary-card.active { box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.5); }
-        .info-icon { position: absolute; top: 6px; right: 6px; width: 14px; height: 14px; background: #f1f5f9; border-radius: 50%; font-size: 9px; display: flex; align-items: center; justify-content: center; color: #64748b; }
+        .summary-card .info-icon { position: absolute; top: 6px; right: 6px; width: 14px; height: 14px; background: #f1f5f9; border-radius: 50%; font-size: 9px; display: flex; align-items: center; justify-content: center; color: #64748b; cursor: help; }
+        .summary-card .info-icon:hover .card-tooltip { display: block; }
+        .card-tooltip { display: none; position: absolute; bottom: 100%; right: 0; margin-bottom: 5px; width: 160px; background: #1e293b; color: white; padding: 6px 8px; border-radius: 6px; font-size: 9px; text-align: left; z-index: 100; }
         
         /* Decisões */
         .decisoes-section { background: rgba(255,255,255,0.95); border-radius: 14px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); margin-bottom: 20px; overflow: hidden; }
@@ -72,7 +75,9 @@
         .decisoes-table td { padding: 12px 14px; border-bottom: 1px solid #fef2f2; font-size: 12px; }
         .decisoes-table tr:hover { background: #fff5f5; }
         .decisoes-table .projeto { font-weight: 600; color: #1e293b; }
-        .decisoes-table .acao { background: #fef3c7; color: #92400e; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; }
+        .decisoes-table .bloqueador { color: #dc2626; }
+        .decisoes-table .dias { background: #fee2e2; color: #991b1b; padding: 3px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; }
+        .decisoes-table .acao { background: #fef3c7; color: #92400e; padding: 3px 10px; border-radius: 6px; font-size: 10px; font-weight: 600; }
         .no-decisoes { text-align: center; padding: 25px; color: #10b981; font-size: 12px; }
         
         /* Filters */
@@ -80,24 +85,25 @@
         .filters-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto; gap: 12px; align-items: end; }
         .filter-group label { display: block; font-size: 10px; text-transform: uppercase; color: #64748b; margin-bottom: 4px; font-weight: 600; }
         .filter-group input, .filter-group select { width: 100%; padding: 8px 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 12px; }
+        .filter-group input:focus, .filter-group select:focus { outline: none; border-color: #667eea; }
         .btn-clear { background: #f3f4f6; color: #64748b; box-shadow: none; padding: 8px 14px; }
         
         /* Charts */
         .charts-section { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 20px; }
-        .chart-card { background: rgba(255,255,255,0.95); padding: 20px; border-radius: 14px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
-        .chart-card h3 { color: #1a1a2e; font-size: 13px; margin-bottom: 15px; }
+        .chart-card { background: rgba(255,255,255,0.95); padding: 18px; border-radius: 14px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+        .chart-card h3 { color: #1a1a2e; font-size: 13px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
         .pie-container { display: flex; align-items: center; justify-content: center; gap: 15px; }
-        .pie-chart { width: 100px; height: 100px; border-radius: 50%; position: relative; }
-        .pie-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 50px; height: 50px; background: white; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .pie-center .number { font-size: 16px; font-weight: 700; color: #1a1a2e; }
+        .pie-chart { width: 90px; height: 90px; border-radius: 50%; position: relative; }
+        .pie-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 45px; height: 45px; background: white; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .pie-center .number { font-size: 14px; font-weight: 700; color: #1a1a2e; }
         .pie-center .label { font-size: 7px; color: #64748b; }
         .pie-legend { display: flex; flex-direction: column; gap: 4px; }
         .legend-item { display: flex; align-items: center; gap: 6px; font-size: 10px; color: #475569; }
         .legend-dot { width: 8px; height: 8px; border-radius: 2px; }
         
         /* Bloqueadores */
-        .bloqueador-item { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-        .bloqueador-label { min-width: 100px; font-size: 10px; color: #374151; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .bloqueador-item { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .bloqueador-label { min-width: 90px; font-size: 10px; color: #374151; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .bloqueador-bar { flex: 1; height: 20px; background: #fee2e2; border-radius: 6px; overflow: hidden; }
         .bloqueador-fill { height: 100%; background: linear-gradient(90deg, #ef4444, #dc2626); border-radius: 6px; display: flex; align-items: center; justify-content: flex-end; padding: 0 8px; font-size: 10px; font-weight: 600; color: white; }
         .no-bloqueadores { text-align: center; padding: 15px; color: #10b981; font-size: 11px; }
@@ -105,12 +111,13 @@
         /* Timeline */
         .timeline-chart { display: flex; flex-direction: column; gap: 8px; }
         .timeline-item { display: flex; align-items: center; gap: 10px; }
-        .timeline-date { min-width: 70px; font-size: 10px; color: #64748b; font-weight: 600; }
-        .timeline-bar { flex: 1; height: 24px; border-radius: 6px; display: flex; align-items: center; padding: 0 10px; font-size: 10px; font-weight: 600; color: white; }
+        .timeline-date { min-width: 65px; font-size: 10px; color: #64748b; font-weight: 600; }
+        .timeline-bar { flex: 1; height: 22px; border-radius: 6px; display: flex; align-items: center; padding: 0 10px; font-size: 10px; font-weight: 600; color: white; }
         .timeline-bar.verde { background: linear-gradient(90deg, #10b981, #059669); }
         .timeline-bar.amarelo { background: linear-gradient(90deg, #f59e0b, #d97706); }
         .timeline-bar.vermelho { background: linear-gradient(90deg, #ef4444, #dc2626); }
         .timeline-bar.cinza { background: linear-gradient(90deg, #6b7280, #4b5563); }
+        .no-timeline { text-align: center; padding: 15px; color: #64748b; font-size: 11px; }
         
         /* Sections */
         .section { background: rgba(255,255,255,0.95); border-radius: 14px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); margin-bottom: 20px; overflow: hidden; }
@@ -168,14 +175,19 @@
         .info-box label { display: block; font-size: 8px; text-transform: uppercase; color: #64748b; margin-bottom: 3px; font-weight: 600; }
         .info-box span { font-size: 11px; color: #1e293b; font-weight: 600; }
         
-        .print-modal { max-width: 350px; }
-        .print-options { display: flex; flex-direction: column; gap: 8px; margin: 15px 0; }
-        .print-option { display: flex; align-items: center; gap: 10px; padding: 10px; background: #f8fafc; border-radius: 8px; cursor: pointer; border: 2px solid transparent; }
+        /* Print Modal */
+        .print-modal { max-width: 400px; }
+        .print-options { display: flex; flex-direction: column; gap: 8px; margin: 12px 0; }
+        .print-option { display: flex; align-items: center; gap: 10px; padding: 12px; background: #f8fafc; border-radius: 8px; cursor: pointer; border: 2px solid transparent; }
         .print-option:hover, .print-option.selected { background: #ede9fe; border-color: #667eea; }
-        .print-option input { display: none; }
+        .print-option input[type="radio"] { display: none; }
         .print-icon { font-size: 18px; }
         .print-label { font-weight: 600; color: #1a1a2e; font-size: 12px; }
         .print-desc { font-size: 10px; color: #64748b; }
+        .print-input { margin-top: 8px; }
+        .print-input input { width: 100%; padding: 8px 12px; border: 2px solid #e5e7eb; border-radius: 6px; font-size: 12px; }
+        .print-input input:focus { outline: none; border-color: #667eea; }
+        .print-input small { display: block; margin-top: 4px; color: #64748b; font-size: 10px; }
         
         @media print { body { background: white; padding: 10px; } .btn, .filters-section, .modal-overlay, .charts-section, .header > div:last-child, .kpis-section, .decisoes-section { display: none !important; } .section { box-shadow: none; border: 1px solid #e5e7eb; } }
         @media (max-width: 1200px) { .charts-section { grid-template-columns: 1fr; } .filters-grid { grid-template-columns: 1fr 1fr; } }
@@ -185,7 +197,10 @@
 <body>
     <div class="container">
         <div class="header">
-            <div><h1>📈 Visão Detalhada - Infraestrutura</h1><p>Atualizado em: <span id="currentDate">Carregando...</span></p></div>
+            <div>
+                <h1>📈 Visão Detalhada - Infraestrutura <span class="version">v5.2</span></h1>
+                <p>Atualizado em: <span id="currentDate">Carregando...</span></p>
+            </div>
             <div style="display:flex;gap:10px;flex-wrap:wrap;">
                 <a href="index.html" class="btn btn-secondary">← Voltar</a>
                 <button class="btn" onclick="openPrintModal()">🖨️ Imprimir</button>
@@ -198,26 +213,34 @@
             <!-- KPIs -->
             <div class="kpis-section">
                 <div class="kpi-card ontime">
-                    <div class="tooltip kpi-tooltip">?<span class="tooltip-text">Percentual de projetos com Go Live no prazo (Atual = Original)</span></div>
-                    <div class="kpi-label">On-Time (Go Live)</div>
+                    <div class="kpi-header">
+                        <div class="kpi-label">On-Time (Go Live)</div>
+                        <div class="kpi-help">?<div class="kpi-tooltip">Percentual de projetos com Go Live no prazo</div></div>
+                    </div>
                     <div class="kpi-value" id="kpiOntime">--%</div>
                     <div class="kpi-sub" id="kpiOntimeSub">de X com data</div>
                 </div>
                 <div class="kpi-card delta">
-                    <div class="tooltip kpi-tooltip">?<span class="tooltip-text">Média de dias de atraso/antecipação entre Go Live Original e Atual</span></div>
-                    <div class="kpi-label">Delta Médio GoLive</div>
+                    <div class="kpi-header">
+                        <div class="kpi-label">Delta Médio GoLive</div>
+                        <div class="kpi-help">?<div class="kpi-tooltip">Média de dias atraso/antecipação</div></div>
+                    </div>
                     <div class="kpi-value" id="kpiDelta">-- dias</div>
                     <div class="kpi-sub" id="kpiDeltaSub">atraso médio</div>
                 </div>
                 <div class="kpi-card taxa">
-                    <div class="tooltip kpi-tooltip">?<span class="tooltip-text">Percentual de projetos atualizados nos últimos 7 dias</span></div>
-                    <div class="kpi-label">Taxa Atualização</div>
+                    <div class="kpi-header">
+                        <div class="kpi-label">Taxa Atualização</div>
+                        <div class="kpi-help">?<div class="kpi-tooltip">% projetos atualizados últimos 7 dias</div></div>
+                    </div>
                     <div class="kpi-value" id="kpiTaxa">--%</div>
                     <div class="kpi-sub" id="kpiTaxaSub">últimos 7 dias</div>
                 </div>
                 <div class="kpi-card aging">
-                    <div class="tooltip kpi-tooltip">?<span class="tooltip-text">Média de dias sem atualização dos projetos não concluídos</span></div>
-                    <div class="kpi-label">Aging Médio</div>
+                    <div class="kpi-header">
+                        <div class="kpi-label">Aging Médio</div>
+                        <div class="kpi-help">?<div class="kpi-tooltip">Média dias sem atualização</div></div>
+                    </div>
                     <div class="kpi-value" id="kpiAging">-- dias</div>
                     <div class="kpi-sub" id="kpiAgingSub">sem atualização</div>
                 </div>
@@ -231,15 +254,14 @@
                 <div class="summary-card atrasado" onclick="filterByStatus('Atrasado')"><div class="label">Atrasados</div><div class="number" id="delayedCount">0</div></div>
                 <div class="summary-card aguardando" onclick="filterByStatus('Aguardando Cliente')"><div class="label">Aguardando</div><div class="number" id="waitingCount">0</div></div>
                 <div class="summary-card nao-iniciado" onclick="filterByStatus('Não Iniciado')"><div class="label">Não Iniciados</div><div class="number" id="notStartedCount">0</div></div>
-                <div class="summary-card critico tooltip" onclick="filterByCritico()">
-                    <span class="tooltip-text">Crítico = Vermelho OU Atrasado OU Bloqueado OU 15+ dias parado</span>
-                    <div class="info-icon">?</div>
+                <div class="summary-card critico" onclick="filterByCritico()">
+                    <div class="info-icon">?<div class="card-tooltip">Crítico = Vermelho OU Atrasado OU 15+ dias</div></div>
                     <div class="label">Críticos</div>
                     <div class="number" id="criticoCount">0</div>
                 </div>
             </div>
             
-            <!-- Decisões Necessárias -->
+            <!-- Decisões -->
             <div class="decisoes-section" id="decisoesSection">
                 <div class="decisoes-header">
                     <h2>🎯 Decisões Necessárias (Esta Semana)</h2>
@@ -258,9 +280,9 @@
                 <div class="filters-grid">
                     <div class="filter-group"><label>Buscar projeto</label><input type="text" id="searchInput" placeholder="Digite o nome..." oninput="applyFilters()"></div>
                     <div class="filter-group"><label>Status</label><select id="filterStatus" onchange="applyFilters()"><option value="">Todos</option><option value="Em Andamento">Em Andamento</option><option value="Concluído">Concluído</option><option value="Atrasado">Atrasado</option><option value="Aguardando Cliente">Aguardando</option><option value="Não Iniciado">Não Iniciado</option></select></div>
-                    <div class="filter-group"><label>Situação</label><select id="filterSituacao" onchange="applyFilters()"><option value="">Todas</option><option value="vermelho">🔴 Vermelho</option><option value="amarelo">🟡 Amarelo</option><option value="verde">🟢 Verde</option></select></div>
+                    <div class="filter-group"><label>Situação</label><select id="filterSituacao" onchange="applyFilters()"><option value="">Todas</option><option value="vermelho">🔴 Vermelho</option><option value="amarelo">🟡 Amarelo</option><option value="verde">🟢 Verde</option><option value="cinza">⚪ Cinza</option></select></div>
                     <div class="filter-group"><label>PMO Interno</label><select id="filterPMO" onchange="applyFilters()"><option value="">Todos</option></select></div>
-                    <div class="filter-group"><label>Parados</label><select id="filterParados" onchange="applyFilters()"><option value="">Todos</option><option value="15">15+ dias</option><option value="7">7+ dias</option></select></div>
+                    <div class="filter-group"><label>Parados</label><select id="filterParados" onchange="applyFilters()"><option value="">Todos</option><option value="7">7+ dias</option><option value="15">15+ dias</option><option value="30">30+ dias</option><option value="60">60+ dias</option></select></div>
                     <div class="filter-group"><button class="btn btn-clear" onclick="clearFilters()">✕ Limpar</button></div>
                 </div>
             </div>
@@ -294,6 +316,7 @@
                     <label class="print-option selected" onclick="selectPrintOption(this, 'current')"><input type="radio" name="print" value="current" checked><span class="print-icon">📄</span><div><div class="print-label">Página atual</div><div class="print-desc">Projetos filtrados</div></div></label>
                     <label class="print-option" onclick="selectPrintOption(this, 'all')"><input type="radio" name="print" value="all"><span class="print-icon">📑</span><div><div class="print-label">Todos os projetos</div><div class="print-desc">Sem filtros</div></div></label>
                     <label class="print-option" onclick="selectPrintOption(this, 'criticos')"><input type="radio" name="print" value="criticos"><span class="print-icon">🚨</span><div><div class="print-label">Apenas críticos</div><div class="print-desc">Atrasados ou vermelhos</div></div></label>
+                    <label class="print-option" onclick="selectPrintOption(this, 'specific')"><input type="radio" name="print" value="specific"><span class="print-icon">🔢</span><div><div class="print-label">Projetos específicos</div><div class="print-desc">Digite os números separados por ;</div><div class="print-input" onclick="event.stopPropagation()"><input type="text" id="specificPages" placeholder="Ex: 1;3;5;10" onfocus="selectPrintOption(this.closest('.print-option'), 'specific')"><small>Números das linhas</small></div></div></label>
                 </div>
                 <button class="btn" style="width:100%;" onclick="executePrint()">🖨️ Imprimir</button>
             </div>
@@ -318,10 +341,10 @@
                     populateFilters();
                     document.getElementById('loading').classList.add('hidden');
                     document.getElementById('dashboardContent').classList.remove('hidden');
-                    renderKPIs();
+                    calculateKPIs();
                     updateDashboard();
                 } else { showNoData(); }
-            } catch(e) { showNoData(); }
+            } catch(e) { console.error(e); showNoData(); }
         }
         
         function showNoData() { document.getElementById('loading').innerHTML = '<h3>📊 Dados não disponíveis</h3>'; }
@@ -345,7 +368,7 @@
         
         function isCritico(p) {
             const sit = (p.situacao || p.rag || '').toLowerCase();
-            return sit === 'vermelho' || normalizeStatus(p.status) === 'Atrasado' || normalizeStatus(p.status) === 'Bloqueado' || (p.diasSemAtual || 0) > 15;
+            return sit === 'vermelho' || normalizeStatus(p.status) === 'Atrasado' || (p.diasSemAtual || 0) > 15;
         }
         
         function getSituacaoHtml(sit) { 
@@ -359,11 +382,7 @@
             return `<div class="progress-container"><div class="progress-bar"><div class="progress-fill ${cls}" style="width:${p}%"></div></div><span class="progress-text">${p}%</span></div>`;
         }
         
-        function parseDate(d) { 
-            if (!d || d === '-') return null; 
-            const parts = d.split('/'); 
-            return parts.length === 3 ? new Date(parts[2], parts[1]-1, parts[0]) : null; 
-        }
+        function parseDate(d) { if (!d || d === '-') return null; const parts = d.split('/'); return parts.length === 3 ? new Date(parts[2], parts[1]-1, parts[0]) : null; }
         
         function filterByStatus(status) {
             document.getElementById('filterStatus').value = status;
@@ -418,42 +437,24 @@
             updateDashboard();
         }
         
-        function renderKPIs() {
-            // On-Time
-            const comGoLive = projects.filter(p => p.goliveOriginal && p.goliveOriginal !== '-' && (p.goliveAtual || p.golive) && (p.goliveAtual || p.golive) !== '-');
-            let onTime = 0;
-            comGoLive.forEach(p => { if (p.goliveOriginal === (p.goliveAtual || p.golive)) onTime++; });
-            const pctOnTime = comGoLive.length > 0 ? Math.round((onTime / comGoLive.length) * 100) : null;
+        function calculateKPIs() {
+            const comGoLive = projects.filter(p => { const orig = p.goliveOriginal, atual = p.goliveAtual || p.golive; return orig && orig !== '-' && atual && atual !== '-'; });
+            const onTime = comGoLive.filter(p => p.goliveOriginal === (p.goliveAtual || p.golive));
+            const pctOnTime = comGoLive.length > 0 ? Math.round((onTime.length / comGoLive.length) * 100) : null;
             document.getElementById('kpiOntime').textContent = pctOnTime !== null ? pctOnTime + '%' : 'N/A';
             document.getElementById('kpiOntimeSub').textContent = comGoLive.length > 0 ? `de ${comGoLive.length} com data` : 'sem dados';
             
-            // Delta Médio
             let totalDelta = 0, countDelta = 0;
-            comGoLive.forEach(p => {
-                const orig = parseDate(p.goliveOriginal);
-                const atual = parseDate(p.goliveAtual || p.golive);
-                if (orig && atual) {
-                    totalDelta += Math.round((atual - orig) / (1000 * 60 * 60 * 24));
-                    countDelta++;
-                }
-            });
-            if (countDelta > 0) {
-                const avgDelta = Math.round(totalDelta / countDelta);
-                document.getElementById('kpiDelta').textContent = (avgDelta > 0 ? '+' : '') + avgDelta + ' dias';
-                document.getElementById('kpiDeltaSub').textContent = avgDelta > 0 ? 'atraso médio' : avgDelta < 0 ? 'antecipação média' : 'no prazo';
-            } else {
-                document.getElementById('kpiDelta').textContent = 'N/A';
-                document.getElementById('kpiDeltaSub').textContent = 'sem dados';
-            }
+            comGoLive.forEach(p => { const orig = parseDate(p.goliveOriginal); const atual = parseDate(p.goliveAtual || p.golive); if (orig && atual) { totalDelta += Math.round((atual - orig) / (1000 * 60 * 60 * 24)); countDelta++; }});
+            if (countDelta > 0) { const avgDelta = Math.round(totalDelta / countDelta); document.getElementById('kpiDelta').textContent = (avgDelta > 0 ? '+' : '') + avgDelta + ' dias'; document.getElementById('kpiDeltaSub').textContent = avgDelta > 0 ? 'atraso médio' : avgDelta < 0 ? 'antecipação' : 'no prazo'; } 
+            else { document.getElementById('kpiDelta').textContent = 'N/A'; document.getElementById('kpiDeltaSub').textContent = 'sem dados'; }
             
-            // Taxa Atualização
             const naoConcluidos = projects.filter(p => normalizeStatus(p.status) !== 'Concluído');
             const atualizados = naoConcluidos.filter(p => (p.diasSemAtual || 0) <= 7);
             const pctTaxa = naoConcluidos.length > 0 ? Math.round((atualizados.length / naoConcluidos.length) * 100) : 0;
             document.getElementById('kpiTaxa').textContent = pctTaxa + '%';
             document.getElementById('kpiTaxaSub').textContent = `${atualizados.length} de ${naoConcluidos.length}`;
             
-            // Aging Médio
             const totalAging = naoConcluidos.reduce((sum, p) => sum + (p.diasSemAtual || 0), 0);
             const avgAging = naoConcluidos.length > 0 ? Math.round(totalAging / naoConcluidos.length) : 0;
             document.getElementById('kpiAging').textContent = avgAging + ' dias';
@@ -461,7 +462,6 @@
         }
         
         function updateDashboard() {
-            // Cards - FILTRADOS
             document.getElementById('totalProjects').textContent = filteredProjects.length;
             document.getElementById('completedCount').textContent = filteredProjects.filter(p => normalizeStatus(p.status) === 'Concluído').length;
             document.getElementById('ongoingCount').textContent = filteredProjects.filter(p => normalizeStatus(p.status) === 'Em Andamento').length;
@@ -476,77 +476,35 @@
         }
         
         function renderDecisoes() {
-            const decisoes = filteredProjects.filter(p => 
-                (p.bloqueador && p.bloqueador !== '-' && p.bloqueador.length > 2) || 
-                (p.diasSemAtual || 0) > 15 ||
-                normalizeStatus(p.status) === 'Atrasado'
-            ).slice(0, 5);
-            
+            const decisoes = filteredProjects.filter(p => (p.bloqueador && p.bloqueador !== '-' && p.bloqueador.length > 2) || (p.diasSemAtual || 0) > 15 || normalizeStatus(p.status) === 'Atrasado').slice(0, 5);
             document.getElementById('decisoesBadge').textContent = decisoes.length + ' itens';
-            document.getElementById('decisoesTable').innerHTML = decisoes.length === 0 ?
-                '<tr><td colspan="5" class="no-decisoes">✅ Nenhuma decisão urgente!</td></tr>' :
+            document.getElementById('decisoesTable').innerHTML = decisoes.length === 0 ? '<tr><td colspan="5" class="no-decisoes">✅ Nenhuma decisão urgente!</td></tr>' :
                 decisoes.map(p => {
                     let acao = 'Verificar status';
                     if ((p.diasSemAtual || 0) > 15) acao = 'Cobrar atualização';
-                    if (p.bloqueador && p.bloqueador.toLowerCase().includes('cliente')) acao = 'Escalar gerência';
+                    if (p.bloqueador && p.bloqueador.toLowerCase().includes('cliente')) acao = 'Escalar p/ gerência';
                     if (normalizeStatus(p.status) === 'Atrasado') acao = 'Reunião urgente';
-                    return `<tr>
-                        <td class="projeto">${p.projeto}</td>
-                        <td>${p.bloqueador || '-'}</td>
-                        <td>${p.pmoInterno || p.respInterno || '-'}</td>
-                        <td>${p.diasSemAtual || 0} dias</td>
-                        <td><span class="acao">${acao}</span></td>
-                    </tr>`;
+                    return `<tr><td class="projeto">${p.projeto}</td><td class="bloqueador">${p.bloqueador || '-'}</td><td>${p.pmoInterno || p.respInterno || '-'}</td><td><span class="dias">${p.diasSemAtual || 0} dias</span></td><td><span class="acao">${acao}</span></td></tr>`;
                 }).join('');
         }
         
         function renderCharts() {
-            // Pie - FILTRADOS
-            const counts = {
-                'Em Andamento': filteredProjects.filter(p => normalizeStatus(p.status) === 'Em Andamento').length,
-                'Concluído': filteredProjects.filter(p => normalizeStatus(p.status) === 'Concluído').length,
-                'Atrasado': filteredProjects.filter(p => normalizeStatus(p.status) === 'Atrasado').length,
-                'Aguardando': filteredProjects.filter(p => normalizeStatus(p.status) === 'Aguardando Cliente').length,
-                'Não Iniciado': filteredProjects.filter(p => normalizeStatus(p.status) === 'Não Iniciado').length
-            };
+            const counts = {'Em Andamento': filteredProjects.filter(p => normalizeStatus(p.status) === 'Em Andamento').length,'Concluído': filteredProjects.filter(p => normalizeStatus(p.status) === 'Concluído').length,'Atrasado': filteredProjects.filter(p => normalizeStatus(p.status) === 'Atrasado').length,'Aguardando': filteredProjects.filter(p => normalizeStatus(p.status) === 'Aguardando Cliente').length,'Não Iniciado': filteredProjects.filter(p => normalizeStatus(p.status) === 'Não Iniciado').length};
             const colors = {'Em Andamento':'#3b82f6','Concluído':'#10b981','Atrasado':'#ef4444','Aguardando':'#f59e0b','Não Iniciado':'#6b7280'};
             const total = Object.values(counts).reduce((a,b) => a+b, 0);
             document.getElementById('pieTotal').textContent = total;
             
-            if (total === 0) {
-                document.getElementById('pieChart').style.background = '#e5e7eb';
-                document.getElementById('pieLegend').innerHTML = '<div style="color:#64748b;">Sem dados</div>';
-            } else {
-                let cumPct = 0, gradParts = [];
-                Object.entries(counts).forEach(([s, c]) => { if (c > 0) { const pct = (c/total)*100; gradParts.push(`${colors[s]} ${cumPct}% ${cumPct+pct}%`); cumPct += pct; }});
-                document.getElementById('pieChart').style.background = `conic-gradient(${gradParts.join(', ')})`;
-                document.getElementById('pieLegend').innerHTML = Object.entries(counts).filter(([_,c]) => c > 0)
-                    .map(([s,c]) => `<div class="legend-item"><span class="legend-dot" style="background:${colors[s]}"></span><span>${s}: ${c}</span></div>`).join('');
-            }
+            if (total === 0) { document.getElementById('pieChart').style.background = '#e5e7eb'; document.getElementById('pieLegend').innerHTML = '<div style="color:#64748b;">Sem dados</div>'; } 
+            else { let cumPct = 0, gradParts = []; Object.entries(counts).forEach(([s, c]) => { if (c > 0) { const pct = (c/total)*100; gradParts.push(`${colors[s]} ${cumPct}% ${cumPct+pct}%`); cumPct += pct; }}); document.getElementById('pieChart').style.background = `conic-gradient(${gradParts.join(', ')})`; document.getElementById('pieLegend').innerHTML = Object.entries(counts).filter(([_,c]) => c > 0).map(([s,c]) => `<div class="legend-item"><span class="legend-dot" style="background:${colors[s]}"></span><span>${s}: ${c}</span></div>`).join(''); }
             
-            // Bloqueadores - FILTRADOS
             const bloqueadores = {};
-            filteredProjects.forEach(p => {
-                if (p.bloqueador && p.bloqueador !== '-' && p.bloqueador !== '' && p.bloqueador.length > 2) {
-                    const b = p.bloqueador.substring(0, 20);
-                    bloqueadores[b] = (bloqueadores[b] || 0) + 1;
-                }
-            });
+            filteredProjects.forEach(p => { if (p.bloqueador && p.bloqueador !== '-' && p.bloqueador !== '' && p.bloqueador.length > 2) { const b = p.bloqueador.substring(0, 18); bloqueadores[b] = (bloqueadores[b] || 0) + 1; }});
             const topBloqueadores = Object.entries(bloqueadores).sort((a,b) => b[1] - a[1]).slice(0, 5);
             const maxBloq = topBloqueadores.length > 0 ? topBloqueadores[0][1] : 1;
-            document.getElementById('bloqueadoresChart').innerHTML = topBloqueadores.length === 0 ?
-                '<div class="no-bloqueadores">✅ Nenhum bloqueador!</div>' :
-                topBloqueadores.map(([b, c]) => `<div class="bloqueador-item">
-                    <div class="bloqueador-label" title="${b}">${b}</div>
-                    <div class="bloqueador-bar"><div class="bloqueador-fill" style="width:${(c/maxBloq)*100}%">${c}</div></div>
-                </div>`).join('');
+            document.getElementById('bloqueadoresChart').innerHTML = topBloqueadores.length === 0 ? '<div class="no-bloqueadores">✅ Nenhum bloqueador!</div>' : topBloqueadores.map(([b, c]) => `<div class="bloqueador-item"><div class="bloqueador-label" title="${b}">${b}</div><div class="bloqueador-bar"><div class="bloqueador-fill" style="width:${(c/maxBloq)*100}%">${c}</div></div></div>`).join('');
             
-            // Timeline - FILTRADOS
-            const upcoming = filteredProjects.filter(p => (p.goliveAtual || p.golive) && (p.goliveAtual || p.golive) !== '-' && normalizeStatus(p.status) !== 'Concluído')
-                .sort((a, b) => (parseDate(a.goliveAtual || a.golive) || new Date(9999,0)) - (parseDate(b.goliveAtual || b.golive) || new Date(9999,0))).slice(0, 5);
-            document.getElementById('timelineChart').innerHTML = upcoming.length === 0 ? 
-                '<div class="empty-state">Nenhum Go Live agendado</div>' :
-                upcoming.map(p => `<div class="timeline-item"><div class="timeline-date">${p.goliveAtual || p.golive}</div><div class="timeline-bar ${p.situacao || p.rag || 'cinza'}">${p.projeto}</div></div>`).join('');
+            const upcoming = filteredProjects.filter(p => (p.goliveAtual || p.golive) && (p.goliveAtual || p.golive) !== '-' && normalizeStatus(p.status) !== 'Concluído').sort((a, b) => (parseDate(a.goliveAtual || a.golive) || new Date(9999,0)) - (parseDate(b.goliveAtual || b.golive) || new Date(9999,0))).slice(0, 5);
+            document.getElementById('timelineChart').innerHTML = upcoming.length === 0 ? '<div class="no-timeline">Nenhum Go Live agendado</div>' : upcoming.map(p => `<div class="timeline-item"><div class="timeline-date">${p.goliveAtual || p.golive}</div><div class="timeline-bar ${p.situacao || p.rag || 'cinza'}">${p.projeto}</div></div>`).join('');
         }
         
         function renderSections() {
@@ -561,20 +519,7 @@
             container.innerHTML = sections.map(s => {
                 const sProjects = filteredProjects.filter(s.filter);
                 if (sProjects.length === 0) return '';
-                return `<div class="section">
-                    <div class="section-header ${s.class}"><h2>${s.title}</h2><span class="section-badge">${sProjects.length}</span></div>
-                    <div class="table-container"><table><thead><tr>
-                        <th>Projeto</th><th>Localização</th><th>Go Live</th><th>Situação</th><th>Progresso</th><th>Etapa</th><th>PMO</th><th>Dias Parado</th>
-                    </tr></thead><tbody>${sProjects.map(p => `<tr class="clickable" onclick="openModal('${p.projeto.replace(/'/g, "\\'")}')">
-                        <td class="project-name">${p.projeto}</td>
-                        <td>${p.localizacao || '-'}</td>
-                        <td>${p.goliveAtual || p.golive || '-'}</td>
-                        <td>${getSituacaoHtml(p.situacao || p.rag)}</td>
-                        <td>${getProgressHtml(p.progresso)}</td>
-                        <td style="font-size:10px;">${p.etapa || '-'}</td>
-                        <td>${p.pmoInterno || p.respInterno || '-'}</td>
-                        <td>${(p.diasSemAtual || 0) > 15 ? `<span style="color:#991b1b;font-weight:bold;">${p.diasSemAtual}d</span>` : `${p.diasSemAtual || 0}d`}</td>
-                    </tr>`).join('')}</tbody></table></div></div>`;
+                return `<div class="section"><div class="section-header ${s.class}"><h2>${s.title}</h2><span class="section-badge">${sProjects.length}</span></div><div class="table-container"><table><thead><tr><th>Projeto</th><th>Localização</th><th>Go Live</th><th>Situação</th><th>Progresso</th><th>Etapa</th><th>PMO</th><th>Dias Parado</th></tr></thead><tbody>${sProjects.map(p => `<tr class="clickable" onclick="openModal('${p.projeto.replace(/'/g, "\\'")}')"><td class="project-name">${p.projeto}</td><td>${p.localizacao || '-'}</td><td>${p.goliveAtual || p.golive || '-'}</td><td>${getSituacaoHtml(p.situacao || p.rag)}</td><td>${getProgressHtml(p.progresso)}</td><td style="font-size:10px;">${p.etapa || '-'}</td><td>${p.pmoInterno || p.respInterno || '-'}</td><td>${(p.diasSemAtual || 0) > 15 ? `<span style="color:#991b1b;font-weight:bold;">${p.diasSemAtual}d</span>` : `${p.diasSemAtual || 0}d`}</td></tr>`).join('')}</tbody></table></div></div>`;
             }).join('');
         }
         
@@ -583,19 +528,7 @@
             if (!p) return;
             document.getElementById('modalTitle').textContent = p.projeto;
             document.getElementById('modalSubtitle').textContent = `${normalizeStatus(p.status)} • ${p.localizacao || 'Local não definido'}`;
-            document.getElementById('modalInfo').innerHTML = `
-                <div class="info-box"><label>Etapa</label><span>${p.etapa || '-'}</span></div>
-                <div class="info-box"><label>Progresso</label><span>${p.progresso || 0}%</span></div>
-                <div class="info-box"><label>Situação</label><span>${getSituacaoHtml(p.situacao || p.rag)}</span></div>
-                <div class="info-box"><label>Go Live Original</label><span>${p.goliveOriginal || '-'}</span></div>
-                <div class="info-box"><label>Go Live Atual</label><span>${p.goliveAtual || p.golive || '-'}</span></div>
-                <div class="info-box"><label>Dias Parado</label><span>${p.diasSemAtual || 0} dias</span></div>
-                <div class="info-box"><label>PMO Interno</label><span>${p.pmoInterno || p.respInterno || '-'}</span></div>
-                <div class="info-box"><label>Infra Interno</label><span>${p.infraInterno || '-'}</span></div>
-                <div class="info-box"><label>PMO Cliente</label><span>${p.pmoCliente || p.respCliente || '-'}</span></div>
-                <div class="info-box"><label>Próximo Passo</label><span>${p.proximo || '-'}</span></div>
-                <div class="info-box"><label>Bloqueador</label><span style="${p.bloqueador && p.bloqueador !== '-' ? 'color:#991b1b;' : ''}">${p.bloqueador || '-'}</span></div>
-                <div class="info-box"><label>Última Atualização</label><span>${p.ultAtual || '-'}</span></div>`;
+            document.getElementById('modalInfo').innerHTML = `<div class="info-box"><label>Etapa</label><span>${p.etapa || '-'}</span></div><div class="info-box"><label>Progresso</label><span>${p.progresso || 0}%</span></div><div class="info-box"><label>Situação</label><span>${getSituacaoHtml(p.situacao || p.rag)}</span></div><div class="info-box"><label>Go Live Original</label><span>${p.goliveOriginal || '-'}</span></div><div class="info-box"><label>Go Live Atual</label><span>${p.goliveAtual || p.golive || '-'}</span></div><div class="info-box"><label>Dias Parado</label><span>${p.diasSemAtual || 0} dias</span></div><div class="info-box"><label>PMO Interno</label><span>${p.pmoInterno || p.respInterno || '-'}</span></div><div class="info-box"><label>Infra Interno</label><span>${p.infraInterno || '-'}</span></div><div class="info-box"><label>PMO Cliente</label><span>${p.pmoCliente || p.respCliente || '-'}</span></div><div class="info-box"><label>Próximo Passo</label><span>${p.proximo || '-'}</span></div><div class="info-box"><label>Bloqueador</label><span style="${p.bloqueador && p.bloqueador !== '-' ? 'color:#991b1b;' : ''}">${p.bloqueador || '-'}</span></div><div class="info-box"><label>Última Atualização</label><span>${p.ultAtual || '-'}</span></div>`;
             document.getElementById('modalOverlay').classList.add('active');
         }
         
@@ -607,6 +540,7 @@
             closePrintModal();
             if (printOption === 'all') { filteredProjects = [...projects]; updateDashboard(); }
             else if (printOption === 'criticos') { filteredProjects = projects.filter(p => isCritico(p)); updateDashboard(); }
+            else if (printOption === 'specific') { const input = document.getElementById('specificPages').value; if (input) { const indices = input.split(';').map(s => parseInt(s.trim()) - 1).filter(n => !isNaN(n) && n >= 0 && n < projects.length); if (indices.length > 0) { filteredProjects = indices.map(i => projects[i]).filter(p => p); updateDashboard(); }}}
             setTimeout(() => window.print(), 300);
         }
         document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closePrintModal(); } });
