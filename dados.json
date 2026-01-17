@@ -1,5 +1,5 @@
 {
-  "lastUpdate": "2026-01-17T19:40:25.229600",
+  "lastUpdate": "2026-01-17T20:24:18.183Z",
   "version": "5.3",
   "projects": [
     {
@@ -11,8 +11,8 @@
       "proximo": "-",
       "bloqueador": "-",
       "goliveOriginal": "15/12/2025",
-      "goliveAtual": "15/12/2025",
-      "golive": "15/12/2025",
+      "goliveAtual": "Concluído",
+      "golive": "Concluído",
       "pmoInterno": "Daiana",
       "infraInterno": "Jonathan",
       "pmoCliente": "Gustavo Mota",
@@ -20,9 +20,10 @@
       "localizacao": "São Paulo - SP",
       "diasSemAtual": 0,
       "ultAtual": "10/01/2026",
+      "retrocesso": "",
+      "obs": "Projeto finalizado",
       "respInterno": "Daiana",
-      "rag": "verde",
-      "obs": "Projeto finalizado"
+      "rag": "verde"
     },
     {
       "projeto": "BETA",
@@ -33,8 +34,8 @@
       "proximo": "Reunir requisitos",
       "bloqueador": "Aguardando cliente",
       "goliveOriginal": "02/03/2026",
-      "goliveAtual": "15/02/2026",
-      "golive": "15/02/2026",
+      "goliveAtual": "Documentação",
+      "golive": "Documentação",
       "pmoInterno": "Daiana",
       "infraInterno": "Anderson",
       "pmoCliente": "Carlos Silva",
@@ -42,9 +43,10 @@
       "localizacao": "Campinas - SP",
       "diasSemAtual": 12,
       "ultAtual": "05/01/2026",
+      "retrocesso": "",
+      "obs": "-",
       "respInterno": "Daiana",
-      "rag": "vermelho",
-      "obs": ""
+      "rag": "vermelho"
     },
     {
       "projeto": "BRF EMBU",
@@ -55,8 +57,8 @@
       "proximo": "Configurar IPs",
       "bloqueador": "Cliente não respondeu",
       "goliveOriginal": "20/02/2026",
-      "goliveAtual": "15/03/2026",
-      "golive": "15/03/2026",
+      "goliveAtual": "Solic. Range IPs",
+      "golive": "Solic. Range IPs",
       "pmoInterno": "Daiana",
       "infraInterno": "Vinicius",
       "pmoCliente": "Ana Costa",
@@ -64,9 +66,10 @@
       "localizacao": "Embu - SP",
       "diasSemAtual": 18,
       "ultAtual": "30/12/2025",
+      "retrocesso": "",
+      "obs": "Escalar",
       "respInterno": "Daiana",
-      "rag": "vermelho",
-      "obs": "Escalar"
+      "rag": "vermelho"
     },
     {
       "projeto": "BRF UBERLÂNDIA",
@@ -77,8 +80,8 @@
       "proximo": "Resolver VPN",
       "bloqueador": "Erro certificado",
       "goliveOriginal": "15/01/2026",
-      "goliveAtual": "30/01/2026",
-      "golive": "30/01/2026",
+      "goliveAtual": "Valid. VPN Homolog.",
+      "golive": "Valid. VPN Homolog.",
       "pmoInterno": "Daiana",
       "infraInterno": "Jonathan",
       "pmoCliente": "Roberto Alves",
@@ -86,9 +89,10 @@
       "localizacao": "Uberlândia - MG",
       "diasSemAtual": 22,
       "ultAtual": "26/12/2025",
+      "retrocesso": "",
+      "obs": "Crítico",
       "respInterno": "Daiana",
-      "rag": "vermelho",
-      "obs": "Crítico"
+      "rag": "vermelho"
     },
     {
       "projeto": "CDSK",
@@ -99,8 +103,8 @@
       "proximo": "-",
       "bloqueador": "-",
       "goliveOriginal": "19/02/2026",
-      "goliveAtual": "19/02/2026",
-      "golive": "19/02/2026",
+      "goliveAtual": "Concluído",
+      "golive": "Concluído",
       "pmoInterno": "Daiana",
       "infraInterno": "Anderson",
       "pmoCliente": "Fernanda Souza",
@@ -108,9 +112,10 @@
       "localizacao": "Curitiba - PR",
       "diasSemAtual": 0,
       "ultAtual": "17/01/2026",
+      "retrocesso": "",
+      "obs": "-",
       "respInterno": "Daiana",
-      "rag": "verde",
-      "obs": ""
+      "rag": "verde"
     },
     {
       "projeto": "ELETRO",
@@ -121,8 +126,8 @@
       "proximo": "Validar acesso",
       "bloqueador": "-",
       "goliveOriginal": "20/04/2026",
-      "goliveAtual": "20/03/2026",
-      "golive": "20/03/2026",
+      "goliveAtual": "Valid. Acesso Remoto",
+      "golive": "Valid. Acesso Remoto",
       "pmoInterno": "Daiana",
       "infraInterno": "Washington",
       "pmoCliente": "Ricardo Oliveira",
@@ -130,9 +135,10 @@
       "localizacao": "Salvador - BA",
       "diasSemAtual": 3,
       "ultAtual": "14/01/2026",
+      "retrocesso": "",
+      "obs": "-",
       "respInterno": "Daiana",
-      "rag": "verde",
-      "obs": ""
+      "rag": "verde"
     },
     {
       "projeto": "FLOWER",
@@ -143,8 +149,8 @@
       "proximo": "Agendar kickoff",
       "bloqueador": "-",
       "goliveOriginal": "15/05/2026",
-      "goliveAtual": "15/05/2026",
-      "golive": "15/05/2026",
+      "goliveAtual": "Kickoff",
+      "golive": "Kickoff",
       "pmoInterno": "Daiana",
       "infraInterno": "-",
       "pmoCliente": "Patricia Lima",
@@ -152,9 +158,10 @@
       "localizacao": "Porto Alegre - RS",
       "diasSemAtual": 0,
       "ultAtual": "-",
+      "retrocesso": "",
+      "obs": "-",
       "respInterno": "Daiana",
-      "rag": "cinza",
-      "obs": ""
+      "rag": "cinza"
     },
     {
       "projeto": "MASTER",
@@ -165,8 +172,8 @@
       "proximo": "Testar VPN",
       "bloqueador": "-",
       "goliveOriginal": "23/02/2026",
-      "goliveAtual": "23/02/2026",
-      "golive": "23/02/2026",
+      "goliveAtual": "Valid. VPN Produção",
+      "golive": "Valid. VPN Produção",
       "pmoInterno": "Daiana",
       "infraInterno": "Vinicius",
       "pmoCliente": "Thiago Ramos",
@@ -174,9 +181,10 @@
       "localizacao": "Fortaleza - CE",
       "diasSemAtual": 2,
       "ultAtual": "15/01/2026",
+      "retrocesso": "",
+      "obs": "-",
       "respInterno": "Daiana",
-      "rag": "verde",
-      "obs": ""
+      "rag": "verde"
     },
     {
       "projeto": "LOGGI",
@@ -187,8 +195,8 @@
       "proximo": "Levantar requisitos",
       "bloqueador": "-",
       "goliveOriginal": "30/06/2026",
-      "goliveAtual": "30/06/2026",
-      "golive": "30/06/2026",
+      "goliveAtual": "Documentação",
+      "golive": "Documentação",
       "pmoInterno": "Daiana",
       "infraInterno": "-",
       "pmoCliente": "Amanda Ferreira",
@@ -196,9 +204,10 @@
       "localizacao": "São Paulo - SP",
       "diasSemAtual": 5,
       "ultAtual": "12/01/2026",
+      "retrocesso": "",
+      "obs": "-",
       "respInterno": "Daiana",
-      "rag": "cinza",
-      "obs": ""
+      "rag": "cinza"
     },
     {
       "projeto": "GAVIAO",
@@ -209,8 +218,8 @@
       "proximo": "Documentar",
       "bloqueador": "-",
       "goliveOriginal": "10/02/2026",
-      "goliveAtual": "10/02/2026",
-      "golive": "10/02/2026",
+      "goliveAtual": "Criar procedimento",
+      "golive": "Criar procedimento",
       "pmoInterno": "Daiana",
       "infraInterno": "Anderson",
       "pmoCliente": "Bruno Costa",
@@ -218,9 +227,10 @@
       "localizacao": "Recife - PE",
       "diasSemAtual": 1,
       "ultAtual": "16/01/2026",
+      "retrocesso": "",
+      "obs": "-",
       "respInterno": "Daiana",
-      "rag": "verde",
-      "obs": ""
+      "rag": "verde"
     },
     {
       "projeto": "BARBECUE",
@@ -231,8 +241,8 @@
       "proximo": "-",
       "bloqueador": "-",
       "goliveOriginal": "10/01/2026",
-      "goliveAtual": "10/01/2026",
-      "golive": "10/01/2026",
+      "goliveAtual": "Concluído",
+      "golive": "Concluído",
       "pmoInterno": "Daiana",
       "infraInterno": "Jonathan",
       "pmoCliente": "Diego Martins",
@@ -240,9 +250,10 @@
       "localizacao": "Brasília - DF",
       "diasSemAtual": 0,
       "ultAtual": "10/01/2026",
+      "retrocesso": "",
+      "obs": "-",
       "respInterno": "Daiana",
-      "rag": "verde",
-      "obs": ""
+      "rag": "verde"
     },
     {
       "projeto": "BELEZA",
@@ -253,8 +264,8 @@
       "proximo": "-",
       "bloqueador": "-",
       "goliveOriginal": "20/12/2025",
-      "goliveAtual": "20/12/2025",
-      "golive": "20/12/2025",
+      "goliveAtual": "Concluído",
+      "golive": "Concluído",
       "pmoInterno": "Daiana",
       "infraInterno": "Vinicius",
       "pmoCliente": "Gabriel Souza",
@@ -262,9 +273,10 @@
       "localizacao": "Goiânia - GO",
       "diasSemAtual": 0,
       "ultAtual": "20/12/2025",
+      "retrocesso": "",
+      "obs": "-",
       "respInterno": "Daiana",
-      "rag": "verde",
-      "obs": ""
+      "rag": "verde"
     },
     {
       "projeto": "BP",
@@ -275,8 +287,8 @@
       "proximo": "Aguardar cliente",
       "bloqueador": "-",
       "goliveOriginal": "28/02/2026",
-      "goliveAtual": "28/02/2026",
-      "golive": "28/02/2026",
+      "goliveAtual": "Valid. Acesso Remoto",
+      "golive": "Valid. Acesso Remoto",
       "pmoInterno": "Daiana",
       "infraInterno": "Washington",
       "pmoCliente": "Juliano Almeida",
@@ -284,9 +296,10 @@
       "localizacao": "Florianópolis - SC",
       "diasSemAtual": 7,
       "ultAtual": "10/01/2026",
+      "retrocesso": "",
+      "obs": "-",
       "respInterno": "Daiana",
-      "rag": "amarelo",
-      "obs": ""
+      "rag": "amarelo"
     },
     {
       "projeto": "BRF JUNDIAI",
@@ -297,8 +310,8 @@
       "proximo": "Agendar início",
       "bloqueador": "-",
       "goliveOriginal": "15/04/2026",
-      "goliveAtual": "15/04/2026",
-      "golive": "15/04/2026",
+      "goliveAtual": "Kickoff",
+      "golive": "Kickoff",
       "pmoInterno": "Daiana",
       "infraInterno": "-",
       "pmoCliente": "Marcos Lima",
@@ -306,9 +319,10 @@
       "localizacao": "Jundiaí - SP",
       "diasSemAtual": 0,
       "ultAtual": "-",
+      "retrocesso": "",
+      "obs": "-",
       "respInterno": "Daiana",
-      "rag": "cinza",
-      "obs": ""
+      "rag": "cinza"
     },
     {
       "projeto": "CANDELÁRIA",
@@ -319,8 +333,8 @@
       "proximo": "-",
       "bloqueador": "-",
       "goliveOriginal": "05/12/2025",
-      "goliveAtual": "05/12/2025",
-      "golive": "05/12/2025",
+      "goliveAtual": "Concluído",
+      "golive": "Concluído",
       "pmoInterno": "Daiana",
       "infraInterno": "Anderson",
       "pmoCliente": "Renata Silva",
@@ -328,9 +342,10 @@
       "localizacao": "Candelária - RS",
       "diasSemAtual": 0,
       "ultAtual": "05/12/2025",
+      "retrocesso": "",
+      "obs": "-",
       "respInterno": "Daiana",
-      "rag": "verde",
-      "obs": ""
+      "rag": "verde"
     },
     {
       "projeto": "COUGAR",
@@ -341,8 +356,8 @@
       "proximo": "-",
       "bloqueador": "-",
       "goliveOriginal": "26/09/2025",
-      "goliveAtual": "26/09/2025",
-      "golive": "26/09/2025",
+      "goliveAtual": "Concluído",
+      "golive": "Concluído",
       "pmoInterno": "Daiana",
       "infraInterno": "Jonathan",
       "pmoCliente": "Pedro Lima",
@@ -350,9 +365,10 @@
       "localizacao": "Araçariguama - SP",
       "diasSemAtual": 0,
       "ultAtual": "26/09/2025",
+      "retrocesso": "",
+      "obs": "-",
       "respInterno": "Daiana",
-      "rag": "verde",
-      "obs": ""
+      "rag": "verde"
     },
     {
       "projeto": "DIA",
@@ -363,8 +379,8 @@
       "proximo": "Testar homologação",
       "bloqueador": "-",
       "goliveOriginal": "25/02/2026",
-      "goliveAtual": "10/03/2026",
-      "golive": "10/03/2026",
+      "goliveAtual": "Valid. Acesso Homolog.",
+      "golive": "Valid. Acesso Homolog.",
       "pmoInterno": "Daiana",
       "infraInterno": "Vinicius",
       "pmoCliente": "Lucas Mendes",
@@ -372,9 +388,10 @@
       "localizacao": "Rio de Janeiro - RJ",
       "diasSemAtual": 8,
       "ultAtual": "09/01/2026",
+      "retrocesso": "",
+      "obs": "-",
       "respInterno": "Daiana",
-      "rag": "amarelo",
-      "obs": ""
+      "rag": "amarelo"
     },
     {
       "projeto": "DIAMANTE",
@@ -385,8 +402,8 @@
       "proximo": "Definir escopo",
       "bloqueador": "-",
       "goliveOriginal": "30/04/2026",
-      "goliveAtual": "30/04/2026",
-      "golive": "30/04/2026",
+      "goliveAtual": "Kickoff",
+      "golive": "Kickoff",
       "pmoInterno": "Daiana",
       "infraInterno": "-",
       "pmoCliente": "Marcelo Santos",
@@ -394,9 +411,10 @@
       "localizacao": "Belo Horizonte - MG",
       "diasSemAtual": 0,
       "ultAtual": "-",
+      "retrocesso": "",
+      "obs": "-",
       "respInterno": "Daiana",
-      "rag": "cinza",
-      "obs": ""
+      "rag": "cinza"
     },
     {
       "projeto": "ESPERANÇA",
@@ -407,8 +425,8 @@
       "proximo": "-",
       "bloqueador": "-",
       "goliveOriginal": "29/09/2025",
-      "goliveAtual": "20/01/2026",
-      "golive": "20/01/2026",
+      "goliveAtual": "Concluído",
+      "golive": "Concluído",
       "pmoInterno": "Daiana",
       "infraInterno": "Jonathan",
       "pmoCliente": "Darlan",
@@ -416,9 +434,10 @@
       "localizacao": "Arujá - SP",
       "diasSemAtual": 0,
       "ultAtual": "20/01/2026",
+      "retrocesso": "",
+      "obs": "Go live remarcado",
       "respInterno": "Daiana",
-      "rag": "verde",
-      "obs": "Go live remarcado"
+      "rag": "verde"
     },
     {
       "projeto": "OCTOPUS MS",
@@ -429,8 +448,8 @@
       "proximo": "Validar ambiente",
       "bloqueador": "-",
       "goliveOriginal": "28/02/2026",
-      "goliveAtual": "15/03/2026",
-      "golive": "15/03/2026",
+      "goliveAtual": "Valid. Acesso Homolog.",
+      "golive": "Valid. Acesso Homolog.",
       "pmoInterno": "Daiana",
       "infraInterno": "Anderson",
       "pmoCliente": "Amanda Ferreira",
@@ -438,9 +457,10 @@
       "localizacao": "Manaus - AM",
       "diasSemAtual": 10,
       "ultAtual": "07/01/2026",
+      "retrocesso": "",
+      "obs": "-",
       "respInterno": "Daiana",
-      "rag": "amarelo",
-      "obs": ""
+      "rag": "amarelo"
     },
     {
       "projeto": "OPTIMUS PRIME",
@@ -451,8 +471,8 @@
       "proximo": "-",
       "bloqueador": "-",
       "goliveOriginal": "25/01/2026",
-      "goliveAtual": "17/01/2026",
-      "golive": "17/01/2026",
+      "goliveAtual": "Concluído",
+      "golive": "Concluído",
       "pmoInterno": "Daiana",
       "infraInterno": "Vinicius",
       "pmoCliente": "Diego Martins",
@@ -460,9 +480,10 @@
       "localizacao": "Brasília - DF",
       "diasSemAtual": 0,
       "ultAtual": "17/01/2026",
+      "retrocesso": "",
+      "obs": "Antecipado",
       "respInterno": "Daiana",
-      "rag": "verde",
-      "obs": "Antecipado"
+      "rag": "verde"
     },
     {
       "projeto": "PROMOFARMA",
@@ -473,8 +494,8 @@
       "proximo": "-",
       "bloqueador": "-",
       "goliveOriginal": "10/11/2025",
-      "goliveAtual": "10/11/2025",
-      "golive": "10/11/2025",
+      "goliveAtual": "Concluído",
+      "golive": "Concluído",
       "pmoInterno": "Daiana",
       "infraInterno": "Jonathan",
       "pmoCliente": "Gabriel Souza",
@@ -482,9 +503,10 @@
       "localizacao": "São Paulo - SP",
       "diasSemAtual": 0,
       "ultAtual": "10/11/2025",
+      "retrocesso": "",
+      "obs": "-",
       "respInterno": "Daiana",
-      "rag": "verde",
-      "obs": ""
+      "rag": "verde"
     },
     {
       "projeto": "PTL SP",
@@ -495,8 +517,8 @@
       "proximo": "Testar VPN",
       "bloqueador": "-",
       "goliveOriginal": "20/02/2026",
-      "goliveAtual": "20/02/2026",
-      "golive": "20/02/2026",
+      "goliveAtual": "Valid. Acesso Homolog.",
+      "golive": "Valid. Acesso Homolog.",
       "pmoInterno": "Daiana",
       "infraInterno": "Washington",
       "pmoCliente": "Carlos Silva",
@@ -504,9 +526,10 @@
       "localizacao": "São Paulo - SP",
       "diasSemAtual": 6,
       "ultAtual": "11/01/2026",
+      "retrocesso": "",
+      "obs": "-",
       "respInterno": "Daiana",
-      "rag": "amarelo",
-      "obs": ""
+      "rag": "amarelo"
     },
     {
       "projeto": "TITANO",
@@ -517,8 +540,8 @@
       "proximo": "Resolver erro VPN",
       "bloqueador": "Erro certificado SSL",
       "goliveOriginal": "10/02/2026",
-      "goliveAtual": "25/02/2026",
-      "golive": "25/02/2026",
+      "goliveAtual": "Teste Acesso Remoto",
+      "golive": "Teste Acesso Remoto",
       "pmoInterno": "Daiana",
       "infraInterno": "Washington",
       "pmoCliente": "Juliano Almeida",
@@ -526,9 +549,10 @@
       "localizacao": "Florianópolis - SC",
       "diasSemAtual": 16,
       "ultAtual": "01/01/2026",
+      "retrocesso": "",
+      "obs": "Crítico - SSL",
       "respInterno": "Daiana",
-      "rag": "vermelho",
-      "obs": "Crítico - SSL"
+      "rag": "vermelho"
     },
     {
       "projeto": "REVERSE",
@@ -539,8 +563,8 @@
       "proximo": "-",
       "bloqueador": "-",
       "goliveOriginal": "10/11/2025",
-      "goliveAtual": "10/11/2025",
-      "golive": "10/11/2025",
+      "goliveAtual": "Concluído",
+      "golive": "Concluído",
       "pmoInterno": "Daiana",
       "infraInterno": "Anderson",
       "pmoCliente": "Marcos Lima",
@@ -548,9 +572,10 @@
       "localizacao": "Goiânia - GO",
       "diasSemAtual": 0,
       "ultAtual": "10/11/2025",
+      "retrocesso": "",
+      "obs": "-",
       "respInterno": "Daiana",
-      "rag": "verde",
-      "obs": ""
+      "rag": "verde"
     }
   ]
 }
