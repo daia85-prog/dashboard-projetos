@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Dashboard Projetos v5</title>
+    <title>Admin - Dashboard Projetos v5.3</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
@@ -52,20 +52,20 @@
 <body>
     <div class="container">
         <div class="header">
-            <div><h1>🔧 Área Administrativa <span class="version">v5.0</span></h1><p style="color:#64748b;font-size:13px;margin-top:5px;">Sistema com Progresso e Situação automáticos</p></div>
+            <div><h1>🔧 Área Administrativa <span class="version">v5.3</span></h1><p style="color:#64748b;font-size:13px;margin-top:5px;">KPIs Simplificados + Filtro Go-Live + Impressão por Projetos</p></div>
             <a href="index.html" class="btn btn-secondary">← Voltar</a>
         </div>
         <div id="successMsg" class="message success hidden"><span>✅</span><div><strong>Sucesso!</strong> <span id="successText"></span></div></div>
         <div id="errorMsg" class="message error hidden"><span>❌</span><div><strong>Erro!</strong> <span id="errorText"></span></div></div>
         <div class="card">
-            <div class="card-header"><h2>📋 Importar Dados da Planilha v5 <span class="new-badge">NOVO</span></h2></div>
+            <div class="card-header"><h2>📋 Importar Dados da Planilha v5 <span class="new-badge">v5.3</span></h2></div>
             <div class="card-body">
                 <div class="help-text">
-                    <h4>📝 Novidades da versão 5.0:</h4>
+                    <h4>📝 Novidades da versão 5.3:</h4>
                     <ol>
-                        <li><strong>Progresso automático</strong> - Calculado pela etapa</li>
-                        <li><strong>Situação automática</strong> - Baseada em dias parado + bloqueador</li>
-                        <li><strong>Responsáveis separados</strong> - PMO e Infra (interno e cliente)</li>
+                        <li><strong>KPIs simplificados</strong> - No Prazo, Atraso Médio, Projetos Atualizados, Tempo Médio Parado</li>
+                        <li><strong>Filtro por Go-Live</strong> - Este mês, Próx. 30/60/90 dias, Atrasados</li>
+                        <li><strong>Impressão por projetos</strong> - Selecione projetos específicos pelo nome</li>
                         <li><strong>Sistema anti-burla</strong> - Detecta retrocesso de etapa</li>
                     </ol>
                 </div>
@@ -123,15 +123,16 @@
             projects = [];
         }
         function processData() {
-            const text = document.getElementById('dataInput').value.trim();
-            if (!text) { showMessage('error', 'Cole os dados da planilha primeiro.'); return; }
             try {
+                const text = document.getElementById('dataInput').value;
+                if (!text.trim()) { showMessage('error', 'Cole os dados da planilha primeiro!'); return; }
                 projects = parseData(text);
-                if (projects.length === 0) { showMessage('error', 'Nenhum projeto encontrado.'); return; }
+                if (projects.length === 0) { showMessage('error', 'Nenhum projeto válido encontrado!'); return; }
+                localStorage.setItem('infraProjects', JSON.stringify(projects));
                 showValidation();
                 showPreview();
                 document.getElementById('exportCard').classList.remove('hidden');
-                showMessage('success', `${projects.length} projetos carregados!`);
+                showMessage('success', `${projects.length} projetos carregados com sucesso!`);
             } catch(e) { showMessage('error', 'Erro: ' + e.message); }
         }
         function parseData(text) {
@@ -239,7 +240,7 @@
             document.getElementById('previewSection').classList.remove('hidden');
         }
         function exportJSON() {
-            const data = { lastUpdate: new Date().toISOString(), version: '5.0', projects: projects };
+            const data = { lastUpdate: new Date().toISOString(), version: '5.3', projects: projects };
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');

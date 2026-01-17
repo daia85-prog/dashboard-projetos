@@ -1,11 +1,59 @@
 # 📋 REGISTRO DE BUGS E CORREÇÕES - Dashboard Projetos Infraestrutura
 
-> **Última atualização:** 12/01/2026
-> **Versão atual:** 5.0
+> **Última atualização:** 17/01/2026
+> **Versão atual:** 5.3
 
 ---
 
-## 🐛 BUGS CORRIGIDOS
+## 🆕 NOVIDADES v5.3 (17/01/2026)
+
+### 1. KPIs com Nomes Simplificados
+**Mudança:** Renomeados para linguagem mais clara e direta.
+
+| Antes | Agora |
+|-------|-------|
+| On-Time (Go Live) | **No Prazo** |
+| Delta Médio GoLive | **Atraso Médio** |
+| Taxa Atualização | **Projetos Atualizados** |
+| Aging Médio | **Tempo Médio Parado** |
+
+**Arquivos afetados:** `view-simples.html`, `view-detalhada.html`
+
+---
+
+### 2. Novo Filtro por Go-Live
+**Funcionalidade:** Filtrar projetos pelo período do Go-Live.
+
+| Opção | Descrição |
+|-------|-----------|
+| Todos | Sem filtro |
+| Este Mês | Go-lives até o fim do mês atual |
+| Próx. 30 dias | Go-lives nos próximos 30 dias |
+| Próx. 60 dias | Go-lives nos próximos 60 dias |
+| Próx. 90 dias | Go-lives nos próximos 90 dias |
+| Atrasados | Go-live já passou e projeto não concluído |
+
+**Arquivos afetados:** `view-simples.html`, `view-detalhada.html`
+
+---
+
+### 3. Impressão por Projetos Específicos
+**Mudança:** Substituída seleção por números (1;3;5) por seleção por nome do projeto.
+
+**Antes:**
+- Input de texto: "Digite os números separados por ;"
+- Ex: 1;3;5;10
+
+**Agora:**
+- Lista de checkboxes com nomes dos projetos
+- Botão "Selecionar todos" para marcar/desmarcar
+- Visual mais intuitivo e menos propenso a erros
+
+**Arquivos afetados:** `view-simples.html`, `view-detalhada.html`
+
+---
+
+## 🛠 BUGS CORRIGIDOS
 
 ### BUG #001 - Filtros não atualizam os cards de status
 **Problema:** Ao aplicar filtros (status, situação, PMO, dias parados), os cards superiores (Total, Concluídos, Em Andamento, etc.) continuavam mostrando os números totais ao invés dos filtrados.
@@ -83,40 +131,51 @@ document.getElementById('totalProjects').textContent = filteredProjects.length;
 
 ---
 
-## ✅ MELHORIAS IMPLEMENTADAS (v5.0)
+### BUG #006 - "?" aparecendo antes do nome dos KPIs (v5.2)
+**Problema:** O tooltip de ajuda (?) aparecia antes do texto do KPI ao invés de ao lado.
 
-### Automação da Planilha
-| Campo | Implementação |
-|-------|---------------|
-| Progresso | `=VLOOKUP(Etapa, TabelaProgresso, 2, FALSE)` |
-| Situação | Fórmula complexa baseada em: dias parado > 15, bloqueador preenchido, status |
-| Retrocesso | `=IF(MATCH(EtapaAtual) < MATCH(EtapaAnterior), "⚠️ RETROCESSO", "")` |
+**Causa:** Estrutura HTML incorreta do kpi-header.
 
-### Responsáveis Separados
-- PMO Interno
-- Infra Interno
-- PMO Cliente
-- Infra Cliente
+**Solução:** Reestruturar HTML separando label e help icon corretamente:
+```html
+<div class="kpi-header">
+    <div class="kpi-label">No Prazo</div>
+    <div class="kpi-help">?<div class="kpi-tooltip">Explicação...</div></div>
+</div>
+```
 
-### Nova ordem de colunas na tabela
-1. Projeto
-2. Localização
-3. Go Live
-4. Status
-5. Situação
-6. Progresso
-7. Etapa
-8. PMO Interno
-9. Dias Parado
+**Arquivos afetados:** `view-simples.html`, `view-detalhada.html`
 
-### Modal de Impressão
-Opções adicionadas:
-- Página atual (filtrada)
-- Todos os projetos
-- Apenas críticos
+---
 
-### Card "Parados 15+ dias"
-Novo card nos dashboards para destacar projetos sem atualização.
+### BUG #007 - Busca não encontrava projeto BETA (v5.2)
+**Problema:** Ao digitar "Bet" na busca, projeto BETA não aparecia.
+
+**Causa:** Não era bug - o filtro "Parados 15+ dias" estava ativo e BETA tinha apenas 12 dias sem atualização. Os filtros são cumulativos.
+
+**Solução:** Documentação e esclarecimento. Comportamento correto.
+
+---
+
+## ✅ MELHORIAS IMPLEMENTADAS
+
+### v5.3 (17/01/2026)
+- ✅ KPIs com nomes simplificados (No Prazo, Atraso Médio, etc.)
+- ✅ Filtro por Go-Live (Este mês, 30/60/90 dias, Atrasados)
+- ✅ Impressão por projetos específicos (checkboxes com nomes)
+- ✅ Filtro de parados expandido (7+, 15+, 30+, 60+ dias)
+
+### v5.2 (16/01/2026)
+- ✅ Correção do posicionamento do "?" nos KPIs
+- ✅ Filtros de parados expandidos (7+, 15+, 30+, 60+ dias)
+- ✅ Opção de impressão por números específicos
+
+### v5.0 (12/01/2026)
+- ✅ Automação da Planilha (Progresso, Situação, Retrocesso)
+- ✅ Responsáveis Separados (PMO/Infra Interno/Cliente)
+- ✅ Nova ordem de colunas na tabela
+- ✅ Modal de Impressão com opções
+- ✅ Card "Parados 15+ dias"
 
 ---
 
@@ -131,6 +190,8 @@ Novo card nos dashboards para destacar projetos sem atualização.
 
 2. **SEMPRE** chamar `renderCharts()` dentro de `updateDashboard()`
 
+3. **Filtro de Go-Live** usa `parseDate()` - manter formato dd/mm/aaaa
+
 ### Ao adicionar novos campos:
 1. Atualizar `parseData()` no `admin.html`
 2. Atualizar `dados.json` de exemplo
@@ -142,18 +203,23 @@ Novo card nos dashboards para destacar projetos sem atualização.
 2. Atualizar tabela TabelaProgresso (Etapa → %)
 3. Named Range "Etapa" já cobre 50 linhas
 
+### Ao modificar impressão:
+1. A lista de checkboxes é gerada dinamicamente em `populateProjectsCheckboxes()`
+2. A seleção é processada em `executePrint()` buscando checkboxes marcados
+
 ---
 
 ## 📁 ESTRUTURA DE ARQUIVOS
 
 ```
 dashboard-projetos/
-├── index.html          # Página inicial com cards resumo
-├── view-simples.html   # Dashboard consolidado
-├── view-detalhada.html # Dashboard segmentado por status
-├── admin.html          # Importação/exportação de dados
-├── dados.json          # Dados dos projetos (atualizar via admin)
-└── Template_Projetos_v5.xlsx  # Planilha com automações
+├── index.html              # Página inicial com cards resumo
+├── view-simples.html       # Dashboard consolidado
+├── view-detalhada.html     # Dashboard segmentado por status
+├── admin.html              # Importação/exportação de dados
+├── dados.json              # Dados dos projetos (atualizar via admin)
+├── Template_Projetos_v5.xlsx   # Planilha com automações
+└── CHANGELOG_BUGS.md       # Este arquivo - registro de mudanças
 ```
 
 ---
@@ -173,6 +239,17 @@ GitHub Pages (Live)
      ↓ Ctrl+Shift+R
 Dashboard Atualizado
 ```
+
+---
+
+## 📊 HISTÓRICO DE VERSÕES
+
+| Versão | Data | Principais Mudanças |
+|--------|------|---------------------|
+| 5.3 | 17/01/2026 | KPIs simplificados, Filtro Go-Live, Impressão por nome |
+| 5.2 | 16/01/2026 | Correção KPIs, Filtros parados expandidos |
+| 5.0 | 12/01/2026 | Automação planilha, Responsáveis separados |
+| 4.x | - | Versões anteriores |
 
 ---
 
