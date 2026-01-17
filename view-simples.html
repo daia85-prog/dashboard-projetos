@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visão Resumida - Infraestrutura v5.2</title>
+    <title>Visão Resumida - Infraestrutura v5.3</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; min-height: 100vh; }
@@ -19,7 +19,7 @@
         .spinner { width: 50px; height: 50px; border: 4px solid #f3f4f6; border-top: 4px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        /* KPIs - CORRIGIDO */
+        /* KPIs */
         .kpis-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 20px; }
         .kpi-card { background: white; padding: 18px 20px; border-radius: 14px; box-shadow: 0 5px 20px rgba(0,0,0,0.12); position: relative; overflow: hidden; }
         .kpi-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
@@ -83,7 +83,7 @@
         
         /* Filters */
         .filters-section { background: white; padding: 20px 25px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); margin-bottom: 20px; }
-        .filters-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto; gap: 15px; align-items: end; }
+        .filters-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr auto; gap: 15px; align-items: end; }
         .filter-group label { display: block; font-size: 11px; text-transform: uppercase; color: #64748b; margin-bottom: 6px; font-weight: 600; }
         .filter-group input, .filter-group select { width: 100%; padding: 10px 14px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 13px; transition: border-color 0.2s; }
         .filter-group input:focus, .filter-group select:focus { outline: none; border-color: #667eea; }
@@ -104,43 +104,40 @@
         
         /* Bloqueadores */
         .bloqueador-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-        .bloqueador-label { min-width: 110px; font-size: 11px; color: #374151; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .bloqueador-bar { flex: 1; height: 24px; background: #fee2e2; border-radius: 8px; overflow: hidden; }
-        .bloqueador-fill { height: 100%; background: linear-gradient(90deg, #ef4444, #dc2626); border-radius: 8px; display: flex; align-items: center; justify-content: flex-end; padding: 0 10px; font-size: 11px; font-weight: 600; color: white; }
+        .bloqueador-label { min-width: 100px; font-size: 11px; color: #374151; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .bloqueador-bar { flex: 1; height: 22px; background: #fee2e2; border-radius: 6px; overflow: hidden; }
+        .bloqueador-fill { height: 100%; background: linear-gradient(90deg, #ef4444, #dc2626); border-radius: 6px; display: flex; align-items: center; justify-content: flex-end; padding: 0 10px; font-size: 11px; font-weight: 600; color: white; }
         .no-bloqueadores { text-align: center; padding: 20px; color: #10b981; font-size: 12px; }
         
         /* Parados */
-        .parado-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-        .parado-nome { min-width: 110px; font-size: 11px; color: #374151; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
-        .parado-bar { flex: 1; height: 24px; background: #f3f4f6; border-radius: 8px; overflow: hidden; }
-        .parado-fill { height: 100%; border-radius: 8px; display: flex; align-items: center; justify-content: flex-end; padding: 0 10px; font-size: 11px; font-weight: 600; color: white; }
-        .parado-fill.critical { background: linear-gradient(90deg, #ef4444, #dc2626); }
-        .parado-fill.warning { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .parado-item { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .parado-nome { min-width: 80px; font-size: 10px; color: #374151; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .parado-bar { flex: 1; height: 20px; background: #f3f4f6; border-radius: 6px; overflow: hidden; }
+        .parado-fill { height: 100%; border-radius: 6px; display: flex; align-items: center; justify-content: flex-end; padding: 0 8px; font-size: 10px; font-weight: 600; color: white; }
         .parado-fill.ok { background: linear-gradient(90deg, #10b981, #059669); }
+        .parado-fill.warning { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .parado-fill.critical { background: linear-gradient(90deg, #ef4444, #dc2626); }
         .no-parados { text-align: center; padding: 20px; color: #10b981; font-size: 12px; }
         
         /* Table */
         .table-section { background: white; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); overflow: hidden; }
-        .table-header { padding: 20px 25px; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center; }
-        .table-header h2 { color: #1a1a2e; font-size: 18px; display: flex; align-items: center; gap: 10px; }
-        .results-badge { background: #ede9fe; color: #7c3aed; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .table-header { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
+        .table-header h2 { font-size: 15px; }
+        .results-badge { background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 12px; font-size: 12px; }
         .table-container { overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; }
-        th { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 14px 16px; text-align: left; font-weight: 600; text-transform: uppercase; font-size: 11px; white-space: nowrap; }
-        td { padding: 14px 16px; border-bottom: 1px solid #f1f5f9; font-size: 13px; color: #334155; }
+        th { background: #f8fafc; color: #475569; padding: 12px 16px; text-align: left; font-weight: 600; text-transform: uppercase; font-size: 10px; white-space: nowrap; }
+        td { padding: 14px 16px; border-bottom: 1px solid #f1f5f9; font-size: 12px; color: #334155; }
         tr:hover { background: #f8fafc; }
         tr.clickable { cursor: pointer; }
         .project-name { font-weight: 600; color: #1e293b; }
-        
-        .status-badge { display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-        .status-badge.em-andamento { background: #dbeafe; color: #1e40af; }
-        .status-badge.concluido { background: #d1fae5; color: #065f46; }
+        .status-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 600; }
+        .status-badge.andamento { background: #dbeafe; color: #1d4ed8; }
+        .status-badge.concluido { background: #dcfce7; color: #166534; }
         .status-badge.atrasado { background: #fee2e2; color: #991b1b; }
-        .status-badge.aguardando-cliente { background: #fef3c7; color: #92400e; }
-        .status-badge.nao-iniciado { background: #f3f4f6; color: #374151; }
-        .status-badge.bloqueado { background: #fee2e2; color: #991b1b; }
-        
-        .situacao { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; }
+        .status-badge.aguardando { background: #fef3c7; color: #92400e; }
+        .status-badge.nao-iniciado { background: #f3f4f6; color: #4b5563; }
+        .situacao { display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; }
         .situacao-dot { width: 8px; height: 8px; border-radius: 50%; }
         .situacao.verde { background: #dcfce7; color: #166534; }
         .situacao.verde .situacao-dot { background: #22c55e; }
@@ -150,15 +147,13 @@
         .situacao.vermelho .situacao-dot { background: #ef4444; }
         .situacao.cinza { background: #f3f4f6; color: #4b5563; }
         .situacao.cinza .situacao-dot { background: #9ca3af; }
-        
-        .progress-container { display: flex; align-items: center; gap: 10px; }
-        .progress-bar { flex: 1; height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden; min-width: 60px; }
-        .progress-fill { height: 100%; border-radius: 4px; }
+        .progress-container { display: flex; align-items: center; gap: 8px; }
+        .progress-bar { flex: 1; height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden; min-width: 50px; }
+        .progress-fill { height: 100%; border-radius: 3px; }
         .progress-fill.low { background: linear-gradient(90deg, #ef4444, #f87171); }
         .progress-fill.medium { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
         .progress-fill.high { background: linear-gradient(90deg, #10b981, #34d399); }
-        .progress-text { font-size: 12px; font-weight: 600; min-width: 35px; color: #475569; }
-        
+        .progress-text { font-size: 11px; font-weight: 600; min-width: 32px; color: #475569; }
         .empty-state { text-align: center; padding: 40px; color: #64748b; }
         
         /* Modal */
@@ -166,33 +161,40 @@
         .modal-overlay.active { opacity: 1; visibility: visible; }
         .modal { background: white; border-radius: 20px; width: 90%; max-width: 700px; max-height: 90vh; overflow-y: auto; transform: scale(0.9); transition: transform 0.3s; }
         .modal-overlay.active .modal { transform: scale(1); }
-        .modal-header { padding: 25px; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: start; }
-        .modal-header h2 { color: #1a1a2e; font-size: 22px; margin-bottom: 5px; }
-        .modal-header p { color: #64748b; font-size: 13px; }
+        .modal-header { padding: 24px; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: start; }
+        .modal-header h2 { color: #1a1a2e; font-size: 20px; margin-bottom: 5px; }
+        .modal-header p { color: #64748b; font-size: 12px; }
         .modal-close { background: none; border: none; font-size: 28px; cursor: pointer; color: #64748b; }
-        .modal-body { padding: 25px; }
-        .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-        .info-box { background: #f8fafc; padding: 15px; border-radius: 12px; }
-        .info-box label { display: block; font-size: 10px; text-transform: uppercase; color: #64748b; margin-bottom: 5px; font-weight: 600; }
-        .info-box span { font-size: 13px; color: #1e293b; font-weight: 600; }
+        .modal-body { padding: 24px; }
+        .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .info-box { background: #f8fafc; padding: 12px; border-radius: 10px; }
+        .info-box label { display: block; font-size: 9px; text-transform: uppercase; color: #64748b; margin-bottom: 4px; font-weight: 600; }
+        .info-box span { font-size: 12px; color: #1e293b; font-weight: 600; }
         
         /* Print Modal */
-        .print-modal { max-width: 420px; }
+        .print-modal { max-width: 500px; }
         .print-options { display: flex; flex-direction: column; gap: 10px; margin: 15px 0; }
-        .print-option { display: flex; align-items: center; gap: 12px; padding: 14px; background: #f8fafc; border-radius: 10px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; }
-        .print-option:hover { background: #ede9fe; }
-        .print-option.selected { border-color: #667eea; background: #ede9fe; }
+        .print-option { display: flex; align-items: flex-start; gap: 12px; padding: 14px; background: #f8fafc; border-radius: 10px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; }
+        .print-option:hover, .print-option.selected { background: #ede9fe; border-color: #667eea; }
         .print-option input[type="radio"] { display: none; }
         .print-icon { font-size: 20px; }
         .print-label { font-weight: 600; color: #1a1a2e; font-size: 13px; }
-        .print-desc { font-size: 11px; color: #64748b; }
-        .print-input { margin-top: 10px; }
-        .print-input input { width: 100%; padding: 10px 14px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 13px; }
-        .print-input input:focus { outline: none; border-color: #667eea; }
-        .print-input small { display: block; margin-top: 5px; color: #64748b; font-size: 11px; }
+        .print-desc { font-size: 11px; color: #64748b; margin-top: 2px; }
         
-        @media print { body { background: white; padding: 10px; } .btn, .filters-section, .modal-overlay, .header > div:last-child, .kpis-section, .decisoes-section, .charts-row { display: none !important; } }
-        @media (max-width: 1200px) { .charts-row { grid-template-columns: 1fr; } .filters-grid { grid-template-columns: 1fr 1fr; } }
+        /* Seleção de projetos para impressão */
+        .projects-select-container { margin-top: 10px; max-height: 200px; overflow-y: auto; border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px; }
+        .project-checkbox { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+        .project-checkbox:hover { background: #f1f5f9; }
+        .project-checkbox input { width: 16px; height: 16px; accent-color: #667eea; }
+        .select-all-btn { font-size: 11px; color: #667eea; cursor: pointer; margin-bottom: 8px; display: inline-block; }
+        .select-all-btn:hover { text-decoration: underline; }
+        
+        @media print { 
+            body { background: white; padding: 10px; } 
+            .btn, .filters-section, .modal-overlay, .charts-row, .header > div:last-child, .kpis-section, .decisoes-section { display: none !important; } 
+            .table-section { box-shadow: none; border: 1px solid #e5e7eb; } 
+        }
+        @media (max-width: 1200px) { .charts-row { grid-template-columns: 1fr; } .filters-grid { grid-template-columns: 1fr 1fr 1fr; } }
         @media (max-width: 768px) { .header { flex-direction: column; } .cards-grid { grid-template-columns: repeat(3, 1fr); } .filters-grid { grid-template-columns: 1fr; } .info-grid { grid-template-columns: 1fr; } .kpis-section { grid-template-columns: repeat(2, 1fr); } }
     </style>
 </head>
@@ -200,7 +202,7 @@
     <div class="container">
         <div class="header">
             <div>
-                <h1>📋 Visão Resumida - Infraestrutura <span class="version">v5.2</span></h1>
+                <h1>📋 Visão Resumida - Infraestrutura <span class="version">v5.3</span></h1>
                 <p>Atualizado em: <span id="currentDate">Carregando...</span></p>
             </div>
             <div style="display:flex;gap:10px;flex-wrap:wrap;">
@@ -212,11 +214,11 @@
         <div id="loading" class="loading"><div class="spinner"></div><h3>Carregando dados...</h3></div>
         
         <div id="dashboardContent" class="hidden">
-            <!-- KPIs - CORRIGIDO -->
+            <!-- KPIs - SIMPLIFICADOS -->
             <div class="kpis-section">
                 <div class="kpi-card ontime">
                     <div class="kpi-header">
-                        <div class="kpi-label">On-Time (Go Live)</div>
+                        <div class="kpi-label">No Prazo</div>
                         <div class="kpi-help">?<div class="kpi-tooltip">Percentual de projetos com Go Live no prazo (Atual = Original)</div></div>
                     </div>
                     <div class="kpi-value" id="kpiOntime">--%</div>
@@ -224,15 +226,15 @@
                 </div>
                 <div class="kpi-card delta">
                     <div class="kpi-header">
-                        <div class="kpi-label">Delta Médio GoLive</div>
-                        <div class="kpi-help">?<div class="kpi-tooltip">Média de dias de atraso/antecipação entre Go Live Original e Atual</div></div>
+                        <div class="kpi-label">Atraso Médio</div>
+                        <div class="kpi-help">?<div class="kpi-tooltip">Média de dias de atraso entre Go Live Original e Atual</div></div>
                     </div>
                     <div class="kpi-value" id="kpiDelta">-- dias</div>
-                    <div class="kpi-sub" id="kpiDeltaSub">atraso médio</div>
+                    <div class="kpi-sub" id="kpiDeltaSub">nos go-lives</div>
                 </div>
                 <div class="kpi-card taxa">
                     <div class="kpi-header">
-                        <div class="kpi-label">Taxa Atualização</div>
+                        <div class="kpi-label">Projetos Atualizados</div>
                         <div class="kpi-help">?<div class="kpi-tooltip">Percentual de projetos atualizados nos últimos 7 dias</div></div>
                     </div>
                     <div class="kpi-value" id="kpiTaxa">--%</div>
@@ -240,7 +242,7 @@
                 </div>
                 <div class="kpi-card aging">
                     <div class="kpi-header">
-                        <div class="kpi-label">Aging Médio</div>
+                        <div class="kpi-label">Tempo Médio Parado</div>
                         <div class="kpi-help">?<div class="kpi-tooltip">Média de dias sem atualização dos projetos não concluídos</div></div>
                     </div>
                     <div class="kpi-value" id="kpiAging">-- dias</div>
@@ -277,14 +279,15 @@
                 </div>
             </div>
             
-            <!-- Filters - PARADOS ATUALIZADO -->
+            <!-- Filters - COM GO-LIVE -->
             <div class="filters-section">
                 <div class="filters-grid">
                     <div class="filter-group"><label>Buscar projeto</label><input type="text" id="searchInput" placeholder="Digite o nome..." oninput="applyFilters()"></div>
                     <div class="filter-group"><label>Status</label><select id="filterStatus" onchange="applyFilters()"><option value="">Todos</option><option value="Em Andamento">Em Andamento</option><option value="Concluído">Concluído</option><option value="Atrasado">Atrasado</option><option value="Aguardando Cliente">Aguardando</option><option value="Não Iniciado">Não Iniciado</option></select></div>
                     <div class="filter-group"><label>Situação</label><select id="filterSituacao" onchange="applyFilters()"><option value="">Todas</option><option value="vermelho">🔴 Vermelho</option><option value="amarelo">🟡 Amarelo</option><option value="verde">🟢 Verde</option><option value="cinza">⚪ Cinza</option></select></div>
-                    <div class="filter-group"><label>PMO Interno</label><select id="filterPMO" onchange="applyFilters()"><option value="">Todos</option></select></div>
+                    <div class="filter-group"><label>Go-Live</label><select id="filterGoLive" onchange="applyFilters()"><option value="">Todos</option><option value="mes">Este Mês</option><option value="30">Próx. 30 dias</option><option value="60">Próx. 60 dias</option><option value="90">Próx. 90 dias</option><option value="atrasado">Atrasados</option></select></div>
                     <div class="filter-group"><label>Parados</label><select id="filterParados" onchange="applyFilters()"><option value="">Todos</option><option value="7">7+ dias</option><option value="15">15+ dias</option><option value="30">30+ dias</option><option value="60">60+ dias</option></select></div>
+                    <div class="filter-group"><label>PMO</label><select id="filterPMO" onchange="applyFilters()"><option value="">Todos</option></select></div>
                     <div class="filter-group"><button class="btn btn-clear" onclick="clearFilters()">✕ Limpar</button></div>
                 </div>
             </div>
@@ -327,7 +330,7 @@
         </div>
     </div>
     
-    <!-- Modal Impressão - ATUALIZADO -->
+    <!-- Modal Impressão - PROJETOS ESPECÍFICOS -->
     <div class="modal-overlay" id="printModalOverlay" onclick="closePrintModal(event)">
         <div class="modal print-modal" onclick="event.stopPropagation()">
             <div class="modal-header"><div><h2>🖨️ Opções de Impressão</h2></div><button class="modal-close" onclick="closePrintModal()">&times;</button></div>
@@ -336,27 +339,27 @@
                     <label class="print-option selected" onclick="selectPrintOption(this, 'current')">
                         <input type="radio" name="print" value="current" checked>
                         <span class="print-icon">📄</span>
-                        <div><div class="print-label">Página atual</div><div class="print-desc">Projetos filtrados</div></div>
+                        <div><div class="print-label">Filtro atual</div><div class="print-desc">Projetos visíveis na tela</div></div>
                     </label>
                     <label class="print-option" onclick="selectPrintOption(this, 'all')">
                         <input type="radio" name="print" value="all">
                         <span class="print-icon">📑</span>
-                        <div><div class="print-label">Todos os projetos</div><div class="print-desc">Sem filtros</div></div>
+                        <div><div class="print-label">Todos os projetos</div><div class="print-desc">Sem filtros aplicados</div></div>
                     </label>
                     <label class="print-option" onclick="selectPrintOption(this, 'criticos')">
                         <input type="radio" name="print" value="criticos">
                         <span class="print-icon">🚨</span>
-                        <div><div class="print-label">Apenas críticos</div><div class="print-desc">Atrasados ou vermelhos</div></div>
+                        <div><div class="print-label">Apenas críticos</div><div class="print-desc">Atrasados, vermelhos ou parados</div></div>
                     </label>
                     <label class="print-option" onclick="selectPrintOption(this, 'specific')">
                         <input type="radio" name="print" value="specific">
-                        <span class="print-icon">🔢</span>
+                        <span class="print-icon">✅</span>
                         <div>
                             <div class="print-label">Projetos específicos</div>
-                            <div class="print-desc">Digite os números separados por ;</div>
-                            <div class="print-input" onclick="event.stopPropagation()">
-                                <input type="text" id="specificPages" placeholder="Ex: 1;3;5;10" onfocus="selectPrintOption(this.closest('.print-option'), 'specific')">
-                                <small>Números das linhas da tabela</small>
+                            <div class="print-desc">Selecione os projetos desejados</div>
+                            <div class="projects-select-container" id="projectsSelectContainer" onclick="event.stopPropagation()">
+                                <span class="select-all-btn" onclick="toggleSelectAll()">Selecionar todos</span>
+                                <div id="projectsCheckboxList"></div>
                             </div>
                         </div>
                     </label>
@@ -371,110 +374,153 @@
         
         async function loadData() {
             try {
-                const response = await fetch('dados.json?t=' + Date.now());
-                if (!response.ok) throw new Error('Não encontrado');
-                const data = await response.json();
-                if (data.projects && data.projects.length > 0) {
-                    projects = data.projects;
+                const saved = localStorage.getItem('infraProjects');
+                if (saved) {
+                    projects = JSON.parse(saved);
                     filteredProjects = [...projects];
-                    if (data.lastUpdate) {
-                        const d = new Date(data.lastUpdate);
-                        document.getElementById('currentDate').textContent = d.toLocaleDateString('pt-BR', {day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});
-                    }
-                    populateFilters();
-                    document.getElementById('loading').classList.add('hidden');
-                    document.getElementById('dashboardContent').classList.remove('hidden');
-                    calculateKPIs();
-                    updateDashboard();
-                } else { showNoData(); }
-            } catch(e) { console.error(e); showNoData(); }
+                    showDashboard();
+                } else {
+                    document.getElementById('loading').innerHTML = '<h3>Cole os dados da planilha</h3><p style="color:#64748b;margin-top:10px;">Use a página inicial para carregar</p>';
+                }
+            } catch (e) { console.error('Erro:', e); }
         }
         
-        function showNoData() { document.getElementById('loading').innerHTML = '<h3>📊 Dados não disponíveis</h3>'; }
-        
-        function populateFilters() {
-            const pmos = [...new Set(projects.map(p => p.pmoInterno || p.respInterno).filter(r => r && r !== '-'))];
-            const select = document.getElementById('filterPMO');
-            pmos.sort().forEach(r => { const opt = document.createElement('option'); opt.value = r; opt.textContent = r; select.appendChild(opt); });
-        }
-        
-        function normalizeStatus(status) {
-            if (!status) return 'Não Definido';
-            const s = status.toLowerCase().trim();
-            if (s.includes('conclu')) return 'Concluído';
-            if (s.includes('andamento')) return 'Em Andamento';
-            if (s.includes('atras')) return 'Atrasado';
-            if (s.includes('aguard')) return 'Aguardando Cliente';
-            if (s.includes('não') || s.includes('nao')) return 'Não Iniciado';
-            if (s.includes('bloqueado')) return 'Bloqueado';
-            return status;
-        }
-        
-        function getStatusClass(status) { return normalizeStatus(status).toLowerCase().replace(/\s+/g, '-').replace(/í/g, 'i').replace(/ã/g, 'a'); }
-        
-        function isCritico(p) {
-            const sit = (p.situacao || p.rag || '').toLowerCase();
-            return sit === 'vermelho' || normalizeStatus(p.status) === 'Atrasado' || normalizeStatus(p.status) === 'Bloqueado' || (p.diasSemAtual || 0) > 15;
-        }
-        
-        function getSituacaoHtml(sit) { 
-            const s = (sit || 'cinza').toLowerCase(); 
-            const labels = {verde:'Verde',amarelo:'Amarelo',vermelho:'Vermelho',cinza:'Cinza'};
-            return `<span class="situacao ${s}"><span class="situacao-dot"></span>${labels[s] || s}</span>`; 
-        }
-        
-        function getProgressHtml(pct) {
-            const p = Math.min(100, Math.max(0, pct || 0));
-            let cls = 'low'; if (p >= 70) cls = 'high'; else if (p >= 40) cls = 'medium';
-            return `<div class="progress-container"><div class="progress-bar"><div class="progress-fill ${cls}" style="width:${p}%"></div></div><span class="progress-text">${p}%</span></div>`;
-        }
-        
-        function parseDate(d) { 
-            if (!d || d === '-') return null; 
-            const parts = d.split('/'); 
-            return parts.length === 3 ? new Date(parts[2], parts[1]-1, parts[0]) : null; 
-        }
-        
-        function filterByStatus(status) {
-            document.getElementById('filterStatus').value = status;
-            document.getElementById('filterParados').value = '';
-            applyFilters();
-            highlightCard(status);
-        }
-        
-        function filterByCritico() {
-            clearFilters();
-            filteredProjects = projects.filter(p => isCritico(p));
-            document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
-            document.querySelector('.card.critico').classList.add('active');
+        function showDashboard() {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('dashboardContent').classList.remove('hidden');
+            document.getElementById('currentDate').textContent = new Date().toLocaleString('pt-BR');
+            populatePMOFilter();
+            populateProjectsCheckboxes();
             updateDashboard();
         }
         
-        function highlightCard(status) {
-            document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
-            if (status) {
-                const map = {'Concluído':'concluido','Em Andamento':'andamento','Atrasado':'atrasado','Aguardando Cliente':'aguardando','Não Iniciado':'nao-iniciado'};
-                const card = document.querySelector(`.card.${map[status]}`);
-                if (card) card.classList.add('active');
-            }
+        function populatePMOFilter() {
+            const pmos = [...new Set(projects.map(p => p.pmoInterno || p.respInterno).filter(p => p && p !== '-'))].sort();
+            document.getElementById('filterPMO').innerHTML = '<option value="">Todos</option>' + pmos.map(p => `<option value="${p}">${p}</option>`).join('');
+        }
+        
+        function populateProjectsCheckboxes() {
+            const container = document.getElementById('projectsCheckboxList');
+            container.innerHTML = projects.map((p, i) => `
+                <label class="project-checkbox">
+                    <input type="checkbox" value="${i}" onchange="selectPrintOption(document.querySelector('.print-option:last-child'), 'specific')">
+                    ${p.projeto}
+                </label>
+            `).join('');
+        }
+        
+        function toggleSelectAll() {
+            const checkboxes = document.querySelectorAll('#projectsCheckboxList input[type="checkbox"]');
+            const allChecked = Array.from(checkboxes).every(c => c.checked);
+            checkboxes.forEach(c => c.checked = !allChecked);
+            selectPrintOption(document.querySelector('.print-option:last-child'), 'specific');
+        }
+        
+        function normalizeStatus(status) {
+            if (!status) return 'Não Iniciado';
+            const s = status.toLowerCase().trim();
+            if (s.includes('conclu') || s.includes('finaliz') || s.includes('pronto')) return 'Concluído';
+            if (s.includes('andamento') || s.includes('progress') || s.includes('execu')) return 'Em Andamento';
+            if (s.includes('atras') || s.includes('delay')) return 'Atrasado';
+            if (s.includes('aguard') || s.includes('cliente') || s.includes('espera')) return 'Aguardando Cliente';
+            if (s.includes('não') || s.includes('nao') || s.includes('iniciad') || s.includes('pend')) return 'Não Iniciado';
+            return status;
+        }
+        
+        function getStatusClass(status) {
+            const map = {'Em Andamento':'andamento','Concluído':'concluido','Atrasado':'atrasado','Aguardando Cliente':'aguardando','Não Iniciado':'nao-iniciado'};
+            return map[normalizeStatus(status)] || 'nao-iniciado';
+        }
+        
+        function getSituacaoHtml(sit) {
+            if (!sit) return '<span class="situacao cinza"><span class="situacao-dot"></span>N/D</span>';
+            const s = sit.toLowerCase();
+            if (s.includes('verde') || s === 'green') return '<span class="situacao verde"><span class="situacao-dot"></span>Verde</span>';
+            if (s.includes('amarelo') || s === 'yellow') return '<span class="situacao amarelo"><span class="situacao-dot"></span>Amarelo</span>';
+            if (s.includes('vermelho') || s === 'red') return '<span class="situacao vermelho"><span class="situacao-dot"></span>Vermelho</span>';
+            return '<span class="situacao cinza"><span class="situacao-dot"></span>Cinza</span>';
+        }
+        
+        function getProgressHtml(prog) {
+            const p = parseInt(prog) || 0;
+            const cls = p >= 70 ? 'high' : p >= 40 ? 'medium' : 'low';
+            return `<div class="progress-container"><div class="progress-bar"><div class="progress-fill ${cls}" style="width:${p}%"></div></div><span class="progress-text">${p}%</span></div>`;
+        }
+        
+        function isCritico(p) {
+            const status = normalizeStatus(p.status);
+            const sit = (p.situacao || p.rag || '').toLowerCase();
+            return status === 'Atrasado' || sit.includes('vermelho') || sit === 'red' || (p.diasSemAtual || 0) > 15 || (p.bloqueador && p.bloqueador !== '-' && p.bloqueador.length > 2);
+        }
+        
+        function parseDate(str) {
+            if (!str || str === '-') return null;
+            const parts = str.split('/');
+            if (parts.length === 3) return new Date(parts[2], parts[1] - 1, parts[0]);
+            return new Date(str);
         }
         
         function applyFilters() {
-            const search = document.getElementById('searchInput').value.toLowerCase().trim();
+            const search = document.getElementById('searchInput').value.toLowerCase();
             const status = document.getElementById('filterStatus').value;
             const situacao = document.getElementById('filterSituacao').value;
-            const pmo = document.getElementById('filterPMO').value;
+            const goLive = document.getElementById('filterGoLive').value;
             const parados = document.getElementById('filterParados').value;
+            const pmo = document.getElementById('filterPMO').value;
+            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
             
             filteredProjects = projects.filter(p => {
-                // BUSCA - CORRIGIDA: busca em qualquer parte do nome
                 if (search && !p.projeto.toLowerCase().includes(search)) return false;
                 if (status && normalizeStatus(p.status) !== status) return false;
-                if (situacao && (p.situacao || p.rag || '').toLowerCase() !== situacao.toLowerCase()) return false;
-                if (pmo && (p.pmoInterno || p.respInterno || '').trim() !== pmo.trim()) return false;
+                if (situacao) {
+                    const sit = (p.situacao || p.rag || '').toLowerCase();
+                    if (situacao === 'vermelho' && !sit.includes('vermelho') && sit !== 'red') return false;
+                    if (situacao === 'amarelo' && !sit.includes('amarelo') && sit !== 'yellow') return false;
+                    if (situacao === 'verde' && !sit.includes('verde') && sit !== 'green') return false;
+                    if (situacao === 'cinza' && (sit.includes('vermelho') || sit.includes('amarelo') || sit.includes('verde') || sit === 'red' || sit === 'yellow' || sit === 'green')) return false;
+                }
+                if (goLive) {
+                    const glDate = parseDate(p.goliveAtual || p.golive);
+                    if (!glDate) return false;
+                    
+                    if (goLive === 'atrasado') {
+                        if (glDate >= today) return false;
+                        if (normalizeStatus(p.status) === 'Concluído') return false;
+                    } else if (goLive === 'mes') {
+                        const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+                        if (glDate < today || glDate > endOfMonth) return false;
+                    } else {
+                        const days = parseInt(goLive);
+                        const futureDate = new Date(today);
+                        futureDate.setDate(futureDate.getDate() + days);
+                        if (glDate < today || glDate > futureDate) return false;
+                    }
+                }
                 if (parados && (p.diasSemAtual || 0) < parseInt(parados)) return false;
+                if (pmo && (p.pmoInterno || p.respInterno) !== pmo) return false;
                 return true;
             });
+            
+            updateDashboard();
+        }
+        
+        function filterByStatus(status) {
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+            if (status) {
+                event.currentTarget.classList.add('active');
+                document.getElementById('filterStatus').value = status;
+            } else {
+                document.getElementById('filterStatus').value = '';
+            }
+            applyFilters();
+        }
+        
+        function filterByCritico() {
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            filteredProjects = projects.filter(p => isCritico(p));
             updateDashboard();
         }
         
@@ -482,69 +528,55 @@
             document.getElementById('searchInput').value = '';
             document.getElementById('filterStatus').value = '';
             document.getElementById('filterSituacao').value = '';
-            document.getElementById('filterPMO').value = '';
+            document.getElementById('filterGoLive').value = '';
             document.getElementById('filterParados').value = '';
+            document.getElementById('filterPMO').value = '';
             document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
             filteredProjects = [...projects];
             updateDashboard();
         }
         
-        function calculateKPIs() {
-            // On-Time GoLive
-            const comGoLive = projects.filter(p => {
-                const orig = p.goliveOriginal, atual = p.goliveAtual || p.golive;
-                return orig && orig !== '-' && atual && atual !== '-';
-            });
-            const onTime = comGoLive.filter(p => p.goliveOriginal === (p.goliveAtual || p.golive));
-            const pctOnTime = comGoLive.length > 0 ? Math.round((onTime.length / comGoLive.length) * 100) : null;
-            document.getElementById('kpiOntime').textContent = pctOnTime !== null ? pctOnTime + '%' : 'N/A';
-            document.getElementById('kpiOntimeSub').textContent = comGoLive.length > 0 ? `de ${comGoLive.length} com data` : 'sem dados';
+        function updateDashboard() {
+            const all = projects;
+            const naoConc = all.filter(p => normalizeStatus(p.status) !== 'Concluído');
             
-            // Delta Médio
-            let totalDelta = 0, countDelta = 0;
-            comGoLive.forEach(p => {
+            document.getElementById('totalProjects').textContent = all.length;
+            document.getElementById('completedCount').textContent = all.filter(p => normalizeStatus(p.status) === 'Concluído').length;
+            document.getElementById('ongoingCount').textContent = all.filter(p => normalizeStatus(p.status) === 'Em Andamento').length;
+            document.getElementById('delayedCount').textContent = all.filter(p => normalizeStatus(p.status) === 'Atrasado').length;
+            document.getElementById('waitingCount').textContent = all.filter(p => normalizeStatus(p.status) === 'Aguardando Cliente').length;
+            document.getElementById('notStartedCount').textContent = all.filter(p => normalizeStatus(p.status) === 'Não Iniciado').length;
+            document.getElementById('criticoCount').textContent = all.filter(p => isCritico(p)).length;
+            document.getElementById('resultsCount').textContent = `${filteredProjects.length} projetos`;
+            
+            // KPIs
+            const comData = naoConc.filter(p => (p.goliveOriginal && p.goliveOriginal !== '-') || (p.goliveAtual && p.goliveAtual !== '-'));
+            const onTime = comData.filter(p => {
                 const orig = parseDate(p.goliveOriginal);
                 const atual = parseDate(p.goliveAtual || p.golive);
-                if (orig && atual) {
-                    totalDelta += Math.round((atual - orig) / (1000 * 60 * 60 * 24));
-                    countDelta++;
-                }
-            });
-            if (countDelta > 0) {
-                const avgDelta = Math.round(totalDelta / countDelta);
-                document.getElementById('kpiDelta').textContent = (avgDelta > 0 ? '+' : '') + avgDelta + ' dias';
-                document.getElementById('kpiDeltaSub').textContent = avgDelta > 0 ? 'atraso médio' : avgDelta < 0 ? 'antecipação' : 'no prazo';
-            } else {
-                document.getElementById('kpiDelta').textContent = 'N/A';
-                document.getElementById('kpiDeltaSub').textContent = 'sem dados';
-            }
+                return orig && atual && atual <= orig;
+            }).length;
+            document.getElementById('kpiOntime').textContent = comData.length > 0 ? Math.round((onTime / comData.length) * 100) + '%' : '--';
+            document.getElementById('kpiOntimeSub').textContent = `${onTime} de ${comData.length} com data`;
             
-            // Taxa Atualização
-            const naoConcluidos = projects.filter(p => normalizeStatus(p.status) !== 'Concluído');
-            const atualizados = naoConcluidos.filter(p => (p.diasSemAtual || 0) <= 7);
-            const pctTaxa = naoConcluidos.length > 0 ? Math.round((atualizados.length / naoConcluidos.length) * 100) : 0;
-            document.getElementById('kpiTaxa').textContent = pctTaxa + '%';
-            document.getElementById('kpiTaxaSub').textContent = `${atualizados.length} de ${naoConcluidos.length}`;
+            const deltas = naoConc.map(p => {
+                const orig = parseDate(p.goliveOriginal);
+                const atual = parseDate(p.goliveAtual || p.golive);
+                if (orig && atual) return Math.round((atual - orig) / (1000 * 60 * 60 * 24));
+                return null;
+            }).filter(d => d !== null);
+            const avgDelta = deltas.length > 0 ? Math.round(deltas.reduce((a, b) => a + b, 0) / deltas.length) : 0;
+            document.getElementById('kpiDelta').textContent = avgDelta + ' dias';
+            document.getElementById('kpiDeltaSub').textContent = avgDelta > 0 ? 'de atraso' : avgDelta < 0 ? 'de antecipação' : 'nos go-lives';
             
-            // Aging Médio
-            const totalAging = naoConcluidos.reduce((sum, p) => sum + (p.diasSemAtual || 0), 0);
-            const avgAging = naoConcluidos.length > 0 ? Math.round(totalAging / naoConcluidos.length) : 0;
+            const atualizados = naoConc.filter(p => (p.diasSemAtual || 0) <= 7).length;
+            document.getElementById('kpiTaxa').textContent = naoConc.length > 0 ? Math.round((atualizados / naoConc.length) * 100) + '%' : '--';
+            document.getElementById('kpiTaxaSub').textContent = `${atualizados} de ${naoConc.length}`;
+            
+            const agings = naoConc.map(p => p.diasSemAtual || 0);
+            const avgAging = agings.length > 0 ? Math.round(agings.reduce((a, b) => a + b, 0) / agings.length) : 0;
             document.getElementById('kpiAging').textContent = avgAging + ' dias';
-            document.getElementById('kpiAgingSub').textContent = 'média geral';
-        }
-        
-        function updateDashboard() {
-            // Cards - FILTRADOS
-            document.getElementById('totalProjects').textContent = filteredProjects.length;
-            document.getElementById('completedCount').textContent = filteredProjects.filter(p => normalizeStatus(p.status) === 'Concluído').length;
-            document.getElementById('ongoingCount').textContent = filteredProjects.filter(p => normalizeStatus(p.status) === 'Em Andamento').length;
-            document.getElementById('delayedCount').textContent = filteredProjects.filter(p => normalizeStatus(p.status) === 'Atrasado').length;
-            document.getElementById('waitingCount').textContent = filteredProjects.filter(p => normalizeStatus(p.status) === 'Aguardando Cliente').length;
-            document.getElementById('notStartedCount').textContent = filteredProjects.filter(p => normalizeStatus(p.status) === 'Não Iniciado').length;
-            document.getElementById('criticoCount').textContent = filteredProjects.filter(p => isCritico(p)).length;
-            
-            document.getElementById('resultsCount').textContent = filteredProjects.length === projects.length ? 
-                `${projects.length} projetos` : `${filteredProjects.length} de ${projects.length}`;
+            document.getElementById('kpiAgingSub').textContent = 'sem atualização';
             
             renderDecisoes();
             renderCharts();
@@ -552,14 +584,11 @@
         }
         
         function renderDecisoes() {
-            const decisoes = filteredProjects.filter(p => 
-                (p.bloqueador && p.bloqueador !== '-' && p.bloqueador.length > 2) || 
-                (p.diasSemAtual || 0) > 15 ||
-                normalizeStatus(p.status) === 'Atrasado'
-            ).slice(0, 5);
-            
+            const decisoes = projects.filter(p => isCritico(p) && normalizeStatus(p.status) !== 'Concluído').slice(0, 5);
             document.getElementById('decisoesBadge').textContent = decisoes.length + ' itens';
-            document.getElementById('decisoesTable').innerHTML = decisoes.length === 0 ?
+            document.getElementById('decisoesSection').style.display = decisoes.length === 0 ? 'none' : 'block';
+            
+            document.getElementById('decisoesTable').innerHTML = decisoes.length === 0 ? 
                 '<tr><td colspan="5" class="no-decisoes">✅ Nenhuma decisão urgente!</td></tr>' :
                 decisoes.map(p => {
                     let acao = 'Verificar status';
@@ -577,7 +606,6 @@
         }
         
         function renderCharts() {
-            // Pie Chart
             const counts = {
                 'Em Andamento': filteredProjects.filter(p => normalizeStatus(p.status) === 'Em Andamento').length,
                 'Concluído': filteredProjects.filter(p => normalizeStatus(p.status) === 'Concluído').length,
@@ -594,34 +622,32 @@
                 document.getElementById('pieLegend').innerHTML = '<div style="color:#64748b;">Sem dados</div>';
             } else {
                 let cumPct = 0, gradParts = [];
-                Object.entries(counts).forEach(([s, c]) => { 
-                    if (c > 0) { const pct = (c/total)*100; gradParts.push(`${colors[s]} ${cumPct}% ${cumPct+pct}%`); cumPct += pct; }
+                Object.entries(counts).forEach(([s, c]) => {
+                    if (c > 0) {
+                        const pct = (c/total)*100;
+                        gradParts.push(`${colors[s]} ${cumPct}% ${cumPct+pct}%`);
+                        cumPct += pct;
+                    }
                 });
                 document.getElementById('pieChart').style.background = `conic-gradient(${gradParts.join(', ')})`;
-                document.getElementById('pieLegend').innerHTML = Object.entries(counts).filter(([_,c]) => c > 0)
-                    .map(([s,c]) => `<div class="legend-item"><span class="legend-dot" style="background:${colors[s]}"></span><span>${s}: ${c}</span></div>`).join('');
+                document.getElementById('pieLegend').innerHTML = Object.entries(counts).filter(([_,c]) => c > 0).map(([s,c]) => `<div class="legend-item"><span class="legend-dot" style="background:${colors[s]}"></span><span>${s}: ${c}</span></div>`).join('');
             }
             
-            // Pareto de Bloqueadores
             const bloqueadores = {};
             filteredProjects.forEach(p => {
                 if (p.bloqueador && p.bloqueador !== '-' && p.bloqueador !== '' && p.bloqueador.length > 2) {
-                    const b = p.bloqueador.substring(0, 22);
+                    const b = p.bloqueador.substring(0, 20);
                     bloqueadores[b] = (bloqueadores[b] || 0) + 1;
                 }
             });
             const topBloqueadores = Object.entries(bloqueadores).sort((a,b) => b[1] - a[1]).slice(0, 5);
             const maxBloq = topBloqueadores.length > 0 ? topBloqueadores[0][1] : 1;
             
-            document.getElementById('bloqueadoresChart').innerHTML = topBloqueadores.length === 0 ?
+            document.getElementById('bloqueadoresChart').innerHTML = topBloqueadores.length === 0 ? 
                 '<div class="no-bloqueadores">✅ Nenhum bloqueador!</div>' :
-                topBloqueadores.map(([b, c]) => `<div class="bloqueador-item">
-                    <div class="bloqueador-label" title="${b}">${b}</div>
-                    <div class="bloqueador-bar"><div class="bloqueador-fill" style="width:${(c/maxBloq)*100}%">${c}</div></div>
-                </div>`).join('');
+                topBloqueadores.map(([b, c]) => `<div class="bloqueador-item"><div class="bloqueador-label" title="${b}">${b}</div><div class="bloqueador-bar"><div class="bloqueador-fill" style="width:${(c/maxBloq)*100}%">${c}</div></div></div>`).join('');
             
-            // Projetos Parados
-            const parados = filteredProjects.filter(p => (p.diasSemAtual || 0) > 0 && normalizeStatus(p.status) !== 'Concluído')
+            const parados = filteredProjects.filter(p => (p.diasSemAtual || 0) > 7 && normalizeStatus(p.status) !== 'Concluído')
                 .sort((a, b) => (b.diasSemAtual || 0) - (a.diasSemAtual || 0)).slice(0, 6);
             const maxDias = Math.max(...parados.map(p => p.diasSemAtual || 0), 30);
             
@@ -704,13 +730,11 @@
                 filteredProjects = projects.filter(p => isCritico(p)); 
                 updateDashboard(); 
             } else if (printOption === 'specific') {
-                const input = document.getElementById('specificPages').value;
-                if (input) {
-                    const indices = input.split(';').map(s => parseInt(s.trim()) - 1).filter(n => !isNaN(n) && n >= 0 && n < projects.length);
-                    if (indices.length > 0) {
-                        filteredProjects = indices.map(i => projects[i]).filter(p => p);
-                        updateDashboard();
-                    }
+                const checkboxes = document.querySelectorAll('#projectsCheckboxList input[type="checkbox"]:checked');
+                if (checkboxes.length > 0) {
+                    const indices = Array.from(checkboxes).map(c => parseInt(c.value));
+                    filteredProjects = indices.map(i => projects[i]).filter(p => p);
+                    updateDashboard();
                 }
             }
             setTimeout(() => window.print(), 300);
