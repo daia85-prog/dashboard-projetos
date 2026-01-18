@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Dashboard Projetos v5.3.1</title>
+    <title>Admin - Dashboard Projetos v5.3.2</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
@@ -73,13 +73,14 @@
                     <h4 style="color:#166534;">📋 Passo a passo para importar:</h4>
                     <ol style="color:#166534;">
                         <li>Abra a planilha <strong>Template_Projetos_v5.xlsx</strong></li>
-                        <li>Selecione tudo: <strong>Ctrl+T</strong> (Excel Desktop) ou <strong>Ctrl+A</strong> (Excel Online)</li>
+                        <li>Selecione os dados (com ou sem cabeçalho)</li>
                         <li>Copie: <strong>Ctrl+C</strong></li>
                         <li>Cole no campo abaixo</li>
                         <li>Clique em <strong>"Carregar e Validar"</strong></li>
                     </ol>
+                    <p style="color:#166534; font-size:12px; margin-top:10px;">✅ Funciona com ou sem linha de cabeçalho!</p>
                 </div>
-                <textarea id="dataInput" placeholder="Cole aqui os dados copiados da planilha Excel v5..."></textarea>
+                <textarea id="dataInput" placeholder="Cole aqui os dados copiados da planilha Excel v5 (com ou sem cabeçalho)..."></textarea>
                 <div class="action-buttons">
                     <button class="btn" onclick="processData()">📥 Carregar e Validar</button>
                     <button class="btn btn-secondary" onclick="clearData()">🗑️ Limpar</button>
@@ -138,76 +139,57 @@
         function parseData(text) {
             text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
             const lines = text.split('\n').filter(l => l.trim());
-            if (lines.length < 2) return [];
+            if (lines.length < 1) return [];
             const data = [];
-            const headers = lines[0].split('\t').map(h => h.trim().toLowerCase());
             
-            // Mapeamento de colunas (v5.3.2)
-            const colMap = {
-                projeto: headers.findIndex(h => h.includes('projeto')),
-                etapa: headers.findIndex(h => h.includes('etapa_atual') || h === 'etapa' || h === 'etapa atual'),
-                progresso: headers.findIndex(h => h.includes('progresso')),
-                situacao: headers.findIndex(h => h.includes('situação') || h.includes('situacao')),
-                status: headers.findIndex(h => h === 'status'),
-                proximo: headers.findIndex(h => h.includes('proximo') || h.includes('próximo')),
-                bloqueador: headers.findIndex(h => h.includes('bloqueador')),
-                goliveOriginal: headers.findIndex(h => h.includes('golive_original') || h.includes('original') || h.includes('go live original')),
-                goliveAtual: headers.findIndex(h => h.includes('golive_atual') || h.includes('go live atual')),
-                pmoInterno: headers.findIndex(h => h.includes('pmo_interno') || h === 'pmo interno' || h === 'pmo'),
-                infraInterno: headers.findIndex(h => h.includes('infra_interno') || h === 'infra interno'),
-                pmoCliente: headers.findIndex(h => h.includes('pmo_cliente') || h === 'pmo cliente'),
-                infraCliente: headers.findIndex(h => h.includes('infra_cliente') || h === 'infra cliente'),
-                localizacao: headers.findIndex(h => h.includes('localizacao') || h.includes('localização')),
-                diasSemAtual: headers.findIndex(h => h.includes('dias')),
-                ultAtual: headers.findIndex(h => h.includes('ultima') || h.includes('última')),
-                retrocesso: headers.findIndex(h => h.includes('retrocesso')),
-                obs: headers.findIndex(h => h.includes('obs') || h.includes('anotaç') || h.includes('comentar')),
-                etapa1: headers.findIndex(h => h.includes('etapa 1') || h.includes('kick')),
-                etapa2: headers.findIndex(h => h.includes('etapa 2') || h.includes('levantamento')),
-                etapa3: headers.findIndex(h => h.includes('etapa 3') || h.includes('desenvolvimento')),
-                etapa4: headers.findIndex(h => h.includes('etapa 4') || h.includes('homolog')),
-                etapa5: headers.findIndex(h => h.includes('etapa 5') || h.includes('go live'))
-            };
+            // Detectar se primeira linha é cabeçalho
+            const firstLine = lines[0].toLowerCase();
+            const hasHeader = firstLine.includes('projeto') && (firstLine.includes('status') || firstLine.includes('localiza'));
             
-            for (let i = 1; i < lines.length; i++) {
+            let startIdx = hasHeader ? 1 : 0;
+            
+            // Mapeamento por posição fixa (ordem das colunas na planilha v5)
+            // Projeto | Localização | Status | Situação | Progresso | Etapa Atual | PMO Interno | Go Live Original | Go Live Atual | Bloqueador | Última Atualização | Dias Parado | Observações | Etapa 1 | Etapa 2 | Etapa 3 | Etapa 4 | Etapa 5
+            
+            for (let i = startIdx; i < lines.length; i++) {
                 const cols = lines[i].split('\t').map(c => c.trim());
-                const projeto = cols[colMap.projeto] || cols[0];
-                if (!projeto) continue;
+                const projeto = cols[0];
+                if (!projeto || projeto === '-') continue;
                 
                 // Parse progresso (remove % se tiver)
                 let progresso = 0;
-                const progStr = cols[colMap.progresso] || cols[2] || '0';
+                const progStr = cols[4] || '0';
                 progresso = parseInt(progStr.replace('%', '').replace(',', '.')) || 0;
                 
                 data.push({
-                    projeto: projeto,
-                    etapa: cols[colMap.etapa] || cols[5] || '-',
+                    projeto: cols[0] || '-',
+                    localizacao: cols[1] || '-',
+                    status: cols[2] || 'Não Iniciado',
+                    situacao: (cols[3] || 'Cinza').toLowerCase(),
                     progresso: progresso,
-                    situacao: (cols[colMap.situacao] || cols[3] || 'Cinza').toLowerCase(),
-                    status: cols[colMap.status] || cols[2] || 'Não Iniciado',
-                    proximo: cols[colMap.proximo] || '-',
-                    bloqueador: cols[colMap.bloqueador] || cols[9] || '-',
-                    goliveOriginal: formatDate(cols[colMap.goliveOriginal] || cols[7]) || '-',
-                    goliveAtual: formatDate(cols[colMap.goliveAtual] || cols[8]) || '-',
-                    golive: formatDate(cols[colMap.goliveAtual] || cols[8]) || '-',
-                    pmoInterno: cols[colMap.pmoInterno] || cols[6] || '-',
-                    infraInterno: cols[colMap.infraInterno] || '-',
-                    pmoCliente: cols[colMap.pmoCliente] || '-',
-                    infraCliente: cols[colMap.infraCliente] || '-',
-                    localizacao: cols[colMap.localizacao] || cols[1] || '-',
-                    diasSemAtual: parseInt(cols[colMap.diasSemAtual] || cols[11] || '0') || 0,
-                    ultAtual: formatDate(cols[colMap.ultAtual] || cols[10]) || '-',
-                    retrocesso: cols[colMap.retrocesso] || '',
-                    observacoes: cols[colMap.obs] || cols[12] || '-',
-                    etapa1: formatDate(cols[colMap.etapa1] || cols[13]) || '-',
-                    etapa2: formatDate(cols[colMap.etapa2] || cols[14]) || '-',
-                    etapa3: formatDate(cols[colMap.etapa3] || cols[15]) || '-',
-                    etapa4: formatDate(cols[colMap.etapa4] || cols[16]) || '-',
-                    etapa5: formatDate(cols[colMap.etapa5] || cols[17]) || '-',
-                    // Compatibilidade com versão anterior
-                    respInterno: cols[colMap.pmoInterno] || cols[6] || '-',
-                    rag: (cols[colMap.situacao] || cols[3] || 'Cinza').toLowerCase(),
-                    obs: cols[colMap.obs] || cols[12] || '-'
+                    etapa: cols[5] || '-',
+                    pmoInterno: cols[6] || '-',
+                    goliveOriginal: formatDate(cols[7]) || '-',
+                    goliveAtual: formatDate(cols[8]) || '-',
+                    golive: formatDate(cols[8]) || '-',
+                    bloqueador: cols[9] || '-',
+                    ultAtual: formatDate(cols[10]) || '-',
+                    diasSemAtual: parseInt(cols[11] || '0') || 0,
+                    observacoes: cols[12] || '-',
+                    etapa1: formatDate(cols[13]) || '-',
+                    etapa2: formatDate(cols[14]) || '-',
+                    etapa3: formatDate(cols[15]) || '-',
+                    etapa4: formatDate(cols[16]) || '-',
+                    etapa5: formatDate(cols[17]) || '-',
+                    // Compatibilidade
+                    respInterno: cols[6] || '-',
+                    rag: (cols[3] || 'Cinza').toLowerCase(),
+                    obs: cols[12] || '-',
+                    proximo: '-',
+                    infraInterno: '-',
+                    pmoCliente: '-',
+                    infraCliente: '-',
+                    retrocesso: ''
                 });
             }
             return data;
