@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visão Detalhada - Infraestrutura v5.3.1</title>
+    <title>Visão Detalhada - Infraestrutura v5.3.2</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 20px; min-height: 100vh; }
@@ -194,6 +194,9 @@
         .project-checkbox { display: flex; align-items: center; gap: 6px; padding: 5px 6px; border-radius: 4px; cursor: pointer; font-size: 11px; }
         .project-checkbox:hover { background: #f1f5f9; }
         .project-checkbox input { width: 14px; height: 14px; accent-color: #667eea; }
+        .project-search { width: 100%; padding: 8px 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 12px; margin-bottom: 10px; }
+        .project-search:focus { outline: none; border-color: #667eea; }
+        .project-checkbox.hidden { display: none; }
         .select-all-btn { font-size: 10px; color: #667eea; cursor: pointer; margin-bottom: 6px; display: inline-block; }
         .select-all-btn:hover { text-decoration: underline; }
         
@@ -206,7 +209,7 @@
     <div class="container">
         <div class="header">
             <div>
-                <h1>📈 Visão Detalhada - Infraestrutura <span class="version">v5.3.1</span></h1>
+                <h1>📈 Visão Detalhada - Infraestrutura <span class="version">v5.3.2</span></h1>
                 <p>Atualizado em: <span id="currentDate">Carregando...</span></p>
             </div>
             <div style="display:flex;gap:10px;flex-wrap:wrap;">
@@ -329,6 +332,7 @@
                         <div class="print-label">Projetos específicos</div>
                         <div class="print-desc">Selecione os projetos desejados</div>
                         <div class="projects-select-container" id="projectsSelectContainer" onclick="event.stopPropagation()">
+                            <input type="text" class="project-search" id="projectSearch" placeholder="🔍 Buscar projeto..." oninput="filterProjectCheckboxes()">
                             <span class="select-all-btn" onclick="toggleSelectAll()">Selecionar todos</span>
                             <div id="projectsCheckboxList"></div>
                         </div>
@@ -366,7 +370,17 @@
         
         function populateProjectsCheckboxes() {
             const container = document.getElementById('projectsCheckboxList');
-            container.innerHTML = projects.map((p, i) => `<label class="project-checkbox"><input type="checkbox" value="${i}" onchange="selectPrintOption(document.querySelector('.print-option:last-child'), 'specific')">${p.projeto}</label>`).join('');
+            const sortedProjects = projects.map((p, i) => ({...p, originalIndex: i}))
+                .sort((a, b) => a.projeto.localeCompare(b.projeto, 'pt-BR'));
+            container.innerHTML = sortedProjects.map(p => `<label class="project-checkbox" data-name="${p.projeto.toLowerCase()}"><input type="checkbox" value="${p.originalIndex}" onchange="selectPrintOption(document.querySelector('.print-option:last-child'), 'specific')">${p.projeto}</label>`).join('');
+        }
+        
+        function filterProjectCheckboxes() {
+            const search = document.getElementById('projectSearch').value.toLowerCase();
+            document.querySelectorAll('#projectsCheckboxList .project-checkbox').forEach(label => {
+                const name = label.dataset.name || '';
+                label.classList.toggle('hidden', search && !name.includes(search));
+            });
         }
         
         function toggleSelectAll() {
@@ -627,7 +641,29 @@
             if (!p) return;
             document.getElementById('modalTitle').textContent = p.projeto;
             document.getElementById('modalSubtitle').textContent = `${normalizeStatus(p.status)} • ${p.localizacao || 'Local não definido'}`;
-            document.getElementById('modalInfo').innerHTML = `<div class="info-box"><label>Etapa</label><span>${p.etapa || '-'}</span></div><div class="info-box"><label>Progresso</label><span>${p.progresso || 0}%</span></div><div class="info-box"><label>Situação</label><span>${getSituacaoHtml(p.situacao || p.rag)}</span></div><div class="info-box"><label>Go Live Original</label><span>${p.goliveOriginal || '-'}</span></div><div class="info-box"><label>Go Live Atual</label><span>${p.goliveAtual || p.golive || '-'}</span></div><div class="info-box"><label>Dias Parado</label><span>${p.diasSemAtual || 0} dias</span></div><div class="info-box"><label>PMO Interno</label><span>${p.pmoInterno || p.respInterno || '-'}</span></div><div class="info-box"><label>Infra Interno</label><span>${p.infraInterno || '-'}</span></div><div class="info-box"><label>PMO Cliente</label><span>${p.pmoCliente || p.respCliente || '-'}</span></div><div class="info-box"><label>Próximo Passo</label><span>${p.proximo || '-'}</span></div><div class="info-box"><label>Bloqueador</label><span style="${p.bloqueador && p.bloqueador !== '-' ? 'color:#991b1b;' : ''}">${p.bloqueador || '-'}</span></div><div class="info-box"><label>Última Atualização</label><span>${p.ultAtual || '-'}</span></div>`;
+            
+            // Montar histórico de etapas
+            let etapasHtml = '';
+            const etapas = [
+                {nome: 'Kick-off', data: p.etapa1 || p.kickoff},
+                {nome: 'Levantamento', data: p.etapa2 || p.levantamento},
+                {nome: 'Desenvolvimento', data: p.etapa3 || p.desenvolvimento},
+                {nome: 'Homologação', data: p.etapa4 || p.homologacao},
+                {nome: 'Go Live', data: p.etapa5 || p.goliveRealizado}
+            ].filter(e => e.data && e.data !== '-');
+            
+            if (etapas.length > 0) {
+                etapasHtml = `<div class="info-box" style="grid-column: 1 / -1;"><label>📅 Histórico de Etapas</label><div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">${etapas.map(e => `<span style="background:#e0e7ff;color:#3730a3;padding:4px 10px;border-radius:6px;font-size:11px;">${e.nome}: ${e.data}</span>`).join('')}</div></div>`;
+            }
+            
+            // Observações
+            let obsHtml = '';
+            const obs = p.observacoes || p.anotacoes || p.obs || p.comentarios || '';
+            if (obs && obs !== '-') {
+                obsHtml = `<div class="info-box" style="grid-column: 1 / -1;"><label>📝 Observações</label><span style="font-size:12px;line-height:1.5;">${obs}</span></div>`;
+            }
+            
+            document.getElementById('modalInfo').innerHTML = `<div class="info-box"><label>Etapa</label><span>${p.etapa || '-'}</span></div><div class="info-box"><label>Progresso</label><span>${p.progresso || 0}%</span></div><div class="info-box"><label>Situação</label><span>${getSituacaoHtml(p.situacao || p.rag)}</span></div><div class="info-box"><label>Go Live Original</label><span>${p.goliveOriginal || '-'}</span></div><div class="info-box"><label>Go Live Atual</label><span>${p.goliveAtual || p.golive || '-'}</span></div><div class="info-box"><label>Dias Parado</label><span>${p.diasSemAtual || 0} dias</span></div><div class="info-box"><label>PMO Interno</label><span>${p.pmoInterno || p.respInterno || '-'}</span></div><div class="info-box"><label>Infra Interno</label><span>${p.infraInterno || '-'}</span></div><div class="info-box"><label>PMO Cliente</label><span>${p.pmoCliente || p.respCliente || '-'}</span></div><div class="info-box"><label>Próximo Passo</label><span>${p.proximo || '-'}</span></div><div class="info-box"><label>Bloqueador</label><span style="${p.bloqueador && p.bloqueador !== '-' ? 'color:#991b1b;' : ''}">${p.bloqueador || '-'}</span></div><div class="info-box"><label>Última Atualização</label><span>${p.ultAtual || '-'}</span></div>${etapasHtml}${obsHtml}`;
             document.getElementById('modalOverlay').classList.add('active');
         }
         

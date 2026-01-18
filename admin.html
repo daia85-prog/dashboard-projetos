@@ -142,18 +142,18 @@
             const data = [];
             const headers = lines[0].split('\t').map(h => h.trim().toLowerCase());
             
-            // Mapeamento de colunas (v5)
+            // Mapeamento de colunas (v5.3.2)
             const colMap = {
                 projeto: headers.findIndex(h => h.includes('projeto')),
-                etapa: headers.findIndex(h => h.includes('etapa_atual') || h === 'etapa'),
+                etapa: headers.findIndex(h => h.includes('etapa_atual') || h === 'etapa' || h === 'etapa atual'),
                 progresso: headers.findIndex(h => h.includes('progresso')),
                 situacao: headers.findIndex(h => h.includes('situação') || h.includes('situacao')),
                 status: headers.findIndex(h => h === 'status'),
                 proximo: headers.findIndex(h => h.includes('proximo') || h.includes('próximo')),
                 bloqueador: headers.findIndex(h => h.includes('bloqueador')),
-                goliveOriginal: headers.findIndex(h => h.includes('golive_original') || h.includes('original')),
-                goliveAtual: headers.findIndex(h => h.includes('golive_atual') || h.includes('atual')),
-                pmoInterno: headers.findIndex(h => h.includes('pmo_interno') || h === 'pmo interno'),
+                goliveOriginal: headers.findIndex(h => h.includes('golive_original') || h.includes('original') || h.includes('go live original')),
+                goliveAtual: headers.findIndex(h => h.includes('golive_atual') || h.includes('go live atual')),
+                pmoInterno: headers.findIndex(h => h.includes('pmo_interno') || h === 'pmo interno' || h === 'pmo'),
                 infraInterno: headers.findIndex(h => h.includes('infra_interno') || h === 'infra interno'),
                 pmoCliente: headers.findIndex(h => h.includes('pmo_cliente') || h === 'pmo cliente'),
                 infraCliente: headers.findIndex(h => h.includes('infra_cliente') || h === 'infra cliente'),
@@ -161,7 +161,12 @@
                 diasSemAtual: headers.findIndex(h => h.includes('dias')),
                 ultAtual: headers.findIndex(h => h.includes('ultima') || h.includes('última')),
                 retrocesso: headers.findIndex(h => h.includes('retrocesso')),
-                obs: headers.findIndex(h => h.includes('obs'))
+                obs: headers.findIndex(h => h.includes('obs') || h.includes('anotaç') || h.includes('comentar')),
+                etapa1: headers.findIndex(h => h.includes('etapa 1') || h.includes('kick')),
+                etapa2: headers.findIndex(h => h.includes('etapa 2') || h.includes('levantamento')),
+                etapa3: headers.findIndex(h => h.includes('etapa 3') || h.includes('desenvolvimento')),
+                etapa4: headers.findIndex(h => h.includes('etapa 4') || h.includes('homolog')),
+                etapa5: headers.findIndex(h => h.includes('etapa 5') || h.includes('go live'))
             };
             
             for (let i = 1; i < lines.length; i++) {
@@ -176,27 +181,33 @@
                 
                 data.push({
                     projeto: projeto,
-                    etapa: cols[colMap.etapa] || cols[1] || '-',
+                    etapa: cols[colMap.etapa] || cols[5] || '-',
                     progresso: progresso,
                     situacao: (cols[colMap.situacao] || cols[3] || 'Cinza').toLowerCase(),
-                    status: cols[colMap.status] || cols[4] || 'Não Iniciado',
-                    proximo: cols[colMap.proximo] || cols[5] || '-',
-                    bloqueador: cols[colMap.bloqueador] || cols[6] || '-',
+                    status: cols[colMap.status] || cols[2] || 'Não Iniciado',
+                    proximo: cols[colMap.proximo] || '-',
+                    bloqueador: cols[colMap.bloqueador] || cols[9] || '-',
                     goliveOriginal: formatDate(cols[colMap.goliveOriginal] || cols[7]) || '-',
                     goliveAtual: formatDate(cols[colMap.goliveAtual] || cols[8]) || '-',
                     golive: formatDate(cols[colMap.goliveAtual] || cols[8]) || '-',
-                    pmoInterno: cols[colMap.pmoInterno] || cols[9] || '-',
-                    infraInterno: cols[colMap.infraInterno] || cols[10] || '-',
-                    pmoCliente: cols[colMap.pmoCliente] || cols[11] || '-',
-                    infraCliente: cols[colMap.infraCliente] || cols[12] || '-',
-                    localizacao: cols[colMap.localizacao] || cols[13] || '-',
-                    diasSemAtual: parseInt(cols[colMap.diasSemAtual] || cols[14] || '0') || 0,
-                    ultAtual: formatDate(cols[colMap.ultAtual] || cols[15]) || '-',
-                    retrocesso: cols[colMap.retrocesso] || cols[17] || '',
-                    obs: cols[colMap.obs] || cols[18] || '-',
+                    pmoInterno: cols[colMap.pmoInterno] || cols[6] || '-',
+                    infraInterno: cols[colMap.infraInterno] || '-',
+                    pmoCliente: cols[colMap.pmoCliente] || '-',
+                    infraCliente: cols[colMap.infraCliente] || '-',
+                    localizacao: cols[colMap.localizacao] || cols[1] || '-',
+                    diasSemAtual: parseInt(cols[colMap.diasSemAtual] || cols[11] || '0') || 0,
+                    ultAtual: formatDate(cols[colMap.ultAtual] || cols[10]) || '-',
+                    retrocesso: cols[colMap.retrocesso] || '',
+                    observacoes: cols[colMap.obs] || cols[12] || '-',
+                    etapa1: formatDate(cols[colMap.etapa1] || cols[13]) || '-',
+                    etapa2: formatDate(cols[colMap.etapa2] || cols[14]) || '-',
+                    etapa3: formatDate(cols[colMap.etapa3] || cols[15]) || '-',
+                    etapa4: formatDate(cols[colMap.etapa4] || cols[16]) || '-',
+                    etapa5: formatDate(cols[colMap.etapa5] || cols[17]) || '-',
                     // Compatibilidade com versão anterior
-                    respInterno: cols[colMap.pmoInterno] || cols[9] || '-',
-                    rag: (cols[colMap.situacao] || cols[3] || 'Cinza').toLowerCase()
+                    respInterno: cols[colMap.pmoInterno] || cols[6] || '-',
+                    rag: (cols[colMap.situacao] || cols[3] || 'Cinza').toLowerCase(),
+                    obs: cols[colMap.obs] || cols[12] || '-'
                 });
             }
             return data;
