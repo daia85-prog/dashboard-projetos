@@ -1,7 +1,59 @@
 # 📋 REGISTRO DE BUGS E CORREÇÕES - Dashboard Projetos Infraestrutura
 
-> **Última atualização:** 17/01/2026
-> **Versão atual:** 5.3
+> **Última atualização:** 18/01/2026
+> **Versão atual:** 5.3.1
+
+---
+
+## 🆕 CORREÇÕES v5.3.1 (18/01/2026)
+
+### BUG #008 - KPI "Atraso Médio" mostrando "NaN dias"
+**Problema:** O KPI de Atraso Médio exibia "NaN dias" quando havia projetos sem datas válidas de Go-Live.
+
+**Causa:** Falta de validação para datas inválidas no cálculo de média.
+
+**Solução:** Adicionar validação `!isNaN(date.getTime())` antes de incluir no cálculo e retornar 0 como fallback.
+
+**Arquivos afetados:** `view-simples.html`, `view-detalhada.html`
+
+---
+
+### BUG #009 - Filtros não zeram os cards de status (regressão)
+**Problema:** Ao clicar em um card de status (ex: "Em Andamento"), os outros cards mantinham os valores totais ao invés de zerar.
+
+**Causa:** A função `updateDashboard()` usava `projects` (array original) ao invés de `filteredProjects` para calcular os cards.
+
+**Solução:** Alterar `const all = projects;` para `const all = filteredProjects;` na função updateDashboard.
+
+**Arquivos afetados:** `view-simples.html`, `view-detalhada.html`
+
+---
+
+### BUG #010 - Data "hoje" incorreta na página inicial
+**Problema:** Quando a última atualização foi ontem (17/01), o sistema mostrava "hoje" ao invés de "ontem".
+
+**Causa:** A comparação de datas considerava horas, não apenas o dia do calendário.
+
+**Solução:** Comparar apenas as datas (setHours(0,0,0,0)) e adicionar lógica para "hoje", "ontem" e "há X dias".
+
+**Arquivos afetados:** `index.html`
+
+---
+
+### BUG #011 - "Próximos Go Lives" mostrando etapa ao invés da data
+**Problema:** O painel "Próximos Go Lives" mostrava a etapa atual do projeto (ex: "Documentação") ao invés da data de entrada em produção.
+
+**Causa:** Versões antigas nos arquivos do GitHub / falta de padronização na exibição.
+
+**Solução:** Reformular completamente a seção para mostrar:
+- **Data do Go-Live** (DD/MM/AAAA) em destaque
+- **Indicador de dias** (ex: "15d" para faltam 15 dias, "5d atrás" para atrasados)
+- **Nome do projeto** com cor da situação
+- Ordenação por data mais próxima primeiro
+
+**Observação:** O "Go-Live" representa a **data de entrada em produção** do projeto (implantação final), não etapas intermediárias.
+
+**Arquivos afetados:** `view-simples.html`, `view-detalhada.html`
 
 ---
 
@@ -246,6 +298,7 @@ Dashboard Atualizado
 
 | Versão | Data | Principais Mudanças |
 |--------|------|---------------------|
+| **5.3.1** | 18/01/2026 | Correção NaN, filtros zeram cards, data hoje/ontem, Próximos Go Lives corrigido |
 | 5.3 | 17/01/2026 | KPIs simplificados, Filtro Go-Live, Impressão por nome |
 | 5.2 | 16/01/2026 | Correção KPIs, Filtros parados expandidos |
 | 5.0 | 12/01/2026 | Automação planilha, Responsáveis separados |

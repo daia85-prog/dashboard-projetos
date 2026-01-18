@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Status dos Projetos - Infraestrutura v5.3</title>
+    <title>Status dos Projetos - Infraestrutura v5.3.1</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
@@ -69,7 +69,7 @@
         <div class="header">
             <h1>📊 Status dos Projetos - Infraestrutura</h1>
             <p>Selecione o tipo de visualização desejada</p>
-            <span class="version-badge">v5.3 - KPIs Simplificados + Filtro Go-Live</span>
+            <span class="version-badge">v5.3.1 - KPIs Simplificados + Filtro Go-Live</span>
         </div>
         <div id="infoBar" class="info-bar">
             <div class="info-item total"><div class="number" id="totalCount">-</div><div class="label">Projetos</div></div>
@@ -146,8 +146,15 @@
                     if (data.lastUpdate) {
                         const d = new Date(data.lastUpdate);
                         document.getElementById('updateDate').textContent = d.toLocaleDateString('pt-BR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-                        const diff = Math.floor((new Date() - d) / (1000*60*60*24));
-                        document.getElementById('timeAgo').textContent = diff > 0 ? `há ${diff} dia(s)` : 'hoje';
+                        // Comparar apenas datas (sem horas)
+                        const hoje = new Date();
+                        hoje.setHours(0, 0, 0, 0);
+                        const dataUpdate = new Date(d);
+                        dataUpdate.setHours(0, 0, 0, 0);
+                        const diff = Math.floor((hoje - dataUpdate) / (1000*60*60*24));
+                        if (diff === 0) document.getElementById('timeAgo').textContent = 'hoje';
+                        else if (diff === 1) document.getElementById('timeAgo').textContent = 'ontem';
+                        else document.getElementById('timeAgo').textContent = `há ${diff} dias`;
                     }
                     const alertBox = document.getElementById('alertBox');
                     alertBox.classList.remove('hidden');

@@ -4,7 +4,7 @@
 
 ---
 
-## 🚀 Versão Atual: **5.3** (17/01/2026)
+## 🚀 Versão Atual: **5.3.1** (18/01/2026)
 
 ---
 
@@ -46,6 +46,14 @@
 - Apenas críticos
 - **Projetos específicos** (seleção por checkboxes)
 
+### Painel "Próximos Go Lives"
+Mostra os **próximos projetos a entrarem em produção**, ordenados por data:
+- 📅 **Data do Go-Live** - Data de entrada em produção
+- ⏱️ **Indicador de dias** - Quantos dias faltam (ou "X dias atrás" se atrasado)
+- 🏷️ **Nome do projeto** - Com cor indicando situação (verde/amarelo/vermelho)
+
+> **Importante:** O Go-Live é a data de **implantação final** do projeto, não etapas intermediárias.
+
 ---
 
 ## 🔄 Como Atualizar os Dados
@@ -67,7 +75,8 @@
 
 | Versão | Data | Mudanças |
 |--------|------|----------|
-| **5.3** | 17/01/2026 | KPIs simplificados, Filtro Go-Live, Impressão por nome do projeto |
+| **5.3.1** | 18/01/2026 | Correção NaN nos KPIs, Filtros zeram cards, Data hoje/ontem, Próximos Go Lives corrigido |
+| 5.3 | 17/01/2026 | KPIs simplificados, Filtro Go-Live, Impressão por nome do projeto |
 | 5.2 | 16/01/2026 | Correção KPIs, Filtros parados expandidos (7+, 15+, 30+, 60+) |
 | 5.0 | 12/01/2026 | Automação planilha, Responsáveis separados, Sistema anti-burla |
 | 4.x | - | Versões anteriores |

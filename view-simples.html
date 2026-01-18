@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visão Resumida - Infraestrutura v5.3</title>
+    <title>Visão Resumida - Infraestrutura v5.3.1</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; min-height: 100vh; }
@@ -109,6 +109,21 @@
         .bloqueador-fill { height: 100%; background: linear-gradient(90deg, #ef4444, #dc2626); border-radius: 6px; display: flex; align-items: center; justify-content: flex-end; padding: 0 10px; font-size: 11px; font-weight: 600; color: white; }
         .no-bloqueadores { text-align: center; padding: 20px; color: #10b981; font-size: 12px; }
         
+        /* Timeline Go Lives */
+        .timeline-chart { display: flex; flex-direction: column; gap: 8px; }
+        .timeline-item { display: flex; align-items: center; gap: 10px; }
+        .timeline-date { min-width: 70px; font-size: 11px; color: #1e293b; font-weight: 700; }
+        .timeline-days { min-width: 55px; font-size: 9px; padding: 2px 6px; border-radius: 4px; text-align: center; }
+        .timeline-days.atrasado { background: #fee2e2; color: #991b1b; }
+        .timeline-days.proximo { background: #fef3c7; color: #92400e; }
+        .timeline-days.ok { background: #d1fae5; color: #065f46; }
+        .timeline-bar { flex: 1; height: 22px; border-radius: 6px; display: flex; align-items: center; padding: 0 10px; font-size: 10px; font-weight: 600; color: white; }
+        .timeline-bar.verde { background: linear-gradient(90deg, #10b981, #059669); }
+        .timeline-bar.amarelo { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .timeline-bar.vermelho { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .timeline-bar.cinza { background: linear-gradient(90deg, #6b7280, #4b5563); }
+        .no-timeline { text-align: center; padding: 20px; color: #64748b; font-size: 12px; }
+        
         /* Parados */
         .parado-item { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
         .parado-nome { min-width: 80px; font-size: 10px; color: #374151; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -202,7 +217,7 @@
     <div class="container">
         <div class="header">
             <div>
-                <h1>📋 Visão Resumida - Infraestrutura <span class="version">v5.3</span></h1>
+                <h1>📋 Visão Resumida - Infraestrutura <span class="version">v5.3.1</span></h1>
                 <p>Atualizado em: <span id="currentDate">Carregando...</span></p>
             </div>
             <div style="display:flex;gap:10px;flex-wrap:wrap;">
@@ -294,9 +309,9 @@
             
             <!-- Charts -->
             <div class="charts-row">
-                <div class="chart-card"><h3>📊 Distribuição por Status</h3><div class="pie-container"><div class="pie-chart" id="pieChart"><div class="pie-center"><div class="number" id="pieTotal">0</div><div class="label">Projetos</div></div></div><div class="pie-legend" id="pieLegend"></div></div></div>
+                <div class="chart-card"><h3>📊 Distribuição</h3><div class="pie-container"><div class="pie-chart" id="pieChart"><div class="pie-center"><div class="number" id="pieTotal">0</div><div class="label">Projetos</div></div></div><div class="pie-legend" id="pieLegend"></div></div></div>
                 <div class="chart-card"><h3>🔥 Top 5 Bloqueadores</h3><div id="bloqueadoresChart"></div></div>
-                <div class="chart-card"><h3>⏱️ Projetos Parados</h3><div id="paradosChart"></div></div>
+                <div class="chart-card"><h3>📅 Próximos Go Lives</h3><div class="timeline-chart" id="timelineChart"></div></div>
             </div>
             
             <!-- Table -->
@@ -537,7 +552,8 @@
         }
         
         function updateDashboard() {
-            const all = projects;
+            // CORRIGIDO: Usar filteredProjects para cards e KPIs
+            const all = filteredProjects;
             const naoConc = all.filter(p => normalizeStatus(p.status) !== 'Concluído');
             
             document.getElementById('totalProjects').textContent = all.length;
@@ -549,33 +565,39 @@
             document.getElementById('criticoCount').textContent = all.filter(p => isCritico(p)).length;
             document.getElementById('resultsCount').textContent = `${filteredProjects.length} projetos`;
             
-            // KPIs
-            const comData = naoConc.filter(p => (p.goliveOriginal && p.goliveOriginal !== '-') || (p.goliveAtual && p.goliveAtual !== '-'));
+            // KPIs - com validação para evitar NaN
+            const comData = naoConc.filter(p => {
+                const orig = p.goliveOriginal && p.goliveOriginal !== '-' && p.goliveOriginal.includes('/');
+                const atual = (p.goliveAtual || p.golive) && (p.goliveAtual || p.golive) !== '-';
+                return orig || atual;
+            });
             const onTime = comData.filter(p => {
                 const orig = parseDate(p.goliveOriginal);
                 const atual = parseDate(p.goliveAtual || p.golive);
-                return orig && atual && atual <= orig;
+                return orig && atual && !isNaN(orig.getTime()) && !isNaN(atual.getTime()) && atual <= orig;
             }).length;
-            document.getElementById('kpiOntime').textContent = comData.length > 0 ? Math.round((onTime / comData.length) * 100) + '%' : '--';
+            document.getElementById('kpiOntime').textContent = comData.length > 0 ? Math.round((onTime / comData.length) * 100) + '%' : '0%';
             document.getElementById('kpiOntimeSub').textContent = `${onTime} de ${comData.length} com data`;
             
             const deltas = naoConc.map(p => {
                 const orig = parseDate(p.goliveOriginal);
                 const atual = parseDate(p.goliveAtual || p.golive);
-                if (orig && atual) return Math.round((atual - orig) / (1000 * 60 * 60 * 24));
+                if (orig && atual && !isNaN(orig.getTime()) && !isNaN(atual.getTime())) {
+                    return Math.round((atual - orig) / (1000 * 60 * 60 * 24));
+                }
                 return null;
-            }).filter(d => d !== null);
+            }).filter(d => d !== null && !isNaN(d));
             const avgDelta = deltas.length > 0 ? Math.round(deltas.reduce((a, b) => a + b, 0) / deltas.length) : 0;
-            document.getElementById('kpiDelta').textContent = avgDelta + ' dias';
+            document.getElementById('kpiDelta').textContent = (isNaN(avgDelta) ? 0 : avgDelta) + ' dias';
             document.getElementById('kpiDeltaSub').textContent = avgDelta > 0 ? 'de atraso' : avgDelta < 0 ? 'de antecipação' : 'nos go-lives';
             
             const atualizados = naoConc.filter(p => (p.diasSemAtual || 0) <= 7).length;
-            document.getElementById('kpiTaxa').textContent = naoConc.length > 0 ? Math.round((atualizados / naoConc.length) * 100) + '%' : '--';
+            document.getElementById('kpiTaxa').textContent = naoConc.length > 0 ? Math.round((atualizados / naoConc.length) * 100) + '%' : '0%';
             document.getElementById('kpiTaxaSub').textContent = `${atualizados} de ${naoConc.length}`;
             
-            const agings = naoConc.map(p => p.diasSemAtual || 0);
+            const agings = naoConc.map(p => p.diasSemAtual || 0).filter(d => !isNaN(d));
             const avgAging = agings.length > 0 ? Math.round(agings.reduce((a, b) => a + b, 0) / agings.length) : 0;
-            document.getElementById('kpiAging').textContent = avgAging + ' dias';
+            document.getElementById('kpiAging').textContent = (isNaN(avgAging) ? 0 : avgAging) + ' dias';
             document.getElementById('kpiAgingSub').textContent = 'sem atualização';
             
             renderDecisoes();
@@ -584,7 +606,8 @@
         }
         
         function renderDecisoes() {
-            const decisoes = projects.filter(p => isCritico(p) && normalizeStatus(p.status) !== 'Concluído').slice(0, 5);
+            // CORRIGIDO: Usar filteredProjects
+            const decisoes = filteredProjects.filter(p => isCritico(p) && normalizeStatus(p.status) !== 'Concluído').slice(0, 5);
             document.getElementById('decisoesBadge').textContent = decisoes.length + ' itens';
             document.getElementById('decisoesSection').style.display = decisoes.length === 0 ? 'none' : 'block';
             
@@ -647,20 +670,39 @@
                 '<div class="no-bloqueadores">✅ Nenhum bloqueador!</div>' :
                 topBloqueadores.map(([b, c]) => `<div class="bloqueador-item"><div class="bloqueador-label" title="${b}">${b}</div><div class="bloqueador-bar"><div class="bloqueador-fill" style="width:${(c/maxBloq)*100}%">${c}</div></div></div>`).join('');
             
-            const parados = filteredProjects.filter(p => (p.diasSemAtual || 0) > 7 && normalizeStatus(p.status) !== 'Concluído')
-                .sort((a, b) => (b.diasSemAtual || 0) - (a.diasSemAtual || 0)).slice(0, 6);
-            const maxDias = Math.max(...parados.map(p => p.diasSemAtual || 0), 30);
+            // Próximos Go Lives - ordenados por data, apenas não concluídos
+            const hoje = new Date();
+            hoje.setHours(0, 0, 0, 0);
             
-            document.getElementById('paradosChart').innerHTML = parados.length === 0 ? 
-                '<div class="no-parados">✅ Todos atualizados!</div>' :
-                parados.map(p => {
-                    const dias = p.diasSemAtual || 0;
-                    let cls = 'ok';
-                    if (dias > 15) cls = 'critical';
-                    else if (dias > 7) cls = 'warning';
-                    return `<div class="parado-item">
-                        <div class="parado-nome" title="${p.projeto}">${p.projeto}</div>
-                        <div class="parado-bar"><div class="parado-fill ${cls}" style="width:${(dias/maxDias)*100}%">${dias}d</div></div>
+            const upcoming = filteredProjects.filter(p => {
+                const goliveStr = p.goliveAtual || p.golive;
+                if (!goliveStr || goliveStr === '-') return false;
+                if (normalizeStatus(p.status) === 'Concluído') return false;
+                const glDate = parseDate(goliveStr);
+                return glDate && !isNaN(glDate.getTime());
+            }).map(p => {
+                const goliveStr = p.goliveAtual || p.golive;
+                const glDate = parseDate(goliveStr);
+                const diffDays = Math.ceil((glDate - hoje) / (1000 * 60 * 60 * 24));
+                return { ...p, goliveDate: glDate, diffDays: diffDays, goliveStr: goliveStr };
+            }).sort((a, b) => a.goliveDate - b.goliveDate).slice(0, 5);
+            
+            document.getElementById('timelineChart').innerHTML = upcoming.length === 0 ? 
+                '<div class="no-timeline">📅 Nenhum Go Live agendado</div>' :
+                upcoming.map(p => {
+                    let daysClass = 'ok';
+                    let daysText = `${p.diffDays}d`;
+                    if (p.diffDays < 0) {
+                        daysClass = 'atrasado';
+                        daysText = `${Math.abs(p.diffDays)}d atrás`;
+                    } else if (p.diffDays <= 15) {
+                        daysClass = 'proximo';
+                    }
+                    const sitClass = (p.situacao || p.rag || 'cinza').toLowerCase();
+                    return `<div class="timeline-item">
+                        <div class="timeline-date">${p.goliveStr}</div>
+                        <div class="timeline-days ${daysClass}">${daysText}</div>
+                        <div class="timeline-bar ${sitClass}">${p.projeto}</div>
                     </div>`;
                 }).join('');
         }
