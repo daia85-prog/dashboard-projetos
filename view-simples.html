@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visão Resumida - Infraestrutura v5.3.2</title>
+    <title>Visão Resumida - Infraestrutura v5.3.3</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; min-height: 100vh; }
@@ -215,17 +215,19 @@
         @media (max-width: 1200px) { .charts-row { grid-template-columns: 1fr; } .filters-grid { grid-template-columns: 1fr 1fr 1fr; } }
         @media (max-width: 768px) { .header { flex-direction: column; } .cards-grid { grid-template-columns: repeat(3, 1fr); } .filters-grid { grid-template-columns: 1fr; } .info-grid { grid-template-columns: 1fr; } .kpis-section { grid-template-columns: repeat(2, 1fr); } }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <div>
-                <h1>📋 Visão Resumida - Infraestrutura <span class="version">v5.3.2</span></h1>
+                <h1>📋 Visão Resumida - Infraestrutura <span class="version">v5.3.3</span></h1>
                 <p>Atualizado em: <span id="currentDate">Carregando...</span></p>
             </div>
             <div style="display:flex;gap:10px;flex-wrap:wrap;">
                 <a href="index.html" class="btn btn-secondary">← Voltar</a>
                 <button class="btn" onclick="openPrintModal()">🖨️ Imprimir</button>
+                <button class="btn" style="background: linear-gradient(135deg, #ef4444, #dc2626);" onclick="exportPDF()">📄 PDF</button>
             </div>
         </div>
         
@@ -480,7 +482,7 @@
         function isCritico(p) {
             const status = normalizeStatus(p.status);
             const sit = (p.situacao || p.rag || '').toLowerCase();
-            return status === 'Atrasado' || sit.includes('vermelho') || sit === 'red' || (p.diasSemAtual || 0) > 15 || (p.bloqueador && p.bloqueador !== '-' && p.bloqueador.length > 2);
+            return status === 'Atrasado' || sit.includes('vermelho') || sit === 'red' || (p.diasSemAtual || 0) > 15;
         }
         
         function parseDate(str) {
@@ -753,21 +755,31 @@
             document.getElementById('modalTitle').textContent = p.projeto;
             document.getElementById('modalSubtitle').textContent = `${normalizeStatus(p.status)} • ${p.localizacao || 'Local não definido'}`;
             
-            // Montar histórico de etapas
+            // Montar histórico de etapas - Verificar se tem dados válidos
             let etapasHtml = '';
-            const etapas = [
-                {nome: 'Kick-off', data: p.etapa1 || p.kickoff},
-                {nome: 'Levantamento', data: p.etapa2 || p.levantamento},
-                {nome: 'Desenvolvimento', data: p.etapa3 || p.desenvolvimento},
-                {nome: 'Homologação', data: p.etapa4 || p.homologacao},
-                {nome: 'Go Live', data: p.etapa5 || p.goliveRealizado}
-            ].filter(e => e.data && e.data !== '-');
+            const etapasData = [
+                {nome: 'Kick-off', data: p.etapa1},
+                {nome: 'Levantamento', data: p.etapa2},
+                {nome: 'Desenvolvimento', data: p.etapa3},
+                {nome: 'Homologação', data: p.etapa4},
+                {nome: 'Go Live', data: p.etapa5}
+            ];
             
-            if (etapas.length > 0) {
-                etapasHtml = `<div class="info-box full-width" style="grid-column: 1 / -1;">
-                    <label>📅 Histórico de Etapas</label>
-                    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">
-                        ${etapas.map(e => `<span style="background:#e0e7ff;color:#3730a3;padding:4px 10px;border-radius:6px;font-size:11px;">${e.nome}: ${e.data}</span>`).join('')}
+            // Filtrar apenas etapas com data válida (não vazia, não '-', não undefined)
+            const etapasValidas = etapasData.filter(e => {
+                if (!e.data) return false;
+                if (e.data === '-' || e.data === 'null' || e.data === 'undefined') return false;
+                if (typeof e.data === 'string' && e.data.trim() === '') return false;
+                return true;
+            });
+            
+            if (etapasValidas.length > 0) {
+                etapasHtml = `<div class="info-box" style="grid-column: 1 / -1; background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px; padding: 15px;">
+                    <label style="color: #166534; font-weight: 600;">📅 Histórico de Etapas Concluídas</label>
+                    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;">
+                        ${etapasValidas.map(e => `<div style="background:#dcfce7;color:#166534;padding:8px 14px;border-radius:8px;font-size:12px;border:1px solid #86efac;">
+                            <strong>${e.nome}</strong><br><span style="font-size:11px;">${e.data}</span>
+                        </div>`).join('')}
                     </div>
                 </div>`;
             }
@@ -775,10 +787,10 @@
             // Observações/Anotações
             let obsHtml = '';
             const obs = p.observacoes || p.anotacoes || p.obs || p.comentarios || '';
-            if (obs && obs !== '-') {
-                obsHtml = `<div class="info-box full-width" style="grid-column: 1 / -1;">
-                    <label>📝 Observações</label>
-                    <span style="font-size:12px;line-height:1.5;">${obs}</span>
+            if (obs && obs !== '-' && obs.trim() !== '') {
+                obsHtml = `<div class="info-box" style="grid-column: 1 / -1; background: #eff6ff; border: 1px solid #93c5fd; border-radius: 8px; padding: 15px;">
+                    <label style="color: #1e40af; font-weight: 600;">📝 Observações</label>
+                    <p style="font-size:13px;line-height:1.6;margin-top:8px;color:#1e3a5f;">${obs}</p>
                 </div>`;
             }
             
@@ -827,6 +839,117 @@
                 }
             }
             setTimeout(() => window.print(), 300);
+        }
+        
+        function exportPDF() {
+            // Criar conteúdo do PDF com detalhes dos projetos
+            const hoje = new Date().toLocaleDateString('pt-BR');
+            const hora = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'});
+            
+            let html = `
+                <div style="font-family: Arial, sans-serif; padding: 20px;">
+                    <div style="text-align: center; margin-bottom: 30px; border-bottom: 3px solid #667eea; padding-bottom: 20px;">
+                        <h1 style="color: #1a1a2e; margin: 0;">📊 Relatório de Projetos - Infraestrutura</h1>
+                        <p style="color: #666; margin: 10px 0 0 0;">Gerado em: ${hoje} às ${hora}</p>
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap;">
+                        <div style="background: #f0fdf4; padding: 15px 25px; border-radius: 10px; border-left: 4px solid #22c55e;">
+                            <div style="font-size: 24px; font-weight: bold; color: #166534;">${filteredProjects.length}</div>
+                            <div style="color: #166534; font-size: 12px;">Total Projetos</div>
+                        </div>
+                        <div style="background: #f0fdf4; padding: 15px 25px; border-radius: 10px; border-left: 4px solid #22c55e;">
+                            <div style="font-size: 24px; font-weight: bold; color: #166534;">${filteredProjects.filter(p => normalizeStatus(p.status) === 'Concluído').length}</div>
+                            <div style="color: #166534; font-size: 12px;">Concluídos</div>
+                        </div>
+                        <div style="background: #fef3c7; padding: 15px 25px; border-radius: 10px; border-left: 4px solid #f59e0b;">
+                            <div style="font-size: 24px; font-weight: bold; color: #92400e;">${filteredProjects.filter(p => normalizeStatus(p.status) === 'Em Andamento').length}</div>
+                            <div style="color: #92400e; font-size: 12px;">Em Andamento</div>
+                        </div>
+                        <div style="background: #fee2e2; padding: 15px 25px; border-radius: 10px; border-left: 4px solid #ef4444;">
+                            <div style="font-size: 24px; font-weight: bold; color: #991b1b;">${filteredProjects.filter(p => isCritico(p)).length}</div>
+                            <div style="color: #991b1b; font-size: 12px;">Críticos</div>
+                        </div>
+                    </div>
+            `;
+            
+            // Adicionar cada projeto com suas etapas
+            filteredProjects.forEach((p, idx) => {
+                const statusColor = normalizeStatus(p.status) === 'Concluído' ? '#166534' : 
+                                   normalizeStatus(p.status) === 'Atrasado' ? '#991b1b' : 
+                                   normalizeStatus(p.status) === 'Em Andamento' ? '#1e40af' : '#666';
+                const statusBg = normalizeStatus(p.status) === 'Concluído' ? '#f0fdf4' : 
+                                normalizeStatus(p.status) === 'Atrasado' ? '#fee2e2' : 
+                                normalizeStatus(p.status) === 'Em Andamento' ? '#eff6ff' : '#f9fafb';
+                
+                html += `
+                    <div style="background: ${statusBg}; border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid #e5e7eb; page-break-inside: avoid;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <h2 style="margin: 0; color: #1a1a2e; font-size: 16px;">${p.projeto}</h2>
+                            <span style="background: ${statusColor}; color: white; padding: 4px 12px; border-radius: 20px; font-size: 11px;">${normalizeStatus(p.status)}</span>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; font-size: 12px; margin-bottom: 15px;">
+                            <div><strong>Localização:</strong> ${p.localizacao || '-'}</div>
+                            <div><strong>PMO:</strong> ${p.pmoInterno || p.respInterno || '-'}</div>
+                            <div><strong>Go Live:</strong> ${p.goliveAtual || p.golive || '-'}</div>
+                            <div><strong>Progresso:</strong> ${p.progresso || 0}%</div>
+                        </div>
+                `;
+                
+                // Adicionar etapas concluídas
+                const etapas = [
+                    {nome: 'Kick-off', data: p.etapa1},
+                    {nome: 'Levantamento', data: p.etapa2},
+                    {nome: 'Desenvolvimento', data: p.etapa3},
+                    {nome: 'Homologação', data: p.etapa4},
+                    {nome: 'Go Live', data: p.etapa5}
+                ].filter(e => e.data && e.data !== '-' && e.data !== 'null' && e.data.trim && e.data.trim() !== '');
+                
+                if (etapas.length > 0) {
+                    html += `
+                        <div style="background: white; border-radius: 8px; padding: 12px; margin-top: 10px;">
+                            <div style="font-weight: bold; color: #166534; margin-bottom: 10px; font-size: 12px;">📅 Etapas Concluídas:</div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                ${etapas.map(e => `<span style="background: #dcfce7; color: #166534; padding: 6px 12px; border-radius: 6px; font-size: 11px;"><strong>${e.nome}:</strong> ${e.data}</span>`).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // Adicionar observações se houver
+                if (p.observacoes && p.observacoes !== '-' && p.observacoes.trim() !== '') {
+                    html += `
+                        <div style="background: #fffbeb; border-radius: 8px; padding: 12px; margin-top: 10px;">
+                            <div style="font-weight: bold; color: #92400e; margin-bottom: 5px; font-size: 12px;">📝 Observações:</div>
+                            <div style="font-size: 11px; color: #78350f;">${p.observacoes}</div>
+                        </div>
+                    `;
+                }
+                
+                html += `</div>`;
+            });
+            
+            html += `</div>`;
+            
+            // Criar elemento temporário
+            const element = document.createElement('div');
+            element.innerHTML = html;
+            document.body.appendChild(element);
+            
+            // Configurações do PDF
+            const opt = {
+                margin: 10,
+                filename: 'Relatorio_Projetos_Infraestrutura_' + hoje.replace(/\//g, '-') + '.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            
+            // Gerar PDF
+            html2pdf().set(opt).from(element).save().then(() => {
+                document.body.removeChild(element);
+            });
         }
         
         document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closePrintModal(); } });
