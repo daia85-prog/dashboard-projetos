@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visão Detalhada - Infraestrutura v5.3.3</title>
+    <title>Visão Detalhada - Infraestrutura v5.4.0</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 20px; min-height: 100vh; }
@@ -210,7 +210,7 @@
     <div class="container">
         <div class="header">
             <div>
-                <h1>📈 Visão Detalhada - Infraestrutura <span class="version">v5.3.3</span></h1>
+                <h1>📈 Visão Detalhada - Infraestrutura <span class="version">v5.4.0</span></h1>
                 <p>Atualizado em: <span id="currentDate">Carregando...</span></p>
             </div>
             <div style="display:flex;gap:10px;flex-wrap:wrap;">
@@ -638,39 +638,62 @@
             }).join('');
         }
         
+        // Função para parsear atividades do formato STATUS|DATA|DESCRIÇÃO
+        function parseAtividades(atividadesStr) {
+            if (!atividadesStr || atividadesStr === '-') return [];
+            return atividadesStr.split(';').map(a => {
+                const parts = a.split('|');
+                return {
+                    status: parts[0] || 'P',
+                    data: parts[1] || '',
+                    descricao: parts[2] || ''
+                };
+            }).filter(a => a.descricao);
+        }
+        
         function openModal(name) {
             const p = projects.find(x => x.projeto === name);
             if (!p) return;
             document.getElementById('modalTitle').textContent = p.projeto;
             document.getElementById('modalSubtitle').textContent = `${normalizeStatus(p.status)} • ${p.localizacao || 'Local não definido'}`;
             
-            // Montar histórico de etapas - Verificar se tem dados válidos
-            let etapasHtml = '';
-            const etapasData = [
-                {nome: 'Kick-off', data: p.etapa1},
-                {nome: 'Levantamento', data: p.etapa2},
-                {nome: 'Desenvolvimento', data: p.etapa3},
-                {nome: 'Homologação', data: p.etapa4},
-                {nome: 'Go Live', data: p.etapa5}
-            ];
+            // Parsear atividades
+            const atividades = parseAtividades(p.atividades);
+            const concluidas = atividades.filter(a => a.status === 'C');
+            const pendentes = atividades.filter(a => a.status === 'P');
             
-            // Filtrar apenas etapas com data válida
-            const etapasValidas = etapasData.filter(e => {
-                if (!e.data) return false;
-                if (e.data === '-' || e.data === 'null' || e.data === 'undefined') return false;
-                if (typeof e.data === 'string' && e.data.trim() === '') return false;
-                return true;
-            });
-            
-            if (etapasValidas.length > 0) {
-                etapasHtml = `<div class="info-box" style="grid-column: 1 / -1; background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px; padding: 15px;">
-                    <label style="color: #166534; font-weight: 600;">📅 Histórico de Etapas Concluídas</label>
-                    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;">
-                        ${etapasValidas.map(e => `<div style="background:#dcfce7;color:#166534;padding:8px 14px;border-radius:8px;font-size:12px;border:1px solid #86efac;">
-                            <strong>${e.nome}</strong><br><span style="font-size:11px;">${e.data}</span>
-                        </div>`).join('')}
-                    </div>
-                </div>`;
+            let atividadesHtml = '';
+            if (atividades.length > 0) {
+                atividadesHtml = `<div class="info-box" style="grid-column: 1 / -1; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px;">
+                    <label style="color: #334155; font-weight: 600; font-size: 14px;">📋 Checklist de Atividades (${concluidas.length}/${atividades.length})</label>
+                    <div style="display: flex; gap: 4px; margin: 10px 0;">
+                        <div style="flex: ${concluidas.length}; height: 8px; background: #22c55e; border-radius: 4px;"></div>
+                        <div style="flex: ${pendentes.length}; height: 8px; background: #e2e8f0; border-radius: 4px;"></div>
+                    </div>`;
+                
+                if (concluidas.length > 0) {
+                    atividadesHtml += `<div style="margin-top: 12px;">
+                        <div style="font-weight: 600; color: #166534; font-size: 12px; margin-bottom: 8px;">✅ Concluídas (${concluidas.length})</div>
+                        <div style="display: grid; gap: 4px; max-height: 200px; overflow-y: auto;">
+                            ${concluidas.map(a => `<div style="background: #dcfce7; color: #166534; padding: 6px 10px; border-radius: 6px; font-size: 11px; display: flex; justify-content: space-between;">
+                                <span>${a.descricao}</span><strong>${a.data}</strong>
+                            </div>`).join('')}
+                        </div>
+                    </div>`;
+                }
+                
+                if (pendentes.length > 0) {
+                    atividadesHtml += `<div style="margin-top: 12px;">
+                        <div style="font-weight: 600; color: #92400e; font-size: 12px; margin-bottom: 8px;">⏳ Pendentes (${pendentes.length})</div>
+                        <div style="display: grid; gap: 4px; max-height: 150px; overflow-y: auto;">
+                            ${pendentes.map(a => `<div style="background: #fef3c7; color: #92400e; padding: 6px 10px; border-radius: 6px; font-size: 11px;">
+                                ${a.descricao}
+                            </div>`).join('')}
+                        </div>
+                    </div>`;
+                }
+                
+                atividadesHtml += `</div>`;
             }
             
             // Observações
@@ -683,7 +706,7 @@
                 </div>`;
             }
             
-            document.getElementById('modalInfo').innerHTML = `<div class="info-box"><label>Etapa</label><span>${p.etapa || '-'}</span></div><div class="info-box"><label>Progresso</label><span>${p.progresso || 0}%</span></div><div class="info-box"><label>Situação</label><span>${getSituacaoHtml(p.situacao || p.rag)}</span></div><div class="info-box"><label>Go Live Original</label><span>${p.goliveOriginal || '-'}</span></div><div class="info-box"><label>Go Live Atual</label><span>${p.goliveAtual || p.golive || '-'}</span></div><div class="info-box"><label>Dias Parado</label><span>${p.diasSemAtual || 0} dias</span></div><div class="info-box"><label>PMO Interno</label><span>${p.pmoInterno || p.respInterno || '-'}</span></div><div class="info-box"><label>Infra Interno</label><span>${p.infraInterno || '-'}</span></div><div class="info-box"><label>PMO Cliente</label><span>${p.pmoCliente || p.respCliente || '-'}</span></div><div class="info-box"><label>Próximo Passo</label><span>${p.proximo || '-'}</span></div><div class="info-box"><label>Bloqueador</label><span style="${p.bloqueador && p.bloqueador !== '-' ? 'color:#991b1b;' : ''}">${p.bloqueador || '-'}</span></div><div class="info-box"><label>Última Atualização</label><span>${p.ultAtual || '-'}</span></div>${etapasHtml}${obsHtml}`;
+            document.getElementById('modalInfo').innerHTML = `<div class="info-box"><label>Etapa</label><span>${p.etapa || '-'}</span></div><div class="info-box"><label>Progresso</label><span>${p.progresso || 0}%</span></div><div class="info-box"><label>Situação</label><span>${getSituacaoHtml(p.situacao || p.rag)}</span></div><div class="info-box"><label>Go Live Original</label><span>${p.goliveOriginal || '-'}</span></div><div class="info-box"><label>Go Live Atual</label><span>${p.goliveAtual || p.golive || '-'}</span></div><div class="info-box"><label>Dias Parado</label><span>${p.diasSemAtual || 0} dias</span></div><div class="info-box"><label>PMO Interno</label><span>${p.pmoInterno || p.respInterno || '-'}</span></div><div class="info-box"><label>Bloqueador</label><span style="${p.bloqueador && p.bloqueador !== '-' ? 'color:#991b1b;' : ''}">${p.bloqueador || '-'}</span></div><div class="info-box"><label>Última Atualização</label><span>${p.ultAtual || '-'}</span></div>${atividadesHtml}${obsHtml}`;
             document.getElementById('modalOverlay').classList.add('active');
         }
         
@@ -745,6 +768,10 @@
                                 normalizeStatus(p.status) === 'Atrasado' ? '#fee2e2' : 
                                 normalizeStatus(p.status) === 'Em Andamento' ? '#eff6ff' : '#f9fafb';
                 
+                // Parsear atividades
+                const atividades = parseAtividades(p.atividades);
+                const concluidas = atividades.filter(a => a.status === 'C');
+                
                 html += `
                     <div style="background: ${statusBg}; border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid #e5e7eb; page-break-inside: avoid;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
@@ -760,20 +787,15 @@
                         </div>
                 `;
                 
-                const etapas = [
-                    {nome: 'Kick-off', data: p.etapa1},
-                    {nome: 'Levantamento', data: p.etapa2},
-                    {nome: 'Desenvolvimento', data: p.etapa3},
-                    {nome: 'Homologação', data: p.etapa4},
-                    {nome: 'Go Live', data: p.etapa5}
-                ].filter(e => e.data && e.data !== '-' && e.data !== 'null' && e.data.trim && e.data.trim() !== '');
-                
-                if (etapas.length > 0) {
+                // Adicionar atividades concluídas
+                if (concluidas.length > 0) {
                     html += `
                         <div style="background: white; border-radius: 8px; padding: 12px; margin-top: 10px;">
-                            <div style="font-weight: bold; color: #166534; margin-bottom: 10px; font-size: 12px;">📅 Etapas Concluídas:</div>
-                            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                                ${etapas.map(e => `<span style="background: #dcfce7; color: #166534; padding: 6px 12px; border-radius: 6px; font-size: 11px;"><strong>${e.nome}:</strong> ${e.data}</span>`).join('')}
+                            <div style="font-weight: bold; color: #166534; margin-bottom: 10px; font-size: 12px;">✅ Atividades Concluídas (${concluidas.length}/${atividades.length}):</div>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px;">
+                                ${concluidas.map(a => `<div style="background: #dcfce7; color: #166534; padding: 4px 8px; border-radius: 4px; font-size: 9px; display: flex; justify-content: space-between;">
+                                    <span>${a.descricao}</span><strong>${a.data}</strong>
+                                </div>`).join('')}
                             </div>
                         </div>
                     `;

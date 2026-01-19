@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Dashboard Projetos v5.3.3</title>
+    <title>Admin - Dashboard Projetos v5.4.0</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
@@ -52,12 +52,12 @@
 <body>
     <div class="container">
         <div class="header">
-            <div><h1>🔧 Área Administrativa <span class="version">v5.3.3</span></h1><p style="color:#64748b;font-size:13px;margin-top:5px;">KPIs Simplificados + Filtro Go-Live + Impressão por Projetos + PDF</p></div>
+            <div><h1>🔧 Área Administrativa <span class="version">v5.4.0</span></h1><p style="color:#64748b;font-size:13px;margin-top:5px;">KPIs Simplificados + Filtro Go-Live + Impressão por Projetos + PDF</p></div>
         </div>
         <div id="successMsg" class="message success hidden"><span>✅</span><div><strong>Sucesso!</strong> <span id="successText"></span></div></div>
         <div id="errorMsg" class="message error hidden"><span>❌</span><div><strong>Erro!</strong> <span id="errorText"></span></div></div>
         <div class="card">
-            <div class="card-header"><h2>📋 Importar Dados da Planilha v5 <span class="new-badge">v5.3.3</span></h2></div>
+            <div class="card-header"><h2>📋 Importar Dados da Planilha v5 <span class="new-badge">v5.4.0</span></h2></div>
             <div class="card-body">
                 <div class="help-text">
                     <h4>📝 Novidades da versão 5.3:</h4>
@@ -147,8 +147,8 @@
             
             let startIdx = hasHeader ? 1 : 0;
             
-            // Mapeamento por posição fixa (ordem das colunas na planilha v5)
-            // Projeto | Localização | Status | Situação | Progresso | Etapa Atual | PMO Interno | Go Live Original | Go Live Atual | Bloqueador | Última Atualização | Dias Parado | Observações | Etapa 1 | Etapa 2 | Etapa 3 | Etapa 4 | Etapa 5
+            // Mapeamento por posição fixa (ordem das colunas na planilha v5.4.0)
+            // A-M: Dados básicos | N: Atividades (formato: STATUS|DATA|DESCRIÇÃO;...)
             
             for (let i = startIdx; i < lines.length; i++) {
                 const cols = lines[i].split('\t').map(c => c.trim());
@@ -159,6 +159,9 @@
                 let progresso = 0;
                 const progStr = cols[4] || '0';
                 progresso = parseInt(progStr.replace('%', '').replace(',', '.')) || 0;
+                
+                // Parse atividades (formato: C|DATA|DESC;P||DESC;...)
+                const atividadesRaw = cols[13] || '';
                 
                 data.push({
                     projeto: cols[0] || '-',
@@ -175,11 +178,7 @@
                     ultAtual: formatDate(cols[10]) || '-',
                     diasSemAtual: parseInt(cols[11] || '0') || 0,
                     observacoes: cols[12] || '-',
-                    etapa1: formatDate(cols[13]) || '-',
-                    etapa2: formatDate(cols[14]) || '-',
-                    etapa3: formatDate(cols[15]) || '-',
-                    etapa4: formatDate(cols[16]) || '-',
-                    etapa5: formatDate(cols[17]) || '-',
+                    atividades: atividadesRaw,
                     // Compatibilidade
                     respInterno: cols[6] || '-',
                     rag: (cols[3] || 'Cinza').toLowerCase(),
