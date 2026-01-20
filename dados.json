@@ -1,6 +1,4 @@
 {
-  "lastUpdate": "2026-01-20T15:25:26.682586",
-  "version": "6.0",
   "projects": [
     {
       "projeto": "COUGAR",
@@ -18,6 +16,7 @@
       "atividades": [
         {
           "id": "A0001",
+          "projeto": "COUGAR",
           "atividade": "01 - KICKOFF INTERNO",
           "status": "Concluído",
           "responsavel": "Leandro PMO",
@@ -28,6 +27,7 @@
         },
         {
           "id": "A0002",
+          "projeto": "COUGAR",
           "atividade": "02 - Analisar documentos (Masterdata/Cronograma)",
           "status": "Concluído",
           "responsavel": "Leandro PMO",
@@ -38,6 +38,7 @@
         },
         {
           "id": "A0003",
+          "projeto": "COUGAR",
           "atividade": "03 - Análise/Recebimento Layout Elétrico",
           "status": "Concluído",
           "responsavel": "Leandro PMO",
@@ -48,6 +49,7 @@
         },
         {
           "id": "A0004",
+          "projeto": "COUGAR",
           "atividade": "04 - Reportar pontos críticos ao PMO",
           "status": "Concluído",
           "responsavel": "Leandro PMO",
@@ -58,6 +60,7 @@
         },
         {
           "id": "A0005",
+          "projeto": "COUGAR",
           "atividade": "05 - Reunião apresentação dos times",
           "status": "Concluído",
           "responsavel": "Leandro PMO",
@@ -68,6 +71,7 @@
         },
         {
           "id": "A0006",
+          "projeto": "COUGAR",
           "atividade": "06 - Registrar contatos do cliente",
           "status": "Concluído",
           "responsavel": "Leandro PMO",
@@ -78,6 +82,7 @@
         },
         {
           "id": "A0007",
+          "projeto": "COUGAR",
           "atividade": "07 - Enviar doc: Sugestão de Servidores",
           "status": "Concluído",
           "responsavel": "Leandro PMO",
@@ -88,6 +93,7 @@
         },
         {
           "id": "A0008",
+          "projeto": "COUGAR",
           "atividade": "08 - Enviar doc: Solicitação Range IPs",
           "status": "Concluído",
           "responsavel": "Leandro PMO",
@@ -98,6 +104,7 @@
         },
         {
           "id": "A0009",
+          "projeto": "COUGAR",
           "atividade": "09 - Enviar doc: Solicitação Acesso Remoto",
           "status": "Em Andamento",
           "responsavel": "Leandro PMO",
@@ -108,6 +115,7 @@
         },
         {
           "id": "A0010",
+          "projeto": "COUGAR",
           "atividade": "10 - Acompanhar retorno do cliente",
           "status": "Pendente",
           "responsavel": "Leandro PMO",
@@ -118,6 +126,7 @@
         },
         {
           "id": "A0011",
+          "projeto": "COUGAR",
           "atividade": "11 - Follow-up 7 dias sem resposta",
           "status": "Pendente",
           "responsavel": "Leandro PMO",
@@ -128,6 +137,7 @@
         },
         {
           "id": "A0012",
+          "projeto": "COUGAR",
           "atividade": "12 - Agendar reunião de definição",
           "status": "Pendente",
           "responsavel": "Leandro PMO",
@@ -138,6 +148,7 @@
         },
         {
           "id": "A0013",
+          "projeto": "COUGAR",
           "atividade": "13 - Realizar reunião de definição",
           "status": "Pendente",
           "responsavel": "Leandro PMO",
@@ -148,6 +159,7 @@
         },
         {
           "id": "A0014",
+          "projeto": "COUGAR",
           "atividade": "14 - Documentar acordos com cliente",
           "status": "Pendente",
           "responsavel": "Leandro PMO",
@@ -158,6 +170,7 @@
         },
         {
           "id": "A0015",
+          "projeto": "COUGAR",
           "atividade": "15 - TERMO SEGURANÇA: Coletar assinaturas",
           "status": "Pendente",
           "responsavel": "Leandro PMO",
@@ -168,6 +181,7 @@
         },
         {
           "id": "A0016",
+          "projeto": "COUGAR",
           "atividade": "16 - VALIDAÇÃO ACESSOS: Testar acessos",
           "status": "Pendente",
           "responsavel": "Leandro PMO",
@@ -178,6 +192,7 @@
         },
         {
           "id": "A0017",
+          "projeto": "COUGAR",
           "atividade": "17 - Criar procedimento de acesso",
           "status": "Pendente",
           "responsavel": "Leandro PMO",
@@ -188,6 +203,7 @@
         },
         {
           "id": "A0018",
+          "projeto": "COUGAR",
           "atividade": "18 - Compartilhar com todos os times",
           "status": "Pendente",
           "responsavel": "Leandro PMO",
@@ -198,6 +214,7 @@
         },
         {
           "id": "A0019",
+          "projeto": "COUGAR",
           "atividade": "19 - LEMBRETES: +15d, +30d, +45d",
           "status": "Pendente",
           "responsavel": "Leandro PMO",
@@ -208,6 +225,7 @@
         },
         {
           "id": "A0020",
+          "projeto": "COUGAR",
           "atividade": "20 - Atualizar documentação OneDrive",
           "status": "Pendente",
           "responsavel": "Leandro PMO",
@@ -234,6 +252,7 @@
       "atividades": [
         {
           "id": "A0021",
+          "projeto": "ESPERANÇA",
           "atividade": "01 - KICKOFF INTERNO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -244,6 +263,7 @@
         },
         {
           "id": "A0022",
+          "projeto": "ESPERANÇA",
           "atividade": "02 - Analisar documentos (Masterdata/Cronograma)",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -254,6 +274,7 @@
         },
         {
           "id": "A0023",
+          "projeto": "ESPERANÇA",
           "atividade": "03 - Análise/Recebimento Layout Elétrico",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -264,6 +285,7 @@
         },
         {
           "id": "A0024",
+          "projeto": "ESPERANÇA",
           "atividade": "04 - Reportar pontos críticos ao PMO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -274,6 +296,7 @@
         },
         {
           "id": "A0025",
+          "projeto": "ESPERANÇA",
           "atividade": "05 - Reunião apresentação dos times",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -284,6 +307,7 @@
         },
         {
           "id": "A0026",
+          "projeto": "ESPERANÇA",
           "atividade": "06 - Registrar contatos do cliente",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -294,6 +318,7 @@
         },
         {
           "id": "A0027",
+          "projeto": "ESPERANÇA",
           "atividade": "07 - Enviar doc: Sugestão de Servidores",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -304,6 +329,7 @@
         },
         {
           "id": "A0028",
+          "projeto": "ESPERANÇA",
           "atividade": "08 - Enviar doc: Solicitação Range IPs",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -314,6 +340,7 @@
         },
         {
           "id": "A0029",
+          "projeto": "ESPERANÇA",
           "atividade": "09 - Enviar doc: Solicitação Acesso Remoto",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -324,6 +351,7 @@
         },
         {
           "id": "A0030",
+          "projeto": "ESPERANÇA",
           "atividade": "10 - Acompanhar retorno do cliente",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -334,6 +362,7 @@
         },
         {
           "id": "A0031",
+          "projeto": "ESPERANÇA",
           "atividade": "11 - Follow-up 7 dias sem resposta",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -344,6 +373,7 @@
         },
         {
           "id": "A0032",
+          "projeto": "ESPERANÇA",
           "atividade": "12 - Agendar reunião de definição",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -354,6 +384,7 @@
         },
         {
           "id": "A0033",
+          "projeto": "ESPERANÇA",
           "atividade": "13 - Realizar reunião de definição",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -364,6 +395,7 @@
         },
         {
           "id": "A0034",
+          "projeto": "ESPERANÇA",
           "atividade": "14 - Documentar acordos com cliente",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -374,6 +406,7 @@
         },
         {
           "id": "A0035",
+          "projeto": "ESPERANÇA",
           "atividade": "15 - TERMO SEGURANÇA: Coletar assinaturas",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -384,6 +417,7 @@
         },
         {
           "id": "A0036",
+          "projeto": "ESPERANÇA",
           "atividade": "16 - VALIDAÇÃO ACESSOS: Testar acessos",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -394,6 +428,7 @@
         },
         {
           "id": "A0037",
+          "projeto": "ESPERANÇA",
           "atividade": "17 - Criar procedimento de acesso",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -404,6 +439,7 @@
         },
         {
           "id": "A0038",
+          "projeto": "ESPERANÇA",
           "atividade": "18 - Compartilhar com todos os times",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -414,6 +450,7 @@
         },
         {
           "id": "A0039",
+          "projeto": "ESPERANÇA",
           "atividade": "19 - LEMBRETES: +15d, +30d, +45d",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -424,6 +461,7 @@
         },
         {
           "id": "A0040",
+          "projeto": "ESPERANÇA",
           "atividade": "20 - Atualizar documentação OneDrive",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -450,6 +488,7 @@
       "atividades": [
         {
           "id": "A0041",
+          "projeto": "OPTIMUS PRIME",
           "atividade": "01 - KICKOFF INTERNO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -460,6 +499,7 @@
         },
         {
           "id": "A0042",
+          "projeto": "OPTIMUS PRIME",
           "atividade": "02 - Analisar documentos (Masterdata/Cronograma)",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -470,6 +510,7 @@
         },
         {
           "id": "A0043",
+          "projeto": "OPTIMUS PRIME",
           "atividade": "03 - Análise/Recebimento Layout Elétrico",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -480,6 +521,7 @@
         },
         {
           "id": "A0044",
+          "projeto": "OPTIMUS PRIME",
           "atividade": "04 - Reportar pontos críticos ao PMO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -490,6 +532,7 @@
         },
         {
           "id": "A0045",
+          "projeto": "OPTIMUS PRIME",
           "atividade": "05 - Reunião apresentação dos times",
           "status": "Em Andamento",
           "responsavel": "Daiana",
@@ -500,6 +543,7 @@
         },
         {
           "id": "A0046",
+          "projeto": "OPTIMUS PRIME",
           "atividade": "06 - Registrar contatos do cliente",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -510,6 +554,7 @@
         },
         {
           "id": "A0047",
+          "projeto": "OPTIMUS PRIME",
           "atividade": "07 - Enviar doc: Sugestão de Servidores",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -520,6 +565,7 @@
         },
         {
           "id": "A0048",
+          "projeto": "OPTIMUS PRIME",
           "atividade": "08 - Enviar doc: Solicitação Range IPs",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -530,6 +576,7 @@
         },
         {
           "id": "A0049",
+          "projeto": "OPTIMUS PRIME",
           "atividade": "09 - Enviar doc: Solicitação Acesso Remoto",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -540,6 +587,7 @@
         },
         {
           "id": "A0050",
+          "projeto": "OPTIMUS PRIME",
           "atividade": "10 - Acompanhar retorno do cliente",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -550,6 +598,7 @@
         },
         {
           "id": "A0051",
+          "projeto": "OPTIMUS PRIME",
           "atividade": "11 - Follow-up 7 dias sem resposta",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -560,6 +609,7 @@
         },
         {
           "id": "A0052",
+          "projeto": "OPTIMUS PRIME",
           "atividade": "12 - Agendar reunião de definição",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -570,6 +620,7 @@
         },
         {
           "id": "A0053",
+          "projeto": "OPTIMUS PRIME",
           "atividade": "13 - Realizar reunião de definição",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -580,6 +631,7 @@
         },
         {
           "id": "A0054",
+          "projeto": "OPTIMUS PRIME",
           "atividade": "14 - Documentar acordos com cliente",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -590,6 +642,7 @@
         },
         {
           "id": "A0055",
+          "projeto": "OPTIMUS PRIME",
           "atividade": "15 - TERMO SEGURANÇA: Coletar assinaturas",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -600,6 +653,7 @@
         },
         {
           "id": "A0056",
+          "projeto": "OPTIMUS PRIME",
           "atividade": "16 - VALIDAÇÃO ACESSOS: Testar acessos",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -610,6 +664,7 @@
         },
         {
           "id": "A0057",
+          "projeto": "OPTIMUS PRIME",
           "atividade": "17 - Criar procedimento de acesso",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -620,6 +675,7 @@
         },
         {
           "id": "A0058",
+          "projeto": "OPTIMUS PRIME",
           "atividade": "18 - Compartilhar com todos os times",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -630,6 +686,7 @@
         },
         {
           "id": "A0059",
+          "projeto": "OPTIMUS PRIME",
           "atividade": "19 - LEMBRETES: +15d, +30d, +45d",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -640,6 +697,7 @@
         },
         {
           "id": "A0060",
+          "projeto": "OPTIMUS PRIME",
           "atividade": "20 - Atualizar documentação OneDrive",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -659,13 +717,14 @@
       "pmoInterno": "Alex PMO",
       "goliveOriginal": "29/10/2025",
       "goliveAtual": "05/01/2026",
-      "bloqueador": "05/09 Cobrei formalização por e-mail ao Fabiano, ele disse que iria formalizar, ",
+      "bloqueador": "05/09 Cobrei formalização por e-mail ao Fabiano, ele disse que iria formalizar,",
       "ultAtual": "20/01/2026",
       "diasSemAtual": 9,
       "observacoes": "Cliente ficou de formalizar por e-mail",
       "atividades": [
         {
           "id": "A0061",
+          "projeto": "CANDELÁRIA",
           "atividade": "01 - KICKOFF INTERNO",
           "status": "Concluído",
           "responsavel": "Alex PMO",
@@ -676,6 +735,7 @@
         },
         {
           "id": "A0062",
+          "projeto": "CANDELÁRIA",
           "atividade": "02 - Analisar documentos (Masterdata/Cronograma)",
           "status": "Concluído",
           "responsavel": "Alex PMO",
@@ -686,6 +746,7 @@
         },
         {
           "id": "A0063",
+          "projeto": "CANDELÁRIA",
           "atividade": "03 - Análise/Recebimento Layout Elétrico",
           "status": "Concluído",
           "responsavel": "Alex PMO",
@@ -696,6 +757,7 @@
         },
         {
           "id": "A0064",
+          "projeto": "CANDELÁRIA",
           "atividade": "04 - Reportar pontos críticos ao PMO",
           "status": "Concluído",
           "responsavel": "Alex PMO",
@@ -706,6 +768,7 @@
         },
         {
           "id": "A0065",
+          "projeto": "CANDELÁRIA",
           "atividade": "05 - Reunião apresentação dos times",
           "status": "Concluído",
           "responsavel": "Alex PMO",
@@ -716,6 +779,7 @@
         },
         {
           "id": "A0066",
+          "projeto": "CANDELÁRIA",
           "atividade": "06 - Registrar contatos do cliente",
           "status": "Concluído",
           "responsavel": "Alex PMO",
@@ -726,6 +790,7 @@
         },
         {
           "id": "A0067",
+          "projeto": "CANDELÁRIA",
           "atividade": "07 - Enviar doc: Sugestão de Servidores",
           "status": "Concluído",
           "responsavel": "Alex PMO",
@@ -736,6 +801,7 @@
         },
         {
           "id": "A0068",
+          "projeto": "CANDELÁRIA",
           "atividade": "08 - Enviar doc: Solicitação Range IPs",
           "status": "Concluído",
           "responsavel": "Alex PMO",
@@ -746,6 +812,7 @@
         },
         {
           "id": "A0069",
+          "projeto": "CANDELÁRIA",
           "atividade": "09 - Enviar doc: Solicitação Acesso Remoto",
           "status": "Em Andamento",
           "responsavel": "Alex PMO",
@@ -756,6 +823,7 @@
         },
         {
           "id": "A0070",
+          "projeto": "CANDELÁRIA",
           "atividade": "10 - Acompanhar retorno do cliente",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -766,6 +834,7 @@
         },
         {
           "id": "A0071",
+          "projeto": "CANDELÁRIA",
           "atividade": "11 - Follow-up 7 dias sem resposta",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -776,6 +845,7 @@
         },
         {
           "id": "A0072",
+          "projeto": "CANDELÁRIA",
           "atividade": "12 - Agendar reunião de definição",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -786,6 +856,7 @@
         },
         {
           "id": "A0073",
+          "projeto": "CANDELÁRIA",
           "atividade": "13 - Realizar reunião de definição",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -796,6 +867,7 @@
         },
         {
           "id": "A0074",
+          "projeto": "CANDELÁRIA",
           "atividade": "14 - Documentar acordos com cliente",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -806,6 +878,7 @@
         },
         {
           "id": "A0075",
+          "projeto": "CANDELÁRIA",
           "atividade": "15 - TERMO SEGURANÇA: Coletar assinaturas",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -816,6 +889,7 @@
         },
         {
           "id": "A0076",
+          "projeto": "CANDELÁRIA",
           "atividade": "16 - VALIDAÇÃO ACESSOS: Testar acessos",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -826,6 +900,7 @@
         },
         {
           "id": "A0077",
+          "projeto": "CANDELÁRIA",
           "atividade": "17 - Criar procedimento de acesso",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -836,6 +911,7 @@
         },
         {
           "id": "A0078",
+          "projeto": "CANDELÁRIA",
           "atividade": "18 - Compartilhar com todos os times",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -846,6 +922,7 @@
         },
         {
           "id": "A0079",
+          "projeto": "CANDELÁRIA",
           "atividade": "19 - LEMBRETES: +15d, +30d, +45d",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -856,6 +933,7 @@
         },
         {
           "id": "A0080",
+          "projeto": "CANDELÁRIA",
           "atividade": "20 - Atualizar documentação OneDrive",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -882,6 +960,7 @@
       "atividades": [
         {
           "id": "A0081",
+          "projeto": "BELEZA",
           "atividade": "01 - KICKOFF INTERNO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -892,6 +971,7 @@
         },
         {
           "id": "A0082",
+          "projeto": "BELEZA",
           "atividade": "02 - Analisar documentos (Masterdata/Cronograma)",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -902,6 +982,7 @@
         },
         {
           "id": "A0083",
+          "projeto": "BELEZA",
           "atividade": "03 - Análise/Recebimento Layout Elétrico",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -912,6 +993,7 @@
         },
         {
           "id": "A0084",
+          "projeto": "BELEZA",
           "atividade": "04 - Reportar pontos críticos ao PMO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -922,6 +1004,7 @@
         },
         {
           "id": "A0085",
+          "projeto": "BELEZA",
           "atividade": "05 - Reunião apresentação dos times",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -932,6 +1015,7 @@
         },
         {
           "id": "A0086",
+          "projeto": "BELEZA",
           "atividade": "06 - Registrar contatos do cliente",
           "status": "Em Andamento",
           "responsavel": "Daiana",
@@ -942,6 +1026,7 @@
         },
         {
           "id": "A0087",
+          "projeto": "BELEZA",
           "atividade": "07 - Enviar doc: Sugestão de Servidores",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -952,6 +1037,7 @@
         },
         {
           "id": "A0088",
+          "projeto": "BELEZA",
           "atividade": "08 - Enviar doc: Solicitação Range IPs",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -962,6 +1048,7 @@
         },
         {
           "id": "A0089",
+          "projeto": "BELEZA",
           "atividade": "09 - Enviar doc: Solicitação Acesso Remoto",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -972,6 +1059,7 @@
         },
         {
           "id": "A0090",
+          "projeto": "BELEZA",
           "atividade": "10 - Acompanhar retorno do cliente",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -982,6 +1070,7 @@
         },
         {
           "id": "A0091",
+          "projeto": "BELEZA",
           "atividade": "11 - Follow-up 7 dias sem resposta",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -992,6 +1081,7 @@
         },
         {
           "id": "A0092",
+          "projeto": "BELEZA",
           "atividade": "12 - Agendar reunião de definição",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -1002,6 +1092,7 @@
         },
         {
           "id": "A0093",
+          "projeto": "BELEZA",
           "atividade": "13 - Realizar reunião de definição",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -1012,6 +1103,7 @@
         },
         {
           "id": "A0094",
+          "projeto": "BELEZA",
           "atividade": "14 - Documentar acordos com cliente",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -1022,6 +1114,7 @@
         },
         {
           "id": "A0095",
+          "projeto": "BELEZA",
           "atividade": "15 - TERMO SEGURANÇA: Coletar assinaturas",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -1032,6 +1125,7 @@
         },
         {
           "id": "A0096",
+          "projeto": "BELEZA",
           "atividade": "16 - VALIDAÇÃO ACESSOS: Testar acessos",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -1042,6 +1136,7 @@
         },
         {
           "id": "A0097",
+          "projeto": "BELEZA",
           "atividade": "17 - Criar procedimento de acesso",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -1052,6 +1147,7 @@
         },
         {
           "id": "A0098",
+          "projeto": "BELEZA",
           "atividade": "18 - Compartilhar com todos os times",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -1062,6 +1158,7 @@
         },
         {
           "id": "A0099",
+          "projeto": "BELEZA",
           "atividade": "19 - LEMBRETES: +15d, +30d, +45d",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -1072,6 +1169,7 @@
         },
         {
           "id": "A0100",
+          "projeto": "BELEZA",
           "atividade": "20 - Atualizar documentação OneDrive",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -1094,10 +1192,11 @@
       "bloqueador": "",
       "ultAtual": "20/01/2026",
       "diasSemAtual": 7,
-      "observacoes": "",
+      "observacoes": "-",
       "atividades": [
         {
           "id": "A0101",
+          "projeto": "GAVIAO",
           "atividade": "01 - KICKOFF INTERNO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1108,6 +1207,7 @@
         },
         {
           "id": "A0102",
+          "projeto": "GAVIAO",
           "atividade": "02 - Analisar documentos (Masterdata/Cronograma)",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1118,6 +1218,7 @@
         },
         {
           "id": "A0103",
+          "projeto": "GAVIAO",
           "atividade": "03 - Análise/Recebimento Layout Elétrico",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1128,6 +1229,7 @@
         },
         {
           "id": "A0104",
+          "projeto": "GAVIAO",
           "atividade": "04 - Reportar pontos críticos ao PMO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1138,6 +1240,7 @@
         },
         {
           "id": "A0105",
+          "projeto": "GAVIAO",
           "atividade": "05 - Reunião apresentação dos times",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1148,6 +1251,7 @@
         },
         {
           "id": "A0106",
+          "projeto": "GAVIAO",
           "atividade": "06 - Registrar contatos do cliente",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1158,6 +1262,7 @@
         },
         {
           "id": "A0107",
+          "projeto": "GAVIAO",
           "atividade": "07 - Enviar doc: Sugestão de Servidores",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1168,6 +1273,7 @@
         },
         {
           "id": "A0108",
+          "projeto": "GAVIAO",
           "atividade": "08 - Enviar doc: Solicitação Range IPs",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1178,6 +1284,7 @@
         },
         {
           "id": "A0109",
+          "projeto": "GAVIAO",
           "atividade": "09 - Enviar doc: Solicitação Acesso Remoto",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1188,6 +1295,7 @@
         },
         {
           "id": "A0110",
+          "projeto": "GAVIAO",
           "atividade": "10 - Acompanhar retorno do cliente",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1198,6 +1306,7 @@
         },
         {
           "id": "A0111",
+          "projeto": "GAVIAO",
           "atividade": "11 - Follow-up 7 dias sem resposta",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1208,6 +1317,7 @@
         },
         {
           "id": "A0112",
+          "projeto": "GAVIAO",
           "atividade": "12 - Agendar reunião de definição",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1218,6 +1328,7 @@
         },
         {
           "id": "A0113",
+          "projeto": "GAVIAO",
           "atividade": "13 - Realizar reunião de definição",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1228,6 +1339,7 @@
         },
         {
           "id": "A0114",
+          "projeto": "GAVIAO",
           "atividade": "14 - Documentar acordos com cliente",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1238,6 +1350,7 @@
         },
         {
           "id": "A0115",
+          "projeto": "GAVIAO",
           "atividade": "15 - TERMO SEGURANÇA: Coletar assinaturas",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1248,6 +1361,7 @@
         },
         {
           "id": "A0116",
+          "projeto": "GAVIAO",
           "atividade": "16 - VALIDAÇÃO ACESSOS: Testar acessos",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1258,6 +1372,7 @@
         },
         {
           "id": "A0117",
+          "projeto": "GAVIAO",
           "atividade": "17 - Criar procedimento de acesso",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1268,6 +1383,7 @@
         },
         {
           "id": "A0118",
+          "projeto": "GAVIAO",
           "atividade": "18 - Compartilhar com todos os times",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1278,6 +1394,7 @@
         },
         {
           "id": "A0119",
+          "projeto": "GAVIAO",
           "atividade": "19 - LEMBRETES: +15d, +30d, +45d",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1288,6 +1405,7 @@
         },
         {
           "id": "A0120",
+          "projeto": "GAVIAO",
           "atividade": "20 - Atualizar documentação OneDrive",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1314,6 +1432,7 @@
       "atividades": [
         {
           "id": "A0121",
+          "projeto": "BETA",
           "atividade": "01 - KICKOFF INTERNO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1324,6 +1443,7 @@
         },
         {
           "id": "A0122",
+          "projeto": "BETA",
           "atividade": "02 - Analisar documentos (Masterdata/Cronograma)",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1334,6 +1454,7 @@
         },
         {
           "id": "A0123",
+          "projeto": "BETA",
           "atividade": "03 - Análise/Recebimento Layout Elétrico",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1344,6 +1465,7 @@
         },
         {
           "id": "A0124",
+          "projeto": "BETA",
           "atividade": "04 - Reportar pontos críticos ao PMO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1354,6 +1476,7 @@
         },
         {
           "id": "A0125",
+          "projeto": "BETA",
           "atividade": "05 - Reunião apresentação dos times",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1364,6 +1487,7 @@
         },
         {
           "id": "A0126",
+          "projeto": "BETA",
           "atividade": "06 - Registrar contatos do cliente",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1374,6 +1498,7 @@
         },
         {
           "id": "A0127",
+          "projeto": "BETA",
           "atividade": "07 - Enviar doc: Sugestão de Servidores",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1384,6 +1509,7 @@
         },
         {
           "id": "A0128",
+          "projeto": "BETA",
           "atividade": "08 - Enviar doc: Solicitação Range IPs",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1394,6 +1520,7 @@
         },
         {
           "id": "A0129",
+          "projeto": "BETA",
           "atividade": "09 - Enviar doc: Solicitação Acesso Remoto",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1404,6 +1531,7 @@
         },
         {
           "id": "A0130",
+          "projeto": "BETA",
           "atividade": "10 - Acompanhar retorno do cliente",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1414,6 +1542,7 @@
         },
         {
           "id": "A0131",
+          "projeto": "BETA",
           "atividade": "11 - Follow-up 7 dias sem resposta",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1424,6 +1553,7 @@
         },
         {
           "id": "A0132",
+          "projeto": "BETA",
           "atividade": "12 - Agendar reunião de definição",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1434,6 +1564,7 @@
         },
         {
           "id": "A0133",
+          "projeto": "BETA",
           "atividade": "13 - Realizar reunião de definição",
           "status": "Em Andamento",
           "responsavel": "Daiana",
@@ -1444,6 +1575,7 @@
         },
         {
           "id": "A0134",
+          "projeto": "BETA",
           "atividade": "14 - Documentar acordos com cliente",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -1454,6 +1586,7 @@
         },
         {
           "id": "A0135",
+          "projeto": "BETA",
           "atividade": "15 - TERMO SEGURANÇA: Coletar assinaturas",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -1464,6 +1597,7 @@
         },
         {
           "id": "A0136",
+          "projeto": "BETA",
           "atividade": "16 - VALIDAÇÃO ACESSOS: Testar acessos",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -1474,6 +1608,7 @@
         },
         {
           "id": "A0137",
+          "projeto": "BETA",
           "atividade": "17 - Criar procedimento de acesso",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -1484,6 +1619,7 @@
         },
         {
           "id": "A0138",
+          "projeto": "BETA",
           "atividade": "18 - Compartilhar com todos os times",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -1494,6 +1630,7 @@
         },
         {
           "id": "A0139",
+          "projeto": "BETA",
           "atividade": "19 - LEMBRETES: +15d, +30d, +45d",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -1504,6 +1641,7 @@
         },
         {
           "id": "A0140",
+          "projeto": "BETA",
           "atividade": "20 - Atualizar documentação OneDrive",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -1530,6 +1668,7 @@
       "atividades": [
         {
           "id": "A0141",
+          "projeto": "DIA",
           "atividade": "01 - KICKOFF INTERNO",
           "status": "Concluído",
           "responsavel": "Vinicius PMO",
@@ -1540,6 +1679,7 @@
         },
         {
           "id": "A0142",
+          "projeto": "DIA",
           "atividade": "02 - Analisar documentos (Masterdata/Cronograma)",
           "status": "Concluído",
           "responsavel": "Vinicius PMO",
@@ -1550,6 +1690,7 @@
         },
         {
           "id": "A0143",
+          "projeto": "DIA",
           "atividade": "03 - Análise/Recebimento Layout Elétrico",
           "status": "Concluído",
           "responsavel": "Vinicius PMO",
@@ -1560,6 +1701,7 @@
         },
         {
           "id": "A0144",
+          "projeto": "DIA",
           "atividade": "04 - Reportar pontos críticos ao PMO",
           "status": "Concluído",
           "responsavel": "Vinicius PMO",
@@ -1570,6 +1712,7 @@
         },
         {
           "id": "A0145",
+          "projeto": "DIA",
           "atividade": "05 - Reunião apresentação dos times",
           "status": "Concluído",
           "responsavel": "Vinicius PMO",
@@ -1580,6 +1723,7 @@
         },
         {
           "id": "A0146",
+          "projeto": "DIA",
           "atividade": "06 - Registrar contatos do cliente",
           "status": "Em Andamento",
           "responsavel": "Vinicius PMO",
@@ -1590,6 +1734,7 @@
         },
         {
           "id": "A0147",
+          "projeto": "DIA",
           "atividade": "07 - Enviar doc: Sugestão de Servidores",
           "status": "Pendente",
           "responsavel": "Vinicius PMO",
@@ -1600,6 +1745,7 @@
         },
         {
           "id": "A0148",
+          "projeto": "DIA",
           "atividade": "08 - Enviar doc: Solicitação Range IPs",
           "status": "Pendente",
           "responsavel": "Vinicius PMO",
@@ -1610,6 +1756,7 @@
         },
         {
           "id": "A0149",
+          "projeto": "DIA",
           "atividade": "09 - Enviar doc: Solicitação Acesso Remoto",
           "status": "Pendente",
           "responsavel": "Vinicius PMO",
@@ -1620,6 +1767,7 @@
         },
         {
           "id": "A0150",
+          "projeto": "DIA",
           "atividade": "10 - Acompanhar retorno do cliente",
           "status": "Pendente",
           "responsavel": "Vinicius PMO",
@@ -1630,6 +1778,7 @@
         },
         {
           "id": "A0151",
+          "projeto": "DIA",
           "atividade": "11 - Follow-up 7 dias sem resposta",
           "status": "Pendente",
           "responsavel": "Vinicius PMO",
@@ -1640,6 +1789,7 @@
         },
         {
           "id": "A0152",
+          "projeto": "DIA",
           "atividade": "12 - Agendar reunião de definição",
           "status": "Pendente",
           "responsavel": "Vinicius PMO",
@@ -1650,6 +1800,7 @@
         },
         {
           "id": "A0153",
+          "projeto": "DIA",
           "atividade": "13 - Realizar reunião de definição",
           "status": "Pendente",
           "responsavel": "Vinicius PMO",
@@ -1660,6 +1811,7 @@
         },
         {
           "id": "A0154",
+          "projeto": "DIA",
           "atividade": "14 - Documentar acordos com cliente",
           "status": "Pendente",
           "responsavel": "Vinicius PMO",
@@ -1670,6 +1822,7 @@
         },
         {
           "id": "A0155",
+          "projeto": "DIA",
           "atividade": "15 - TERMO SEGURANÇA: Coletar assinaturas",
           "status": "Pendente",
           "responsavel": "Vinicius PMO",
@@ -1680,6 +1833,7 @@
         },
         {
           "id": "A0156",
+          "projeto": "DIA",
           "atividade": "16 - VALIDAÇÃO ACESSOS: Testar acessos",
           "status": "Pendente",
           "responsavel": "Vinicius PMO",
@@ -1690,6 +1844,7 @@
         },
         {
           "id": "A0157",
+          "projeto": "DIA",
           "atividade": "17 - Criar procedimento de acesso",
           "status": "Pendente",
           "responsavel": "Vinicius PMO",
@@ -1700,6 +1855,7 @@
         },
         {
           "id": "A0158",
+          "projeto": "DIA",
           "atividade": "18 - Compartilhar com todos os times",
           "status": "Pendente",
           "responsavel": "Vinicius PMO",
@@ -1710,6 +1866,7 @@
         },
         {
           "id": "A0159",
+          "projeto": "DIA",
           "atividade": "19 - LEMBRETES: +15d, +30d, +45d",
           "status": "Pendente",
           "responsavel": "Vinicius PMO",
@@ -1720,6 +1877,7 @@
         },
         {
           "id": "A0160",
+          "projeto": "DIA",
           "atividade": "20 - Atualizar documentação OneDrive",
           "status": "Pendente",
           "responsavel": "Vinicius PMO",
@@ -1742,10 +1900,11 @@
       "bloqueador": "22/08 - Igor informou no grupo que já poderiamos ter Kikoff do projeto e até o m",
       "ultAtual": "20/01/2026",
       "diasSemAtual": 9,
-      "observacoes": "",
+      "observacoes": "-",
       "atividades": [
         {
           "id": "A0161",
+          "projeto": "FLOWER",
           "atividade": "01 - KICKOFF INTERNO",
           "status": "Em Andamento",
           "responsavel": "Alex PMO",
@@ -1756,6 +1915,7 @@
         },
         {
           "id": "A0162",
+          "projeto": "FLOWER",
           "atividade": "02 - Analisar documentos (Masterdata/Cronograma)",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -1766,6 +1926,7 @@
         },
         {
           "id": "A0163",
+          "projeto": "FLOWER",
           "atividade": "03 - Análise/Recebimento Layout Elétrico",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -1776,6 +1937,7 @@
         },
         {
           "id": "A0164",
+          "projeto": "FLOWER",
           "atividade": "04 - Reportar pontos críticos ao PMO",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -1786,6 +1948,7 @@
         },
         {
           "id": "A0165",
+          "projeto": "FLOWER",
           "atividade": "05 - Reunião apresentação dos times",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -1796,6 +1959,7 @@
         },
         {
           "id": "A0166",
+          "projeto": "FLOWER",
           "atividade": "06 - Registrar contatos do cliente",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -1806,6 +1970,7 @@
         },
         {
           "id": "A0167",
+          "projeto": "FLOWER",
           "atividade": "07 - Enviar doc: Sugestão de Servidores",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -1816,6 +1981,7 @@
         },
         {
           "id": "A0168",
+          "projeto": "FLOWER",
           "atividade": "08 - Enviar doc: Solicitação Range IPs",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -1826,6 +1992,7 @@
         },
         {
           "id": "A0169",
+          "projeto": "FLOWER",
           "atividade": "09 - Enviar doc: Solicitação Acesso Remoto",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -1836,6 +2003,7 @@
         },
         {
           "id": "A0170",
+          "projeto": "FLOWER",
           "atividade": "10 - Acompanhar retorno do cliente",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -1846,6 +2014,7 @@
         },
         {
           "id": "A0171",
+          "projeto": "FLOWER",
           "atividade": "11 - Follow-up 7 dias sem resposta",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -1856,6 +2025,7 @@
         },
         {
           "id": "A0172",
+          "projeto": "FLOWER",
           "atividade": "12 - Agendar reunião de definição",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -1866,6 +2036,7 @@
         },
         {
           "id": "A0173",
+          "projeto": "FLOWER",
           "atividade": "13 - Realizar reunião de definição",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -1876,6 +2047,7 @@
         },
         {
           "id": "A0174",
+          "projeto": "FLOWER",
           "atividade": "14 - Documentar acordos com cliente",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -1886,6 +2058,7 @@
         },
         {
           "id": "A0175",
+          "projeto": "FLOWER",
           "atividade": "15 - TERMO SEGURANÇA: Coletar assinaturas",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -1896,6 +2069,7 @@
         },
         {
           "id": "A0176",
+          "projeto": "FLOWER",
           "atividade": "16 - VALIDAÇÃO ACESSOS: Testar acessos",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -1906,6 +2080,7 @@
         },
         {
           "id": "A0177",
+          "projeto": "FLOWER",
           "atividade": "17 - Criar procedimento de acesso",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -1916,6 +2091,7 @@
         },
         {
           "id": "A0178",
+          "projeto": "FLOWER",
           "atividade": "18 - Compartilhar com todos os times",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -1926,6 +2102,7 @@
         },
         {
           "id": "A0179",
+          "projeto": "FLOWER",
           "atividade": "19 - LEMBRETES: +15d, +30d, +45d",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -1936,6 +2113,7 @@
         },
         {
           "id": "A0180",
+          "projeto": "FLOWER",
           "atividade": "20 - Atualizar documentação OneDrive",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -1962,6 +2140,7 @@
       "atividades": [
         {
           "id": "A0181",
+          "projeto": "BP",
           "atividade": "01 - KICKOFF INTERNO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1972,6 +2151,7 @@
         },
         {
           "id": "A0182",
+          "projeto": "BP",
           "atividade": "02 - Analisar documentos (Masterdata/Cronograma)",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1982,6 +2162,7 @@
         },
         {
           "id": "A0183",
+          "projeto": "BP",
           "atividade": "03 - Análise/Recebimento Layout Elétrico",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -1992,6 +2173,7 @@
         },
         {
           "id": "A0184",
+          "projeto": "BP",
           "atividade": "04 - Reportar pontos críticos ao PMO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2002,6 +2184,7 @@
         },
         {
           "id": "A0185",
+          "projeto": "BP",
           "atividade": "05 - Reunião apresentação dos times",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2012,6 +2195,7 @@
         },
         {
           "id": "A0186",
+          "projeto": "BP",
           "atividade": "06 - Registrar contatos do cliente",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2022,6 +2206,7 @@
         },
         {
           "id": "A0187",
+          "projeto": "BP",
           "atividade": "07 - Enviar doc: Sugestão de Servidores",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2032,6 +2217,7 @@
         },
         {
           "id": "A0188",
+          "projeto": "BP",
           "atividade": "08 - Enviar doc: Solicitação Range IPs",
           "status": "Em Andamento",
           "responsavel": "Daiana",
@@ -2042,6 +2228,7 @@
         },
         {
           "id": "A0189",
+          "projeto": "BP",
           "atividade": "09 - Enviar doc: Solicitação Acesso Remoto",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2052,6 +2239,7 @@
         },
         {
           "id": "A0190",
+          "projeto": "BP",
           "atividade": "10 - Acompanhar retorno do cliente",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2062,6 +2250,7 @@
         },
         {
           "id": "A0191",
+          "projeto": "BP",
           "atividade": "11 - Follow-up 7 dias sem resposta",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2072,6 +2261,7 @@
         },
         {
           "id": "A0192",
+          "projeto": "BP",
           "atividade": "12 - Agendar reunião de definição",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2082,6 +2272,7 @@
         },
         {
           "id": "A0193",
+          "projeto": "BP",
           "atividade": "13 - Realizar reunião de definição",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2092,6 +2283,7 @@
         },
         {
           "id": "A0194",
+          "projeto": "BP",
           "atividade": "14 - Documentar acordos com cliente",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2102,6 +2294,7 @@
         },
         {
           "id": "A0195",
+          "projeto": "BP",
           "atividade": "15 - TERMO SEGURANÇA: Coletar assinaturas",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2112,6 +2305,7 @@
         },
         {
           "id": "A0196",
+          "projeto": "BP",
           "atividade": "16 - VALIDAÇÃO ACESSOS: Testar acessos",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2122,6 +2316,7 @@
         },
         {
           "id": "A0197",
+          "projeto": "BP",
           "atividade": "17 - Criar procedimento de acesso",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2132,6 +2327,7 @@
         },
         {
           "id": "A0198",
+          "projeto": "BP",
           "atividade": "18 - Compartilhar com todos os times",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2142,6 +2338,7 @@
         },
         {
           "id": "A0199",
+          "projeto": "BP",
           "atividade": "19 - LEMBRETES: +15d, +30d, +45d",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2152,6 +2349,7 @@
         },
         {
           "id": "A0200",
+          "projeto": "BP",
           "atividade": "20 - Atualizar documentação OneDrive",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2178,6 +2376,7 @@
       "atividades": [
         {
           "id": "A0201",
+          "projeto": "CDSK",
           "atividade": "01 - KICKOFF INTERNO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2188,6 +2387,7 @@
         },
         {
           "id": "A0202",
+          "projeto": "CDSK",
           "atividade": "02 - Analisar documentos (Masterdata/Cronograma)",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2198,6 +2398,7 @@
         },
         {
           "id": "A0203",
+          "projeto": "CDSK",
           "atividade": "03 - Análise/Recebimento Layout Elétrico",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2208,6 +2409,7 @@
         },
         {
           "id": "A0204",
+          "projeto": "CDSK",
           "atividade": "04 - Reportar pontos críticos ao PMO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2218,6 +2420,7 @@
         },
         {
           "id": "A0205",
+          "projeto": "CDSK",
           "atividade": "05 - Reunião apresentação dos times",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2228,6 +2431,7 @@
         },
         {
           "id": "A0206",
+          "projeto": "CDSK",
           "atividade": "06 - Registrar contatos do cliente",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2238,6 +2442,7 @@
         },
         {
           "id": "A0207",
+          "projeto": "CDSK",
           "atividade": "07 - Enviar doc: Sugestão de Servidores",
           "status": "Em Andamento",
           "responsavel": "Daiana",
@@ -2248,6 +2453,7 @@
         },
         {
           "id": "A0208",
+          "projeto": "CDSK",
           "atividade": "08 - Enviar doc: Solicitação Range IPs",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2258,6 +2464,7 @@
         },
         {
           "id": "A0209",
+          "projeto": "CDSK",
           "atividade": "09 - Enviar doc: Solicitação Acesso Remoto",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2268,6 +2475,7 @@
         },
         {
           "id": "A0210",
+          "projeto": "CDSK",
           "atividade": "10 - Acompanhar retorno do cliente",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2278,6 +2486,7 @@
         },
         {
           "id": "A0211",
+          "projeto": "CDSK",
           "atividade": "11 - Follow-up 7 dias sem resposta",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2288,6 +2497,7 @@
         },
         {
           "id": "A0212",
+          "projeto": "CDSK",
           "atividade": "12 - Agendar reunião de definição",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2298,6 +2508,7 @@
         },
         {
           "id": "A0213",
+          "projeto": "CDSK",
           "atividade": "13 - Realizar reunião de definição",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2308,6 +2519,7 @@
         },
         {
           "id": "A0214",
+          "projeto": "CDSK",
           "atividade": "14 - Documentar acordos com cliente",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2318,6 +2530,7 @@
         },
         {
           "id": "A0215",
+          "projeto": "CDSK",
           "atividade": "15 - TERMO SEGURANÇA: Coletar assinaturas",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2328,6 +2541,7 @@
         },
         {
           "id": "A0216",
+          "projeto": "CDSK",
           "atividade": "16 - VALIDAÇÃO ACESSOS: Testar acessos",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2338,6 +2552,7 @@
         },
         {
           "id": "A0217",
+          "projeto": "CDSK",
           "atividade": "17 - Criar procedimento de acesso",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2348,6 +2563,7 @@
         },
         {
           "id": "A0218",
+          "projeto": "CDSK",
           "atividade": "18 - Compartilhar com todos os times",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2358,6 +2574,7 @@
         },
         {
           "id": "A0219",
+          "projeto": "CDSK",
           "atividade": "19 - LEMBRETES: +15d, +30d, +45d",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2368,6 +2585,7 @@
         },
         {
           "id": "A0220",
+          "projeto": "CDSK",
           "atividade": "20 - Atualizar documentação OneDrive",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2394,6 +2612,7 @@
       "atividades": [
         {
           "id": "A0221",
+          "projeto": "ELETRO",
           "atividade": "01 - KICKOFF INTERNO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2404,6 +2623,7 @@
         },
         {
           "id": "A0222",
+          "projeto": "ELETRO",
           "atividade": "02 - Analisar documentos (Masterdata/Cronograma)",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2414,6 +2634,7 @@
         },
         {
           "id": "A0223",
+          "projeto": "ELETRO",
           "atividade": "03 - Análise/Recebimento Layout Elétrico",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2424,6 +2645,7 @@
         },
         {
           "id": "A0224",
+          "projeto": "ELETRO",
           "atividade": "04 - Reportar pontos críticos ao PMO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2434,6 +2656,7 @@
         },
         {
           "id": "A0225",
+          "projeto": "ELETRO",
           "atividade": "05 - Reunião apresentação dos times",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2444,6 +2667,7 @@
         },
         {
           "id": "A0226",
+          "projeto": "ELETRO",
           "atividade": "06 - Registrar contatos do cliente",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2454,6 +2678,7 @@
         },
         {
           "id": "A0227",
+          "projeto": "ELETRO",
           "atividade": "07 - Enviar doc: Sugestão de Servidores",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2464,6 +2689,7 @@
         },
         {
           "id": "A0228",
+          "projeto": "ELETRO",
           "atividade": "08 - Enviar doc: Solicitação Range IPs",
           "status": "Em Andamento",
           "responsavel": "Daiana",
@@ -2474,6 +2700,7 @@
         },
         {
           "id": "A0229",
+          "projeto": "ELETRO",
           "atividade": "09 - Enviar doc: Solicitação Acesso Remoto",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2484,6 +2711,7 @@
         },
         {
           "id": "A0230",
+          "projeto": "ELETRO",
           "atividade": "10 - Acompanhar retorno do cliente",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2494,6 +2722,7 @@
         },
         {
           "id": "A0231",
+          "projeto": "ELETRO",
           "atividade": "11 - Follow-up 7 dias sem resposta",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2504,6 +2733,7 @@
         },
         {
           "id": "A0232",
+          "projeto": "ELETRO",
           "atividade": "12 - Agendar reunião de definição",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2514,6 +2744,7 @@
         },
         {
           "id": "A0233",
+          "projeto": "ELETRO",
           "atividade": "13 - Realizar reunião de definição",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2524,6 +2755,7 @@
         },
         {
           "id": "A0234",
+          "projeto": "ELETRO",
           "atividade": "14 - Documentar acordos com cliente",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2534,6 +2766,7 @@
         },
         {
           "id": "A0235",
+          "projeto": "ELETRO",
           "atividade": "15 - TERMO SEGURANÇA: Coletar assinaturas",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2544,6 +2777,7 @@
         },
         {
           "id": "A0236",
+          "projeto": "ELETRO",
           "atividade": "16 - VALIDAÇÃO ACESSOS: Testar acessos",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2554,6 +2788,7 @@
         },
         {
           "id": "A0237",
+          "projeto": "ELETRO",
           "atividade": "17 - Criar procedimento de acesso",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2564,6 +2799,7 @@
         },
         {
           "id": "A0238",
+          "projeto": "ELETRO",
           "atividade": "18 - Compartilhar com todos os times",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2574,6 +2810,7 @@
         },
         {
           "id": "A0239",
+          "projeto": "ELETRO",
           "atividade": "19 - LEMBRETES: +15d, +30d, +45d",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2584,6 +2821,7 @@
         },
         {
           "id": "A0240",
+          "projeto": "ELETRO",
           "atividade": "20 - Atualizar documentação OneDrive",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2606,10 +2844,11 @@
       "bloqueador": "",
       "ultAtual": "20/01/2026",
       "diasSemAtual": 4,
-      "observacoes": "",
+      "observacoes": "-",
       "atividades": [
         {
           "id": "A0241",
+          "projeto": "BRF EMBU",
           "atividade": "01 - KICKOFF INTERNO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2620,6 +2859,7 @@
         },
         {
           "id": "A0242",
+          "projeto": "BRF EMBU",
           "atividade": "02 - Analisar documentos (Masterdata/Cronograma)",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2630,6 +2870,7 @@
         },
         {
           "id": "A0243",
+          "projeto": "BRF EMBU",
           "atividade": "03 - Análise/Recebimento Layout Elétrico",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2640,6 +2881,7 @@
         },
         {
           "id": "A0244",
+          "projeto": "BRF EMBU",
           "atividade": "04 - Reportar pontos críticos ao PMO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2650,6 +2892,7 @@
         },
         {
           "id": "A0245",
+          "projeto": "BRF EMBU",
           "atividade": "05 - Reunião apresentação dos times",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2660,6 +2903,7 @@
         },
         {
           "id": "A0246",
+          "projeto": "BRF EMBU",
           "atividade": "06 - Registrar contatos do cliente",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2670,6 +2914,7 @@
         },
         {
           "id": "A0247",
+          "projeto": "BRF EMBU",
           "atividade": "07 - Enviar doc: Sugestão de Servidores",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2680,6 +2925,7 @@
         },
         {
           "id": "A0248",
+          "projeto": "BRF EMBU",
           "atividade": "08 - Enviar doc: Solicitação Range IPs",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2690,6 +2936,7 @@
         },
         {
           "id": "A0249",
+          "projeto": "BRF EMBU",
           "atividade": "09 - Enviar doc: Solicitação Acesso Remoto",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2700,6 +2947,7 @@
         },
         {
           "id": "A0250",
+          "projeto": "BRF EMBU",
           "atividade": "10 - Acompanhar retorno do cliente",
           "status": "Em Andamento",
           "responsavel": "Daiana",
@@ -2710,6 +2958,7 @@
         },
         {
           "id": "A0251",
+          "projeto": "BRF EMBU",
           "atividade": "11 - Follow-up 7 dias sem resposta",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2720,6 +2969,7 @@
         },
         {
           "id": "A0252",
+          "projeto": "BRF EMBU",
           "atividade": "12 - Agendar reunião de definição",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2730,6 +2980,7 @@
         },
         {
           "id": "A0253",
+          "projeto": "BRF EMBU",
           "atividade": "13 - Realizar reunião de definição",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2740,6 +2991,7 @@
         },
         {
           "id": "A0254",
+          "projeto": "BRF EMBU",
           "atividade": "14 - Documentar acordos com cliente",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2750,6 +3002,7 @@
         },
         {
           "id": "A0255",
+          "projeto": "BRF EMBU",
           "atividade": "15 - TERMO SEGURANÇA: Coletar assinaturas",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2760,6 +3013,7 @@
         },
         {
           "id": "A0256",
+          "projeto": "BRF EMBU",
           "atividade": "16 - VALIDAÇÃO ACESSOS: Testar acessos",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2770,6 +3024,7 @@
         },
         {
           "id": "A0257",
+          "projeto": "BRF EMBU",
           "atividade": "17 - Criar procedimento de acesso",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2780,6 +3035,7 @@
         },
         {
           "id": "A0258",
+          "projeto": "BRF EMBU",
           "atividade": "18 - Compartilhar com todos os times",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2790,6 +3046,7 @@
         },
         {
           "id": "A0259",
+          "projeto": "BRF EMBU",
           "atividade": "19 - LEMBRETES: +15d, +30d, +45d",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2800,6 +3057,7 @@
         },
         {
           "id": "A0260",
+          "projeto": "BRF EMBU",
           "atividade": "20 - Atualizar documentação OneDrive",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2822,10 +3080,11 @@
       "bloqueador": "",
       "ultAtual": "20/01/2026",
       "diasSemAtual": 14,
-      "observacoes": "",
+      "observacoes": "-",
       "atividades": [
         {
           "id": "A0261",
+          "projeto": "BRF JUNDIAI",
           "atividade": "01 - KICKOFF INTERNO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2836,6 +3095,7 @@
         },
         {
           "id": "A0262",
+          "projeto": "BRF JUNDIAI",
           "atividade": "02 - Analisar documentos (Masterdata/Cronograma)",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2846,6 +3106,7 @@
         },
         {
           "id": "A0263",
+          "projeto": "BRF JUNDIAI",
           "atividade": "03 - Análise/Recebimento Layout Elétrico",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2856,6 +3117,7 @@
         },
         {
           "id": "A0264",
+          "projeto": "BRF JUNDIAI",
           "atividade": "04 - Reportar pontos críticos ao PMO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2866,6 +3128,7 @@
         },
         {
           "id": "A0265",
+          "projeto": "BRF JUNDIAI",
           "atividade": "05 - Reunião apresentação dos times",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2876,6 +3139,7 @@
         },
         {
           "id": "A0266",
+          "projeto": "BRF JUNDIAI",
           "atividade": "06 - Registrar contatos do cliente",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2886,6 +3150,7 @@
         },
         {
           "id": "A0267",
+          "projeto": "BRF JUNDIAI",
           "atividade": "07 - Enviar doc: Sugestão de Servidores",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -2896,6 +3161,7 @@
         },
         {
           "id": "A0268",
+          "projeto": "BRF JUNDIAI",
           "atividade": "08 - Enviar doc: Solicitação Range IPs",
           "status": "Em Andamento",
           "responsavel": "Daiana",
@@ -2906,6 +3172,7 @@
         },
         {
           "id": "A0269",
+          "projeto": "BRF JUNDIAI",
           "atividade": "09 - Enviar doc: Solicitação Acesso Remoto",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2916,6 +3183,7 @@
         },
         {
           "id": "A0270",
+          "projeto": "BRF JUNDIAI",
           "atividade": "10 - Acompanhar retorno do cliente",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2926,6 +3194,7 @@
         },
         {
           "id": "A0271",
+          "projeto": "BRF JUNDIAI",
           "atividade": "11 - Follow-up 7 dias sem resposta",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2936,6 +3205,7 @@
         },
         {
           "id": "A0272",
+          "projeto": "BRF JUNDIAI",
           "atividade": "12 - Agendar reunião de definição",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2946,6 +3216,7 @@
         },
         {
           "id": "A0273",
+          "projeto": "BRF JUNDIAI",
           "atividade": "13 - Realizar reunião de definição",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2956,6 +3227,7 @@
         },
         {
           "id": "A0274",
+          "projeto": "BRF JUNDIAI",
           "atividade": "14 - Documentar acordos com cliente",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2966,6 +3238,7 @@
         },
         {
           "id": "A0275",
+          "projeto": "BRF JUNDIAI",
           "atividade": "15 - TERMO SEGURANÇA: Coletar assinaturas",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2976,6 +3249,7 @@
         },
         {
           "id": "A0276",
+          "projeto": "BRF JUNDIAI",
           "atividade": "16 - VALIDAÇÃO ACESSOS: Testar acessos",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2986,6 +3260,7 @@
         },
         {
           "id": "A0277",
+          "projeto": "BRF JUNDIAI",
           "atividade": "17 - Criar procedimento de acesso",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -2996,6 +3271,7 @@
         },
         {
           "id": "A0278",
+          "projeto": "BRF JUNDIAI",
           "atividade": "18 - Compartilhar com todos os times",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -3006,6 +3282,7 @@
         },
         {
           "id": "A0279",
+          "projeto": "BRF JUNDIAI",
           "atividade": "19 - LEMBRETES: +15d, +30d, +45d",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -3016,6 +3293,7 @@
         },
         {
           "id": "A0280",
+          "projeto": "BRF JUNDIAI",
           "atividade": "20 - Atualizar documentação OneDrive",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -3038,10 +3316,11 @@
       "bloqueador": "",
       "ultAtual": "20/01/2026",
       "diasSemAtual": 9,
-      "observacoes": "",
+      "observacoes": "-",
       "atividades": [
         {
           "id": "A0281",
+          "projeto": "BRF UBERLANDIA",
           "atividade": "01 - KICKOFF INTERNO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -3052,6 +3331,7 @@
         },
         {
           "id": "A0282",
+          "projeto": "BRF UBERLANDIA",
           "atividade": "02 - Analisar documentos (Masterdata/Cronograma)",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -3062,6 +3342,7 @@
         },
         {
           "id": "A0283",
+          "projeto": "BRF UBERLANDIA",
           "atividade": "03 - Análise/Recebimento Layout Elétrico",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -3072,6 +3353,7 @@
         },
         {
           "id": "A0284",
+          "projeto": "BRF UBERLANDIA",
           "atividade": "04 - Reportar pontos críticos ao PMO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -3082,6 +3364,7 @@
         },
         {
           "id": "A0285",
+          "projeto": "BRF UBERLANDIA",
           "atividade": "05 - Reunião apresentação dos times",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -3092,6 +3375,7 @@
         },
         {
           "id": "A0286",
+          "projeto": "BRF UBERLANDIA",
           "atividade": "06 - Registrar contatos do cliente",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -3102,6 +3386,7 @@
         },
         {
           "id": "A0287",
+          "projeto": "BRF UBERLANDIA",
           "atividade": "07 - Enviar doc: Sugestão de Servidores",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -3112,6 +3397,7 @@
         },
         {
           "id": "A0288",
+          "projeto": "BRF UBERLANDIA",
           "atividade": "08 - Enviar doc: Solicitação Range IPs",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -3122,6 +3408,7 @@
         },
         {
           "id": "A0289",
+          "projeto": "BRF UBERLANDIA",
           "atividade": "09 - Enviar doc: Solicitação Acesso Remoto",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -3132,6 +3419,7 @@
         },
         {
           "id": "A0290",
+          "projeto": "BRF UBERLANDIA",
           "atividade": "10 - Acompanhar retorno do cliente",
           "status": "Em Andamento",
           "responsavel": "Daiana",
@@ -3142,6 +3430,7 @@
         },
         {
           "id": "A0291",
+          "projeto": "BRF UBERLANDIA",
           "atividade": "11 - Follow-up 7 dias sem resposta",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -3152,6 +3441,7 @@
         },
         {
           "id": "A0292",
+          "projeto": "BRF UBERLANDIA",
           "atividade": "12 - Agendar reunião de definição",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -3162,6 +3452,7 @@
         },
         {
           "id": "A0293",
+          "projeto": "BRF UBERLANDIA",
           "atividade": "13 - Realizar reunião de definição",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -3172,6 +3463,7 @@
         },
         {
           "id": "A0294",
+          "projeto": "BRF UBERLANDIA",
           "atividade": "14 - Documentar acordos com cliente",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -3182,6 +3474,7 @@
         },
         {
           "id": "A0295",
+          "projeto": "BRF UBERLANDIA",
           "atividade": "15 - TERMO SEGURANÇA: Coletar assinaturas",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -3192,6 +3485,7 @@
         },
         {
           "id": "A0296",
+          "projeto": "BRF UBERLANDIA",
           "atividade": "16 - VALIDAÇÃO ACESSOS: Testar acessos",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -3202,6 +3496,7 @@
         },
         {
           "id": "A0297",
+          "projeto": "BRF UBERLANDIA",
           "atividade": "17 - Criar procedimento de acesso",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -3212,6 +3507,7 @@
         },
         {
           "id": "A0298",
+          "projeto": "BRF UBERLANDIA",
           "atividade": "18 - Compartilhar com todos os times",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -3222,6 +3518,7 @@
         },
         {
           "id": "A0299",
+          "projeto": "BRF UBERLANDIA",
           "atividade": "19 - LEMBRETES: +15d, +30d, +45d",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -3232,6 +3529,7 @@
         },
         {
           "id": "A0300",
+          "projeto": "BRF UBERLANDIA",
           "atividade": "20 - Atualizar documentação OneDrive",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -3254,10 +3552,11 @@
       "bloqueador": "Não tenho nenhuma informação desse projeto",
       "ultAtual": "20/01/2026",
       "diasSemAtual": 10,
-      "observacoes": "",
+      "observacoes": "-",
       "atividades": [
         {
           "id": "A0301",
+          "projeto": "MASTER",
           "atividade": "01 - KICKOFF INTERNO",
           "status": "Em Andamento",
           "responsavel": "Leandro PMO",
@@ -3268,6 +3567,7 @@
         },
         {
           "id": "A0302",
+          "projeto": "MASTER",
           "atividade": "02 - Analisar documentos (Masterdata/Cronograma)",
           "status": "Pendente",
           "responsavel": "Leandro PMO",
@@ -3278,6 +3578,7 @@
         },
         {
           "id": "A0303",
+          "projeto": "MASTER",
           "atividade": "03 - Análise/Recebimento Layout Elétrico",
           "status": "Pendente",
           "responsavel": "Leandro PMO",
@@ -3288,6 +3589,7 @@
         },
         {
           "id": "A0304",
+          "projeto": "MASTER",
           "atividade": "04 - Reportar pontos críticos ao PMO",
           "status": "Pendente",
           "responsavel": "Leandro PMO",
@@ -3298,6 +3600,7 @@
         },
         {
           "id": "A0305",
+          "projeto": "MASTER",
           "atividade": "05 - Reunião apresentação dos times",
           "status": "Pendente",
           "responsavel": "Leandro PMO",
@@ -3308,6 +3611,7 @@
         },
         {
           "id": "A0306",
+          "projeto": "MASTER",
           "atividade": "06 - Registrar contatos do cliente",
           "status": "Pendente",
           "responsavel": "Leandro PMO",
@@ -3318,6 +3622,7 @@
         },
         {
           "id": "A0307",
+          "projeto": "MASTER",
           "atividade": "07 - Enviar doc: Sugestão de Servidores",
           "status": "Pendente",
           "responsavel": "Leandro PMO",
@@ -3328,6 +3633,7 @@
         },
         {
           "id": "A0308",
+          "projeto": "MASTER",
           "atividade": "08 - Enviar doc: Solicitação Range IPs",
           "status": "Pendente",
           "responsavel": "Leandro PMO",
@@ -3338,6 +3644,7 @@
         },
         {
           "id": "A0309",
+          "projeto": "MASTER",
           "atividade": "09 - Enviar doc: Solicitação Acesso Remoto",
           "status": "Pendente",
           "responsavel": "Leandro PMO",
@@ -3348,6 +3655,7 @@
         },
         {
           "id": "A0310",
+          "projeto": "MASTER",
           "atividade": "10 - Acompanhar retorno do cliente",
           "status": "Pendente",
           "responsavel": "Leandro PMO",
@@ -3358,6 +3666,7 @@
         },
         {
           "id": "A0311",
+          "projeto": "MASTER",
           "atividade": "11 - Follow-up 7 dias sem resposta",
           "status": "Pendente",
           "responsavel": "Leandro PMO",
@@ -3368,6 +3677,7 @@
         },
         {
           "id": "A0312",
+          "projeto": "MASTER",
           "atividade": "12 - Agendar reunião de definição",
           "status": "Pendente",
           "responsavel": "Leandro PMO",
@@ -3378,6 +3688,7 @@
         },
         {
           "id": "A0313",
+          "projeto": "MASTER",
           "atividade": "13 - Realizar reunião de definição",
           "status": "Pendente",
           "responsavel": "Leandro PMO",
@@ -3388,6 +3699,7 @@
         },
         {
           "id": "A0314",
+          "projeto": "MASTER",
           "atividade": "14 - Documentar acordos com cliente",
           "status": "Pendente",
           "responsavel": "Leandro PMO",
@@ -3398,6 +3710,7 @@
         },
         {
           "id": "A0315",
+          "projeto": "MASTER",
           "atividade": "15 - TERMO SEGURANÇA: Coletar assinaturas",
           "status": "Pendente",
           "responsavel": "Leandro PMO",
@@ -3408,6 +3721,7 @@
         },
         {
           "id": "A0316",
+          "projeto": "MASTER",
           "atividade": "16 - VALIDAÇÃO ACESSOS: Testar acessos",
           "status": "Pendente",
           "responsavel": "Leandro PMO",
@@ -3418,6 +3732,7 @@
         },
         {
           "id": "A0317",
+          "projeto": "MASTER",
           "atividade": "17 - Criar procedimento de acesso",
           "status": "Pendente",
           "responsavel": "Leandro PMO",
@@ -3428,6 +3743,7 @@
         },
         {
           "id": "A0318",
+          "projeto": "MASTER",
           "atividade": "18 - Compartilhar com todos os times",
           "status": "Pendente",
           "responsavel": "Leandro PMO",
@@ -3438,6 +3754,7 @@
         },
         {
           "id": "A0319",
+          "projeto": "MASTER",
           "atividade": "19 - LEMBRETES: +15d, +30d, +45d",
           "status": "Pendente",
           "responsavel": "Leandro PMO",
@@ -3448,6 +3765,7 @@
         },
         {
           "id": "A0320",
+          "projeto": "MASTER",
           "atividade": "20 - Atualizar documentação OneDrive",
           "status": "Pendente",
           "responsavel": "Leandro PMO",
@@ -3474,6 +3792,7 @@
       "atividades": [
         {
           "id": "A0321",
+          "projeto": "REVERSE",
           "atividade": "01 - KICKOFF INTERNO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -3484,6 +3803,7 @@
         },
         {
           "id": "A0322",
+          "projeto": "REVERSE",
           "atividade": "02 - Analisar documentos (Masterdata/Cronograma)",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -3494,6 +3814,7 @@
         },
         {
           "id": "A0323",
+          "projeto": "REVERSE",
           "atividade": "03 - Análise/Recebimento Layout Elétrico",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -3504,6 +3825,7 @@
         },
         {
           "id": "A0324",
+          "projeto": "REVERSE",
           "atividade": "04 - Reportar pontos críticos ao PMO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -3514,6 +3836,7 @@
         },
         {
           "id": "A0325",
+          "projeto": "REVERSE",
           "atividade": "05 - Reunião apresentação dos times",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -3524,6 +3847,7 @@
         },
         {
           "id": "A0326",
+          "projeto": "REVERSE",
           "atividade": "06 - Registrar contatos do cliente",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -3534,6 +3858,7 @@
         },
         {
           "id": "A0327",
+          "projeto": "REVERSE",
           "atividade": "07 - Enviar doc: Sugestão de Servidores",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -3544,6 +3869,7 @@
         },
         {
           "id": "A0328",
+          "projeto": "REVERSE",
           "atividade": "08 - Enviar doc: Solicitação Range IPs",
           "status": "Em Andamento",
           "responsavel": "Daiana",
@@ -3554,6 +3880,7 @@
         },
         {
           "id": "A0329",
+          "projeto": "REVERSE",
           "atividade": "09 - Enviar doc: Solicitação Acesso Remoto",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -3564,6 +3891,7 @@
         },
         {
           "id": "A0330",
+          "projeto": "REVERSE",
           "atividade": "10 - Acompanhar retorno do cliente",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -3574,6 +3902,7 @@
         },
         {
           "id": "A0331",
+          "projeto": "REVERSE",
           "atividade": "11 - Follow-up 7 dias sem resposta",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -3584,6 +3913,7 @@
         },
         {
           "id": "A0332",
+          "projeto": "REVERSE",
           "atividade": "12 - Agendar reunião de definição",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -3594,6 +3924,7 @@
         },
         {
           "id": "A0333",
+          "projeto": "REVERSE",
           "atividade": "13 - Realizar reunião de definição",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -3604,6 +3935,7 @@
         },
         {
           "id": "A0334",
+          "projeto": "REVERSE",
           "atividade": "14 - Documentar acordos com cliente",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -3614,6 +3946,7 @@
         },
         {
           "id": "A0335",
+          "projeto": "REVERSE",
           "atividade": "15 - TERMO SEGURANÇA: Coletar assinaturas",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -3624,6 +3957,7 @@
         },
         {
           "id": "A0336",
+          "projeto": "REVERSE",
           "atividade": "16 - VALIDAÇÃO ACESSOS: Testar acessos",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -3634,6 +3968,7 @@
         },
         {
           "id": "A0337",
+          "projeto": "REVERSE",
           "atividade": "17 - Criar procedimento de acesso",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -3644,6 +3979,7 @@
         },
         {
           "id": "A0338",
+          "projeto": "REVERSE",
           "atividade": "18 - Compartilhar com todos os times",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -3654,6 +3990,7 @@
         },
         {
           "id": "A0339",
+          "projeto": "REVERSE",
           "atividade": "19 - LEMBRETES: +15d, +30d, +45d",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -3664,6 +4001,7 @@
         },
         {
           "id": "A0340",
+          "projeto": "REVERSE",
           "atividade": "20 - Atualizar documentação OneDrive",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -3690,6 +4028,7 @@
       "atividades": [
         {
           "id": "A0341",
+          "projeto": "TITANO",
           "atividade": "01 - KICKOFF INTERNO",
           "status": "Concluído",
           "responsavel": "Alex PMO",
@@ -3700,6 +4039,7 @@
         },
         {
           "id": "A0342",
+          "projeto": "TITANO",
           "atividade": "02 - Analisar documentos (Masterdata/Cronograma)",
           "status": "Concluído",
           "responsavel": "Alex PMO",
@@ -3710,6 +4050,7 @@
         },
         {
           "id": "A0343",
+          "projeto": "TITANO",
           "atividade": "03 - Análise/Recebimento Layout Elétrico",
           "status": "Concluído",
           "responsavel": "Alex PMO",
@@ -3720,6 +4061,7 @@
         },
         {
           "id": "A0344",
+          "projeto": "TITANO",
           "atividade": "04 - Reportar pontos críticos ao PMO",
           "status": "Concluído",
           "responsavel": "Alex PMO",
@@ -3730,6 +4072,7 @@
         },
         {
           "id": "A0345",
+          "projeto": "TITANO",
           "atividade": "05 - Reunião apresentação dos times",
           "status": "Concluído",
           "responsavel": "Alex PMO",
@@ -3740,6 +4083,7 @@
         },
         {
           "id": "A0346",
+          "projeto": "TITANO",
           "atividade": "06 - Registrar contatos do cliente",
           "status": "Concluído",
           "responsavel": "Alex PMO",
@@ -3750,6 +4094,7 @@
         },
         {
           "id": "A0347",
+          "projeto": "TITANO",
           "atividade": "07 - Enviar doc: Sugestão de Servidores",
           "status": "Concluído",
           "responsavel": "Alex PMO",
@@ -3760,6 +4105,7 @@
         },
         {
           "id": "A0348",
+          "projeto": "TITANO",
           "atividade": "08 - Enviar doc: Solicitação Range IPs",
           "status": "Concluído",
           "responsavel": "Alex PMO",
@@ -3770,6 +4116,7 @@
         },
         {
           "id": "A0349",
+          "projeto": "TITANO",
           "atividade": "09 - Enviar doc: Solicitação Acesso Remoto",
           "status": "Concluído",
           "responsavel": "Alex PMO",
@@ -3780,6 +4127,7 @@
         },
         {
           "id": "A0350",
+          "projeto": "TITANO",
           "atividade": "10 - Acompanhar retorno do cliente",
           "status": "Concluído",
           "responsavel": "Alex PMO",
@@ -3790,6 +4138,7 @@
         },
         {
           "id": "A0351",
+          "projeto": "TITANO",
           "atividade": "11 - Follow-up 7 dias sem resposta",
           "status": "Em Andamento",
           "responsavel": "Alex PMO",
@@ -3800,6 +4149,7 @@
         },
         {
           "id": "A0352",
+          "projeto": "TITANO",
           "atividade": "12 - Agendar reunião de definição",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -3810,6 +4160,7 @@
         },
         {
           "id": "A0353",
+          "projeto": "TITANO",
           "atividade": "13 - Realizar reunião de definição",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -3820,6 +4171,7 @@
         },
         {
           "id": "A0354",
+          "projeto": "TITANO",
           "atividade": "14 - Documentar acordos com cliente",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -3830,6 +4182,7 @@
         },
         {
           "id": "A0355",
+          "projeto": "TITANO",
           "atividade": "15 - TERMO SEGURANÇA: Coletar assinaturas",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -3840,6 +4193,7 @@
         },
         {
           "id": "A0356",
+          "projeto": "TITANO",
           "atividade": "16 - VALIDAÇÃO ACESSOS: Testar acessos",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -3850,6 +4204,7 @@
         },
         {
           "id": "A0357",
+          "projeto": "TITANO",
           "atividade": "17 - Criar procedimento de acesso",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -3860,6 +4215,7 @@
         },
         {
           "id": "A0358",
+          "projeto": "TITANO",
           "atividade": "18 - Compartilhar com todos os times",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -3870,6 +4226,7 @@
         },
         {
           "id": "A0359",
+          "projeto": "TITANO",
           "atividade": "19 - LEMBRETES: +15d, +30d, +45d",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -3880,6 +4237,7 @@
         },
         {
           "id": "A0360",
+          "projeto": "TITANO",
           "atividade": "20 - Atualizar documentação OneDrive",
           "status": "Pendente",
           "responsavel": "Alex PMO",
@@ -3899,13 +4257,14 @@
       "pmoInterno": "Daiana",
       "goliveOriginal": "15/09/2025",
       "goliveAtual": "",
-      "bloqueador": "Pedro Cadoso preencheu os documentos dia 01/09, cobrar retorno do cliente       ",
+      "bloqueador": "Pedro Cadoso preencheu os documentos dia 01/09, cobrar retorno do cliente",
       "ultAtual": "20/01/2026",
       "diasSemAtual": 8,
-      "observacoes": "",
+      "observacoes": "-",
       "atividades": [
         {
           "id": "A0361",
+          "projeto": "BARBECUE",
           "atividade": "01 - KICKOFF INTERNO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -3916,6 +4275,7 @@
         },
         {
           "id": "A0362",
+          "projeto": "BARBECUE",
           "atividade": "02 - Analisar documentos (Masterdata/Cronograma)",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -3926,6 +4286,7 @@
         },
         {
           "id": "A0363",
+          "projeto": "BARBECUE",
           "atividade": "03 - Análise/Recebimento Layout Elétrico",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -3936,6 +4297,7 @@
         },
         {
           "id": "A0364",
+          "projeto": "BARBECUE",
           "atividade": "04 - Reportar pontos críticos ao PMO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -3946,6 +4308,7 @@
         },
         {
           "id": "A0365",
+          "projeto": "BARBECUE",
           "atividade": "05 - Reunião apresentação dos times",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -3956,6 +4319,7 @@
         },
         {
           "id": "A0366",
+          "projeto": "BARBECUE",
           "atividade": "06 - Registrar contatos do cliente",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -3966,6 +4330,7 @@
         },
         {
           "id": "A0367",
+          "projeto": "BARBECUE",
           "atividade": "07 - Enviar doc: Sugestão de Servidores",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -3976,6 +4341,7 @@
         },
         {
           "id": "A0368",
+          "projeto": "BARBECUE",
           "atividade": "08 - Enviar doc: Solicitação Range IPs",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -3986,6 +4352,7 @@
         },
         {
           "id": "A0369",
+          "projeto": "BARBECUE",
           "atividade": "09 - Enviar doc: Solicitação Acesso Remoto",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -3996,6 +4363,7 @@
         },
         {
           "id": "A0370",
+          "projeto": "BARBECUE",
           "atividade": "10 - Acompanhar retorno do cliente",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -4006,6 +4374,7 @@
         },
         {
           "id": "A0371",
+          "projeto": "BARBECUE",
           "atividade": "11 - Follow-up 7 dias sem resposta",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -4016,6 +4385,7 @@
         },
         {
           "id": "A0372",
+          "projeto": "BARBECUE",
           "atividade": "12 - Agendar reunião de definição",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -4026,6 +4396,7 @@
         },
         {
           "id": "A0373",
+          "projeto": "BARBECUE",
           "atividade": "13 - Realizar reunião de definição",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -4036,6 +4407,7 @@
         },
         {
           "id": "A0374",
+          "projeto": "BARBECUE",
           "atividade": "14 - Documentar acordos com cliente",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -4046,6 +4418,7 @@
         },
         {
           "id": "A0375",
+          "projeto": "BARBECUE",
           "atividade": "15 - TERMO SEGURANÇA: Coletar assinaturas",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -4056,6 +4429,7 @@
         },
         {
           "id": "A0376",
+          "projeto": "BARBECUE",
           "atividade": "16 - VALIDAÇÃO ACESSOS: Testar acessos",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -4066,6 +4440,7 @@
         },
         {
           "id": "A0377",
+          "projeto": "BARBECUE",
           "atividade": "17 - Criar procedimento de acesso",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -4076,6 +4451,7 @@
         },
         {
           "id": "A0378",
+          "projeto": "BARBECUE",
           "atividade": "18 - Compartilhar com todos os times",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -4086,6 +4462,7 @@
         },
         {
           "id": "A0379",
+          "projeto": "BARBECUE",
           "atividade": "19 - LEMBRETES: +15d, +30d, +45d",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -4096,6 +4473,7 @@
         },
         {
           "id": "A0380",
+          "projeto": "BARBECUE",
           "atividade": "20 - Atualizar documentação OneDrive",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -4122,6 +4500,7 @@
       "atividades": [
         {
           "id": "A0381",
+          "projeto": "BRF JUNDIAÍ",
           "atividade": "01 - KICKOFF INTERNO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -4132,6 +4511,7 @@
         },
         {
           "id": "A0382",
+          "projeto": "BRF JUNDIAÍ",
           "atividade": "02 - Analisar documentos (Masterdata/Cronograma)",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -4142,6 +4522,7 @@
         },
         {
           "id": "A0383",
+          "projeto": "BRF JUNDIAÍ",
           "atividade": "03 - Análise/Recebimento Layout Elétrico",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -4152,6 +4533,7 @@
         },
         {
           "id": "A0384",
+          "projeto": "BRF JUNDIAÍ",
           "atividade": "04 - Reportar pontos críticos ao PMO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -4162,6 +4544,7 @@
         },
         {
           "id": "A0385",
+          "projeto": "BRF JUNDIAÍ",
           "atividade": "05 - Reunião apresentação dos times",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -4172,6 +4555,7 @@
         },
         {
           "id": "A0386",
+          "projeto": "BRF JUNDIAÍ",
           "atividade": "06 - Registrar contatos do cliente",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -4182,6 +4566,7 @@
         },
         {
           "id": "A0387",
+          "projeto": "BRF JUNDIAÍ",
           "atividade": "07 - Enviar doc: Sugestão de Servidores",
           "status": "Em Andamento",
           "responsavel": "Daiana",
@@ -4192,6 +4577,7 @@
         },
         {
           "id": "A0388",
+          "projeto": "BRF JUNDIAÍ",
           "atividade": "08 - Enviar doc: Solicitação Range IPs",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4202,6 +4588,7 @@
         },
         {
           "id": "A0389",
+          "projeto": "BRF JUNDIAÍ",
           "atividade": "09 - Enviar doc: Solicitação Acesso Remoto",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4212,6 +4599,7 @@
         },
         {
           "id": "A0390",
+          "projeto": "BRF JUNDIAÍ",
           "atividade": "10 - Acompanhar retorno do cliente",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4222,6 +4610,7 @@
         },
         {
           "id": "A0391",
+          "projeto": "BRF JUNDIAÍ",
           "atividade": "11 - Follow-up 7 dias sem resposta",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4232,6 +4621,7 @@
         },
         {
           "id": "A0392",
+          "projeto": "BRF JUNDIAÍ",
           "atividade": "12 - Agendar reunião de definição",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4242,6 +4632,7 @@
         },
         {
           "id": "A0393",
+          "projeto": "BRF JUNDIAÍ",
           "atividade": "13 - Realizar reunião de definição",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4252,6 +4643,7 @@
         },
         {
           "id": "A0394",
+          "projeto": "BRF JUNDIAÍ",
           "atividade": "14 - Documentar acordos com cliente",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4262,6 +4654,7 @@
         },
         {
           "id": "A0395",
+          "projeto": "BRF JUNDIAÍ",
           "atividade": "15 - TERMO SEGURANÇA: Coletar assinaturas",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4272,6 +4665,7 @@
         },
         {
           "id": "A0396",
+          "projeto": "BRF JUNDIAÍ",
           "atividade": "16 - VALIDAÇÃO ACESSOS: Testar acessos",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4282,6 +4676,7 @@
         },
         {
           "id": "A0397",
+          "projeto": "BRF JUNDIAÍ",
           "atividade": "17 - Criar procedimento de acesso",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4292,6 +4687,7 @@
         },
         {
           "id": "A0398",
+          "projeto": "BRF JUNDIAÍ",
           "atividade": "18 - Compartilhar com todos os times",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4302,6 +4698,7 @@
         },
         {
           "id": "A0399",
+          "projeto": "BRF JUNDIAÍ",
           "atividade": "19 - LEMBRETES: +15d, +30d, +45d",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4312,6 +4709,7 @@
         },
         {
           "id": "A0400",
+          "projeto": "BRF JUNDIAÍ",
           "atividade": "20 - Atualizar documentação OneDrive",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4338,6 +4736,7 @@
       "atividades": [
         {
           "id": "A0401",
+          "projeto": "PTL SP",
           "atividade": "01 - KICKOFF INTERNO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -4348,6 +4747,7 @@
         },
         {
           "id": "A0402",
+          "projeto": "PTL SP",
           "atividade": "02 - Analisar documentos (Masterdata/Cronograma)",
           "status": "Em Andamento",
           "responsavel": "Daiana",
@@ -4358,6 +4758,7 @@
         },
         {
           "id": "A0403",
+          "projeto": "PTL SP",
           "atividade": "03 - Análise/Recebimento Layout Elétrico",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4368,6 +4769,7 @@
         },
         {
           "id": "A0404",
+          "projeto": "PTL SP",
           "atividade": "04 - Reportar pontos críticos ao PMO",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4378,6 +4780,7 @@
         },
         {
           "id": "A0405",
+          "projeto": "PTL SP",
           "atividade": "05 - Reunião apresentação dos times",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4388,6 +4791,7 @@
         },
         {
           "id": "A0406",
+          "projeto": "PTL SP",
           "atividade": "06 - Registrar contatos do cliente",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4398,6 +4802,7 @@
         },
         {
           "id": "A0407",
+          "projeto": "PTL SP",
           "atividade": "07 - Enviar doc: Sugestão de Servidores",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4408,6 +4813,7 @@
         },
         {
           "id": "A0408",
+          "projeto": "PTL SP",
           "atividade": "08 - Enviar doc: Solicitação Range IPs",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4418,6 +4824,7 @@
         },
         {
           "id": "A0409",
+          "projeto": "PTL SP",
           "atividade": "09 - Enviar doc: Solicitação Acesso Remoto",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4428,6 +4835,7 @@
         },
         {
           "id": "A0410",
+          "projeto": "PTL SP",
           "atividade": "10 - Acompanhar retorno do cliente",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4438,6 +4846,7 @@
         },
         {
           "id": "A0411",
+          "projeto": "PTL SP",
           "atividade": "11 - Follow-up 7 dias sem resposta",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4448,6 +4857,7 @@
         },
         {
           "id": "A0412",
+          "projeto": "PTL SP",
           "atividade": "12 - Agendar reunião de definição",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4458,6 +4868,7 @@
         },
         {
           "id": "A0413",
+          "projeto": "PTL SP",
           "atividade": "13 - Realizar reunião de definição",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4468,6 +4879,7 @@
         },
         {
           "id": "A0414",
+          "projeto": "PTL SP",
           "atividade": "14 - Documentar acordos com cliente",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4478,6 +4890,7 @@
         },
         {
           "id": "A0415",
+          "projeto": "PTL SP",
           "atividade": "15 - TERMO SEGURANÇA: Coletar assinaturas",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4488,6 +4901,7 @@
         },
         {
           "id": "A0416",
+          "projeto": "PTL SP",
           "atividade": "16 - VALIDAÇÃO ACESSOS: Testar acessos",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4498,6 +4912,7 @@
         },
         {
           "id": "A0417",
+          "projeto": "PTL SP",
           "atividade": "17 - Criar procedimento de acesso",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4508,6 +4923,7 @@
         },
         {
           "id": "A0418",
+          "projeto": "PTL SP",
           "atividade": "18 - Compartilhar com todos os times",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4518,6 +4934,7 @@
         },
         {
           "id": "A0419",
+          "projeto": "PTL SP",
           "atividade": "19 - LEMBRETES: +15d, +30d, +45d",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4528,6 +4945,7 @@
         },
         {
           "id": "A0420",
+          "projeto": "PTL SP",
           "atividade": "20 - Atualizar documentação OneDrive",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4547,13 +4965,14 @@
       "pmoInterno": "Daiana",
       "goliveOriginal": "",
       "goliveAtual": "",
-      "bloqueador": "Cliente solicitou uma reunião, aguardando retorno com datas sugeridas: ",
+      "bloqueador": "Cliente solicitou uma reunião, aguardando retorno com datas sugeridas:",
       "ultAtual": "20/01/2026",
       "diasSemAtual": 3,
       "observacoes": "01/09 E-mail enviado com sugestões de datas para a reunião, até o momento sem retorno",
       "atividades": [
         {
           "id": "A0421",
+          "projeto": "PTL-RJ",
           "atividade": "01 - KICKOFF INTERNO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -4564,6 +4983,7 @@
         },
         {
           "id": "A0422",
+          "projeto": "PTL-RJ",
           "atividade": "02 - Analisar documentos (Masterdata/Cronograma)",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -4574,6 +4994,7 @@
         },
         {
           "id": "A0423",
+          "projeto": "PTL-RJ",
           "atividade": "03 - Análise/Recebimento Layout Elétrico",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -4584,6 +5005,7 @@
         },
         {
           "id": "A0424",
+          "projeto": "PTL-RJ",
           "atividade": "04 - Reportar pontos críticos ao PMO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -4594,6 +5016,7 @@
         },
         {
           "id": "A0425",
+          "projeto": "PTL-RJ",
           "atividade": "05 - Reunião apresentação dos times",
           "status": "Em Andamento",
           "responsavel": "Daiana",
@@ -4604,6 +5027,7 @@
         },
         {
           "id": "A0426",
+          "projeto": "PTL-RJ",
           "atividade": "06 - Registrar contatos do cliente",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4614,6 +5038,7 @@
         },
         {
           "id": "A0427",
+          "projeto": "PTL-RJ",
           "atividade": "07 - Enviar doc: Sugestão de Servidores",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4624,6 +5049,7 @@
         },
         {
           "id": "A0428",
+          "projeto": "PTL-RJ",
           "atividade": "08 - Enviar doc: Solicitação Range IPs",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4634,6 +5060,7 @@
         },
         {
           "id": "A0429",
+          "projeto": "PTL-RJ",
           "atividade": "09 - Enviar doc: Solicitação Acesso Remoto",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4644,6 +5071,7 @@
         },
         {
           "id": "A0430",
+          "projeto": "PTL-RJ",
           "atividade": "10 - Acompanhar retorno do cliente",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4654,6 +5082,7 @@
         },
         {
           "id": "A0431",
+          "projeto": "PTL-RJ",
           "atividade": "11 - Follow-up 7 dias sem resposta",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4664,6 +5093,7 @@
         },
         {
           "id": "A0432",
+          "projeto": "PTL-RJ",
           "atividade": "12 - Agendar reunião de definição",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4674,6 +5104,7 @@
         },
         {
           "id": "A0433",
+          "projeto": "PTL-RJ",
           "atividade": "13 - Realizar reunião de definição",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4684,6 +5115,7 @@
         },
         {
           "id": "A0434",
+          "projeto": "PTL-RJ",
           "atividade": "14 - Documentar acordos com cliente",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4694,6 +5126,7 @@
         },
         {
           "id": "A0435",
+          "projeto": "PTL-RJ",
           "atividade": "15 - TERMO SEGURANÇA: Coletar assinaturas",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4704,6 +5137,7 @@
         },
         {
           "id": "A0436",
+          "projeto": "PTL-RJ",
           "atividade": "16 - VALIDAÇÃO ACESSOS: Testar acessos",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4714,6 +5148,7 @@
         },
         {
           "id": "A0437",
+          "projeto": "PTL-RJ",
           "atividade": "17 - Criar procedimento de acesso",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4724,6 +5159,7 @@
         },
         {
           "id": "A0438",
+          "projeto": "PTL-RJ",
           "atividade": "18 - Compartilhar com todos os times",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4734,6 +5170,7 @@
         },
         {
           "id": "A0439",
+          "projeto": "PTL-RJ",
           "atividade": "19 - LEMBRETES: +15d, +30d, +45d",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4744,6 +5181,7 @@
         },
         {
           "id": "A0440",
+          "projeto": "PTL-RJ",
           "atividade": "20 - Atualizar documentação OneDrive",
           "status": "Pendente",
           "responsavel": "Daiana",
@@ -4770,6 +5208,7 @@
       "atividades": [
         {
           "id": "A0441",
+          "projeto": "PROMOFARMA",
           "atividade": "01 - KICKOFF INTERNO",
           "status": "Concluído",
           "responsavel": "Leandro PMO",
@@ -4780,6 +5219,7 @@
         },
         {
           "id": "A0442",
+          "projeto": "PROMOFARMA",
           "atividade": "02 - Analisar documentos (Masterdata/Cronograma)",
           "status": "Concluído",
           "responsavel": "Leandro PMO",
@@ -4790,6 +5230,7 @@
         },
         {
           "id": "A0443",
+          "projeto": "PROMOFARMA",
           "atividade": "03 - Análise/Recebimento Layout Elétrico",
           "status": "Concluído",
           "responsavel": "Leandro PMO",
@@ -4800,6 +5241,7 @@
         },
         {
           "id": "A0444",
+          "projeto": "PROMOFARMA",
           "atividade": "04 - Reportar pontos críticos ao PMO",
           "status": "Concluído",
           "responsavel": "Leandro PMO",
@@ -4810,6 +5252,7 @@
         },
         {
           "id": "A0445",
+          "projeto": "PROMOFARMA",
           "atividade": "05 - Reunião apresentação dos times",
           "status": "Concluído",
           "responsavel": "Leandro PMO",
@@ -4820,6 +5263,7 @@
         },
         {
           "id": "A0446",
+          "projeto": "PROMOFARMA",
           "atividade": "06 - Registrar contatos do cliente",
           "status": "Concluído",
           "responsavel": "Leandro PMO",
@@ -4830,6 +5274,7 @@
         },
         {
           "id": "A0447",
+          "projeto": "PROMOFARMA",
           "atividade": "07 - Enviar doc: Sugestão de Servidores",
           "status": "Concluído",
           "responsavel": "Leandro PMO",
@@ -4840,6 +5285,7 @@
         },
         {
           "id": "A0448",
+          "projeto": "PROMOFARMA",
           "atividade": "08 - Enviar doc: Solicitação Range IPs",
           "status": "Concluído",
           "responsavel": "Leandro PMO",
@@ -4850,6 +5296,7 @@
         },
         {
           "id": "A0449",
+          "projeto": "PROMOFARMA",
           "atividade": "09 - Enviar doc: Solicitação Acesso Remoto",
           "status": "Concluído",
           "responsavel": "Leandro PMO",
@@ -4860,6 +5307,7 @@
         },
         {
           "id": "A0450",
+          "projeto": "PROMOFARMA",
           "atividade": "10 - Acompanhar retorno do cliente",
           "status": "Concluído",
           "responsavel": "Leandro PMO",
@@ -4870,6 +5318,7 @@
         },
         {
           "id": "A0451",
+          "projeto": "PROMOFARMA",
           "atividade": "11 - Follow-up 7 dias sem resposta",
           "status": "Concluído",
           "responsavel": "Leandro PMO",
@@ -4880,6 +5329,7 @@
         },
         {
           "id": "A0452",
+          "projeto": "PROMOFARMA",
           "atividade": "12 - Agendar reunião de definição",
           "status": "Concluído",
           "responsavel": "Leandro PMO",
@@ -4890,6 +5340,7 @@
         },
         {
           "id": "A0453",
+          "projeto": "PROMOFARMA",
           "atividade": "13 - Realizar reunião de definição",
           "status": "Concluído",
           "responsavel": "Leandro PMO",
@@ -4900,6 +5351,7 @@
         },
         {
           "id": "A0454",
+          "projeto": "PROMOFARMA",
           "atividade": "14 - Documentar acordos com cliente",
           "status": "Concluído",
           "responsavel": "Leandro PMO",
@@ -4910,6 +5362,7 @@
         },
         {
           "id": "A0455",
+          "projeto": "PROMOFARMA",
           "atividade": "15 - TERMO SEGURANÇA: Coletar assinaturas",
           "status": "Concluído",
           "responsavel": "Leandro PMO",
@@ -4920,6 +5373,7 @@
         },
         {
           "id": "A0456",
+          "projeto": "PROMOFARMA",
           "atividade": "16 - VALIDAÇÃO ACESSOS: Testar acessos",
           "status": "Concluído",
           "responsavel": "Leandro PMO",
@@ -4930,6 +5384,7 @@
         },
         {
           "id": "A0457",
+          "projeto": "PROMOFARMA",
           "atividade": "17 - Criar procedimento de acesso",
           "status": "Concluído",
           "responsavel": "Leandro PMO",
@@ -4940,6 +5395,7 @@
         },
         {
           "id": "A0458",
+          "projeto": "PROMOFARMA",
           "atividade": "18 - Compartilhar com todos os times",
           "status": "Concluído",
           "responsavel": "Leandro PMO",
@@ -4950,6 +5406,7 @@
         },
         {
           "id": "A0459",
+          "projeto": "PROMOFARMA",
           "atividade": "19 - LEMBRETES: +15d, +30d, +45d",
           "status": "Concluído",
           "responsavel": "Leandro PMO",
@@ -4960,6 +5417,7 @@
         },
         {
           "id": "A0460",
+          "projeto": "PROMOFARMA",
           "atividade": "20 - Atualizar documentação OneDrive",
           "status": "Concluído",
           "responsavel": "Leandro PMO",
@@ -4986,6 +5444,7 @@
       "atividades": [
         {
           "id": "A0461",
+          "projeto": "SUPER DIV",
           "atividade": "01 - KICKOFF INTERNO",
           "status": "Concluído",
           "responsavel": "Tiago",
@@ -4996,6 +5455,7 @@
         },
         {
           "id": "A0462",
+          "projeto": "SUPER DIV",
           "atividade": "02 - Analisar documentos (Masterdata/Cronograma)",
           "status": "Concluído",
           "responsavel": "Tiago",
@@ -5006,6 +5466,7 @@
         },
         {
           "id": "A0463",
+          "projeto": "SUPER DIV",
           "atividade": "03 - Análise/Recebimento Layout Elétrico",
           "status": "Concluído",
           "responsavel": "Tiago",
@@ -5016,6 +5477,7 @@
         },
         {
           "id": "A0464",
+          "projeto": "SUPER DIV",
           "atividade": "04 - Reportar pontos críticos ao PMO",
           "status": "Concluído",
           "responsavel": "Tiago",
@@ -5026,6 +5488,7 @@
         },
         {
           "id": "A0465",
+          "projeto": "SUPER DIV",
           "atividade": "05 - Reunião apresentação dos times",
           "status": "Concluído",
           "responsavel": "Tiago",
@@ -5036,6 +5499,7 @@
         },
         {
           "id": "A0466",
+          "projeto": "SUPER DIV",
           "atividade": "06 - Registrar contatos do cliente",
           "status": "Concluído",
           "responsavel": "Tiago",
@@ -5046,6 +5510,7 @@
         },
         {
           "id": "A0467",
+          "projeto": "SUPER DIV",
           "atividade": "07 - Enviar doc: Sugestão de Servidores",
           "status": "Concluído",
           "responsavel": "Tiago",
@@ -5056,6 +5521,7 @@
         },
         {
           "id": "A0468",
+          "projeto": "SUPER DIV",
           "atividade": "08 - Enviar doc: Solicitação Range IPs",
           "status": "Concluído",
           "responsavel": "Tiago",
@@ -5066,6 +5532,7 @@
         },
         {
           "id": "A0469",
+          "projeto": "SUPER DIV",
           "atividade": "09 - Enviar doc: Solicitação Acesso Remoto",
           "status": "Concluído",
           "responsavel": "Tiago",
@@ -5076,6 +5543,7 @@
         },
         {
           "id": "A0470",
+          "projeto": "SUPER DIV",
           "atividade": "10 - Acompanhar retorno do cliente",
           "status": "Concluído",
           "responsavel": "Tiago",
@@ -5086,6 +5554,7 @@
         },
         {
           "id": "A0471",
+          "projeto": "SUPER DIV",
           "atividade": "11 - Follow-up 7 dias sem resposta",
           "status": "Concluído",
           "responsavel": "Tiago",
@@ -5096,6 +5565,7 @@
         },
         {
           "id": "A0472",
+          "projeto": "SUPER DIV",
           "atividade": "12 - Agendar reunião de definição",
           "status": "Concluído",
           "responsavel": "Tiago",
@@ -5106,6 +5576,7 @@
         },
         {
           "id": "A0473",
+          "projeto": "SUPER DIV",
           "atividade": "13 - Realizar reunião de definição",
           "status": "Concluído",
           "responsavel": "Tiago",
@@ -5116,6 +5587,7 @@
         },
         {
           "id": "A0474",
+          "projeto": "SUPER DIV",
           "atividade": "14 - Documentar acordos com cliente",
           "status": "Em Andamento",
           "responsavel": "Tiago",
@@ -5126,6 +5598,7 @@
         },
         {
           "id": "A0475",
+          "projeto": "SUPER DIV",
           "atividade": "15 - TERMO SEGURANÇA: Coletar assinaturas",
           "status": "Pendente",
           "responsavel": "Tiago",
@@ -5136,6 +5609,7 @@
         },
         {
           "id": "A0476",
+          "projeto": "SUPER DIV",
           "atividade": "16 - VALIDAÇÃO ACESSOS: Testar acessos",
           "status": "Pendente",
           "responsavel": "Tiago",
@@ -5146,6 +5620,7 @@
         },
         {
           "id": "A0477",
+          "projeto": "SUPER DIV",
           "atividade": "17 - Criar procedimento de acesso",
           "status": "Pendente",
           "responsavel": "Tiago",
@@ -5156,6 +5631,7 @@
         },
         {
           "id": "A0478",
+          "projeto": "SUPER DIV",
           "atividade": "18 - Compartilhar com todos os times",
           "status": "Pendente",
           "responsavel": "Tiago",
@@ -5166,6 +5642,7 @@
         },
         {
           "id": "A0479",
+          "projeto": "SUPER DIV",
           "atividade": "19 - LEMBRETES: +15d, +30d, +45d",
           "status": "Pendente",
           "responsavel": "Tiago",
@@ -5176,6 +5653,7 @@
         },
         {
           "id": "A0480",
+          "projeto": "SUPER DIV",
           "atividade": "20 - Atualizar documentação OneDrive",
           "status": "Pendente",
           "responsavel": "Tiago",
@@ -5195,13 +5673,14 @@
       "pmoInterno": "Daiana",
       "goliveOriginal": "29/11/25",
       "goliveAtual": "",
-      "bloqueador": "-",
+      "bloqueador": "",
       "ultAtual": "20/01/2026",
       "diasSemAtual": 9,
       "observacoes": "Concluído - Sem Pendências",
       "atividades": [
         {
           "id": "A0481",
+          "projeto": "GAVIÂO",
           "atividade": "01 - KICKOFF INTERNO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -5212,6 +5691,7 @@
         },
         {
           "id": "A0482",
+          "projeto": "GAVIÂO",
           "atividade": "02 - Analisar documentos (Masterdata/Cronograma)",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -5222,6 +5702,7 @@
         },
         {
           "id": "A0483",
+          "projeto": "GAVIÂO",
           "atividade": "03 - Análise/Recebimento Layout Elétrico",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -5232,6 +5713,7 @@
         },
         {
           "id": "A0484",
+          "projeto": "GAVIÂO",
           "atividade": "04 - Reportar pontos críticos ao PMO",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -5242,6 +5724,7 @@
         },
         {
           "id": "A0485",
+          "projeto": "GAVIÂO",
           "atividade": "05 - Reunião apresentação dos times",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -5252,6 +5735,7 @@
         },
         {
           "id": "A0486",
+          "projeto": "GAVIÂO",
           "atividade": "06 - Registrar contatos do cliente",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -5262,6 +5746,7 @@
         },
         {
           "id": "A0487",
+          "projeto": "GAVIÂO",
           "atividade": "07 - Enviar doc: Sugestão de Servidores",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -5272,6 +5757,7 @@
         },
         {
           "id": "A0488",
+          "projeto": "GAVIÂO",
           "atividade": "08 - Enviar doc: Solicitação Range IPs",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -5282,6 +5768,7 @@
         },
         {
           "id": "A0489",
+          "projeto": "GAVIÂO",
           "atividade": "09 - Enviar doc: Solicitação Acesso Remoto",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -5292,6 +5779,7 @@
         },
         {
           "id": "A0490",
+          "projeto": "GAVIÂO",
           "atividade": "10 - Acompanhar retorno do cliente",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -5302,6 +5790,7 @@
         },
         {
           "id": "A0491",
+          "projeto": "GAVIÂO",
           "atividade": "11 - Follow-up 7 dias sem resposta",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -5312,6 +5801,7 @@
         },
         {
           "id": "A0492",
+          "projeto": "GAVIÂO",
           "atividade": "12 - Agendar reunião de definição",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -5322,6 +5812,7 @@
         },
         {
           "id": "A0493",
+          "projeto": "GAVIÂO",
           "atividade": "13 - Realizar reunião de definição",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -5332,6 +5823,7 @@
         },
         {
           "id": "A0494",
+          "projeto": "GAVIÂO",
           "atividade": "14 - Documentar acordos com cliente",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -5342,6 +5834,7 @@
         },
         {
           "id": "A0495",
+          "projeto": "GAVIÂO",
           "atividade": "15 - TERMO SEGURANÇA: Coletar assinaturas",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -5352,6 +5845,7 @@
         },
         {
           "id": "A0496",
+          "projeto": "GAVIÂO",
           "atividade": "16 - VALIDAÇÃO ACESSOS: Testar acessos",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -5362,6 +5856,7 @@
         },
         {
           "id": "A0497",
+          "projeto": "GAVIÂO",
           "atividade": "17 - Criar procedimento de acesso",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -5372,6 +5867,7 @@
         },
         {
           "id": "A0498",
+          "projeto": "GAVIÂO",
           "atividade": "18 - Compartilhar com todos os times",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -5382,6 +5878,7 @@
         },
         {
           "id": "A0499",
+          "projeto": "GAVIÂO",
           "atividade": "19 - LEMBRETES: +15d, +30d, +45d",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -5392,6 +5889,7 @@
         },
         {
           "id": "A0500",
+          "projeto": "GAVIÂO",
           "atividade": "20 - Atualizar documentação OneDrive",
           "status": "Concluído",
           "responsavel": "Daiana",
@@ -10904,5 +11402,7 @@
       "diasDuracao": 2,
       "observacoes": "Documentado"
     }
-  ]
+  ],
+  "lastUpdate": "2026-01-20T15:42:00.941Z",
+  "version": "6.0"
 }
