@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Status dos Projetos - Infraestrutura v5.5.2</title>
+    <title>Status dos Projetos - Infraestrutura v6.0</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
@@ -11,7 +11,8 @@
         .header { text-align: center; margin-bottom: 30px; }
         .header h1 { color: white; font-size: 32px; margin-bottom: 10px; text-shadow: 0 4px 20px rgba(0,0,0,0.3); }
         .header p { color: rgba(255,255,255,0.7); font-size: 14px; }
-        .version-badge { display: inline-block; background: rgba(102,126,234,0.3); color: #a5b4fc; padding: 4px 12px; border-radius: 20px; font-size: 11px; margin-top: 10px; }
+        .version-badge { display: inline-block; background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 6px 16px; border-radius: 20px; font-size: 12px; margin-top: 10px; font-weight: 600; }
+        .new-tag { background: #fef3c7; color: #92400e; padding: 4px 10px; border-radius: 12px; font-size: 11px; margin-left: 8px; }
         .info-bar { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 16px; padding: 20px 30px; margin-bottom: 25px; display: grid; grid-template-columns: repeat(6, 1fr); gap: 15px; align-items: center; border: 1px solid rgba(255,255,255,0.1); }
         .info-item { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 4px; }
         .info-item .info-icon { font-size: 22px; line-height: 1; }
@@ -70,7 +71,7 @@
         <div class="header">
             <h1>📊 Status dos Projetos - Infraestrutura</h1>
             <p>Selecione o tipo de visualização desejada</p>
-            <span class="version-badge">v5.5.2 - Nomenclatura Padronizada</span>
+            <span class="version-badge">v6.0<span class="new-tag">✨ Nova Arquitetura</span></span>
         </div>
         <div id="infoBar" class="info-bar">
             <div class="info-item total"><div class="info-icon">📊</div><div class="number" id="totalCount">-</div><div class="label">Projetos</div></div>
@@ -97,7 +98,7 @@
                 <ul>
                     <li>KPIs simplificados (No Prazo, Atraso Médio)</li>
                     <li>Filtro por Go-Live (Este mês, 30/60/90 dias)</li>
-                    <li>Impressão por projetos específicos</li>
+                    <li>Modal com timeline de atividades</li>
                     <li>Gráficos de distribuição e bloqueadores</li>
                 </ul>
                 <a href="view-simples.html" class="btn">Acessar →</a>
@@ -110,8 +111,8 @@
                 <ul>
                     <li>Seções organizadas por status</li>
                     <li>Timeline de próximos Go Lives</li>
-                    <li>Filtro por Go-Live (Atrasados, próximos)</li>
-                    <li>Decisões necessárias da semana</li>
+                    <li>Detalhes de atividades por projeto</li>
+                    <li>Análise de atividades que mais atrasam</li>
                 </ul>
                 <a href="view-detalhada.html" class="btn">Acessar →</a>
             </div>
@@ -141,13 +142,12 @@
                     document.getElementById('andamentoCount').textContent = p.filter(x => normalizeStatus(x.status) === 'Em Andamento').length;
                     const atrasados = p.filter(x => normalizeStatus(x.status) === 'Atrasado').length;
                     const parados = p.filter(x => (x.diasSemAtual || 0) > 15 && normalizeStatus(x.status) !== 'Concluído').length;
-                    const criticos = p.filter(x => normalizeStatus(x.status) === 'Atrasado' || (x.situacao || x.rag || '').toLowerCase() === 'vermelho').length;
+                    const criticos = p.filter(x => normalizeStatus(x.status) === 'Atrasado' || (x.situacao || x.rag || '').toLowerCase() === 'vermelho' || (x.diasSemAtual || 0) > 15).length;
                     document.getElementById('criticoCount').textContent = criticos;
                     document.getElementById('paradosCount').textContent = parados;
                     if (data.lastUpdate) {
                         const d = new Date(data.lastUpdate);
                         document.getElementById('updateDate').textContent = d.toLocaleDateString('pt-BR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-                        // Comparar apenas datas (sem horas)
                         const hoje = new Date();
                         hoje.setHours(0, 0, 0, 0);
                         const dataUpdate = new Date(d);
@@ -164,7 +164,6 @@
                         document.getElementById('paradosNum').textContent = parados;
                         if (atrasados === 0) document.getElementById('badgeAtrasados').style.display = 'none';
                         if (parados === 0) document.getElementById('badgeParados').style.display = 'none';
-                        // Texto mais específico
                         let mensagem = [];
                         if (atrasados > 0) mensagem.push(`${atrasados} projeto${atrasados > 1 ? 's' : ''} atrasado${atrasados > 1 ? 's' : ''}`);
                         if (parados > 0) mensagem.push(`${parados} parado${parados > 1 ? 's' : ''} há mais de 15 dias`);

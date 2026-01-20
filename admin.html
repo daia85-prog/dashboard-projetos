@@ -3,344 +3,482 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Dashboard Projetos v5.5.2</title>
+    <title>Admin - Dashboard Projetos v6.0</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
         .container { max-width: 1200px; margin: 0 auto; }
-        .header { background: white; padding: 25px 30px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
-        .header h1 { color: #1a1a2e; font-size: 24px; }
-        .version { background: #ede9fe; color: #7c3aed; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-left: 10px; }
-        .btn { background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: all 0.3s; }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102,126,234,0.4); }
-        .btn-secondary { background: linear-gradient(135deg, #64748b, #475569); }
+        .header { background: white; padding: 25px 30px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); margin-bottom: 25px; }
+        .header h1 { color: #1a1a2e; font-size: 24px; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
+        .version { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .new-tag { background: #fef3c7; color: #92400e; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+        .subtitle { color: #64748b; font-size: 13px; margin-top: 8px; }
+        .btn { background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 14px 28px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; transition: all 0.3s; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(102,126,234,0.4); }
         .btn-success { background: linear-gradient(135deg, #10b981, #059669); }
+        .btn-danger { background: linear-gradient(135deg, #ef4444, #dc2626); }
         .card { background: white; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); margin-bottom: 25px; overflow: hidden; }
         .card-header { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 20px 25px; }
-        .card-header h2 { font-size: 18px; display: flex; align-items: center; gap: 10px; }
+        .card-header h2 { font-size: 18px; display: flex; align-items: center; gap: 12px; }
         .card-body { padding: 25px; }
-        textarea { width: 100%; height: 200px; border: 2px solid #e5e7eb; border-radius: 10px; padding: 15px; font-family: 'Consolas', monospace; font-size: 12px; resize: vertical; }
-        textarea:focus { outline: none; border-color: #667eea; }
-        .action-buttons { display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
-        .message { padding: 15px 20px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
-        .message.success { background: #d1fae5; color: #065f46; border-left: 4px solid #10b981; }
-        .message.error { background: #fee2e2; color: #991b1b; border-left: 4px solid #ef4444; }
+        .upload-zone { border: 3px dashed #e2e8f0; border-radius: 16px; padding: 50px; text-align: center; transition: all 0.3s; cursor: pointer; background: #f8fafc; }
+        .upload-zone:hover, .upload-zone.dragover { border-color: #667eea; background: #eff6ff; }
+        .upload-zone h3 { color: #1e293b; margin-bottom: 10px; font-size: 18px; }
+        .upload-zone p { color: #64748b; font-size: 13px; margin-bottom: 20px; }
+        .upload-zone input { display: none; }
+        .upload-icon { font-size: 48px; margin-bottom: 15px; }
+        .message { padding: 16px 20px; border-radius: 12px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
+        .message.success { background: linear-gradient(135deg, #d1fae5, #a7f3d0); color: #065f46; border-left: 4px solid #10b981; }
+        .message.error { background: linear-gradient(135deg, #fee2e2, #fecaca); color: #991b1b; border-left: 4px solid #ef4444; }
+        .message.info { background: linear-gradient(135deg, #dbeafe, #bfdbfe); color: #1e40af; border-left: 4px solid #3b82f6; }
         .hidden { display: none; }
-        .validation-section { margin-top: 20px; padding: 20px; background: #f8fafc; border-radius: 10px; }
-        .validation-status { padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; }
-        .validation-status.success { background: #d1fae5; color: #065f46; }
-        .validation-item { padding: 10px 15px; margin: 5px 0; border-radius: 8px; font-size: 13px; display: flex; align-items: center; gap: 10px; }
-        .validation-item.ok { background: #ecfdf5; color: #065f46; }
-        .validation-item.warning { background: #fffbeb; color: #92400e; }
-        .preview-section { margin-top: 20px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .stat-card { background: linear-gradient(135deg, #f8fafc, #f1f5f9); border-radius: 12px; padding: 20px; text-align: center; border: 1px solid #e2e8f0; }
+        .stat-card .icon { font-size: 28px; margin-bottom: 8px; }
+        .stat-card .number { font-size: 32px; font-weight: 800; color: #1e293b; }
+        .stat-card .label { font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-card.projetos .number { color: #667eea; }
+        .stat-card.atividades .number { color: #10b981; }
+        .stat-card.concluidas .number { color: #059669; }
+        .stat-card.pendentes .number { color: #f59e0b; }
         table { width: 100%; border-collapse: collapse; font-size: 12px; }
-        th { background: #667eea; color: white; padding: 12px; text-align: left; }
-        td { padding: 10px 12px; border-bottom: 1px solid #e5e7eb; }
+        th { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 12px 10px; text-align: left; font-weight: 600; }
+        td { padding: 10px; border-bottom: 1px solid #e5e7eb; }
         tr:hover { background: #f8fafc; }
-        .badge { padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+        .badge { padding: 4px 10px; border-radius: 12px; font-size: 10px; font-weight: 600; }
         .badge-verde { background: #d1fae5; color: #065f46; }
         .badge-amarelo { background: #fef3c7; color: #92400e; }
         .badge-vermelho { background: #fee2e2; color: #991b1b; }
         .badge-cinza { background: #f3f4f6; color: #374151; }
-        .help-text { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 20px; margin-bottom: 20px; }
-        .help-text h4 { color: #1e40af; margin-bottom: 10px; }
-        .help-text ol { margin-left: 20px; color: #1e40af; }
-        .help-text li { margin: 8px 0; font-size: 13px; }
-        .new-badge { background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 10px; font-size: 10px; margin-left: 8px; }
+        .tabs { display: flex; gap: 5px; margin-bottom: 20px; }
+        .tab { padding: 10px 20px; border-radius: 8px 8px 0 0; cursor: pointer; font-size: 13px; font-weight: 600; background: #e2e8f0; color: #64748b; transition: all 0.3s; }
+        .tab.active { background: #667eea; color: white; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .progress-bar { height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #10b981, #059669); transition: width 0.5s; }
+        .action-buttons { display: flex; gap: 15px; flex-wrap: wrap; }
+        .footer-links { margin-top: 20px; text-align: center; }
+        .footer-links a { color: white; text-decoration: none; margin: 0 15px; font-size: 13px; opacity: 0.8; }
+        .footer-links a:hover { opacity: 1; }
+        .timestamp { color: #64748b; font-size: 12px; margin-top: 10px; }
+        @media (max-width: 768px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <div><h1>🔧 Área Administrativa <span class="version">v5.5.2</span></h1><p style="color:#64748b;font-size:13px;margin-top:5px;">KPIs Simplificados + Filtro Go-Live + Impressão por Projetos + PDF</p></div>
+            <h1>
+                🔧 Área Administrativa 
+                <span class="version">v6.0</span>
+                <span class="new-tag">✨ Nova Arquitetura</span>
+            </h1>
+            <p class="subtitle">Importação de arquivo Excel com múltiplas atividades por projeto • Análise detalhada de atividades</p>
+            <p class="timestamp" id="currentTime"></p>
         </div>
-        <div id="successMsg" class="message success hidden"><span>✅</span><div><strong>Sucesso!</strong> <span id="successText"></span></div></div>
-        <div id="errorMsg" class="message error hidden"><span>❌</span><div><strong>Erro!</strong> <span id="errorText"></span></div></div>
+
+        <div id="successMsg" class="message success hidden"><span>✅</span><div id="successText"></div></div>
+        <div id="errorMsg" class="message error hidden"><span>❌</span><div id="errorText"></div></div>
+        <div id="infoMsg" class="message info hidden"><span>ℹ️</span><div id="infoText"></div></div>
+
         <div class="card">
-            <div class="card-header"><h2>📋 Importar Dados da Planilha v5 <span class="new-badge">v5.5.2</span></h2></div>
+            <div class="card-header">
+                <h2>📁 Importar Planilha v6.0</h2>
+            </div>
             <div class="card-body">
-                <div class="help-text">
-                    <h4>📝 Novidades da versão 5.3:</h4>
-                    <ol>
-                        <li><strong>KPIs simplificados</strong> - No Prazo, Atraso Médio, Projetos Atualizados, Tempo Médio Parado</li>
-                        <li><strong>Filtro por Go-Live</strong> - Este mês, Próx. 30/60/90 dias, Atrasados</li>
-                        <li><strong>Impressão por projetos</strong> - Selecione projetos específicos pelo nome</li>
-                        <li><strong>Sistema anti-burla</strong> - Detecta retrocesso de etapa</li>
-                    </ol>
+                <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+                    <div class="upload-icon">📊</div>
+                    <h3>Arraste o arquivo Excel aqui</h3>
+                    <p>ou clique para selecionar • Template_Projetos_v6.xlsx</p>
+                    <input type="file" id="fileInput" accept=".xlsx,.xls" onchange="handleFile(this.files[0])">
+                    <button class="btn" onclick="event.stopPropagation();">📂 Selecionar Arquivo</button>
                 </div>
-                <div class="help-text" style="background:#f0fdf4;border-color:#86efac;">
-                    <h4 style="color:#166534;">📋 Passo a passo para importar:</h4>
-                    <ol style="color:#166534;">
-                        <li>Abra a planilha <strong>Template_Projetos_v5.xlsx</strong></li>
-                        <li>Selecione os dados (com ou sem cabeçalho)</li>
-                        <li>Copie: <strong>Ctrl+C</strong></li>
-                        <li>Cole no campo abaixo</li>
-                        <li>Clique em <strong>"Carregar e Validar"</strong></li>
-                    </ol>
-                    <p style="color:#166534; font-size:12px; margin-top:10px;">✅ Funciona com ou sem linha de cabeçalho!</p>
-                </div>
-                <textarea id="dataInput" placeholder="Cole aqui os dados copiados da planilha Excel v5 (com ou sem cabeçalho)..."></textarea>
-                <div class="action-buttons">
-                    <button class="btn" onclick="processData()">📥 Carregar e Validar</button>
-                    <button class="btn btn-secondary" onclick="clearData()">🗑️ Limpar</button>
-                </div>
-                <div id="validationSection" class="validation-section hidden">
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;">
-                        <h3>📋 Validação</h3>
-                        <span class="validation-status success" id="validationStatus">Verificando...</span>
-                    </div>
-                    <div id="validationItems"></div>
-                </div>
-                <div id="previewSection" class="preview-section hidden">
-                    <h3>👀 Preview (<span id="previewCount">0</span>)</h3>
-                    <div style="overflow-x:auto;margin-top:15px;">
-                        <table><thead><tr><th>Projeto</th><th>Etapa</th><th>Progresso</th><th>Situação</th><th>Status</th><th>PMO Int</th><th>Go Live</th><th>Dias Parado</th></tr></thead><tbody id="previewTable"></tbody></table>
+                
+                <div id="fileInfo" class="message info hidden" style="margin-top:20px;">
+                    <span>📄</span>
+                    <div>
+                        <strong id="fileName">-</strong><br>
+                        <small id="fileDetails">-</small>
                     </div>
                 </div>
             </div>
         </div>
-        <div id="exportCard" class="card hidden">
-            <div class="card-header" style="background:linear-gradient(135deg,#10b981,#059669);"><h2>📤 Exportar Dados</h2></div>
-            <div class="card-body">
-                <p style="margin-bottom:20px;color:#64748b;">Clique para baixar o <strong>dados.json</strong> e fazer upload no GitHub.</p>
-                <button class="btn btn-success" onclick="exportJSON()">⬇️ Exportar dados.json</button>
+
+        <div id="statsCard" class="card hidden">
+            <div class="card-header" style="background: linear-gradient(135deg, #10b981, #059669);">
+                <h2>📊 Resumo da Importação</h2>
             </div>
+            <div class="card-body">
+                <div class="stats-grid">
+                    <div class="stat-card projetos">
+                        <div class="icon">📁</div>
+                        <div class="number" id="statProjetos">0</div>
+                        <div class="label">Projetos</div>
+                    </div>
+                    <div class="stat-card atividades">
+                        <div class="icon">📋</div>
+                        <div class="number" id="statAtividades">0</div>
+                        <div class="label">Atividades</div>
+                    </div>
+                    <div class="stat-card concluidas">
+                        <div class="icon">✅</div>
+                        <div class="number" id="statConcluidas">0</div>
+                        <div class="label">Concluídas</div>
+                    </div>
+                    <div class="stat-card pendentes">
+                        <div class="icon">⏳</div>
+                        <div class="number" id="statPendentes">0</div>
+                        <div class="label">Pendentes</div>
+                    </div>
+                </div>
+                
+                <div class="tabs">
+                    <div class="tab active" onclick="showTab('projetos')">📁 Projetos</div>
+                    <div class="tab" onclick="showTab('atividades')">📋 Atividades</div>
+                    <div class="tab" onclick="showTab('analise')">📈 Análise</div>
+                </div>
+                
+                <div id="tabProjetos" class="tab-content active">
+                    <table>
+                        <thead>
+                            <tr><th>Projeto</th><th>Status</th><th>Situação</th><th>Progresso</th><th>PMO</th><th>Go Live</th><th>Atividades</th></tr>
+                        </thead>
+                        <tbody id="tabelaProjetos"></tbody>
+                    </table>
+                </div>
+                
+                <div id="tabAtividades" class="tab-content">
+                    <table>
+                        <thead>
+                            <tr><th>ID</th><th>Projeto</th><th>Atividade</th><th>Status</th><th>Responsável</th><th>Início</th><th>Fim</th><th>Dias</th></tr>
+                        </thead>
+                        <tbody id="tabelaAtividades"></tbody>
+                    </table>
+                </div>
+                
+                <div id="tabAnalise" class="tab-content">
+                    <h4 style="margin-bottom:15px;">🔥 Top 5 Atividades que Mais Atrasam</h4>
+                    <table>
+                        <thead>
+                            <tr><th>Atividade</th><th>Média de Dias</th><th>Qtd Projetos</th><th>Impacto</th></tr>
+                        </thead>
+                        <tbody id="tabelaAnalise"></tbody>
+                    </table>
+                </div>
+                
+                <div class="action-buttons" style="margin-top:25px;">
+                    <button class="btn btn-success" onclick="exportJSON()">⬇️ Exportar dados.json</button>
+                    <button class="btn btn-danger" onclick="clearData()">🗑️ Limpar Dados</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-links">
+            <a href="index.html">🏠 Página Inicial</a>
+            <a href="view-simples.html">📋 Visão Resumida</a>
+            <a href="view-detalhada.html">📈 Visão Detalhada</a>
         </div>
     </div>
+
     <script>
         let projects = [];
-        
-        // ===== v5.5.2 - FUNÇÕES DE PADRONIZAÇÃO =====
-        
-        // Limpa e valida bloqueador (remove NaN, -, vazio)
-        function cleanBloqueador(val) {
-            if (!val || val === '-' || val === '' || val === 'NaN' || val === 'undefined' || val === 'null') {
-                return '';
-            }
-            const cleaned = String(val).trim();
-            if (cleaned === '-' || cleaned.toLowerCase() === 'nan' || cleaned === '') {
-                return '';
-            }
-            return cleaned;
+        let atividades = [];
+        let dadosCompletos = null;
+
+        // Atualizar hora atual
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = '🕐 ' + now.toLocaleDateString('pt-BR') + ', ' + now.toLocaleTimeString('pt-BR');
         }
-        
-        // Converte qualquer formato de data para dd/mm/aaaa
-        function parseDateBR(val) {
-            if (!val || val === '-' || val === '' || val === 'NaN') return '';
+        updateTime();
+        setInterval(updateTime, 1000);
+
+        // Drag and drop
+        const uploadZone = document.getElementById('uploadZone');
+        uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+        uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+        });
+
+        function showMessage(type, text) {
+            const ids = { success: 'successMsg', error: 'errorMsg', info: 'infoMsg' };
+            const textIds = { success: 'successText', error: 'errorText', info: 'infoText' };
+            Object.values(ids).forEach(id => document.getElementById(id).classList.add('hidden'));
+            document.getElementById(ids[type]).classList.remove('hidden');
+            document.getElementById(textIds[type]).innerHTML = text;
+            if (type !== 'info') setTimeout(() => document.getElementById(ids[type]).classList.add('hidden'), 5000);
+        }
+
+        function handleFile(file) {
+            if (!file) return;
             
-            // Se for número serial do Excel
-            if (typeof val === 'number' || (!isNaN(val) && !val.includes('/'))) {
-                const num = parseFloat(val);
-                if (num > 40000 && num < 50000) { // Range válido de datas Excel
-                    const d = new Date((num - 25569) * 86400 * 1000);
-                    if (!isNaN(d.getTime())) {
-                        return d.toLocaleDateString('pt-BR');
+            document.getElementById('fileName').textContent = file.name;
+            document.getElementById('fileDetails').textContent = `${(file.size / 1024).toFixed(1)} KB`;
+            document.getElementById('fileInfo').classList.remove('hidden');
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array', cellDates: true });
+                    
+                    // Verificar abas
+                    const sheetNames = workbook.SheetNames.map(s => s.toLowerCase());
+                    const hasProjetosSheet = sheetNames.some(s => s.includes('projeto'));
+                    const hasAtividadesSheet = sheetNames.some(s => s.includes('atividade'));
+                    
+                    if (!hasProjetosSheet) {
+                        showMessage('error', 'Aba "Projetos" não encontrada na planilha!');
+                        return;
                     }
+                    
+                    // Encontrar nomes reais das abas
+                    const projetosSheetName = workbook.SheetNames.find(s => s.toLowerCase().includes('projeto'));
+                    const atividadesSheetName = workbook.SheetNames.find(s => s.toLowerCase().includes('atividade'));
+                    
+                    // Ler aba Projetos
+                    const wsProjetos = workbook.Sheets[projetosSheetName];
+                    const rawProjetos = XLSX.utils.sheet_to_json(wsProjetos, { raw: false });
+                    
+                    projects = rawProjetos.map(row => ({
+                        projeto: row['Projeto'] || row['projeto'] || '-',
+                        localizacao: row['Localização'] || row['localizacao'] || row['Localização do CD'] || '-',
+                        status: normalizeStatus(row['Status'] || row['status'] || row['Status Atual'] || 'Não Iniciado'),
+                        situacao: (row['Situação'] || row['situacao'] || row['Situação/RAG'] || 'Cinza').toLowerCase(),
+                        progresso: parseInt(String(row['Progresso'] || row['progresso'] || '0').replace('%', '')) || 0,
+                        pmoInterno: row['PMO Interno'] || row['pmoInterno'] || row['Responsável'] || '-',
+                        goliveOriginal: formatDateBR(row['Go Live Original'] || row['goliveOriginal'] || row['Data Go Live'] || ''),
+                        goliveAtual: formatDateBR(row['Go Live Atual'] || row['goliveAtual'] || row['Go Live Alterado'] || ''),
+                        bloqueador: cleanBloqueador(row['Bloqueador'] || row['bloqueador'] || ''),
+                        ultAtual: formatDateBR(row['Última Atualização'] || row['ultAtual'] || ''),
+                        diasSemAtual: parseInt(row['Dias Parado'] || row['diasSemAtual'] || row['Dias Sem Atualização'] || '0') || 0,
+                        observacoes: row['Observações'] || row['observacoes'] || '-',
+                        atividades: [] // Será preenchido depois
+                    }));
+                    
+                    // Ler aba Atividades (se existir)
+                    atividades = [];
+                    if (atividadesSheetName) {
+                        const wsAtividades = workbook.Sheets[atividadesSheetName];
+                        const rawAtividades = XLSX.utils.sheet_to_json(wsAtividades, { raw: false });
+                        
+                        atividades = rawAtividades.map(row => ({
+                            id: row['ID'] || row['id'] || '',
+                            projeto: row['Projeto'] || row['projeto'] || '',
+                            atividade: row['Atividade'] || row['atividade'] || '',
+                            status: row['Status'] || row['status'] || 'Pendente',
+                            responsavel: row['Responsável'] || row['responsavel'] || '-',
+                            dataInicio: formatDateBR(row['Data Início'] || row['dataInicio'] || ''),
+                            dataFim: formatDateBR(row['Data Fim'] || row['dataFim'] || ''),
+                            diasDuracao: parseInt(row['Dias Duração'] || row['diasDuracao'] || '0') || 0,
+                            observacoes: row['Observações'] || row['observacoes'] || ''
+                        }));
+                        
+                        // Vincular atividades aos projetos
+                        projects.forEach(p => {
+                            p.atividades = atividades.filter(a => 
+                                a.projeto.toLowerCase().trim() === p.projeto.toLowerCase().trim()
+                            );
+                        });
+                    }
+                    
+                    // Calcular dias parado automaticamente se necessário
+                    projects.forEach(p => {
+                        if (p.diasSemAtual === 0 && p.ultAtual) {
+                            p.diasSemAtual = calcularDiasParado(p.ultAtual);
+                        }
+                    });
+                    
+                    // Salvar no localStorage
+                    dadosCompletos = { projects, atividades, lastUpdate: new Date().toISOString(), version: '6.0' };
+                    localStorage.setItem('infraDashboard', JSON.stringify(dadosCompletos));
+                    
+                    // Mostrar estatísticas
+                    showStats();
+                    showMessage('success', `<strong>Importação concluída!</strong> ${projects.length} projetos e ${atividades.length} atividades carregados.`);
+                    
+                } catch (err) {
+                    console.error(err);
+                    showMessage('error', 'Erro ao processar arquivo: ' + err.message);
                 }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function normalizeStatus(status) {
+            if (!status) return 'Não Iniciado';
+            const s = status.toLowerCase().trim();
+            if (s.includes('conclu')) return 'Concluído';
+            if (s.includes('andamento')) return 'Em Andamento';
+            if (s.includes('atras')) return 'Atrasado';
+            if (s.includes('aguard')) return 'Aguardando Cliente';
+            if (s.includes('não') || s.includes('nao') || s.includes('inicio')) return 'Não Iniciado';
+            return status;
+        }
+
+        function formatDateBR(val) {
+            if (!val || val === '-' || val === '' || val === 'NaN' || val === 'A definir') return '';
+            
+            // Se já for Date
+            if (val instanceof Date) {
+                return val.toLocaleDateString('pt-BR');
             }
             
             const str = String(val).trim();
             
-            // Já está no formato dd/mm/aaaa
+            // Já está em dd/mm/aaaa
             if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(str)) {
                 const parts = str.split('/');
                 return `${parts[0].padStart(2, '0')}/${parts[1].padStart(2, '0')}/${parts[2]}`;
             }
             
-            // Formato aaaa-mm-dd ou aaaa-mm-ddTHH:MM:SS
+            // Formato aaaa-mm-dd
             if (/^\d{4}-\d{2}-\d{2}/.test(str)) {
                 const parts = str.split(/[-T ]/);
                 return `${parts[2].substring(0,2)}/${parts[1]}/${parts[0]}`;
             }
             
-            // Formato dd-mm-aaaa
-            if (/^\d{1,2}-\d{1,2}-\d{4}$/.test(str)) {
-                const parts = str.split('-');
-                return `${parts[0].padStart(2, '0')}/${parts[1].padStart(2, '0')}/${parts[2]}`;
-            }
-            
             return str;
         }
-        
-        // Converte data BR para objeto Date
-        function parseDateToObj(dateStr) {
-            if (!dateStr || dateStr === '-' || dateStr === '') return null;
-            const parts = dateStr.split('/');
-            if (parts.length !== 3) return null;
-            const d = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
-            return isNaN(d.getTime()) ? null : d;
+
+        function cleanBloqueador(val) {
+            if (!val || val === '-' || val === '' || val === 'NaN' || val === 'undefined') return '';
+            return String(val).trim();
         }
-        
-        // Calcula dias entre duas datas
+
         function calcularDiasParado(ultAtualStr) {
-            const ultAtual = parseDateToObj(ultAtualStr);
-            if (!ultAtual) return 0;
+            if (!ultAtualStr) return 0;
+            const parts = ultAtualStr.split('/');
+            if (parts.length !== 3) return 0;
+            const ultAtual = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
             const hoje = new Date();
-            hoje.setHours(0, 0, 0, 0);
-            ultAtual.setHours(0, 0, 0, 0);
-            const diffTime = hoje - ultAtual;
-            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-            return diffDays >= 0 ? diffDays : 0;
+            const diff = Math.floor((hoje - ultAtual) / (1000 * 60 * 60 * 24));
+            return diff >= 0 ? diff : 0;
         }
-        
-        // ===== FUNÇÕES ORIGINAIS ATUALIZADAS =====
-        
-        function showMessage(type, text) {
-            const el = document.getElementById(type === 'success' ? 'successMsg' : 'errorMsg');
-            document.getElementById(type === 'success' ? 'successText' : 'errorText').textContent = text;
-            el.classList.remove('hidden');
-            setTimeout(() => el.classList.add('hidden'), 5000);
-        }
-        
-        function clearData() {
-            document.getElementById('dataInput').value = '';
-            document.getElementById('validationSection').classList.add('hidden');
-            document.getElementById('previewSection').classList.add('hidden');
-            document.getElementById('exportCard').classList.add('hidden');
-            projects = [];
-        }
-        
-        function processData() {
-            try {
-                const text = document.getElementById('dataInput').value;
-                if (!text.trim()) { showMessage('error', 'Cole os dados da planilha primeiro!'); return; }
-                projects = parseData(text);
-                if (projects.length === 0) { showMessage('error', 'Nenhum projeto válido encontrado!'); return; }
-                localStorage.setItem('infraProjects', JSON.stringify(projects));
-                showValidation();
-                showPreview();
-                document.getElementById('exportCard').classList.remove('hidden');
-                showMessage('success', `${projects.length} projetos carregados com sucesso!`);
-            } catch(e) { showMessage('error', 'Erro: ' + e.message); }
-        }
-        
-        function parseData(text) {
-            text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
-            const lines = text.split('\n').filter(l => l.trim());
-            if (lines.length < 1) return [];
-            const data = [];
+
+        function showStats() {
+            document.getElementById('statsCard').classList.remove('hidden');
             
-            // Detectar se primeira linha é cabeçalho
-            const firstLine = lines[0].toLowerCase();
-            const hasHeader = firstLine.includes('projeto') && (firstLine.includes('status') || firstLine.includes('localiza'));
+            const concluidas = atividades.filter(a => a.status.toLowerCase().includes('conclu')).length;
+            const pendentes = atividades.length - concluidas;
             
-            let startIdx = hasHeader ? 1 : 0;
-            let diasCalculadosAuto = 0;
+            document.getElementById('statProjetos').textContent = projects.length;
+            document.getElementById('statAtividades').textContent = atividades.length;
+            document.getElementById('statConcluidas').textContent = concluidas;
+            document.getElementById('statPendentes').textContent = pendentes;
             
-            // Mapeamento por posição fixa (ordem das colunas na planilha v5.5.2)
-            // A-M: Dados básicos | N: Atividades (formato: STATUS|DATA|DESCRIÇÃO;...)
-            
-            for (let i = startIdx; i < lines.length; i++) {
-                const cols = lines[i].split('\t').map(c => c.trim());
-                const projeto = cols[0];
-                if (!projeto || projeto === '-') continue;
-                
-                // Parse progresso (remove % se tiver)
-                let progresso = 0;
-                const progStr = cols[4] || '0';
-                progresso = parseInt(progStr.replace('%', '').replace(',', '.')) || 0;
-                
-                // Parse datas com função padronizada
-                const goliveOriginal = parseDateBR(cols[7]);
-                const goliveAtual = parseDateBR(cols[8]);
-                const ultAtual = parseDateBR(cols[10]);
-                
-                // Limpar bloqueador com função padronizada
-                const bloqueador = cleanBloqueador(cols[9]);
-                
-                // Calcular dias parado: se vazio mas tem última atualização, calcular automaticamente
-                let diasSemAtual = parseInt(cols[11] || '0') || 0;
-                if ((diasSemAtual === 0 || isNaN(diasSemAtual)) && ultAtual) {
-                    diasSemAtual = calcularDiasParado(ultAtual);
-                    if (diasSemAtual > 0) diasCalculadosAuto++;
-                }
-                
-                // Parse atividades (formato: C|DATA|DESC;P||DESC;...)
-                const atividadesRaw = cols[13] || '';
-                
-                data.push({
-                    projeto: cols[0] || '-',
-                    localizacao: cols[1] || '-',
-                    status: cols[2] || 'Não Iniciado',
-                    situacao: (cols[3] || 'Cinza').toLowerCase(),
-                    progresso: progresso,
-                    etapaAtual: cols[5] || '-',
-                    pmoInterno: cols[6] || '-',
-                    goliveOriginal: goliveOriginal || '-',
-                    goliveAtual: goliveAtual || '-',
-                    golive: goliveAtual || '-',
-                    bloqueador: bloqueador || '-',
-                    ultAtual: ultAtual || '-',
-                    diasSemAtual: diasSemAtual,
-                    observacoes: cols[12] || '-',
-                    atividades: atividadesRaw,
-                    // Compatibilidade
-                    etapa: cols[5] || '-',
-                    respInterno: cols[6] || '-',
-                    rag: (cols[3] || 'Cinza').toLowerCase(),
-                    obs: cols[12] || '-',
-                    proximo: '-',
-                    infraInterno: '-',
-                    pmoCliente: '-',
-                    infraCliente: '-',
-                    retrocesso: ''
-                });
-            }
-            
-            // Guardar estatística para validação
-            window._diasCalculadosAuto = diasCalculadosAuto;
-            
-            return data;
-        }
-        
-        function showValidation() {
-            const section = document.getElementById('validationSection');
-            const items = document.getElementById('validationItems');
-            const parados = projects.filter(p => p.diasSemAtual > 15).length;
-            const retrocessos = projects.filter(p => p.retrocesso && p.retrocesso.includes('RETROCESSO')).length;
-            const bloqueadoresLimpos = projects.filter(p => p.bloqueador && p.bloqueador !== '-').length;
-            const diasAuto = window._diasCalculadosAuto || 0;
-            
-            let html = `<div class="validation-item ok">✅ ${projects.length} projetos encontrados</div>`;
-            if (diasAuto > 0) html += `<div class="validation-item ok">🔄 ${diasAuto} projeto(s) com "Dias Parado" calculado automaticamente</div>`;
-            if (bloqueadoresLimpos > 0) html += `<div class="validation-item ok">🚧 ${bloqueadoresLimpos} projeto(s) com bloqueador registrado</div>`;
-            if (parados > 0) html += `<div class="validation-item warning">⚠️ ${parados} projeto(s) parado(s) há mais de 15 dias</div>`;
-            if (retrocessos > 0) html += `<div class="validation-item warning">⚠️ ${retrocessos} projeto(s) com retrocesso de etapa</div>`;
-            items.innerHTML = html;
-            document.getElementById('validationStatus').textContent = 'Tudo OK!';
-            section.classList.remove('hidden');
-        }
-        
-        function showPreview() {
-            document.getElementById('previewCount').textContent = `${projects.length} projetos`;
-            document.getElementById('previewTable').innerHTML = projects.slice(0, 15).map(p => {
-                // Destacar dias parado > 15 em laranja
-                const diasClass = p.diasSemAtual > 15 ? 'style="background:#fef3c7;color:#92400e;font-weight:600;"' : '';
+            // Tabela Projetos
+            document.getElementById('tabelaProjetos').innerHTML = projects.map(p => {
+                const atvTotal = p.atividades.length;
+                const atvConcl = p.atividades.filter(a => a.status.toLowerCase().includes('conclu')).length;
                 return `<tr>
                     <td><strong>${p.projeto}</strong></td>
-                    <td>${p.etapaAtual || p.etapa}</td>
-                    <td>${p.progresso}%</td>
-                    <td><span class="badge badge-${p.situacao}">${p.situacao}</span></td>
                     <td>${p.status}</td>
+                    <td><span class="badge badge-${p.situacao}">${p.situacao}</span></td>
+                    <td>
+                        <div class="progress-bar" style="width:80px;"><div class="progress-fill" style="width:${p.progresso}%"></div></div>
+                        <small>${p.progresso}%</small>
+                    </td>
                     <td>${p.pmoInterno}</td>
-                    <td>${p.goliveAtual}</td>
-                    <td ${diasClass}>${p.diasSemAtual} dias</td>
+                    <td>${p.goliveAtual || p.goliveOriginal || '-'}</td>
+                    <td><strong>${atvConcl}</strong>/${atvTotal}</td>
                 </tr>`;
             }).join('');
-            document.getElementById('previewSection').classList.remove('hidden');
+            
+            // Tabela Atividades (primeiras 50)
+            document.getElementById('tabelaAtividades').innerHTML = atividades.slice(0, 50).map(a => `<tr>
+                <td>${a.id}</td>
+                <td>${a.projeto}</td>
+                <td>${a.atividade}</td>
+                <td><span class="badge badge-${a.status.toLowerCase().includes('conclu') ? 'verde' : a.status.toLowerCase().includes('andamento') ? 'amarelo' : 'cinza'}">${a.status}</span></td>
+                <td>${a.responsavel}</td>
+                <td>${a.dataInicio || '-'}</td>
+                <td>${a.dataFim || '-'}</td>
+                <td>${a.diasDuracao || '-'}</td>
+            </tr>`).join('');
+            
+            // Análise - Top 5 atividades que mais atrasam
+            const atividadeStats = {};
+            atividades.forEach(a => {
+                if (a.diasDuracao > 0) {
+                    if (!atividadeStats[a.atividade]) {
+                        atividadeStats[a.atividade] = { total: 0, dias: 0, count: 0 };
+                    }
+                    atividadeStats[a.atividade].total += a.diasDuracao;
+                    atividadeStats[a.atividade].count++;
+                }
+            });
+            
+            const ranking = Object.entries(atividadeStats)
+                .map(([nome, stats]) => ({
+                    nome,
+                    media: Math.round(stats.total / stats.count),
+                    count: stats.count
+                }))
+                .sort((a, b) => b.media - a.media)
+                .slice(0, 5);
+            
+            document.getElementById('tabelaAnalise').innerHTML = ranking.length > 0 ? ranking.map((r, i) => `<tr>
+                <td><strong>${r.nome}</strong></td>
+                <td>${r.media} dias</td>
+                <td>${r.count} projetos</td>
+                <td><span class="badge badge-${r.media > 5 ? 'vermelho' : r.media > 3 ? 'amarelo' : 'verde'}">${r.media > 5 ? 'Alto' : r.media > 3 ? 'Médio' : 'Baixo'}</span></td>
+            </tr>`).join('') : '<tr><td colspan="4" style="text-align:center;color:#64748b;">Sem dados de duração para análise</td></tr>';
         }
-        
+
+        function showTab(tabName) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('tab' + tabName.charAt(0).toUpperCase() + tabName.slice(1)).classList.add('active');
+        }
+
         function exportJSON() {
-            const data = { lastUpdate: new Date().toISOString(), version: '5.5.2', projects: projects };
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            if (!dadosCompletos) {
+                showMessage('error', 'Nenhum dado para exportar!');
+                return;
+            }
+            
+            dadosCompletos.lastUpdate = new Date().toISOString();
+            const blob = new Blob([JSON.stringify(dadosCompletos, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
             a.download = 'dados.json';
             a.click();
             URL.revokeObjectURL(url);
-            showMessage('success', 'Arquivo dados.json exportado!');
+            showMessage('success', '<strong>Exportado!</strong> Arquivo dados.json baixado com sucesso.');
         }
+
+        function clearData() {
+            projects = [];
+            atividades = [];
+            dadosCompletos = null;
+            localStorage.removeItem('infraDashboard');
+            document.getElementById('statsCard').classList.add('hidden');
+            document.getElementById('fileInfo').classList.add('hidden');
+            showMessage('info', 'Dados limpos. Importe uma nova planilha.');
+        }
+
+        // Carregar dados salvos ao iniciar
+        window.addEventListener('load', () => {
+            const saved = localStorage.getItem('infraDashboard');
+            if (saved) {
+                try {
+                    dadosCompletos = JSON.parse(saved);
+                    projects = dadosCompletos.projects || [];
+                    atividades = dadosCompletos.atividades || [];
+                    if (projects.length > 0) {
+                        showStats();
+                        showMessage('info', `Dados anteriores carregados: ${projects.length} projetos e ${atividades.length} atividades.`);
+                    }
+                } catch (e) { console.error(e); }
+            }
+        });
     </script>
 </body>
 </html>
