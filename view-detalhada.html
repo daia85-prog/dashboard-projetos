@@ -407,10 +407,35 @@
         
         async function loadData() {
             try {
-                const saved = localStorage.getItem('infraProjects');
-                if (saved) { projects = JSON.parse(saved); filteredProjects = [...projects]; showDashboard(); } 
-                else { document.getElementById('loading').innerHTML = '<h3>Cole os dados da planilha</h3><p style="color:#64748b;margin-top:10px;">Use a página inicial para carregar</p>'; }
-            } catch (e) { console.error('Erro:', e); }
+                // v6.0: Carregar do dados.json primeiro
+                const response = await fetch('dados.json?t=' + Date.now());
+                if (response.ok) {
+                    const data = await response.json();
+                    projects = data.projects || [];
+                    // Atualizar localStorage com dados novos
+                    localStorage.setItem('infraProjects', JSON.stringify(projects));
+                    localStorage.setItem('infraDashboard', JSON.stringify(data));
+                    filteredProjects = [...projects];
+                    document.getElementById('currentDate').textContent = data.lastUpdate ? 
+                        new Date(data.lastUpdate).toLocaleString('pt-BR') : 
+                        new Date().toLocaleString('pt-BR');
+                    showDashboard();
+                } else {
+                    // Fallback para localStorage se dados.json não existir
+                    const saved = localStorage.getItem('infraDashboard') || localStorage.getItem('infraProjects');
+                    if (saved) {
+                        const data = JSON.parse(saved);
+                        projects = data.projects || data;
+                        filteredProjects = [...projects];
+                        showDashboard();
+                    } else {
+                        document.getElementById('loading').innerHTML = '<h3>Dados não encontrados</h3><p style="color:#64748b;margin-top:10px;">Importe a planilha via admin.html</p>';
+                    }
+                }
+            } catch (e) { 
+                console.error('Erro ao carregar dados:', e);
+                document.getElementById('loading').innerHTML = '<h3>Erro ao carregar</h3><p style="color:#64748b;margin-top:10px;">Verifique se o dados.json está na mesma pasta</p>';
+            }
         }
         
         function showDashboard() {
