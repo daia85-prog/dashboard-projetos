@@ -349,7 +349,13 @@
     <!-- Modal Detalhes -->
     <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
         <div class="modal" onclick="event.stopPropagation()">
-            <div class="modal-header"><div><h2 id="modalTitle">Projeto</h2><p id="modalSubtitle">Detalhes</p></div><button class="modal-close" onclick="closeModal()">&times;</button></div>
+            <div class="modal-header">
+                <div><h2 id="modalTitle">Projeto</h2><p id="modalSubtitle">Detalhes</p></div>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <button onclick="printProject()" style="background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px;">🖨️ Imprimir</button>
+                    <button class="modal-close" onclick="closeModal()">&times;</button>
+                </div>
+            </div>
             <div class="modal-body"><div class="info-grid" id="modalInfo"></div></div>
         </div>
     </div>
@@ -403,7 +409,7 @@
     </div>
     
     <script>
-        let projects = [], filteredProjects = [], printOption = 'current', pdfOption = 'current';
+        let projects = [], filteredProjects = [], printOption = 'current', pdfOption = 'current', currentProject = null;
         
         async function loadData() {
             try {
@@ -821,6 +827,7 @@
         function openModal(name) {
             const p = projects.find(x => x.projeto === name);
             if (!p) return;
+            currentProject = p; // Salvar para impressão
             document.getElementById('modalTitle').textContent = p.projeto;
             document.getElementById('modalSubtitle').textContent = `${normalizeStatus(p.status)} • ${p.localizacao || 'Local não definido'}`;
             
@@ -913,6 +920,141 @@
             document.getElementById('modalOverlay').classList.add('active');
         }
         
+        // Função para imprimir projeto individual com timeline
+        function printProject() {
+            if (!currentProject) return;
+            const p = currentProject;
+            const atividades = parseAtividades(p.atividades);
+            const concluidas = atividades.filter(a => a.status === 'C');
+            const emAndamento = atividades.filter(a => a.status === 'A');
+            const pendentes = atividades.filter(a => a.status === 'P');
+            const totalConcl = concluidas.length;
+            const total = atividades.length;
+            const pctConcl = total > 0 ? Math.round((totalConcl / total) * 100) : 0;
+            
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>${p.projeto} - Relatório</title>
+                    <style>
+                        * { margin: 0; padding: 0; box-sizing: border-box; }
+                        body { font-family: 'Segoe UI', Arial, sans-serif; padding: 30px; color: #1a1a2e; font-size: 12px; }
+                        .header { border-bottom: 3px solid #10b981; padding-bottom: 15px; margin-bottom: 20px; }
+                        .header h1 { font-size: 24px; color: #1a1a2e; }
+                        .header p { color: #64748b; font-size: 13px; margin-top: 5px; }
+                        .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; }
+                        .info-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; }
+                        .info-box label { font-size: 10px; color: #64748b; text-transform: uppercase; display: block; margin-bottom: 4px; }
+                        .info-box span { font-size: 13px; font-weight: 600; color: #1e293b; }
+                        .timeline { margin-top: 25px; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; }
+                        .timeline-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; }
+                        .timeline-header h3 { font-size: 16px; color: #1e293b; }
+                        .timeline-badge { background: #10b981; color: white; padding: 5px 12px; border-radius: 15px; font-size: 12px; font-weight: 600; }
+                        .progress-bar { height: 12px; background: #e2e8f0; border-radius: 6px; overflow: hidden; margin-bottom: 20px; }
+                        .progress-fill-green { height: 100%; background: #22c55e; float: left; }
+                        .progress-fill-yellow { height: 100%; background: #f59e0b; float: left; }
+                        .section { margin-bottom: 20px; }
+                        .section-title { font-size: 13px; font-weight: 600; margin-bottom: 10px; padding: 6px 10px; border-radius: 6px; }
+                        .section-title.concluidas { background: #dcfce7; color: #166534; }
+                        .section-title.andamento { background: #fef3c7; color: #92400e; }
+                        .section-title.pendentes { background: #f1f5f9; color: #64748b; }
+                        .atividade { display: flex; justify-content: space-between; padding: 8px 12px; border-left: 3px solid #e2e8f0; margin-bottom: 6px; background: #fafafa; }
+                        .atividade.concluida { border-left-color: #22c55e; background: #f0fdf4; }
+                        .atividade.andamento { border-left-color: #f59e0b; background: #fffbeb; }
+                        .atividade .nome { flex: 1; }
+                        .atividade .datas { text-align: right; font-size: 11px; color: #64748b; }
+                        .atividade .dias { font-weight: 600; color: #059669; }
+                        .obs-box { background: #eff6ff; border: 1px solid #93c5fd; border-radius: 8px; padding: 15px; margin-top: 20px; }
+                        .obs-box h4 { color: #1e40af; font-size: 13px; margin-bottom: 8px; }
+                        .obs-box p { color: #1e3a5f; line-height: 1.5; }
+                        .footer { margin-top: 30px; padding-top: 15px; border-top: 1px solid #e2e8f0; text-align: center; color: #64748b; font-size: 11px; }
+                        @media print { body { padding: 15px; } .timeline { break-inside: avoid; } }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>📋 ${p.projeto}</h1>
+                        <p>${normalizeStatus(p.status)} • ${p.localizacao || 'Local não definido'} • Impresso em ${new Date().toLocaleString('pt-BR')}</p>
+                    </div>
+                    
+                    <div class="info-grid">
+                        <div class="info-box"><label>Status</label><span>${normalizeStatus(p.status)}</span></div>
+                        <div class="info-box"><label>Situação</label><span>${(p.situacao || 'Cinza').toUpperCase()}</span></div>
+                        <div class="info-box"><label>Progresso</label><span>${p.progresso || 0}%</span></div>
+                        <div class="info-box"><label>Go Live Original</label><span>${p.goliveOriginal || '-'}</span></div>
+                        <div class="info-box"><label>Go Live Atual</label><span>${p.goliveAtual || '-'}</span></div>
+                        <div class="info-box"><label>Dias Parado</label><span>${p.diasSemAtual || 0} dias</span></div>
+                        <div class="info-box"><label>PMO Interno</label><span>${p.pmoInterno || '-'}</span></div>
+                        <div class="info-box"><label>Última Atualização</label><span>${p.ultAtual || '-'}</span></div>
+                        <div class="info-box"><label>Bloqueador</label><span style="${p.bloqueador ? 'color:#dc2626;' : ''}">${p.bloqueador || '-'}</span></div>
+                    </div>
+                    
+                    ${total > 0 ? `
+                    <div class="timeline">
+                        <div class="timeline-header">
+                            <h3>📋 Timeline de Atividades</h3>
+                            <span class="timeline-badge">${totalConcl}/${total} (${pctConcl}%)</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill-green" style="width: ${(concluidas.length/total)*100}%"></div>
+                            <div class="progress-fill-yellow" style="width: ${(emAndamento.length/total)*100}%"></div>
+                        </div>
+                        
+                        ${concluidas.length > 0 ? `
+                        <div class="section">
+                            <div class="section-title concluidas">✅ Concluídas (${concluidas.length})</div>
+                            ${concluidas.map(a => `
+                                <div class="atividade concluida">
+                                    <span class="nome">${a.descricao}</span>
+                                    <span class="datas">
+                                        ${a.dataInicio && a.dataFim ? `${a.dataInicio} → ${a.dataFim}` : (a.data || '')}
+                                        ${a.diasDuracao ? `<span class="dias"> (${a.diasDuracao} dias)</span>` : ''}
+                                    </span>
+                                </div>
+                            `).join('')}
+                        </div>` : ''}
+                        
+                        ${emAndamento.length > 0 ? `
+                        <div class="section">
+                            <div class="section-title andamento">🔄 Em Andamento (${emAndamento.length})</div>
+                            ${emAndamento.map(a => `
+                                <div class="atividade andamento">
+                                    <span class="nome">${a.descricao}</span>
+                                    <span class="datas">${a.dataInicio ? `Início: ${a.dataInicio}` : ''}</span>
+                                </div>
+                            `).join('')}
+                        </div>` : ''}
+                        
+                        ${pendentes.length > 0 ? `
+                        <div class="section">
+                            <div class="section-title pendentes">⏳ Pendentes (${pendentes.length})</div>
+                            ${pendentes.map(a => `
+                                <div class="atividade">
+                                    <span class="nome">${a.descricao}</span>
+                                </div>
+                            `).join('')}
+                        </div>` : ''}
+                    </div>` : ''}
+                    
+                    ${p.observacoes && p.observacoes !== '-' ? `
+                    <div class="obs-box">
+                        <h4>📝 Observações</h4>
+                        <p>${p.observacoes}</p>
+                    </div>` : ''}
+                    
+                    <div class="footer">
+                        Dashboard de Projetos - Infraestrutura v6.0 • Invent Corp
+                    </div>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.focus();
+            setTimeout(() => { printWindow.print(); }, 300);
+        }
+
         function closeModal(e) { if (e && e.target !== e.currentTarget) return; document.getElementById('modalOverlay').classList.remove('active'); }
         function openPrintModal() { document.getElementById('printModalOverlay').classList.add('active'); }
         function closePrintModal(e) { if (e && e.target !== e.currentTarget) return; document.getElementById('printModalOverlay').classList.remove('active'); }
