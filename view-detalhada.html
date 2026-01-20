@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visão Detalhada - Infraestrutura v5.4.0</title>
+    <title>Visão Detalhada - Infraestrutura v5.5.0</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 20px; min-height: 100vh; }
@@ -41,8 +41,8 @@
         
         /* Cards Status */
         .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(115px, 1fr)); gap: 12px; margin-bottom: 20px; }
-        .summary-card { background: rgba(255,255,255,0.95); padding: 14px; border-radius: 14px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.2); position: relative; overflow: hidden; cursor: pointer; transition: all 0.3s; }
-        .summary-card:hover { transform: translateY(-3px); }
+        .summary-card { background: rgba(255,255,255,0.95); padding: 16px 14px; border-radius: 14px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.2); position: relative; overflow: hidden; cursor: pointer; transition: all 0.3s; }
+        .summary-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.25); }
         .summary-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
         .summary-card.total::before { background: linear-gradient(90deg, #667eea, #764ba2); }
         .summary-card.concluido::before { background: #10b981; }
@@ -51,7 +51,8 @@
         .summary-card.aguardando::before { background: #f59e0b; }
         .summary-card.nao-iniciado::before { background: #6b7280; }
         .summary-card.critico::before { background: #dc2626; }
-        .summary-card .number { font-size: 24px; font-weight: 700; margin: 4px 0; }
+        .summary-card .card-icon { font-size: 18px; margin-bottom: 4px; }
+        .summary-card .number { font-size: 28px; font-weight: 800; margin: 4px 0; line-height: 1; }
         .summary-card.total .number { color: #667eea; }
         .summary-card.concluido .number { color: #10b981; }
         .summary-card.andamento .number { color: #3b82f6; }
@@ -59,11 +60,32 @@
         .summary-card.aguardando .number { color: #f59e0b; }
         .summary-card.nao-iniciado .number { color: #6b7280; }
         .summary-card.critico .number { color: #dc2626; }
-        .summary-card .label { font-size: 9px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+        .summary-card .label { font-size: 9px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; }
         .summary-card.active { box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.5); }
         .summary-card .info-icon { position: absolute; top: 6px; right: 6px; width: 14px; height: 14px; background: #f1f5f9; border-radius: 50%; font-size: 9px; display: flex; align-items: center; justify-content: center; color: #64748b; cursor: help; }
         .summary-card .info-icon:hover .card-tooltip { display: block; }
         .card-tooltip { display: none; position: absolute; bottom: 100%; right: 0; margin-bottom: 5px; width: 160px; background: #1e293b; color: white; padding: 6px 8px; border-radius: 6px; font-size: 9px; text-align: left; z-index: 100; }
+        
+        /* RESUMO EXECUTIVO */
+        .executive-summary { background: linear-gradient(135deg, rgba(248,250,252,0.95), rgba(241,245,249,0.95)); border: 1px solid rgba(226,232,240,0.8); border-radius: 12px; padding: 14px 18px; margin-bottom: 14px; display: flex; align-items: center; gap: 12px; }
+        .summary-icon { font-size: 22px; }
+        .summary-text { font-size: 13px; color: #334155; line-height: 1.5; flex: 1; }
+        .summary-text strong { color: #1e293b; }
+        .summary-text .highlight-red { color: #dc2626; font-weight: 600; }
+        .summary-text .highlight-green { color: #16a34a; font-weight: 600; }
+        .summary-text .highlight-blue { color: #2563eb; font-weight: 600; }
+        
+        /* ALERT BAR INTELIGENTE */
+        .alert-bar { border-radius: 12px; padding: 12px 18px; margin-bottom: 14px; display: flex; align-items: center; gap: 12px; transition: all 0.3s; }
+        .alert-bar.danger { background: linear-gradient(135deg, rgba(254,242,242,0.95), rgba(254,226,226,0.95)); border: 1px solid rgba(252,165,165,0.8); }
+        .alert-bar.warning { background: linear-gradient(135deg, rgba(255,251,235,0.95), rgba(254,243,199,0.95)); border: 1px solid rgba(252,211,77,0.8); }
+        .alert-bar.success { background: linear-gradient(135deg, rgba(240,253,244,0.95), rgba(220,252,231,0.95)); border: 1px solid rgba(134,239,172,0.8); }
+        .alert-bar.hidden { display: none; }
+        .alert-icon { font-size: 18px; }
+        .alert-text { font-size: 12px; font-weight: 500; flex: 1; }
+        .alert-bar.danger .alert-text { color: #991b1b; }
+        .alert-bar.warning .alert-text { color: #92400e; }
+        .alert-bar.success .alert-text { color: #166534; }
         
         /* Decisões */
         .decisoes-section { background: rgba(255,255,255,0.95); border-radius: 14px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); margin-bottom: 20px; overflow: hidden; }
@@ -210,13 +232,13 @@
     <div class="container">
         <div class="header">
             <div>
-                <h1>📈 Visão Detalhada - Infraestrutura <span class="version">v5.4.0</span></h1>
+                <h1>📈 Visão Detalhada - Infraestrutura <span class="version">v5.5.0</span></h1>
                 <p>Atualizado em: <span id="currentDate">Carregando...</span></p>
             </div>
             <div style="display:flex;gap:10px;flex-wrap:wrap;">
                 <a href="index.html" class="btn btn-secondary">← Voltar</a>
                 <button class="btn" onclick="openPrintModal()">🖨️ Imprimir</button>
-                <button class="btn" style="background: linear-gradient(135deg, #ef4444, #dc2626);" onclick="exportPDF()">📄 PDF</button>
+                <button class="btn" style="background: linear-gradient(135deg, #ef4444, #dc2626);" onclick="openPdfModal()">📄 Gerar PDF</button>
             </div>
         </div>
         
@@ -259,18 +281,29 @@
                 </div>
             </div>
             
-            <!-- Cards Status -->
+            <!-- RESUMO EXECUTIVO -->
+            <div class="executive-summary" id="executiveSummary">
+                <div class="summary-icon">📋</div>
+                <div class="summary-text" id="summaryText">Carregando resumo...</div>
+            </div>
+            
+            <!-- ALERT BAR INTELIGENTE -->
+            <div class="alert-bar" id="alertBar">
+                <span class="alert-icon">⚠️</span>
+                <span class="alert-text" id="alertText">Verificando status...</span>
+            </div>
+            
+            <!-- Cards Status COM ÍCONES -->
             <div class="summary-grid">
-                <div class="summary-card total" onclick="filterByStatus('')"><div class="label">Total</div><div class="number" id="totalProjects">0</div></div>
-                <div class="summary-card concluido" onclick="filterByStatus('Concluído')"><div class="label">Concluídos</div><div class="number" id="completedCount">0</div></div>
-                <div class="summary-card andamento" onclick="filterByStatus('Em Andamento')"><div class="label">Em Andamento</div><div class="number" id="ongoingCount">0</div></div>
-                <div class="summary-card atrasado" onclick="filterByStatus('Atrasado')"><div class="label">Atrasados</div><div class="number" id="delayedCount">0</div></div>
-                <div class="summary-card aguardando" onclick="filterByStatus('Aguardando Cliente')"><div class="label">Aguardando</div><div class="number" id="waitingCount">0</div></div>
-                <div class="summary-card nao-iniciado" onclick="filterByStatus('Não Iniciado')"><div class="label">Não Iniciados</div><div class="number" id="notStartedCount">0</div></div>
+                <div class="summary-card total" onclick="filterByStatus('')"><div class="card-icon">📊</div><div class="number" id="totalProjects">0</div><div class="label">Total</div></div>
+                <div class="summary-card concluido" onclick="filterByStatus('Concluído')"><div class="card-icon">✅</div><div class="number" id="completedCount">0</div><div class="label">Concluídos</div></div>
+                <div class="summary-card andamento" onclick="filterByStatus('Em Andamento')"><div class="card-icon">⏳</div><div class="number" id="ongoingCount">0</div><div class="label">Em Andamento</div></div>
+                <div class="summary-card atrasado" onclick="filterByStatus('Atrasado')"><div class="card-icon">🔴</div><div class="number" id="delayedCount">0</div><div class="label">Atrasados</div></div>
+                <div class="summary-card aguardando" onclick="filterByStatus('Aguardando Cliente')"><div class="card-icon">⏸️</div><div class="number" id="waitingCount">0</div><div class="label">Aguardando</div></div>
+                <div class="summary-card nao-iniciado" onclick="filterByStatus('Não Iniciado')"><div class="card-icon">📋</div><div class="number" id="notStartedCount">0</div><div class="label">Não Iniciados</div></div>
                 <div class="summary-card critico" onclick="filterByCritico()">
                     <div class="info-icon">?<div class="card-tooltip">Crítico = Vermelho OU Atrasado OU 15+ dias</div></div>
-                    <div class="label">Críticos</div>
-                    <div class="number" id="criticoCount">0</div>
+                    <div class="card-icon">🚨</div><div class="number" id="criticoCount">0</div><div class="label">Críticos</div>
                 </div>
             </div>
             
@@ -345,8 +378,32 @@
         </div>
     </div>
     
+    <!-- Modal PDF - MESMAS OPÇÕES -->
+    <div class="modal-overlay" id="pdfModalOverlay" onclick="closePdfModal(event)">
+        <div class="modal print-modal" onclick="event.stopPropagation()">
+            <div class="modal-header"><div><h2>📄 Exportar PDF</h2></div><button class="modal-close" onclick="closePdfModal()">&times;</button></div>
+            <div class="modal-body">
+                <div class="print-options">
+                    <label class="print-option selected" onclick="selectPdfOption(this, 'current')"><input type="radio" name="pdf" value="current" checked><span class="print-icon">📄</span><div><div class="print-label">Filtro atual</div><div class="print-desc">Projetos visíveis na tela</div></div></label>
+                    <label class="print-option" onclick="selectPdfOption(this, 'all')"><input type="radio" name="pdf" value="all"><span class="print-icon">📑</span><div><div class="print-label">Todos os projetos</div><div class="print-desc">Sem filtros aplicados</div></div></label>
+                    <label class="print-option" onclick="selectPdfOption(this, 'criticos')"><input type="radio" name="pdf" value="criticos"><span class="print-icon">🚨</span><div><div class="print-label">Apenas críticos</div><div class="print-desc">Atrasados, vermelhos ou parados</div></div></label>
+                    <label class="print-option" onclick="selectPdfOption(this, 'specific')"><input type="radio" name="pdf" value="specific"><span class="print-icon">✅</span><div>
+                        <div class="print-label">Projetos específicos</div>
+                        <div class="print-desc">Selecione os projetos desejados</div>
+                        <div class="projects-select-container" id="pdfProjectsSelectContainer" onclick="event.stopPropagation()">
+                            <input type="text" class="project-search" id="pdfProjectSearch" placeholder="🔍 Buscar projeto..." oninput="filterPdfProjectCheckboxes()">
+                            <span class="select-all-btn" onclick="togglePdfSelectAll()">Selecionar todos</span>
+                            <div id="pdfProjectsCheckboxList"></div>
+                        </div>
+                    </div></label>
+                </div>
+                <button class="btn" style="width:100%; background: linear-gradient(135deg, #ef4444, #dc2626);" onclick="executePDF()">📄 Gerar PDF</button>
+            </div>
+        </div>
+    </div>
+    
     <script>
-        let projects = [], filteredProjects = [], printOption = 'current';
+        let projects = [], filteredProjects = [], printOption = 'current', pdfOption = 'current';
         
         async function loadData() {
             try {
@@ -552,6 +609,64 @@
             renderDecisoes();
             renderCharts();
             renderSections();
+            updateExecutiveSummary();
+            updateAlertBar();
+        }
+        
+        function updateExecutiveSummary() {
+            const total = projects.length;
+            const criticos = projects.filter(p => isCritico(p)).length;
+            const atrasados = projects.filter(p => normalizeStatus(p.status) === 'Atrasado').length;
+            const aguardando = projects.filter(p => normalizeStatus(p.status) === 'Aguardando Cliente').length;
+            const parados15 = projects.filter(p => (p.diasSemAtual || 0) >= 15 && normalizeStatus(p.status) !== 'Concluído').length;
+            const concluidos = projects.filter(p => normalizeStatus(p.status) === 'Concluído').length;
+            const emAndamento = projects.filter(p => normalizeStatus(p.status) === 'Em Andamento').length;
+            
+            let text = `<strong>${total} projetos</strong> em carteira: `;
+            text += `<span class="highlight-green">${concluidos} concluídos</span>, `;
+            text += `<span class="highlight-blue">${emAndamento} em andamento</span>`;
+            
+            if (criticos > 0 || atrasados > 0 || parados15 > 0) {
+                text += `. <strong>Foco:</strong> `;
+                const focos = [];
+                if (atrasados > 0) focos.push(`<span class="highlight-red">${atrasados} atrasados</span>`);
+                if (aguardando > 0) focos.push(`${aguardando} aguardando cliente`);
+                if (parados15 > 0) focos.push(`<span class="highlight-red">${parados15} parados há 15+ dias</span>`);
+                text += focos.join(', ') + '.';
+            } else {
+                text += `. <span class="highlight-green">Nenhum projeto crítico!</span>`;
+            }
+            
+            document.getElementById('summaryText').innerHTML = text;
+        }
+        
+        function updateAlertBar() {
+            const criticos = projects.filter(p => isCritico(p)).length;
+            const atrasados = projects.filter(p => normalizeStatus(p.status) === 'Atrasado').length;
+            const parados15 = projects.filter(p => (p.diasSemAtual || 0) >= 15 && normalizeStatus(p.status) !== 'Concluído').length;
+            
+            const alertBar = document.getElementById('alertBar');
+            const alertIcon = alertBar.querySelector('.alert-icon');
+            const alertText = document.getElementById('alertText');
+            
+            alertBar.classList.remove('danger', 'warning', 'success', 'hidden');
+            
+            if (atrasados > 0 || parados15 > 0) {
+                alertBar.classList.add('danger');
+                alertIcon.textContent = '🚨';
+                let msg = [];
+                if (atrasados > 0) msg.push(`${atrasados} projeto${atrasados > 1 ? 's' : ''} atrasado${atrasados > 1 ? 's' : ''}`);
+                if (parados15 > 0) msg.push(`${parados15} parado${parados15 > 1 ? 's' : ''} há mais de 15 dias`);
+                alertText.textContent = `Atenção: ${msg.join(' e ')}. Ação necessária!`;
+            } else if (criticos > 0) {
+                alertBar.classList.add('warning');
+                alertIcon.textContent = '⚠️';
+                alertText.textContent = `${criticos} projeto${criticos > 1 ? 's requerem' : ' requer'} atenção. Revisar antes da próxima reunião.`;
+            } else {
+                alertBar.classList.add('success');
+                alertIcon.textContent = '✅';
+                alertText.textContent = 'Todos os projetos estão em dia! Nenhuma ação urgente necessária.';
+            }
         }
         
         function renderDecisoes() {
@@ -729,7 +844,57 @@
             setTimeout(() => window.print(), 300);
         }
         
-        function exportPDF() {
+        // === FUNÇÕES DO MODAL PDF ===
+        function openPdfModal() { 
+            document.getElementById('pdfProjectsCheckboxList').innerHTML = projects.map((p, i) => 
+                `<label class="project-checkbox"><input type="checkbox" value="${i}"><span>${p.projeto}</span></label>`
+            ).join('');
+            document.getElementById('pdfModalOverlay').classList.add('active'); 
+        }
+        function closePdfModal(e) { if (e && e.target !== e.currentTarget) return; document.getElementById('pdfModalOverlay').classList.remove('active'); }
+        function selectPdfOption(el, option) { 
+            document.querySelectorAll('#pdfModalOverlay .print-option').forEach(o => o.classList.remove('selected')); 
+            el.classList.add('selected'); 
+            pdfOption = option; 
+        }
+        function filterPdfProjectCheckboxes() {
+            const search = document.getElementById('pdfProjectSearch').value.toLowerCase();
+            document.querySelectorAll('#pdfProjectsCheckboxList label').forEach(l => {
+                const name = l.querySelector('span').textContent.toLowerCase();
+                l.style.display = name.includes(search) ? '' : 'none';
+            });
+        }
+        function togglePdfSelectAll() {
+            const checkboxes = document.querySelectorAll('#pdfProjectsCheckboxList input[type="checkbox"]');
+            const allChecked = Array.from(checkboxes).every(c => c.checked);
+            checkboxes.forEach(c => c.checked = !allChecked);
+        }
+        
+        function executePDF() {
+            closePdfModal();
+            
+            let projetosParaPDF = [];
+            if (pdfOption === 'all') { 
+                projetosParaPDF = [...projects]; 
+            } else if (pdfOption === 'criticos') { 
+                projetosParaPDF = projects.filter(p => isCritico(p)); 
+            } else if (pdfOption === 'specific') {
+                const checkboxes = document.querySelectorAll('#pdfProjectsCheckboxList input[type="checkbox"]:checked');
+                if (checkboxes.length > 0) {
+                    const indices = Array.from(checkboxes).map(c => parseInt(c.value));
+                    projetosParaPDF = indices.map(i => projects[i]).filter(p => p);
+                } else {
+                    projetosParaPDF = [...filteredProjects];
+                }
+            } else {
+                projetosParaPDF = [...filteredProjects];
+            }
+            
+            if (projetosParaPDF.length === 0) {
+                alert('Nenhum projeto selecionado para exportar.');
+                return;
+            }
+            
             const hoje = new Date().toLocaleDateString('pt-BR');
             const hora = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'});
             
@@ -742,25 +907,25 @@
                     
                     <div style="display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap;">
                         <div style="background: #f0fdf4; padding: 15px 25px; border-radius: 10px; border-left: 4px solid #22c55e;">
-                            <div style="font-size: 24px; font-weight: bold; color: #166534;">${filteredProjects.length}</div>
+                            <div style="font-size: 24px; font-weight: bold; color: #166534;">${projetosParaPDF.length}</div>
                             <div style="color: #166534; font-size: 12px;">Total Projetos</div>
                         </div>
                         <div style="background: #f0fdf4; padding: 15px 25px; border-radius: 10px; border-left: 4px solid #22c55e;">
-                            <div style="font-size: 24px; font-weight: bold; color: #166534;">${filteredProjects.filter(p => normalizeStatus(p.status) === 'Concluído').length}</div>
+                            <div style="font-size: 24px; font-weight: bold; color: #166534;">${projetosParaPDF.filter(p => normalizeStatus(p.status) === 'Concluído').length}</div>
                             <div style="color: #166534; font-size: 12px;">Concluídos</div>
                         </div>
                         <div style="background: #fef3c7; padding: 15px 25px; border-radius: 10px; border-left: 4px solid #f59e0b;">
-                            <div style="font-size: 24px; font-weight: bold; color: #92400e;">${filteredProjects.filter(p => normalizeStatus(p.status) === 'Em Andamento').length}</div>
+                            <div style="font-size: 24px; font-weight: bold; color: #92400e;">${projetosParaPDF.filter(p => normalizeStatus(p.status) === 'Em Andamento').length}</div>
                             <div style="color: #92400e; font-size: 12px;">Em Andamento</div>
                         </div>
                         <div style="background: #fee2e2; padding: 15px 25px; border-radius: 10px; border-left: 4px solid #ef4444;">
-                            <div style="font-size: 24px; font-weight: bold; color: #991b1b;">${filteredProjects.filter(p => isCritico(p)).length}</div>
+                            <div style="font-size: 24px; font-weight: bold; color: #991b1b;">${projetosParaPDF.filter(p => isCritico(p)).length}</div>
                             <div style="color: #991b1b; font-size: 12px;">Críticos</div>
                         </div>
                     </div>
             `;
             
-            filteredProjects.forEach((p, idx) => {
+            projetosParaPDF.forEach((p, idx) => {
                 const statusColor = normalizeStatus(p.status) === 'Concluído' ? '#166534' : 
                                    normalizeStatus(p.status) === 'Atrasado' ? '#991b1b' : 
                                    normalizeStatus(p.status) === 'Em Andamento' ? '#1e40af' : '#666';
@@ -768,7 +933,6 @@
                                 normalizeStatus(p.status) === 'Atrasado' ? '#fee2e2' : 
                                 normalizeStatus(p.status) === 'Em Andamento' ? '#eff6ff' : '#f9fafb';
                 
-                // Parsear atividades
                 const atividades = parseAtividades(p.atividades);
                 const concluidas = atividades.filter(a => a.status === 'C');
                 
@@ -787,12 +951,11 @@
                         </div>
                 `;
                 
-                // Adicionar atividades concluídas
                 if (concluidas.length > 0) {
                     html += `
                         <div style="background: white; border-radius: 8px; padding: 12px; margin-top: 10px;">
                             <div style="font-weight: bold; color: #166534; margin-bottom: 10px; font-size: 12px;">✅ Atividades Concluídas (${concluidas.length}/${atividades.length}):</div>
-                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px;">
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px;">
                                 ${concluidas.map(a => `<div style="background: #dcfce7; color: #166534; padding: 4px 8px; border-radius: 4px; font-size: 9px; display: flex; justify-content: space-between;">
                                     <span>${a.descricao}</span><strong>${a.data}</strong>
                                 </div>`).join('')}
@@ -831,7 +994,8 @@
                 document.body.removeChild(element);
             });
         }
-        document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closePrintModal(); } });
+        
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closePrintModal(); closePdfModal(); } });
         window.addEventListener('load', loadData);
     </script>
 </body>

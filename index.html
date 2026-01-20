@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Status dos Projetos - Infraestrutura v5.3.2</title>
+    <title>Status dos Projetos - Infraestrutura v5.5.0</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
@@ -12,18 +12,19 @@
         .header h1 { color: white; font-size: 32px; margin-bottom: 10px; text-shadow: 0 4px 20px rgba(0,0,0,0.3); }
         .header p { color: rgba(255,255,255,0.7); font-size: 14px; }
         .version-badge { display: inline-block; background: rgba(102,126,234,0.3); color: #a5b4fc; padding: 4px 12px; border-radius: 20px; font-size: 11px; margin-top: 10px; }
-        .info-bar { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 16px; padding: 20px 30px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; border: 1px solid rgba(255,255,255,0.1); }
-        .info-item { text-align: center; }
-        .info-item .number { font-size: 26px; font-weight: 700; color: white; }
-        .info-item .label { font-size: 10px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px; }
+        .info-bar { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 16px; padding: 20px 30px; margin-bottom: 25px; display: grid; grid-template-columns: repeat(6, 1fr); gap: 15px; align-items: center; border: 1px solid rgba(255,255,255,0.1); }
+        .info-item { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .info-item .info-icon { font-size: 22px; line-height: 1; }
+        .info-item .number { font-size: 28px; font-weight: 800; color: white; line-height: 1; }
+        .info-item .label { font-size: 9px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.5px; }
         .info-item.total .number { color: #a78bfa; }
         .info-item.concluido .number { color: #34d399; }
         .info-item.andamento .number { color: #60a5fa; }
         .info-item.critico .number { color: #f87171; }
         .info-item.parados .number { color: #fbbf24; }
-        .update-info { text-align: right; }
-        .update-info .date { color: white; font-size: 13px; font-weight: 600; }
-        .update-info .time-ago { color: rgba(255,255,255,0.5); font-size: 11px; }
+        .update-info { text-align: center; display: flex; flex-direction: column; gap: 2px; }
+        .update-info .date { color: white; font-size: 12px; font-weight: 600; }
+        .update-info .time-ago { color: rgba(255,255,255,0.5); font-size: 10px; }
         .alert-box { background: linear-gradient(135deg, #fef2f2, #fee2e2); border: 2px solid #fca5a5; border-radius: 16px; padding: 18px 25px; margin-bottom: 25px; display: flex; align-items: center; gap: 20px; }
         .alert-box.success { background: linear-gradient(135deg, #ecfdf5, #d1fae5); border-color: #6ee7b7; }
         .alert-icon { font-size: 36px; }
@@ -61,7 +62,7 @@
         .footer a { color: rgba(255,255,255,0.7); text-decoration: none; }
         .footer a:hover { color: white; }
         .hidden { display: none; }
-        @media (max-width: 768px) { .header h1 { font-size: 26px; } .cards-container { grid-template-columns: 1fr; } .info-bar { flex-direction: column; text-align: center; } .alert-box { flex-direction: column; text-align: center; } .alert-badges { margin-left: 0; } }
+        @media (max-width: 768px) { .header h1 { font-size: 26px; } .cards-container { grid-template-columns: 1fr; } .info-bar { grid-template-columns: repeat(3, 1fr); } .alert-box { flex-direction: column; text-align: center; } .alert-badges { margin-left: 0; } }
     </style>
 </head>
 <body>
@@ -69,14 +70,14 @@
         <div class="header">
             <h1>📊 Status dos Projetos - Infraestrutura</h1>
             <p>Selecione o tipo de visualização desejada</p>
-            <span class="version-badge">v5.3.2 - KPIs Simplificados + Filtro Go-Live</span>
+            <span class="version-badge">v5.5.0 - Resumo Executivo + Alert Inteligente</span>
         </div>
         <div id="infoBar" class="info-bar">
-            <div class="info-item total"><div class="number" id="totalCount">-</div><div class="label">Projetos</div></div>
-            <div class="info-item concluido"><div class="number" id="concluidoCount">-</div><div class="label">Concluídos</div></div>
-            <div class="info-item andamento"><div class="number" id="andamentoCount">-</div><div class="label">Em Andamento</div></div>
-            <div class="info-item critico"><div class="number" id="criticoCount">-</div><div class="label">Críticos</div></div>
-            <div class="info-item parados"><div class="number" id="paradosCount">-</div><div class="label">Parados 15+</div></div>
+            <div class="info-item total"><div class="info-icon">📊</div><div class="number" id="totalCount">-</div><div class="label">Projetos</div></div>
+            <div class="info-item concluido"><div class="info-icon">✅</div><div class="number" id="concluidoCount">-</div><div class="label">Concluídos</div></div>
+            <div class="info-item andamento"><div class="info-icon">⏳</div><div class="number" id="andamentoCount">-</div><div class="label">Em Andamento</div></div>
+            <div class="info-item critico"><div class="info-icon">🚨</div><div class="number" id="criticoCount">-</div><div class="label">Críticos</div></div>
+            <div class="info-item parados"><div class="info-icon">⏸️</div><div class="number" id="paradosCount">-</div><div class="label">Parados 15+</div></div>
             <div class="update-info"><div class="date" id="updateDate">Carregando...</div><div class="time-ago" id="timeAgo"></div></div>
         </div>
         <div id="alertBox" class="alert-box hidden">
@@ -158,11 +159,16 @@
                     }
                     const alertBox = document.getElementById('alertBox');
                     alertBox.classList.remove('hidden');
-                    if (criticos > 0 || parados > 0) {
+                    if (atrasados > 0 || parados > 0) {
                         document.getElementById('atrasadosNum').textContent = atrasados;
                         document.getElementById('paradosNum').textContent = parados;
                         if (atrasados === 0) document.getElementById('badgeAtrasados').style.display = 'none';
                         if (parados === 0) document.getElementById('badgeParados').style.display = 'none';
+                        // Texto mais específico
+                        let mensagem = [];
+                        if (atrasados > 0) mensagem.push(`${atrasados} projeto${atrasados > 1 ? 's' : ''} atrasado${atrasados > 1 ? 's' : ''}`);
+                        if (parados > 0) mensagem.push(`${parados} parado${parados > 1 ? 's' : ''} há mais de 15 dias`);
+                        document.getElementById('alertText').textContent = `Existem ${mensagem.join(' e ')}. Revisar antes da próxima reunião.`;
                     } else {
                         alertBox.classList.add('success');
                         document.getElementById('alertIcon').textContent = '✅';
