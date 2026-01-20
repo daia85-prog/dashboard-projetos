@@ -166,7 +166,7 @@
                         if (parados === 0) document.getElementById('badgeParados').style.display = 'none';
                         let mensagem = [];
                         if (atrasados > 0) mensagem.push(`${atrasados} projeto${atrasados > 1 ? 's' : ''} atrasado${atrasados > 1 ? 's' : ''}`);
-                        if (parados > 0) mensagem.push(`${parados} parado${parados > 1 ? 's' : ''} há mais de 15 dias`);
+                        if (parados > 0) mensagem.push(`${parados} parado${parados > 1 ? 's' : ''} há 15+ dias`);
                         document.getElementById('alertText').textContent = `Existem ${mensagem.join(' e ')}. Revisar antes da próxima reunião.`;
                     } else {
                         alertBox.classList.add('success');

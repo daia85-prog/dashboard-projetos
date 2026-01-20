@@ -105,7 +105,7 @@
         
         /* Filters */
         .filters-section { background: white; padding: 20px 25px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); margin-bottom: 20px; }
-        .filters-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr auto; gap: 15px; align-items: end; }
+        .filters-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr auto auto; gap: 15px; align-items: end; }
         .filter-group label { display: block; font-size: 11px; text-transform: uppercase; color: #64748b; margin-bottom: 6px; font-weight: 600; }
         .filter-group input, .filter-group select { width: 100%; padding: 10px 14px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 13px; transition: border-color 0.2s; }
         .filter-group input:focus, .filter-group select:focus { outline: none; border-color: #667eea; }
@@ -261,7 +261,7 @@
                 <div class="kpi-card ontime">
                     <div class="kpi-header">
                         <div class="kpi-label">No Prazo</div>
-                        <div class="kpi-help">?<div class="kpi-tooltip">Percentual de projetos com Go Live no prazo (Atual = Original)</div></div>
+                        <div class="kpi-help">?<div class="kpi-tooltip"><strong>Fórmula:</strong> Projetos com Go Live Atual ≤ Go Live Original ÷ Total com data × 100</div></div>
                     </div>
                     <div class="kpi-value" id="kpiOntime">--%</div>
                     <div class="kpi-sub" id="kpiOntimeSub">de X com data</div>
@@ -269,7 +269,7 @@
                 <div class="kpi-card delta">
                     <div class="kpi-header">
                         <div class="kpi-label">Atraso Médio</div>
-                        <div class="kpi-help">?<div class="kpi-tooltip">Média de dias de atraso entre Go Live Original e Atual</div></div>
+                        <div class="kpi-help">?<div class="kpi-tooltip"><strong>Fórmula:</strong> Soma (Go Live Atual - Go Live Original) ÷ Qtd projetos com ambas as datas</div></div>
                     </div>
                     <div class="kpi-value" id="kpiDelta">-- dias</div>
                     <div class="kpi-sub" id="kpiDeltaSub">nos go-lives</div>
@@ -277,7 +277,7 @@
                 <div class="kpi-card taxa">
                     <div class="kpi-header">
                         <div class="kpi-label">Projetos Atualizados</div>
-                        <div class="kpi-help">?<div class="kpi-tooltip">Percentual de projetos atualizados nos últimos 7 dias</div></div>
+                        <div class="kpi-help">?<div class="kpi-tooltip"><strong>Fórmula:</strong> Projetos com Última Atualização ≤ 7 dias ÷ Total de projetos × 100</div></div>
                     </div>
                     <div class="kpi-value" id="kpiTaxa">--%</div>
                     <div class="kpi-sub" id="kpiTaxaSub">últimos 7 dias</div>
@@ -285,7 +285,7 @@
                 <div class="kpi-card aging">
                     <div class="kpi-header">
                         <div class="kpi-label">Tempo Médio Parado</div>
-                        <div class="kpi-help">?<div class="kpi-tooltip">Média de dias sem atualização dos projetos não concluídos</div></div>
+                        <div class="kpi-help">?<div class="kpi-tooltip"><strong>Fórmula:</strong> Soma (Dias Parado) ÷ Qtd projetos não concluídos</div></div>
                     </div>
                     <div class="kpi-value" id="kpiAging">-- dias</div>
                     <div class="kpi-sub" id="kpiAgingSub">sem atualização</div>
@@ -341,6 +341,12 @@
                     <div class="filter-group"><label>Go-Live</label><select id="filterGoLive" onchange="applyFilters()"><option value="">Todos</option><option value="mes">Este Mês</option><option value="30">Próx. 30 dias</option><option value="60">Próx. 60 dias</option><option value="90">Próx. 90 dias</option><option value="atrasado">Atrasados</option></select></div>
                     <div class="filter-group"><label>Parados</label><select id="filterParados" onchange="applyFilters()"><option value="">Todos</option><option value="7">7+ dias</option><option value="15">15+ dias</option><option value="30">30+ dias</option><option value="60">60+ dias</option></select></div>
                     <div class="filter-group"><label>PMO</label><select id="filterPMO" onchange="applyFilters()"><option value="">Todos</option></select></div>
+                    <div class="filter-group" style="display: flex; align-items: flex-end;">
+                        <label class="criticos-checkbox" style="display: flex; align-items: center; gap: 8px; cursor: pointer; background: linear-gradient(135deg, #fee2e2, #fecaca); padding: 8px 14px; border-radius: 8px; border: 2px solid #fca5a5;">
+                            <input type="checkbox" id="filterCriticos" onchange="applyFilters()" style="width: 16px; height: 16px; cursor: pointer;">
+                            <span style="font-weight: 600; color: #991b1b; font-size: 12px;">🚨 Apenas Críticos</span>
+                        </label>
+                    </div>
                     <div class="filter-group"><button class="btn btn-clear" onclick="clearFilters()">✕ Limpar</button></div>
                 </div>
             </div>
@@ -581,7 +587,12 @@
         function isCritico(p) {
             const status = normalizeStatus(p.status);
             const sit = (p.situacao || p.rag || '').toLowerCase();
-            return status === 'Atrasado' || sit.includes('vermelho') || sit === 'red' || (p.diasSemAtual || 0) > 15;
+            const temBloqueador = p.bloqueador && p.bloqueador.trim() !== '' && p.bloqueador !== '-';
+            return status === 'Atrasado' || 
+                   sit.includes('vermelho') || 
+                   sit === 'red' || 
+                   (p.diasSemAtual || 0) > 15 ||
+                   temBloqueador;
         }
         
         function parseDate(str) {
@@ -598,11 +609,15 @@
             const goLive = document.getElementById('filterGoLive').value;
             const parados = document.getElementById('filterParados').value;
             const pmo = document.getElementById('filterPMO').value;
+            const apenasCriticos = document.getElementById('filterCriticos').checked;
             
             const today = new Date();
             today.setHours(0, 0, 0, 0);
             
             filteredProjects = projects.filter(p => {
+                // Filtro "Apenas Críticos"
+                if (apenasCriticos && !isCritico(p)) return false;
+                
                 if (search && !p.projeto.toLowerCase().includes(search)) return false;
                 if (status && normalizeStatus(p.status) !== status) return false;
                 if (situacao) {
@@ -662,6 +677,7 @@
             document.getElementById('filterGoLive').value = '';
             document.getElementById('filterParados').value = '';
             document.getElementById('filterPMO').value = '';
+            document.getElementById('filterCriticos').checked = false;
             document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
             filteredProjects = [...projects];
             updateDashboard();
@@ -766,8 +782,8 @@
                 alertIcon.textContent = '🚨';
                 let msg = [];
                 if (atrasados > 0) msg.push(`${atrasados} projeto${atrasados > 1 ? 's' : ''} atrasado${atrasados > 1 ? 's' : ''}`);
-                if (parados15 > 0) msg.push(`${parados15} parado${parados15 > 1 ? 's' : ''} há mais de 15 dias`);
-                alertText.textContent = `Atenção: ${msg.join(' e ')}. Ação necessária!`;
+                if (parados15 > 0) msg.push(`${parados15} parado${parados15 > 1 ? 's' : ''} há 15+ dias`);
+                alertText.textContent = `Atenção: ${msg.join(' e ')}. Revisar antes da próxima reunião.`;
             } else if (criticos > 0) {
                 alertBar.classList.add('warning');
                 alertIcon.textContent = '⚠️';
