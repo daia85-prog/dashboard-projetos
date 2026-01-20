@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visão Resumida - Infraestrutura v5.5.0</title>
+    <title>Visão Resumida - Infraestrutura v5.5.2</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; min-height: 100vh; }
@@ -243,7 +243,7 @@
     <div class="container">
         <div class="header">
             <div>
-                <h1>📋 Visão Resumida - Infraestrutura <span class="version">v5.5.0</span></h1>
+                <h1>📋 Visão Resumida - Infraestrutura <span class="version">v5.5.2</span></h1>
                 <p>Atualizado em: <span id="currentDate">Carregando...</span></p>
             </div>
             <div style="display:flex;gap:10px;flex-wrap:wrap;">
@@ -873,7 +873,7 @@
                         <td><span class="status-badge ${getStatusClass(p.status)}">${normalizeStatus(p.status)}</span></td>
                         <td>${getSituacaoHtml(p.situacao || p.rag)}</td>
                         <td>${getProgressHtml(p.progresso)}</td>
-                        <td style="font-size:11px;">${p.etapa || '-'}</td>
+                        <td style="font-size:11px;">${p.etapaAtual || p.etapa || '-'}</td>
                         <td>${p.pmoInterno || p.respInterno || '-'}</td>
                         <td>${diasHtml}</td>
                     </tr>`;
@@ -949,7 +949,7 @@
             }
             
             document.getElementById('modalInfo').innerHTML = `
-                <div class="info-box"><label>Etapa Atual</label><span>${p.etapa || '-'}</span></div>
+                <div class="info-box"><label>Etapa Atual</label><span>${p.etapaAtual || p.etapa || '-'}</span></div>
                 <div class="info-box"><label>Progresso</label><span>${p.progresso || 0}%</span></div>
                 <div class="info-box"><label>Situação</label><span>${getSituacaoHtml(p.situacao || p.rag)}</span></div>
                 <div class="info-box"><label>Go Live Original</label><span>${p.goliveOriginal || '-'}</span></div>

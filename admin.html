@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Dashboard Projetos v5.4.0</title>
+    <title>Admin - Dashboard Projetos v5.5.2</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
@@ -52,12 +52,12 @@
 <body>
     <div class="container">
         <div class="header">
-            <div><h1>🔧 Área Administrativa <span class="version">v5.4.0</span></h1><p style="color:#64748b;font-size:13px;margin-top:5px;">KPIs Simplificados + Filtro Go-Live + Impressão por Projetos + PDF</p></div>
+            <div><h1>🔧 Área Administrativa <span class="version">v5.5.2</span></h1><p style="color:#64748b;font-size:13px;margin-top:5px;">KPIs Simplificados + Filtro Go-Live + Impressão por Projetos + PDF</p></div>
         </div>
         <div id="successMsg" class="message success hidden"><span>✅</span><div><strong>Sucesso!</strong> <span id="successText"></span></div></div>
         <div id="errorMsg" class="message error hidden"><span>❌</span><div><strong>Erro!</strong> <span id="errorText"></span></div></div>
         <div class="card">
-            <div class="card-header"><h2>📋 Importar Dados da Planilha v5 <span class="new-badge">v5.4.0</span></h2></div>
+            <div class="card-header"><h2>📋 Importar Dados da Planilha v5 <span class="new-badge">v5.5.2</span></h2></div>
             <div class="card-body">
                 <div class="help-text">
                     <h4>📝 Novidades da versão 5.3:</h4>
@@ -94,7 +94,7 @@
                 <div id="previewSection" class="preview-section hidden">
                     <h3>👀 Preview (<span id="previewCount">0</span>)</h3>
                     <div style="overflow-x:auto;margin-top:15px;">
-                        <table><thead><tr><th>Projeto</th><th>Etapa</th><th>Progresso</th><th>Situação</th><th>Status</th><th>PMO Int</th><th>Go Live</th></tr></thead><tbody id="previewTable"></tbody></table>
+                        <table><thead><tr><th>Projeto</th><th>Etapa</th><th>Progresso</th><th>Situação</th><th>Status</th><th>PMO Int</th><th>Go Live</th><th>Dias Parado</th></tr></thead><tbody id="previewTable"></tbody></table>
                     </div>
                 </div>
             </div>
@@ -109,12 +109,89 @@
     </div>
     <script>
         let projects = [];
+        
+        // ===== v5.5.2 - FUNÇÕES DE PADRONIZAÇÃO =====
+        
+        // Limpa e valida bloqueador (remove NaN, -, vazio)
+        function cleanBloqueador(val) {
+            if (!val || val === '-' || val === '' || val === 'NaN' || val === 'undefined' || val === 'null') {
+                return '';
+            }
+            const cleaned = String(val).trim();
+            if (cleaned === '-' || cleaned.toLowerCase() === 'nan' || cleaned === '') {
+                return '';
+            }
+            return cleaned;
+        }
+        
+        // Converte qualquer formato de data para dd/mm/aaaa
+        function parseDateBR(val) {
+            if (!val || val === '-' || val === '' || val === 'NaN') return '';
+            
+            // Se for número serial do Excel
+            if (typeof val === 'number' || (!isNaN(val) && !val.includes('/'))) {
+                const num = parseFloat(val);
+                if (num > 40000 && num < 50000) { // Range válido de datas Excel
+                    const d = new Date((num - 25569) * 86400 * 1000);
+                    if (!isNaN(d.getTime())) {
+                        return d.toLocaleDateString('pt-BR');
+                    }
+                }
+            }
+            
+            const str = String(val).trim();
+            
+            // Já está no formato dd/mm/aaaa
+            if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(str)) {
+                const parts = str.split('/');
+                return `${parts[0].padStart(2, '0')}/${parts[1].padStart(2, '0')}/${parts[2]}`;
+            }
+            
+            // Formato aaaa-mm-dd ou aaaa-mm-ddTHH:MM:SS
+            if (/^\d{4}-\d{2}-\d{2}/.test(str)) {
+                const parts = str.split(/[-T ]/);
+                return `${parts[2].substring(0,2)}/${parts[1]}/${parts[0]}`;
+            }
+            
+            // Formato dd-mm-aaaa
+            if (/^\d{1,2}-\d{1,2}-\d{4}$/.test(str)) {
+                const parts = str.split('-');
+                return `${parts[0].padStart(2, '0')}/${parts[1].padStart(2, '0')}/${parts[2]}`;
+            }
+            
+            return str;
+        }
+        
+        // Converte data BR para objeto Date
+        function parseDateToObj(dateStr) {
+            if (!dateStr || dateStr === '-' || dateStr === '') return null;
+            const parts = dateStr.split('/');
+            if (parts.length !== 3) return null;
+            const d = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
+            return isNaN(d.getTime()) ? null : d;
+        }
+        
+        // Calcula dias entre duas datas
+        function calcularDiasParado(ultAtualStr) {
+            const ultAtual = parseDateToObj(ultAtualStr);
+            if (!ultAtual) return 0;
+            const hoje = new Date();
+            hoje.setHours(0, 0, 0, 0);
+            ultAtual.setHours(0, 0, 0, 0);
+            const diffTime = hoje - ultAtual;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays >= 0 ? diffDays : 0;
+        }
+        
+        // ===== FUNÇÕES ORIGINAIS ATUALIZADAS =====
+        
         function showMessage(type, text) {
             const el = document.getElementById(type === 'success' ? 'successMsg' : 'errorMsg');
             document.getElementById(type === 'success' ? 'successText' : 'errorText').textContent = text;
             el.classList.remove('hidden');
             setTimeout(() => el.classList.add('hidden'), 5000);
         }
+        
         function clearData() {
             document.getElementById('dataInput').value = '';
             document.getElementById('validationSection').classList.add('hidden');
@@ -122,6 +199,7 @@
             document.getElementById('exportCard').classList.add('hidden');
             projects = [];
         }
+        
         function processData() {
             try {
                 const text = document.getElementById('dataInput').value;
@@ -135,6 +213,7 @@
                 showMessage('success', `${projects.length} projetos carregados com sucesso!`);
             } catch(e) { showMessage('error', 'Erro: ' + e.message); }
         }
+        
         function parseData(text) {
             text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
             const lines = text.split('\n').filter(l => l.trim());
@@ -146,8 +225,9 @@
             const hasHeader = firstLine.includes('projeto') && (firstLine.includes('status') || firstLine.includes('localiza'));
             
             let startIdx = hasHeader ? 1 : 0;
+            let diasCalculadosAuto = 0;
             
-            // Mapeamento por posição fixa (ordem das colunas na planilha v5.4.0)
+            // Mapeamento por posição fixa (ordem das colunas na planilha v5.5.2)
             // A-M: Dados básicos | N: Atividades (formato: STATUS|DATA|DESCRIÇÃO;...)
             
             for (let i = startIdx; i < lines.length; i++) {
@@ -160,6 +240,21 @@
                 const progStr = cols[4] || '0';
                 progresso = parseInt(progStr.replace('%', '').replace(',', '.')) || 0;
                 
+                // Parse datas com função padronizada
+                const goliveOriginal = parseDateBR(cols[7]);
+                const goliveAtual = parseDateBR(cols[8]);
+                const ultAtual = parseDateBR(cols[10]);
+                
+                // Limpar bloqueador com função padronizada
+                const bloqueador = cleanBloqueador(cols[9]);
+                
+                // Calcular dias parado: se vazio mas tem última atualização, calcular automaticamente
+                let diasSemAtual = parseInt(cols[11] || '0') || 0;
+                if ((diasSemAtual === 0 || isNaN(diasSemAtual)) && ultAtual) {
+                    diasSemAtual = calcularDiasParado(ultAtual);
+                    if (diasSemAtual > 0) diasCalculadosAuto++;
+                }
+                
                 // Parse atividades (formato: C|DATA|DESC;P||DESC;...)
                 const atividadesRaw = cols[13] || '';
                 
@@ -169,17 +264,18 @@
                     status: cols[2] || 'Não Iniciado',
                     situacao: (cols[3] || 'Cinza').toLowerCase(),
                     progresso: progresso,
-                    etapa: cols[5] || '-',
+                    etapaAtual: cols[5] || '-',
                     pmoInterno: cols[6] || '-',
-                    goliveOriginal: formatDate(cols[7]) || '-',
-                    goliveAtual: formatDate(cols[8]) || '-',
-                    golive: formatDate(cols[8]) || '-',
-                    bloqueador: cols[9] || '-',
-                    ultAtual: formatDate(cols[10]) || '-',
-                    diasSemAtual: parseInt(cols[11] || '0') || 0,
+                    goliveOriginal: goliveOriginal || '-',
+                    goliveAtual: goliveAtual || '-',
+                    golive: goliveAtual || '-',
+                    bloqueador: bloqueador || '-',
+                    ultAtual: ultAtual || '-',
+                    diasSemAtual: diasSemAtual,
                     observacoes: cols[12] || '-',
                     atividades: atividadesRaw,
                     // Compatibilidade
+                    etapa: cols[5] || '-',
                     respInterno: cols[6] || '-',
                     rag: (cols[3] || 'Cinza').toLowerCase(),
                     obs: cols[12] || '-',
@@ -190,48 +286,52 @@
                     retrocesso: ''
                 });
             }
+            
+            // Guardar estatística para validação
+            window._diasCalculadosAuto = diasCalculadosAuto;
+            
             return data;
         }
-        function formatDate(val) {
-            if (!val || val === '-' || val === '') return null;
-            if (typeof val === 'number') {
-                const d = new Date((val - 25569) * 86400 * 1000);
-                return d.toLocaleDateString('pt-BR');
-            }
-            if (val.includes('/')) return val;
-            if (val.includes('-')) {
-                const parts = val.split(/[-T ]/);
-                if (parts[0].length === 4) return `${parts[2].substring(0,2)}/${parts[1]}/${parts[0]}`;
-            }
-            return val;
-        }
+        
         function showValidation() {
             const section = document.getElementById('validationSection');
             const items = document.getElementById('validationItems');
             const parados = projects.filter(p => p.diasSemAtual > 15).length;
             const retrocessos = projects.filter(p => p.retrocesso && p.retrocesso.includes('RETROCESSO')).length;
+            const bloqueadoresLimpos = projects.filter(p => p.bloqueador && p.bloqueador !== '-').length;
+            const diasAuto = window._diasCalculadosAuto || 0;
+            
             let html = `<div class="validation-item ok">✅ ${projects.length} projetos encontrados</div>`;
+            if (diasAuto > 0) html += `<div class="validation-item ok">🔄 ${diasAuto} projeto(s) com "Dias Parado" calculado automaticamente</div>`;
+            if (bloqueadoresLimpos > 0) html += `<div class="validation-item ok">🚧 ${bloqueadoresLimpos} projeto(s) com bloqueador registrado</div>`;
             if (parados > 0) html += `<div class="validation-item warning">⚠️ ${parados} projeto(s) parado(s) há mais de 15 dias</div>`;
             if (retrocessos > 0) html += `<div class="validation-item warning">⚠️ ${retrocessos} projeto(s) com retrocesso de etapa</div>`;
             items.innerHTML = html;
             document.getElementById('validationStatus').textContent = 'Tudo OK!';
             section.classList.remove('hidden');
         }
+        
         function showPreview() {
             document.getElementById('previewCount').textContent = `${projects.length} projetos`;
-            document.getElementById('previewTable').innerHTML = projects.slice(0, 15).map(p => `<tr>
-                <td><strong>${p.projeto}</strong></td>
-                <td>${p.etapa}</td>
-                <td>${p.progresso}%</td>
-                <td><span class="badge badge-${p.situacao}">${p.situacao}</span></td>
-                <td>${p.status}</td>
-                <td>${p.pmoInterno}</td>
-                <td>${p.goliveAtual}</td>
-            </tr>`).join('');
+            document.getElementById('previewTable').innerHTML = projects.slice(0, 15).map(p => {
+                // Destacar dias parado > 15 em laranja
+                const diasClass = p.diasSemAtual > 15 ? 'style="background:#fef3c7;color:#92400e;font-weight:600;"' : '';
+                return `<tr>
+                    <td><strong>${p.projeto}</strong></td>
+                    <td>${p.etapaAtual || p.etapa}</td>
+                    <td>${p.progresso}%</td>
+                    <td><span class="badge badge-${p.situacao}">${p.situacao}</span></td>
+                    <td>${p.status}</td>
+                    <td>${p.pmoInterno}</td>
+                    <td>${p.goliveAtual}</td>
+                    <td ${diasClass}>${p.diasSemAtual} dias</td>
+                </tr>`;
+            }).join('');
             document.getElementById('previewSection').classList.remove('hidden');
         }
+        
         function exportJSON() {
-            const data = { lastUpdate: new Date().toISOString(), version: '5.3', projects: projects };
+            const data = { lastUpdate: new Date().toISOString(), version: '5.5.2', projects: projects };
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');

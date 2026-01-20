@@ -1,225 +1,176 @@
-# 📊 Dashboard de Status de Projetos - Infraestrutura TI
+# 📊 Dashboard de Projetos - Infraestrutura
 
-> **Versão:** 5.3.2  
-> **Última atualização:** 18/01/2026  
-> **Desenvolvido para:** Douglas (Gestor) - Invent Corp  
-> **PMO:** Daiana
+## Versão Atual: v5.5.2
+
+Dashboard executivo para gestão de projetos de infraestrutura. Desenvolvido para visualização rápida de KPIs, status de projetos e tomada de decisão.
 
 ---
 
-## 📁 ESTRUTURA DE ARQUIVOS
+## 📁 Arquivos do Sistema
 
 | Arquivo | Descrição |
 |---------|-----------|
-| `index.html` | Página inicial - menu, carregamento de dados, próximos go-lives |
-| `view-simples.html` | Visão resumida - KPIs, cards, gráficos, tabela única |
-| `view-detalhada.html` | Visão detalhada - seções separadas por status |
-| `admin.html` | Administração - colar dados da planilha |
-| `Template_Projetos_v5.xlsx` | Planilha modelo (template vazio) |
-| `Template_Projetos_v5_TestData.xlsx` | Planilha com 30 projetos fictícios para teste |
-| `CHANGELOG_BUGS.md` | Registro de bugs e correções |
-| `README.md` | Este arquivo - documentação completa |
+| `index.html` | Página inicial com seleção de visões |
+| `view-simples.html` | Dashboard resumido com KPIs e gráficos |
+| `view-detalhada.html` | Dashboard completo segmentado por status |
+| `admin.html` | Área administrativa para importar dados |
+| `dados.json` | Arquivo de dados (gerado pelo admin) |
+| `Template_Projetos_v5.xlsx` | Planilha modelo para importação |
 
 ---
 
-## 📋 CAMPOS DA PLANILHA (18 colunas)
+## 📋 Estrutura de Campos
 
-| # | Coluna | Obrigatório | Descrição |
-|---|--------|-------------|-----------|
-| A | **Projeto** | ✅ Sim | Nome do projeto |
-| B | **Localização** | Não | Cidade/Estado do CD (ex: São Paulo - SP) |
-| C | **Status** | ✅ Sim | Em Andamento, Concluído, Atrasado, Aguardando Cliente, Não Iniciado |
-| D | **Situação** | ✅ Sim | Verde, Amarelo, Vermelho, Cinza (RAG) |
-| E | **Progresso** | Não | Percentual (ex: 70%) |
-| F | **Etapa Atual** | Não | Fase atual do projeto |
-| G | **PMO Interno** | Não | Responsável interno |
-| H | **Go Live Original** | Não | Data prevista original (dd/mm/aaaa) |
-| I | **Go Live Atual** | Não | Data prevista atualizada (dd/mm/aaaa) |
-| J | **Bloqueador** | Não | Impedimento atual |
-| K | **Última Atualização** | Não | Data da última atualização |
-| L | **Dias Parado** | Não | Quantos dias sem atualização |
-| M | **Observações** | Não | Anotações gerais do projeto |
-| N | **Etapa 1 - Kick-off** | Não | Data de conclusão do kick-off |
-| O | **Etapa 2 - Levantamento** | Não | Data de conclusão do levantamento |
-| P | **Etapa 3 - Desenvolvimento** | Não | Data de conclusão do desenvolvimento |
-| Q | **Etapa 4 - Homologação** | Não | Data de conclusão da homologação |
-| R | **Etapa 5 - Go Live** | Não | Data de realização do go-live |
+### Colunas da Planilha (A-N)
 
----
+| Coluna | Campo | Tipo | Exemplo |
+|--------|-------|------|---------|
+| A | Projeto | Texto | "ALPHA - Automação CD" |
+| B | Localização | Texto | "São Paulo - SP" |
+| C | Status | Texto | "Em Andamento" |
+| D | Situação/RAG | Texto | "Verde" / "Amarelo" / "Vermelho" |
+| E | Progresso | Número | 75 ou 75% |
+| F | Etapa Atual | Texto | "Desenvolvimento" |
+| G | PMO Interno | Texto | "Daiana" |
+| H | Go Live Original | Data | 15/03/2025 |
+| I | Go Live Atual | Data | 20/03/2025 |
+| J | Bloqueador | Texto | "Aguardando retorno do cliente" |
+| K | Última Atualização | Data | 18/01/2026 |
+| L | Dias Sem Atualização | Número | 5 (calculado auto se vazio) |
+| M | Observações | Texto | "Reunião agendada para sexta" |
+| N | Atividades | Texto | "C\|14/10/2025\|01 - KICKOFF;P\|\|02 - Análise" |
 
-## 🎯 REGRAS DE NEGÓCIO
+### Valores Aceitos para Status
+- `Em Andamento`
+- `Concluído`
+- `Atrasado`
+- `Aguardando Cliente`
+- `Não Iniciado`
 
-### Status (coluna C)
-- **Em Andamento** - Projeto em execução
-- **Concluído** - Projeto finalizado
-- **Atrasado** - Passou da data de go-live
-- **Aguardando Cliente** - Bloqueado por dependência do cliente
-- **Não Iniciado** - Ainda não começou
-
-### Situação/RAG (coluna D)
-- **Verde** 🟢 - No prazo, sem problemas
-- **Amarelo** 🟡 - Atenção, risco moderado
-- **Vermelho** 🔴 - Crítico, risco alto
-- **Cinza** ⚫ - Concluído ou não iniciado
-
-### Projeto Crítico (alerta automático)
-Um projeto é considerado **CRÍTICO** se atender QUALQUER uma das condições:
-1. Status = "Atrasado"
-2. Situação = "Vermelho"
-3. Dias Parado > 15
-4. Tem bloqueador preenchido
+### Valores Aceitos para Situação/RAG
+- `Verde` - Projeto no prazo
+- `Amarelo` - Atenção necessária
+- `Vermelho` - Projeto crítico
+- `Cinza` - Sem definição
 
 ---
 
-## 📊 KPIs CALCULADOS
+## 🔧 Regras de Negócio
 
-| KPI | Fórmula | Descrição |
-|-----|---------|-----------|
-| **% No Prazo** | (projetos com GoLive Atual ≤ GoLive Original) / total com data | Taxa de entregas no prazo |
-| **Atraso Médio** | média(GoLive Atual - GoLive Original) em dias | Média de dias de atraso |
-| **Taxa Atualização** | projetos com dias ≤ 7 / total não concluídos | % de projetos atualizados na semana |
-| **Aging Médio** | média(Dias Parado) | Tempo médio sem atualização |
+### Projeto Crítico (isCritico)
+Um projeto é considerado **crítico** se atender a QUALQUER uma das condições:
+- Situação/RAG = "Vermelho"
+- Status = "Atrasado"
+- Dias sem atualização > 15 (e não concluído)
 
----
+### Cálculo Automático de "Dias Parado"
+Se o campo "Dias Sem Atualização" (coluna L) estiver vazio, mas houver data em "Última Atualização" (coluna K), o sistema calcula automaticamente a diferença em dias.
 
-## 🖨️ FUNCIONALIDADES DE IMPRESSÃO
+### Tratamento de Bloqueador
+O campo bloqueador é limpo automaticamente:
+- Valores `NaN`, `-`, vazio, `undefined`, `null` são convertidos para vazio
+- Apenas bloqueadores com texto válido são exibidos
 
-### Opções de impressão:
-1. **Filtro atual** - Imprime apenas projetos visíveis na tela
-2. **Todos os projetos** - Imprime todos sem filtros
-3. **Apenas críticos** - Imprime só os projetos críticos
-4. **Projetos específicos** - Seleciona manualmente com checkboxes
-
-### Melhorias implementadas (v5.3.2):
-- 🔍 **Campo de busca** - Digitar para filtrar projetos na lista
-- 🔤 **Ordem alfabética** - Lista de projetos ordenada A-Z
-- 📅 **Histórico de etapas** - Modal mostra datas das etapas concluídas
-- 📝 **Observações** - Modal exibe campo de observações
+### Formato de Datas
+Todas as datas são padronizadas para `dd/mm/aaaa`:
+- Aceita: `15/03/2025`, `2025-03-15`, `15-03-2025`, números seriais do Excel
+- Saída sempre: `15/03/2025`
 
 ---
 
-## 🔧 FILTROS DISPONÍVEIS
+## 📊 KPIs do Dashboard
 
-| Filtro | Opções |
-|--------|--------|
-| **Busca** | Texto livre (nome do projeto) |
-| **Status** | Em Andamento, Concluído, Atrasado, Aguardando, Não Iniciado |
-| **Situação** | Verde, Amarelo, Vermelho |
-| **Go Live** | Próximos 7 dias, Próximos 30 dias, Atrasados |
-| **Parados** | Mais de 7 dias, Mais de 15 dias |
-| **PMO** | Lista dinâmica dos PMOs cadastrados |
+| KPI | Descrição | Fórmula |
+|-----|-----------|---------|
+| No Prazo | % projetos com Go Live no prazo | Go Live Atual ≤ Go Live Original |
+| Atraso Médio | Média de dias de atraso | (Go Live Atual - Go Live Original) / n |
+| Projetos Atualizados | % atualizados nos últimos 7 dias | Dias sem atualização ≤ 7 |
+| Tempo Médio Parado | Média de dias sem atualização | Soma(diasSemAtual) / n |
 
 ---
 
-## 📅 PRÓXIMOS GO-LIVES (index.html)
+## 📋 Checklist de Atividades (20 itens)
 
-Exibe timeline com os próximos go-lives:
-- 🔴 **HOJE!** - Go-live é hoje
-- 🟡 **em X dias** - Go-live nos próximos 7 dias
-- 🟢 **em X dias** - Go-live entre 8-30 dias
-- ⚪ **em X dias** - Go-live após 30 dias
+O campo Atividades (coluna N) usa formato estruturado:
+```
+STATUS|DATA|DESCRIÇÃO;STATUS|DATA|DESCRIÇÃO;...
+```
 
----
+**STATUS:**
+- `C` = Concluído
+- `P` = Pendente
 
-## 🐛 HISTÓRICO DE CORREÇÕES
+**Exemplo:**
+```
+C|14/10/2025|01 - KICKOFF INTERNO;C|15/10/2025|02 - Analisar documentos;P||03 - Layout Elétrico
+```
 
-### v5.3.2 (18/01/2026)
-- ✅ #012 - Busca de projetos na impressão
-- ✅ #013 - Lista ordenada alfabeticamente
-- ✅ #014 - Histórico de etapas no modal
-- ✅ #015 - Observações no modal
-
-### v5.3.1 (18/01/2026)
-- ✅ #008 - KPI "NaN dias" corrigido (validação de datas)
-- ✅ #009 - Filtros não zeravam cards (usar filteredProjects)
-- ✅ #010 - Data "hoje/ontem" incorreta (comparar só dia)
-- ✅ #011 - Próximos Go Lives redesenhado (timeline)
-
-### v5.3 (17/01/2026)
-- ✅ Checkbox para seleção de projetos na impressão
-- ✅ Labels simplificados nos KPIs
-- ✅ Filtro de Go-Live
-
----
-
-## 💾 COMO USAR
-
-### Passo a passo:
-1. Preencher a planilha `Template_Projetos_v5.xlsx`
-2. Selecionar e copiar os dados (SEM o cabeçalho)
-3. Abrir `index.html` no navegador
-4. Clicar em "⚙️ Carregar Dados"
-5. Colar os dados e clicar "Carregar"
-6. Navegar pelas visualizações
-
-### Atualização de dados:
-- Os dados ficam salvos no localStorage do navegador
-- Para atualizar: repetir o processo de colar novos dados
-- Para limpar: usar botão "Limpar Dados" no admin
+### Lista Padrão de Atividades
+1. KICKOFF INTERNO - Gestor
+2. Analisar documentos (Masterdata + Cronograma + Gravação)
+3. Análise/Recebimento Layout Elétrico
+4. Reportar pontos críticos ao PMO/Gestor
+5. Participar reunião de apresentação dos times
+6. Registrar TODOS os contatos do cliente
+7. Enviar documento: Sugestão de Servidores
+8. Enviar documento: Solicitação Range IPs
+9. Enviar documento: Solicitação Acesso Remoto
+10. Acompanhar retorno do cliente diariamente
+11. Follow-up após 7 dias se sem resposta
+12. Agendar reunião de definição
+13. Realizar reunião de definição
+14. Documentar acordos/definições com o cliente
+15. TERMO DE SEGURANÇA: Coletar assinaturas
+16. VALIDAÇÃO DE ACESSOS: Testar acessos
+17. Criar procedimento de acesso
+18. Compartilhar com todos os times
+19. LEMBRETES: 1 (+15 dias) 2 (+30 dias) 3 FINAL (+45 dias)
+20. Atualizar documentação no OneDrive
 
 ---
 
-## 🏗️ ARQUITETURA TÉCNICA
+## 🚀 Como Usar
 
-### Tecnologias:
-- HTML5 + CSS3 (inline, sem dependências externas)
-- JavaScript vanilla (sem frameworks)
-- LocalStorage para persistência
-- Responsivo (desktop/tablet)
+### 1. Preparar Dados
+1. Abra `Template_Projetos_v5.xlsx`
+2. Preencha os dados dos projetos (linha 2 tem exemplo)
+3. **Apague a linha de exemplo antes de usar!**
 
-### Funções principais:
-- `loadData()` - Carrega dados do localStorage
-- `parseData(text)` - Converte texto colado em objetos
-- `updateDashboard()` - Atualiza KPIs e cards (usa filteredProjects)
-- `applyFilters()` - Aplica filtros selecionados
-- `renderTable()` / `renderSections()` - Renderiza tabelas
-- `openModal(name)` - Abre detalhes do projeto (com etapas e obs)
-- `executePrint()` - Prepara e executa impressão
-- `filterProjectCheckboxes()` - Filtra lista de projetos por busca
-- `populateProjectsCheckboxes()` - Preenche lista ordenada A-Z
+### 2. Importar no Dashboard
+1. Acesse `admin.html`
+2. Selecione os dados na planilha (Ctrl+A)
+3. Copie (Ctrl+C)
+4. Cole no campo de texto
+5. Clique em "Carregar e Validar"
+6. Exporte o `dados.json`
 
----
-
-## 📞 MANUTENÇÃO FUTURA
-
-### Para adicionar novo campo:
-1. Adicionar coluna na planilha (Template)
-2. Atualizar `colMap` no `admin.html`
-3. Adicionar campo no `data.push()` do `admin.html`
-4. Exibir campo nos HTMLs (tabela/modal)
-
-### Para adicionar novo filtro:
-1. Adicionar `<select>` na seção de filtros
-2. Capturar valor em `applyFilters()`
-3. Adicionar lógica de filtro no `filter()`
-
-### Para adicionar novo KPI:
-1. Adicionar card HTML na seção `.kpis-section`
-2. Calcular valor em `updateDashboard()`
-3. Atualizar `getElementById` com o valor
+### 3. Publicar
+1. Faça upload do `dados.json` no mesmo diretório dos HTMLs
+2. Acesse `index.html` no navegador
 
 ---
 
-## 🔗 HOSPEDAGEM
+## 📤 Exportações
 
-### Opções testadas:
-- ✅ **GitHub Pages** - Funciona 100% (recomendado para testes)
-- ✅ **Abrir local** - Funciona no navegador
-- ⚠️ **SharePoint** - Funciona, pode ter limitações de JS
-- ✅ **Azure Static Web Apps** - Melhor opção corporativa
+### Imprimir
+- Filtro atual (projetos visíveis)
+- Todos os projetos
+- Apenas críticos
+- Projetos específicos (seleção por checkbox)
 
----
-
-## 📝 NOTAS IMPORTANTES
-
-1. **Datas** devem estar no formato `dd/mm/aaaa`
-2. **Progresso** pode ter ou não o símbolo `%`
-3. **Campos vazios** são tratados como `-`
-4. **Ordem das colunas** na planilha é flexível (mapeamento por nome)
-5. **localStorage** tem limite de ~5MB (suficiente para 1000+ projetos)
-6. **Sempre usar filteredProjects** nos cálculos de cards/KPIs (não projects)
-7. **Validar datas** com isNaN() antes de cálculos para evitar NaN
+### Gerar PDF
+- Mesmas opções de impressão
+- Arquivo baixado: `Relatorio_Projetos_Infraestrutura_DD-MM-AAAA.pdf`
 
 ---
 
-> **Desenvolvido com 💜 para facilitar a gestão de projetos de infraestrutura**
+## 📝 Changelog
+
+Ver `CHANGELOG_BUGS.md` para histórico completo de versões.
+
+---
+
+## 👩‍💻 Desenvolvido por
+Infraestrutura TI - Invent Corp
+
+**Última atualização:** Janeiro 2026

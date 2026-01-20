@@ -1,68 +1,130 @@
-# 📋 REGISTRO DE BUGS E CORREÇÕES - Dashboard Projetos Infraestrutura
+# 📋 Changelog e Histórico de Bugs
 
-> **Última atualização:** 18/01/2026
-> **Versão atual:** 5.3.2
-
----
-
-## 🆕 MELHORIAS v5.3.2 (18/01/2026)
-
-### MELHORIA #012 - Busca de projetos na impressão
-**Descrição:** Adicionado campo de busca para filtrar projetos na lista de impressão.
-
-**Funcionalidade:** Digite o nome do projeto para localizar rapidamente entre muitos projetos.
-
-**Arquivos afetados:** `view-simples.html`, `view-detalhada.html`
+## Dashboard de Projetos - Infraestrutura
 
 ---
 
-### MELHORIA #013 - Lista de projetos ordenada alfabeticamente
-**Descrição:** A lista de projetos para impressão agora é exibida em ordem alfabética.
+## v5.5.2 (20/01/2026) - Refinamentos de Nomenclatura
 
-**Arquivos afetados:** `view-simples.html`, `view-detalhada.html`
-
----
-
-### MELHORIA #014 - Histórico de etapas no modal de detalhes
-**Descrição:** O modal de detalhes do projeto agora exibe as datas de conclusão das etapas anteriores (Kick-off, Levantamento, Desenvolvimento, Homologação, Go-Live).
-
-**Campos necessários na planilha:** 
-- Etapa 1 - Kick-off
-- Etapa 2 - Levantamento
-- Etapa 3 - Desenvolvimento
-- Etapa 4 - Homologação
-- Etapa 5 - Go Live
-
-**Arquivos afetados:** `view-simples.html`, `view-detalhada.html`, `admin.html`
+### ✅ Melhorias
+- **`etapaAtual` padronizado** - Campo renomeado para consistência (mantém `etapa` para compatibilidade)
+- **`observacoes` padronizado** - Campo sempre com este nome no JSON
+- **Linha de exemplo na planilha** - Template com dados fictícios para referência
+- **README.md** - Documentação técnica completa
+- **CHANGELOG_BUGS.md** - Este arquivo de histórico
 
 ---
 
-### MELHORIA #015 - Observações/Anotações no modal de detalhes
-**Descrição:** O modal de detalhes agora exibe o campo de observações/anotações do projeto.
+## v5.5.1 (20/01/2026) - Padronização Core
 
-**Campo na planilha:** Observações (ou Anotações)
+### ✅ Melhorias
+- **Função `parseDateBR()`** - Converte qualquer formato de data para dd/mm/aaaa
+  - Aceita: números Excel, aaaa-mm-dd, dd-mm-aaaa, dd/mm/aaaa
+  - Sempre retorna: dd/mm/aaaa
+- **Função `cleanBloqueador()`** - Remove valores inválidos
+  - Trata: NaN, -, vazio, undefined, null
+  - Resultado: texto limpo ou vazio
+- **Cálculo automático de "Dias Parado"**
+  - Se coluna L vazia mas coluna K tem data → calcula automaticamente
+  - Validação mostra quantos foram calculados
+- **Preview com destaque** - Dias > 15 aparecem em laranja na pré-visualização
 
-**Arquivos afetados:** `view-simples.html`, `view-detalhada.html`, `admin.html`
+### 🐛 Bugs Corrigidos
+- Bloqueador mostrava "NaN" quando vazio
+- Datas em formato ISO não eram convertidas
 
 ---
 
-## ✅ CORREÇÕES v5.3.1 (18/01/2026)
+## v5.5.0 (20/01/2026) - Resumo Executivo + Alert Inteligente
 
-### BUG #008 - KPI "Atraso Médio" mostrando "NaN dias"
-### BUG #009 - Filtros não zeram os cards de status (regressão)
-### BUG #010 - Data "hoje" incorreta na página inicial
-### BUG #011 - "Próximos Go Lives" mostrando dados incorretos
+### ✅ Novas Funcionalidades
+- **Resumo Executivo** - Frase automática abaixo dos KPIs
+  - "30 projetos em carteira: 5 concluídos, 13 em andamento. Foco: 5 atrasados..."
+- **Alert Bar Inteligente**
+  - 🔴 Vermelho: projetos atrasados ou parados 15+ dias
+  - 🟡 Amarelo: projetos que requerem atenção
+  - 🟢 Verde: tudo em dia
+- **Ícones nos Cards de Status**
+  - 📊 Total | ✅ Concluídos | ⏳ Em Andamento | 🔴 Atrasados | ⏸️ Aguardando | 🚨 Críticos
+- **Hierarquia Visual Melhorada** - Números maiores, labels menores
+- **Botão "Gerar PDF"** em vez de só "PDF"
+
+### 🐛 Bugs Corrigidos
+- Layout da index.html quebrado (itens empilhados) → corrigido com CSS grid
 
 ---
 
-## 📦 ESTRUTURA DE ARQUIVOS v5.3.2
+## v5.4.1 (20/01/2026) - Modal PDF com Opções
 
-| Arquivo | Descrição |
-|---------|-----------|
-| index.html | Página inicial com menu e carregamento de dados |
-| view-simples.html | Visão resumida com KPIs e tabela |
-| view-detalhada.html | Visão detalhada com seções por status |
-| admin.html | Página de administração para colar dados |
-| Template_Projetos_v5.xlsx | Planilha modelo para entrada de dados |
-| CHANGELOG_BUGS.md | Este arquivo de registro |
-| README.md | Documentação do projeto |
+### ✅ Novas Funcionalidades
+- **Modal de PDF** - Mesmas opções que impressão:
+  - Filtro atual
+  - Todos os projetos
+  - Apenas críticos
+  - Projetos específicos
+
+### 🐛 Bugs Corrigidos
+- PDF gerava direto sem perguntar opções
+
+---
+
+## v5.4.0 (19/01/2026) - Checklist de 20 Atividades
+
+### ✅ Novas Funcionalidades
+- **Migração de 12 etapas fixas para 20 atividades flexíveis**
+- **Formato estruturado**: `STATUS|DATA|DESCRIÇÃO;...`
+- **Modal com checklist visual**:
+  - Barra de progresso
+  - Seção de concluídas (verde)
+  - Seção de pendentes (amarelo)
+- **PDF com atividades** - Grid 2 colunas com descrição e data
+
+### ⚠️ Breaking Change
+- Planilha agora usa coluna N única (Atividades) em vez de colunas N-Y (Etapa 1-12)
+
+---
+
+## v5.3.3 (19/01/2026) - PDF Export
+
+### ✅ Novas Funcionalidades
+- **Exportação para PDF** via html2pdf
+- **Dados de teste** - 30 projetos fictícios para demonstração
+
+---
+
+## v5.3.2 (18/01/2026) - Correção de Filtros
+
+### 🐛 Bugs Corrigidos
+- **isCritico()** - Removido "has blocker" da lógica
+- **Filtro de status** - Cards não zeravam ao filtrar
+- **Parsing do admin** - Correção na leitura de colunas
+
+---
+
+## v5.3.0 (17/01/2026) - KPIs Simplificados
+
+### ✅ Novas Funcionalidades
+- **4 KPIs principais**: No Prazo, Atraso Médio, Projetos Atualizados, Tempo Médio Parado
+- **Filtro por Go-Live**: Este mês, 30/60/90 dias, Atrasados
+- **Impressão por projetos específicos** - Checkbox para selecionar
+
+---
+
+## Bugs Conhecidos
+
+### Em Monitoramento
+- [ ] Em telas muito pequenas (<320px), alguns elementos podem sobrepor
+- [ ] Impressão em Firefox pode ter margens diferentes
+
+### Resolvidos Recentemente
+- [x] v5.5.1: Bloqueador com NaN
+- [x] v5.5.0: Layout index.html quebrado
+- [x] v5.4.1: PDF sem modal de opções
+- [x] v5.3.2: Filtro de críticos incorreto
+
+---
+
+## Contato
+
+**Desenvolvido por:** Infraestrutura TI - Invent Corp  
+**Última atualização:** 20/01/2026

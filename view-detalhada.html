@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visão Detalhada - Infraestrutura v5.5.0</title>
+    <title>Visão Detalhada - Infraestrutura v5.5.2</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 20px; min-height: 100vh; }
@@ -232,7 +232,7 @@
     <div class="container">
         <div class="header">
             <div>
-                <h1>📈 Visão Detalhada - Infraestrutura <span class="version">v5.5.0</span></h1>
+                <h1>📈 Visão Detalhada - Infraestrutura <span class="version">v5.5.2</span></h1>
                 <p>Atualizado em: <span id="currentDate">Carregando...</span></p>
             </div>
             <div style="display:flex;gap:10px;flex-wrap:wrap;">
@@ -749,7 +749,7 @@
             container.innerHTML = sections.map(s => {
                 const sProjects = filteredProjects.filter(s.filter);
                 if (sProjects.length === 0) return '';
-                return `<div class="section"><div class="section-header ${s.class}"><h2>${s.title}</h2><span class="section-badge">${sProjects.length}</span></div><div class="table-container"><table><thead><tr><th>Projeto</th><th>Localização</th><th>Go Live</th><th>Situação</th><th>Progresso</th><th>Etapa</th><th>PMO</th><th>Dias Parado</th></tr></thead><tbody>${sProjects.map(p => `<tr class="clickable" onclick="openModal('${p.projeto.replace(/'/g, "\\'")}')"><td class="project-name">${p.projeto}</td><td>${p.localizacao || '-'}</td><td>${p.goliveAtual || p.golive || '-'}</td><td>${getSituacaoHtml(p.situacao || p.rag)}</td><td>${getProgressHtml(p.progresso)}</td><td style="font-size:10px;">${p.etapa || '-'}</td><td>${p.pmoInterno || p.respInterno || '-'}</td><td>${(p.diasSemAtual || 0) > 15 ? `<span style="color:#991b1b;font-weight:bold;">${p.diasSemAtual}d</span>` : `${p.diasSemAtual || 0}d`}</td></tr>`).join('')}</tbody></table></div></div>`;
+                return `<div class="section"><div class="section-header ${s.class}"><h2>${s.title}</h2><span class="section-badge">${sProjects.length}</span></div><div class="table-container"><table><thead><tr><th>Projeto</th><th>Localização</th><th>Go Live</th><th>Situação</th><th>Progresso</th><th>Etapa</th><th>PMO</th><th>Dias Parado</th></tr></thead><tbody>${sProjects.map(p => `<tr class="clickable" onclick="openModal('${p.projeto.replace(/'/g, "\\'")}')"><td class="project-name">${p.projeto}</td><td>${p.localizacao || '-'}</td><td>${p.goliveAtual || p.golive || '-'}</td><td>${getSituacaoHtml(p.situacao || p.rag)}</td><td>${getProgressHtml(p.progresso)}</td><td style="font-size:10px;">${p.etapaAtual || p.etapa || '-'}</td><td>${p.pmoInterno || p.respInterno || '-'}</td><td>${(p.diasSemAtual || 0) > 15 ? `<span style="color:#991b1b;font-weight:bold;">${p.diasSemAtual}d</span>` : `${p.diasSemAtual || 0}d`}</td></tr>`).join('')}</tbody></table></div></div>`;
             }).join('');
         }
         
@@ -821,7 +821,7 @@
                 </div>`;
             }
             
-            document.getElementById('modalInfo').innerHTML = `<div class="info-box"><label>Etapa</label><span>${p.etapa || '-'}</span></div><div class="info-box"><label>Progresso</label><span>${p.progresso || 0}%</span></div><div class="info-box"><label>Situação</label><span>${getSituacaoHtml(p.situacao || p.rag)}</span></div><div class="info-box"><label>Go Live Original</label><span>${p.goliveOriginal || '-'}</span></div><div class="info-box"><label>Go Live Atual</label><span>${p.goliveAtual || p.golive || '-'}</span></div><div class="info-box"><label>Dias Parado</label><span>${p.diasSemAtual || 0} dias</span></div><div class="info-box"><label>PMO Interno</label><span>${p.pmoInterno || p.respInterno || '-'}</span></div><div class="info-box"><label>Bloqueador</label><span style="${p.bloqueador && p.bloqueador !== '-' ? 'color:#991b1b;' : ''}">${p.bloqueador || '-'}</span></div><div class="info-box"><label>Última Atualização</label><span>${p.ultAtual || '-'}</span></div>${atividadesHtml}${obsHtml}`;
+            document.getElementById('modalInfo').innerHTML = `<div class="info-box"><label>Etapa</label><span>${p.etapaAtual || p.etapa || '-'}</span></div><div class="info-box"><label>Progresso</label><span>${p.progresso || 0}%</span></div><div class="info-box"><label>Situação</label><span>${getSituacaoHtml(p.situacao || p.rag)}</span></div><div class="info-box"><label>Go Live Original</label><span>${p.goliveOriginal || '-'}</span></div><div class="info-box"><label>Go Live Atual</label><span>${p.goliveAtual || p.golive || '-'}</span></div><div class="info-box"><label>Dias Parado</label><span>${p.diasSemAtual || 0} dias</span></div><div class="info-box"><label>PMO Interno</label><span>${p.pmoInterno || p.respInterno || '-'}</span></div><div class="info-box"><label>Bloqueador</label><span style="${p.bloqueador && p.bloqueador !== '-' ? 'color:#991b1b;' : ''}">${p.bloqueador || '-'}</span></div><div class="info-box"><label>Última Atualização</label><span>${p.ultAtual || '-'}</span></div>${atividadesHtml}${obsHtml}`;
             document.getElementById('modalOverlay').classList.add('active');
         }
         
