@@ -13,9 +13,9 @@
       "ultimaAtualizacao": "20/01/2026",
       "diasParado": 9,
       "observacoes": "Finalizar as configurações no servidor e semana que vemrealizar os testes programados  junto ao clie",
+      "isCritico": false,
       "totalAtividades": 20,
-      "atividadesConcluidas": 20,
-      "isCritico": false
+      "atividadesConcluidas": 20
     },
     {
       "nome": "ESPERANÇA",
@@ -30,9 +30,9 @@
       "ultimaAtualizacao": "20/01/2026",
       "diasParado": 14,
       "observacoes": "Concluído - Sem Pendências",
+      "isCritico": false,
       "totalAtividades": 20,
-      "atividadesConcluidas": 20,
-      "isCritico": false
+      "atividadesConcluidas": 20
     },
     {
       "nome": "OPTIMUS PRIME",
@@ -47,9 +47,9 @@
       "ultimaAtualizacao": "20/01/2026",
       "diasParado": 10,
       "observacoes": "Informei Alex PMO por e-mail e no grup odo projeto que podemos seguir com as configurações de aplica",
+      "isCritico": false,
       "totalAtividades": 20,
-      "atividadesConcluidas": 20,
-      "isCritico": false
+      "atividadesConcluidas": 20
     },
     {
       "nome": "CANDELÁRIA",
@@ -64,9 +64,9 @@
       "ultimaAtualizacao": "20/01/2026",
       "diasParado": 9,
       "observacoes": "Cliente ficou de formalizar por e-mail",
+      "isCritico": false,
       "totalAtividades": 20,
-      "atividadesConcluidas": 20,
-      "isCritico": false
+      "atividadesConcluidas": 20
     },
     {
       "nome": "BELEZA",
@@ -81,9 +81,9 @@
       "ultimaAtualizacao": "20/01/2026",
       "diasParado": 2,
       "observacoes": "Informei Alex PMO por e-mail e no grup odo projeto que podemos seguir com as configurações de aplica",
+      "isCritico": false,
       "totalAtividades": 20,
-      "atividadesConcluidas": 20,
-      "isCritico": false
+      "atividadesConcluidas": 20
     },
     {
       "nome": "GAVIAO",
@@ -98,9 +98,9 @@
       "ultimaAtualizacao": "20/01/2026",
       "diasParado": 7,
       "observacoes": "",
+      "isCritico": false,
       "totalAtividades": 20,
-      "atividadesConcluidas": 20,
-      "isCritico": false
+      "atividadesConcluidas": 20
     },
     {
       "nome": "BETA",
@@ -115,9 +115,9 @@
       "ultimaAtualizacao": "20/01/2026",
       "diasParado": 1,
       "observacoes": "Visita ao CD 17/09",
+      "isCritico": false,
       "totalAtividades": 20,
-      "atividadesConcluidas": 17,
-      "isCritico": false
+      "atividadesConcluidas": 17
     },
     {
       "nome": "DIA",
@@ -132,9 +132,9 @@
       "ultimaAtualizacao": "28/01/2026",
       "diasParado": 0,
       "observacoes": "Cliente compartilhar informações/definições do servidor para validação em conjunto",
+      "isCritico": true,
       "totalAtividades": 20,
-      "atividadesConcluidas": 10,
-      "isCritico": true
+      "atividadesConcluidas": 10
     },
     {
       "nome": "FLOWER",
@@ -149,9 +149,9 @@
       "ultimaAtualizacao": "20/01/2026",
       "diasParado": 9,
       "observacoes": "",
+      "isCritico": false,
       "totalAtividades": 20,
-      "atividadesConcluidas": 11,
-      "isCritico": false
+      "atividadesConcluidas": 11
     },
     {
       "nome": "BP",
@@ -166,9 +166,9 @@
       "ultimaAtualizacao": "20/01/2026",
       "diasParado": 14,
       "observacoes": "Cliente ficou de retornar na próxima semana 15/09 com as definições para validação em conjunto",
+      "isCritico": false,
       "totalAtividades": 20,
-      "atividadesConcluidas": 16,
-      "isCritico": false
+      "atividadesConcluidas": 16
     },
     {
       "nome": "CDSK",
@@ -183,9 +183,9 @@
       "ultimaAtualizacao": "20/01/2026",
       "diasParado": 14,
       "observacoes": "Enviar documentos e solicitações de acesso relacionados a Infra e sugerir reuniões",
+      "isCritico": false,
       "totalAtividades": 20,
-      "atividadesConcluidas": 17,
-      "isCritico": false
+      "atividadesConcluidas": 17
     },
     {
       "nome": "ELETRO",
@@ -200,9 +200,9 @@
       "ultimaAtualizacao": "20/01/2026",
       "diasParado": 10,
       "observacoes": "10/09 - E-mail enviado para o cliente perguntando se ficou alguma dúvida",
+      "isCritico": false,
       "totalAtividades": 20,
-      "atividadesConcluidas": 9,
-      "isCritico": false
+      "atividadesConcluidas": 9
     },
     {
       "nome": "BRF EMBU",
@@ -217,9 +217,9 @@
       "ultimaAtualizacao": "20/01/2026",
       "diasParado": 4,
       "observacoes": "",
+      "isCritico": false,
       "totalAtividades": 20,
-      "atividadesConcluidas": 9,
-      "isCritico": false
+      "atividadesConcluidas": 9
     },
     {
       "nome": "BRF JUNDIAI",
@@ -234,9 +234,9 @@
       "ultimaAtualizacao": "20/01/2026",
       "diasParado": 14,
       "observacoes": "",
+      "isCritico": false,
       "totalAtividades": 20,
-      "atividadesConcluidas": 7,
-      "isCritico": false
+      "atividadesConcluidas": 7
     },
     {
       "nome": "BRF UBERLANDIA",
@@ -251,9 +251,9 @@
       "ultimaAtualizacao": "20/01/2026",
       "diasParado": 9,
       "observacoes": "",
+      "isCritico": false,
       "totalAtividades": 20,
-      "atividadesConcluidas": 9,
-      "isCritico": false
+      "atividadesConcluidas": 9
     },
     {
       "nome": "MASTER",
@@ -268,9 +268,9 @@
       "ultimaAtualizacao": "20/01/2026",
       "diasParado": 10,
       "observacoes": "",
+      "isCritico": false,
       "totalAtividades": 20,
-      "atividadesConcluidas": 0,
-      "isCritico": false
+      "atividadesConcluidas": 0
     },
     {
       "nome": "REVERSE",
@@ -285,9 +285,9 @@
       "ultimaAtualizacao": "20/01/2026",
       "diasParado": 12,
       "observacoes": "Próxima semana verificar com o cliente se ficou alguma dúvida",
+      "isCritico": false,
       "totalAtividades": 20,
-      "atividadesConcluidas": 10,
-      "isCritico": false
+      "atividadesConcluidas": 10
     },
     {
       "nome": "TITANO",
@@ -302,9 +302,9 @@
       "ultimaAtualizacao": "20/01/2026",
       "diasParado": 7,
       "observacoes": "Verificar com o cliente se ficou alguma dúvida",
+      "isCritico": false,
       "totalAtividades": 20,
-      "atividadesConcluidas": 11,
-      "isCritico": false
+      "atividadesConcluidas": 11
     },
     {
       "nome": "BARBECUE",
@@ -319,9 +319,9 @@
       "ultimaAtualizacao": "20/01/2026",
       "diasParado": 8,
       "observacoes": "",
+      "isCritico": false,
       "totalAtividades": 20,
-      "atividadesConcluidas": 20,
-      "isCritico": false
+      "atividadesConcluidas": 20
     },
     {
       "nome": "PTL SP",
@@ -336,9 +336,9 @@
       "ultimaAtualizacao": "20/01/2026",
       "diasParado": 9,
       "observacoes": "Reunião Técnica – Integração\n-Data: 23/09. CD da Nestlé.\n-Participação da equipe técnica Invent (mau",
+      "isCritico": false,
       "totalAtividades": 20,
-      "atividadesConcluidas": 19,
-      "isCritico": false
+      "atividadesConcluidas": 19
     },
     {
       "nome": "PTL-RJ",
@@ -353,9 +353,9 @@
       "ultimaAtualizacao": "20/01/2026",
       "diasParado": 3,
       "observacoes": "01/09 E-mail enviado com sugestões de datas para a reunião, até o momento sem retorno",
+      "isCritico": false,
       "totalAtividades": 20,
-      "atividadesConcluidas": 20,
-      "isCritico": false
+      "atividadesConcluidas": 20
     },
     {
       "nome": "PROMOFARMA",
@@ -370,9 +370,9 @@
       "ultimaAtualizacao": "20/01/2026",
       "diasParado": 11,
       "observacoes": "Cobrar retorno sobre o acesso",
+      "isCritico": false,
       "totalAtividades": 20,
-      "atividadesConcluidas": 20,
-      "isCritico": false
+      "atividadesConcluidas": 20
     },
     {
       "nome": "SUPER DIV",
@@ -387,60 +387,60 @@
       "ultimaAtualizacao": "20/01/2026",
       "diasParado": 2,
       "observacoes": "Pedir apoio do PMO",
+      "isCritico": false,
       "totalAtividades": 22,
-      "atividadesConcluidas": 20,
-      "isCritico": false
+      "atividadesConcluidas": 20
     },
     {
       "nome": "PBL GUATEMALA",
       "localizacao": "A definir",
-      "status": "Não Iniciado",
+      "status": "Em Andamento",
       "situacao": "Amarelo",
       "progresso": 0,
       "pmoInterno": "Fabio",
-      "goLiveOriginal": "22/04/2025",
+      "goLiveOriginal": "45769",
       "goLiveAtual": "",
       "bloqueador": "Reuniões de alinhamento acontecendo com o cliente",
       "ultimaAtualizacao": "20/01/2026",
       "diasParado": 2,
       "observacoes": "",
+      "isCritico": false,
       "totalAtividades": 20,
-      "atividadesConcluidas": 0,
-      "isCritico": false
+      "atividadesConcluidas": 0
     },
     {
       "nome": "NAVEPARK",
       "localizacao": "A definir",
-      "status": "Não Iniciado",
+      "status": "Em Andamento",
       "situacao": "Amarelo",
       "progresso": 0,
       "pmoInterno": "Anderson",
       "goLiveOriginal": "",
       "goLiveAtual": "",
       "bloqueador": "Especificação Técnica já compartilhada com o cliente para análise e entendimento inicial",
-      "ultimaAtualizacao": "16/01/2026",
+      "ultimaAtualizacao": "2026-01-16 00:00:00",
       "diasParado": 2,
       "observacoes": "",
+      "isCritico": false,
       "totalAtividades": 20,
-      "atividadesConcluidas": 0,
-      "isCritico": false
+      "atividadesConcluidas": 0
     },
     {
       "nome": "CRISTAL MG",
       "localizacao": "A definir",
-      "status": "Não Iniciado",
+      "status": "Em Andamento",
       "situacao": "Amarelo",
       "progresso": 0,
       "pmoInterno": "Giovanni",
       "goLiveOriginal": "",
       "goLiveAtual": "",
       "bloqueador": "Reunião inicial de alinhamento com o cliente realizada",
-      "ultimaAtualizacao": "23/01/2026",
+      "ultimaAtualizacao": "2026-01-23 00:00:00",
       "diasParado": 2,
       "observacoes": "",
+      "isCritico": false,
       "totalAtividades": 20,
-      "atividadesConcluidas": 0,
-      "isCritico": false
+      "atividadesConcluidas": 0
     }
   ],
   "atividades": [
@@ -6187,6 +6187,6 @@
       "observacoes": ""
     }
   ],
-  "lastUpdate": "2026-01-29T01:57:10.180Z",
+  "lastUpdate": "2026-01-29T01:42:54.672433",
   "version": "6.1"
 }

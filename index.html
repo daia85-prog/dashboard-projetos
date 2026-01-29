@@ -3,67 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Status dos Projetos - Infraestrutura v6.0</title>
+    <title>Status dos Projetos - Infraestrutura</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .container { max-width: 950px; width: 100%; }
-        .header { text-align: center; margin-bottom: 30px; }
-        .header h1 { color: white; font-size: 32px; margin-bottom: 10px; text-shadow: 0 4px 20px rgba(0,0,0,0.3); }
-        .header p { color: rgba(255,255,255,0.7); font-size: 14px; }
-        .version-badge { display: inline-block; background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 6px 16px; border-radius: 20px; font-size: 12px; margin-top: 10px; font-weight: 600; }
-        .new-tag { background: #fef3c7; color: #92400e; padding: 4px 10px; border-radius: 12px; font-size: 11px; margin-left: 8px; }
-        .info-bar { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 16px; padding: 20px 30px; margin-bottom: 25px; display: grid; grid-template-columns: repeat(6, 1fr); gap: 15px; align-items: center; border: 1px solid rgba(255,255,255,0.1); }
-        .info-item { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 4px; }
-        .info-item .info-icon { font-size: 22px; line-height: 1; }
-        .info-item .number { font-size: 28px; font-weight: 800; color: white; line-height: 1; }
-        .info-item .label { font-size: 9px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.5px; }
-        .info-item.total .number { color: #a78bfa; }
-        .info-item.concluido .number { color: #34d399; }
-        .info-item.andamento .number { color: #60a5fa; }
-        .info-item.critico .number { color: #f87171; }
-        .info-item.parados .number { color: #fbbf24; }
-        .update-info { text-align: center; display: flex; flex-direction: column; gap: 2px; }
-        .update-info .date { color: white; font-size: 12px; font-weight: 600; }
-        .update-info .time-ago { color: rgba(255,255,255,0.5); font-size: 10px; }
-        .alert-box { background: linear-gradient(135deg, #fef2f2, #fee2e2); border: 2px solid #fca5a5; border-radius: 16px; padding: 18px 25px; margin-bottom: 25px; display: flex; align-items: center; gap: 20px; }
-        .alert-box.success { background: linear-gradient(135deg, #ecfdf5, #d1fae5); border-color: #6ee7b7; }
-        .alert-icon { font-size: 36px; }
-        .alert-content h3 { color: #991b1b; font-size: 15px; margin-bottom: 4px; }
-        .alert-box.success .alert-content h3 { color: #065f46; }
-        .alert-content p { color: #7f1d1d; font-size: 12px; }
-        .alert-box.success .alert-content p { color: #047857; }
-        .alert-badges { display: flex; gap: 10px; margin-left: auto; flex-wrap: wrap; }
-        .alert-badge { padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 600; display: flex; align-items: center; gap: 5px; }
-        .alert-badge.atrasado { background: #fee2e2; color: #991b1b; }
-        .alert-badge.parados { background: #fef3c7; color: #92400e; }
-        .cards-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
-        .card { background: rgba(255,255,255,0.95); border-radius: 24px; padding: 35px 28px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3); transition: all 0.4s ease; cursor: pointer; position: relative; overflow: hidden; }
-        .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; }
-        .card.simples::before { background: linear-gradient(90deg, #667eea, #764ba2); }
-        .card.detalhada::before { background: linear-gradient(90deg, #10b981, #059669); }
-        .card:hover { transform: translateY(-8px); box-shadow: 0 30px 80px rgba(0,0,0,0.4); }
-        .card-icon { width: 70px; height: 70px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 20px; }
-        .card.simples .card-icon { background: linear-gradient(135deg, #667eea, #764ba2); }
-        .card.detalhada .card-icon { background: linear-gradient(135deg, #10b981, #059669); }
-        .card h2 { color: #1a1a2e; font-size: 22px; margin-bottom: 12px; }
-        .card p { color: #64748b; font-size: 13px; line-height: 1.6; margin-bottom: 20px; }
-        .card ul { text-align: left; list-style: none; margin-bottom: 25px; }
-        .card ul li { padding: 7px 0; color: #475569; font-size: 12px; display: flex; align-items: center; gap: 10px; }
-        .card ul li::before { content: '✓'; display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; font-size: 10px; font-weight: bold; }
-        .card.simples ul li::before { background: #ede9fe; color: #7c3aed; }
-        .card.detalhada ul li::before { background: #d1fae5; color: #059669; }
-        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 28px; border-radius: 12px; font-size: 14px; font-weight: 600; text-decoration: none; color: white; transition: all 0.3s ease; width: 100%; }
-        .card.simples .btn { background: linear-gradient(135deg, #667eea, #764ba2); }
-        .card.detalhada .btn { background: linear-gradient(135deg, #10b981, #059669); }
-        .badge { position: absolute; top: 18px; right: 18px; padding: 5px 12px; border-radius: 20px; font-size: 10px; font-weight: 600; text-transform: uppercase; }
-        .card.simples .badge { background: #ede9fe; color: #7c3aed; }
-        .card.detalhada .badge { background: #d1fae5; color: #059669; }
-        .footer { text-align: center; margin-top: 35px; color: rgba(255,255,255,0.5); font-size: 12px; }
-        .footer a { color: rgba(255,255,255,0.7); text-decoration: none; }
-        .footer a:hover { color: white; }
-        .hidden { display: none; }
-        @media (max-width: 768px) { .header h1 { font-size: 26px; } .cards-container { grid-template-columns: 1fr; } .info-bar { grid-template-columns: repeat(3, 1fr); } .alert-box { flex-direction: column; text-align: center; } .alert-badges { margin-left: 0; } }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .header { text-align: center; padding: 40px 20px; color: white; }
+        .header h1 { font-size: 2.5rem; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 15px; }
+        .header p { color: #94a3b8; font-size: 1.1rem; }
+        .version-badge { display: inline-flex; align-items: center; gap: 8px; margin-top: 15px; }
+        .version { background: linear-gradient(135deg, #667eea, #764ba2); padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 600; }
+        .new-tag { background: #10b981; padding: 6px 12px; border-radius: 15px; font-size: 12px; }
+        .stats-bar { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 16px; padding: 25px; margin: 30px 0; display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px; border: 1px solid rgba(255,255,255,0.1); }
+        .stat-item { text-align: center; color: white; }
+        .stat-number { font-size: 2.5rem; font-weight: 700; }
+        .stat-number.green { color: #10b981; }
+        .stat-number.yellow { color: #f59e0b; }
+        .stat-number.red { color: #ef4444; }
+        .stat-number.blue { color: #3b82f6; }
+        .stat-label { font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; }
+        .stat-date { text-align: right; color: #94a3b8; font-size: 0.85rem; }
+        .alert-box { background: linear-gradient(135deg, #d1fae5, #a7f3d0); border-radius: 16px; padding: 20px 25px; margin-bottom: 30px; display: flex; align-items: center; gap: 15px; }
+        .alert-box.warning { background: linear-gradient(135deg, #fef3c7, #fde68a); }
+        .alert-box.danger { background: linear-gradient(135deg, #fee2e2, #fecaca); }
+        .alert-icon { font-size: 2rem; }
+        .alert-text h3 { color: #065f46; font-size: 1.1rem; }
+        .alert-text p { color: #047857; font-size: 0.9rem; }
+        .alert-box.warning .alert-text h3 { color: #92400e; }
+        .alert-box.warning .alert-text p { color: #a16207; }
+        .alert-box.danger .alert-text h3 { color: #991b1b; }
+        .alert-box.danger .alert-text p { color: #b91c1c; }
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 30px; }
+        .card { background: white; border-radius: 20px; padding: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); transition: transform 0.3s, box-shadow 0.3s; cursor: pointer; text-decoration: none; color: inherit; position: relative; overflow: hidden; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        .card-badge { position: absolute; top: 20px; right: 20px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+        .card-badge.green { background: linear-gradient(135deg, #10b981, #059669); }
+        .card-icon { width: 70px; height: 70px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 20px; }
+        .card-icon.purple { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .card-icon.green { background: linear-gradient(135deg, #10b981, #059669); }
+        .card-icon.blue { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+        .card h2 { font-size: 1.4rem; color: #1e293b; margin-bottom: 10px; text-align: center; }
+        .card p { color: #64748b; font-size: 0.95rem; text-align: center; margin-bottom: 20px; }
+        .card-features { list-style: none; }
+        .card-features li { padding: 8px 0; color: #475569; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; }
+        .card-features li::before { content: "✓"; color: #10b981; font-weight: bold; }
+        .footer { text-align: center; margin-top: 40px; padding: 20px; color: #64748b; font-size: 0.85rem; }
+        .footer a { color: #667eea; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8rem; }
+            .stats-bar { padding: 20px 15px; }
+            .stat-number { font-size: 1.8rem; }
+        }
     </style>
 </head>
 <body>
@@ -71,114 +62,126 @@
         <div class="header">
             <h1>📊 Status dos Projetos - Infraestrutura</h1>
             <p>Selecione o tipo de visualização desejada</p>
-            <span class="version-badge">v6.0<span class="new-tag">✨ Nova Arquitetura</span></span>
-        </div>
-        <div id="infoBar" class="info-bar">
-            <div class="info-item total"><div class="info-icon">📊</div><div class="number" id="totalCount">-</div><div class="label">Projetos</div></div>
-            <div class="info-item concluido"><div class="info-icon">✅</div><div class="number" id="concluidoCount">-</div><div class="label">Concluídos</div></div>
-            <div class="info-item andamento"><div class="info-icon">⏳</div><div class="number" id="andamentoCount">-</div><div class="label">Em Andamento</div></div>
-            <div class="info-item critico"><div class="info-icon">🚨</div><div class="number" id="criticoCount">-</div><div class="label">Críticos</div></div>
-            <div class="info-item parados"><div class="info-icon">⏸️</div><div class="number" id="paradosCount">-</div><div class="label">Parados 15+</div></div>
-            <div class="update-info"><div class="date" id="updateDate">Carregando...</div><div class="time-ago" id="timeAgo"></div></div>
-        </div>
-        <div id="alertBox" class="alert-box hidden">
-            <div class="alert-icon" id="alertIcon">⚠️</div>
-            <div class="alert-content"><h3 id="alertTitle">Projetos requerem atenção!</h3><p id="alertText">Existem projetos atrasados ou parados.</p></div>
-            <div class="alert-badges" id="alertBadges">
-                <span class="alert-badge atrasado" id="badgeAtrasados">🔴 <span id="atrasadosNum">0</span> atrasados</span>
-                <span class="alert-badge parados" id="badgeParados">🟡 <span id="paradosNum">0</span> parados</span>
+            <div class="version-badge">
+                <span class="version">v6.1</span>
+                <span class="new-tag">✨ Nova Arquitetura</span>
             </div>
         </div>
-        <div class="cards-container">
-            <div class="card simples" onclick="window.location.href='view-simples.html'">
-                <span class="badge">Resumida</span>
-                <div class="card-icon">📋</div>
+
+        <div class="stats-bar" id="statsBar">
+            <div class="stat-item">
+                <div class="stat-number blue" id="statTotal">--</div>
+                <div class="stat-label">📊 Projetos</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number green" id="statConcluidos">--</div>
+                <div class="stat-label">✅ Concluídos</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number yellow" id="statAndamento">--</div>
+                <div class="stat-label">⏳ Em Andamento</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number red" id="statCriticos">--</div>
+                <div class="stat-label">🚨 Críticos</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="statParados">--</div>
+                <div class="stat-label">⏸️ Parados 15+</div>
+            </div>
+            <div class="stat-item stat-date" id="statDate">
+                <div>--</div>
+                <div class="stat-label">hoje</div>
+            </div>
+        </div>
+
+        <div class="alert-box" id="alertBox">
+            <div class="alert-icon">✅</div>
+            <div class="alert-text">
+                <h3>Tudo em ordem!</h3>
+                <p>Nenhum projeto crítico ou parado.</p>
+            </div>
+        </div>
+
+        <div class="cards-grid">
+            <a href="view-simples.html" class="card">
+                <span class="card-badge">Resumida</span>
+                <div class="card-icon purple">📋</div>
                 <h2>Visão Resumida</h2>
                 <p>Dashboard consolidado com visão geral.</p>
-                <ul>
+                <ul class="card-features">
                     <li>KPIs simplificados (No Prazo, Atraso Médio)</li>
                     <li>Filtro por Go-Live (Este mês, 30/60/90 dias)</li>
-                    <li>Modal com timeline de atividades</li>
-                    <li>Gráficos de distribuição e bloqueadores</li>
+                    <li>Lista compacta de todos os projetos</li>
+                    <li>Exportar PDF resumido</li>
                 </ul>
-                <a href="view-simples.html" class="btn">Acessar →</a>
-            </div>
-            <div class="card detalhada" onclick="window.location.href='view-detalhada.html'">
-                <span class="badge">Completa</span>
-                <div class="card-icon">📈</div>
+            </a>
+
+            <a href="view-detalhada.html" class="card">
+                <span class="card-badge green">Completa</span>
+                <div class="card-icon green">📈</div>
                 <h2>Visão Detalhada</h2>
                 <p>Dashboard segmentado por status.</p>
-                <ul>
+                <ul class="card-features">
                     <li>Seções organizadas por status</li>
                     <li>Timeline de próximos Go Lives</li>
-                    <li>Detalhes de atividades por projeto</li>
-                    <li>Análise de atividades que mais atrasam</li>
+                    <li>Detalhes de bloqueadores</li>
+                    <li>Histórico de atividades por projeto</li>
                 </ul>
-                <a href="view-detalhada.html" class="btn">Acessar →</a>
-            </div>
+            </a>
         </div>
-        <div class="footer"><p>Infraestrutura TI • <a href="admin.html">Área Administrativa</a></p></div>
+
+        <div class="footer">
+            <p>Dashboard de Projetos - Infraestrutura TI | <a href="admin.html">🔧 Área Administrativa</a></p>
+        </div>
     </div>
+
     <script>
-        function normalizeStatus(status) {
-            if (!status) return 'Não Definido';
-            const s = status.toLowerCase().trim();
-            if (s.includes('conclu')) return 'Concluído';
-            if (s.includes('andamento')) return 'Em Andamento';
-            if (s.includes('atras')) return 'Atrasado';
-            if (s.includes('aguard')) return 'Aguardando Cliente';
-            if (s.includes('não') || s.includes('nao')) return 'Não Iniciado';
-            return status;
-        }
-        async function loadData() {
+        async function loadStats() {
             try {
                 const response = await fetch('dados.json?t=' + Date.now());
-                if (!response.ok) throw new Error('Não encontrado');
+                if (!response.ok) throw new Error('dados.json não encontrado');
+                
                 const data = await response.json();
-                if (data.projects && data.projects.length > 0) {
-                    const p = data.projects;
-                    document.getElementById('totalCount').textContent = p.length;
-                    document.getElementById('concluidoCount').textContent = p.filter(x => normalizeStatus(x.status) === 'Concluído').length;
-                    document.getElementById('andamentoCount').textContent = p.filter(x => normalizeStatus(x.status) === 'Em Andamento').length;
-                    const atrasados = p.filter(x => normalizeStatus(x.status) === 'Atrasado').length;
-                    const parados = p.filter(x => (x.diasSemAtual || 0) > 15 && normalizeStatus(x.status) !== 'Concluído').length;
-                    const criticos = p.filter(x => normalizeStatus(x.status) === 'Atrasado' || (x.situacao || x.rag || '').toLowerCase() === 'vermelho' || (x.diasSemAtual || 0) > 15).length;
-                    document.getElementById('criticoCount').textContent = criticos;
-                    document.getElementById('paradosCount').textContent = parados;
-                    if (data.lastUpdate) {
-                        const d = new Date(data.lastUpdate);
-                        document.getElementById('updateDate').textContent = d.toLocaleDateString('pt-BR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-                        const hoje = new Date();
-                        hoje.setHours(0, 0, 0, 0);
-                        const dataUpdate = new Date(d);
-                        dataUpdate.setHours(0, 0, 0, 0);
-                        const diff = Math.floor((hoje - dataUpdate) / (1000*60*60*24));
-                        if (diff === 0) document.getElementById('timeAgo').textContent = 'hoje';
-                        else if (diff === 1) document.getElementById('timeAgo').textContent = 'ontem';
-                        else document.getElementById('timeAgo').textContent = `há ${diff} dias`;
-                    }
-                    const alertBox = document.getElementById('alertBox');
-                    alertBox.classList.remove('hidden');
-                    if (atrasados > 0 || parados > 0) {
-                        document.getElementById('atrasadosNum').textContent = atrasados;
-                        document.getElementById('paradosNum').textContent = parados;
-                        if (atrasados === 0) document.getElementById('badgeAtrasados').style.display = 'none';
-                        if (parados === 0) document.getElementById('badgeParados').style.display = 'none';
-                        let mensagem = [];
-                        if (atrasados > 0) mensagem.push(`${atrasados} projeto${atrasados > 1 ? 's' : ''} atrasado${atrasados > 1 ? 's' : ''}`);
-                        if (parados > 0) mensagem.push(`${parados} parado${parados > 1 ? 's' : ''} há 15+ dias`);
-                        document.getElementById('alertText').textContent = `Existem ${mensagem.join(' e ')}. Revisar antes da próxima reunião.`;
-                    } else {
-                        alertBox.classList.add('success');
-                        document.getElementById('alertIcon').textContent = '✅';
-                        document.getElementById('alertTitle').textContent = 'Tudo em ordem!';
-                        document.getElementById('alertText').textContent = 'Nenhum projeto crítico ou parado.';
-                        document.getElementById('alertBadges').style.display = 'none';
-                    }
+                const projects = data.projects || [];
+                
+                const total = projects.length;
+                const concluidos = projects.filter(p => p.status === 'Concluído').length;
+                const andamento = projects.filter(p => p.status === 'Em Andamento').length;
+                const criticos = projects.filter(p => p.isCritico).length;
+                const parados = projects.filter(p => p.diasParado > 15 && p.status !== 'Concluído').length;
+                
+                document.getElementById('statTotal').textContent = total;
+                document.getElementById('statConcluidos').textContent = concluidos;
+                document.getElementById('statAndamento').textContent = andamento;
+                document.getElementById('statCriticos').textContent = criticos;
+                document.getElementById('statParados').textContent = parados;
+                
+                const dateEl = document.getElementById('statDate');
+                if (data.lastUpdate) {
+                    const date = new Date(data.lastUpdate);
+                    dateEl.innerHTML = `<div>${date.toLocaleDateString('pt-BR')}, ${date.toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'})}</div><div class="stat-label">hoje</div>`;
                 }
-            } catch(e) { document.getElementById('updateDate').textContent = 'Dados não disponíveis'; }
+                
+                // Atualizar alerta
+                const alertBox = document.getElementById('alertBox');
+                if (criticos > 0 || parados > 0) {
+                    alertBox.className = 'alert-box danger';
+                    alertBox.innerHTML = `
+                        <div class="alert-icon">⚠️</div>
+                        <div class="alert-text">
+                            <h3>Atenção Necessária!</h3>
+                            <p>${criticos} projeto(s) crítico(s) e ${parados} parado(s) há mais de 15 dias.</p>
+                        </div>
+                    `;
+                }
+            } catch (e) {
+                console.error('Erro ao carregar dados:', e);
+                document.getElementById('statsBar').innerHTML = '<p style="color: #94a3b8; text-align: center; width: 100%;">Dados não encontrados. <a href="admin.html" style="color: #667eea;">Importe via admin</a></p>';
+            }
         }
-        window.addEventListener('load', loadData);
+        
+        loadStats();
     </script>
 </body>
 </html>
