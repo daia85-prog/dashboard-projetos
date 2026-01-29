@@ -927,9 +927,19 @@
             const sortedProjects = [...projects].sort((a, b) => a.projeto.localeCompare(b.projeto));
             document.getElementById('printProjectsCheckboxList').innerHTML = sortedProjects.map((p, i) => {
                 const originalIndex = projects.indexOf(p);
-                return `<label class="project-checkbox"><input type="checkbox" value="${originalIndex}"><span>${p.projeto}</span></label>`;
+                return `<label class="project-checkbox"><input type="checkbox" value="${originalIndex}" onchange="autoSelectSpecificPrint()"><span>${p.projeto}</span></label>`;
             }).join('');
             document.getElementById('printModalOverlay').classList.add('active');
+        }
+
+        function autoSelectSpecificPrint() {
+            const specificLabel = document.querySelector('#printModalOverlay .print-option:nth-child(4)');
+            if (specificLabel && !specificLabel.classList.contains('selected')) {
+                document.querySelectorAll('#printModalOverlay .print-option').forEach(o => o.classList.remove('selected'));
+                specificLabel.classList.add('selected');
+                specificLabel.querySelector('input[type="radio"]').checked = true;
+                printOption = 'specific';
+            }
         }
 
         function closePrintModal(e) {
@@ -983,9 +993,19 @@
             const sortedProjects = [...projects].sort((a, b) => a.projeto.localeCompare(b.projeto));
             document.getElementById('pdfProjectsCheckboxList').innerHTML = sortedProjects.map((p, i) => {
                 const originalIndex = projects.indexOf(p);
-                return `<label class="project-checkbox"><input type="checkbox" value="${originalIndex}"><span>${p.projeto}</span></label>`;
+                return `<label class="project-checkbox"><input type="checkbox" value="${originalIndex}" onchange="autoSelectSpecificPdf()"><span>${p.projeto}</span></label>`;
             }).join('');
             document.getElementById('pdfModalOverlay').classList.add('active');
+        }
+
+        function autoSelectSpecificPdf() {
+            const specificLabel = document.querySelector('#pdfModalOverlay .print-option:nth-child(4)');
+            if (specificLabel && !specificLabel.classList.contains('selected')) {
+                document.querySelectorAll('#pdfModalOverlay .print-option').forEach(o => o.classList.remove('selected'));
+                specificLabel.classList.add('selected');
+                specificLabel.querySelector('input[type="radio"]').checked = true;
+                pdfOption = 'specific';
+            }
         }
 
         function closePdfModal(e) {

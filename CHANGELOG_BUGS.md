@@ -83,6 +83,10 @@ Bloco resumo no topo do modal de projeto:
 **Problema:** Mesmo problema da view-simples
 **Solução:** Adicionado botão "🏠 Início" como primeiro da esquerda
 
+#### BUG #020 - "Projetos específicos" não funcionava em PDF/Impressão 🆕
+**Problema:** Ao marcar checkboxes de projetos específicos, a opção não era automaticamente selecionada, gerando todos os projetos ao invés dos selecionados
+**Solução:** Adicionado `onchange="autoSelectSpecificPrint/Pdf()"` nos checkboxes que automaticamente seleciona a opção "specific" quando qualquer checkbox é marcado
+
 ---
 
 ## v6.1.1 (29/01/2026) - Correção de Modais
