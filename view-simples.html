@@ -3,451 +3,1189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visão Resumida - Infraestrutura</title>
+    <title>Visão Resumida - Infraestrutura v6.1.1</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
-        .container { max-width: 1400px; margin: 0 auto; }
-        .header { background: linear-gradient(135deg, #1a1a2e, #16213e); padding: 20px 30px; border-radius: 16px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
-        .header-left h1 { color: white; font-size: 1.5rem; display: flex; align-items: center; gap: 12px; }
-        .header-left p { color: #94a3b8; font-size: 0.85rem; margin-top: 5px; }
-        .version { background: rgba(255,255,255,0.2); color: white; padding: 4px 12px; border-radius: 12px; font-size: 11px; }
-        .header-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
-        .btn { padding: 12px 20px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; display: flex; align-items: center; gap: 8px; transition: all 0.3s; }
-        .btn-secondary { background: #475569; color: white; }
-        .btn-secondary:hover { background: #334155; }
-        .btn-primary { background: #3b82f6; color: white; }
-        .btn-primary:hover { background: #2563eb; }
-        .btn-danger { background: #ef4444; color: white; }
-        .btn-danger:hover { background: #dc2626; }
-        .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px; }
-        .kpi-card { background: white; border-radius: 12px; padding: 20px; border-left: 4px solid #10b981; }
-        .kpi-card.yellow { border-left-color: #f59e0b; }
-        .kpi-card.blue { border-left-color: #3b82f6; }
-        .kpi-card.red { border-left-color: #ef4444; }
-        .kpi-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .kpi-title { font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 600; }
-        .kpi-help { color: #94a3b8; cursor: help; }
-        .kpi-value { font-size: 2rem; font-weight: 700; color: #10b981; }
-        .kpi-card.yellow .kpi-value { color: #f59e0b; }
-        .kpi-card.blue .kpi-value { color: #3b82f6; }
-        .kpi-card.red .kpi-value { color: #ef4444; }
-        .kpi-desc { font-size: 11px; color: #94a3b8; margin-top: 5px; }
-        .card { background: white; border-radius: 16px; margin-bottom: 20px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
-        .card-header { padding: 15px 20px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
-        .card-header h3 { font-size: 14px; color: #334155; display: flex; align-items: center; gap: 10px; }
-        .card-body { padding: 20px; }
-        .summary-box { background: #f0fdf4; border-radius: 12px; padding: 20px; display: flex; align-items: center; gap: 15px; }
-        .summary-box.warning { background: #fef3c7; }
-        .summary-box.danger { background: #fee2e2; }
-        .summary-icon { font-size: 2.5rem; }
-        .summary-text h4 { color: #065f46; font-size: 1rem; }
-        .summary-text p { color: #047857; font-size: 0.85rem; }
-        .summary-box.warning .summary-text h4 { color: #92400e; }
-        .summary-box.warning .summary-text p { color: #a16207; }
-        .summary-box.danger .summary-text h4 { color: #991b1b; }
-        .summary-box.danger .summary-text p { color: #b91c1c; }
-        .stats-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; margin: 20px 0; }
-        .stat-box { background: #f1f5f9; border-radius: 12px; padding: 15px; text-align: center; border-top: 3px solid #3b82f6; }
-        .stat-box.green { border-top-color: #10b981; }
-        .stat-box.yellow { border-top-color: #f59e0b; }
-        .stat-box.red { border-top-color: #ef4444; }
-        .stat-box .number { font-size: 1.8rem; font-weight: 700; color: #1e293b; }
-        .stat-box .label { font-size: 10px; color: #64748b; text-transform: uppercase; margin-top: 5px; }
-        .section { background: white; border-radius: 16px; margin-bottom: 20px; overflow: hidden; }
-        .section-header { padding: 15px 20px; color: white; display: flex; justify-content: space-between; align-items: center; }
-        .section-header.red { background: linear-gradient(135deg, #ef4444, #dc2626); }
-        .section-header.green { background: linear-gradient(135deg, #10b981, #059669); }
-        .section-header.blue { background: linear-gradient(135deg, #3b82f6, #2563eb); }
-        .section-header.yellow { background: linear-gradient(135deg, #f59e0b, #d97706); }
-        .section-header.gray { background: linear-gradient(135deg, #6b7280, #4b5563); }
-        .section-header h3 { font-size: 14px; display: flex; align-items: center; gap: 10px; }
-        .badge-count { background: rgba(255,255,255,0.3); padding: 4px 12px; border-radius: 12px; font-size: 12px; }
-        .table-container { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #f1f5f9; font-size: 13px; }
-        th { background: #f8fafc; color: #64748b; font-weight: 600; text-transform: uppercase; font-size: 11px; }
-        tr:hover { background: #f8fafc; }
-        .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-        .badge-verde { background: #d1fae5; color: #065f46; }
-        .badge-amarelo { background: #fef3c7; color: #92400e; }
-        .badge-vermelho { background: #fee2e2; color: #991b1b; }
-        .badge-cinza { background: #f3f4f6; color: #4b5563; }
-        .progress-bar { height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; width: 100px; display: inline-block; margin-right: 8px; vertical-align: middle; }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, #10b981, #059669); border-radius: 4px; }
-        .filters { display: flex; gap: 15px; flex-wrap: wrap; align-items: center; padding: 20px; background: white; border-radius: 16px; margin-bottom: 20px; }
-        .filter-group { display: flex; flex-direction: column; gap: 5px; }
-        .filter-group label { font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 600; }
-        .filter-group input, .filter-group select { padding: 10px 15px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 13px; min-width: 150px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 20px; min-height: 100vh; }
+        .container { max-width: 1600px; margin: 0 auto; }
+        .header { background: rgba(255,255,255,0.95); padding: 25px 30px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); margin-bottom: 25px; }
+        .header-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .header h1 { font-size: 1.8rem; color: #1a1a2e; display: flex; align-items: center; gap: 12px; }
+        .header h1 span { font-size: 2rem; }
+        .version { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+        .update-info { font-size: 0.85rem; color: #64748b; margin-top: 5px; }
+        .header-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn { padding: 10px 20px; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: all 0.3s; display: flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4); }
+        
+        /* KPIs */
+        .kpis-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin: 20px 0; }
+        .kpi-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-left: 4px solid #667eea; position: relative; }
+        .kpi-card.ontime { border-left-color: #22c55e; }
+        .kpi-card.delta { border-left-color: #f59e0b; }
+        .kpi-card.taxa { border-left-color: #3b82f6; }
+        .kpi-card.aging { border-left-color: #ef4444; }
+        .kpi-header { display: flex; justify-content: space-between; align-items: flex-start; }
+        .kpi-label { font-size: 0.85rem; color: #64748b; font-weight: 500; text-transform: uppercase; }
+        .kpi-value { font-size: 2rem; font-weight: 700; margin-top: 8px; }
+        .kpi-value.green { color: #22c55e; }
+        .kpi-value.yellow { color: #f59e0b; }
+        .kpi-value.red { color: #ef4444; }
+        .kpi-sub { font-size: 0.75rem; color: #94a3b8; margin-top: 4px; }
+        .kpi-tooltip { cursor: help; color: #94a3b8; font-size: 0.9rem; }
+        .kpi-tooltip:hover::after { content: attr(data-tooltip); position: absolute; top: 100%; left: 10px; background: #1e293b; color: white; padding: 8px 12px; border-radius: 8px; font-size: 0.75rem; white-space: pre-line; z-index: 100; max-width: 280px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+
+        /* Alert Bar */
+        .alert-bar { background: linear-gradient(135deg, #fef3c7, #fde68a); border-left: 4px solid #f59e0b; padding: 15px 20px; border-radius: 12px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
+        .alert-bar.critical { background: linear-gradient(135deg, #fee2e2, #fecaca); border-left-color: #ef4444; }
+        .alert-icon { font-size: 2rem; }
+        .alert-content h3 { font-size: 1rem; color: #92400e; margin-bottom: 4px; }
+        .alert-content p { font-size: 0.85rem; color: #a16207; }
+        .alert-bar.critical .alert-content h3 { color: #991b1b; }
+        .alert-bar.critical .alert-content p { color: #b91c1c; }
+
+        /* Status Cards */
+        .status-cards { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; margin-bottom: 25px; }
+        .status-card { background: white; border-radius: 12px; padding: 20px 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s; border: 2px solid transparent; }
+        .status-card:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+        .status-card.active { border-color: #667eea; }
+        .status-card .number { font-size: 2.5rem; font-weight: 700; }
+        .status-card .label { font-size: 0.75rem; color: #64748b; text-transform: uppercase; margin-top: 5px; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .status-card.total .number { color: #1e293b; }
+        .status-card.concluido .number { color: #22c55e; }
+        .status-card.andamento .number { color: #3b82f6; }
+        .status-card.atrasado .number { color: #ef4444; }
+        .status-card.aguardando .number { color: #f59e0b; }
+        .status-card.nao-iniciado .number { color: #64748b; }
+        .status-card.critico .number { color: #991b1b; }
+
+        /* Decisões Section */
+        .decisoes-section { background: linear-gradient(135deg, #fef2f2, #fee2e2); border-radius: 16px; padding: 20px 25px; margin-bottom: 25px; border-left: 5px solid #ef4444; }
+        .decisoes-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; cursor: pointer; }
+        .decisoes-header h3 { font-size: 1.1rem; color: #991b1b; display: flex; align-items: center; gap: 10px; }
+        .decisoes-badge { background: #ef4444; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+        .decisoes-table { width: 100%; border-collapse: collapse; }
+        .decisoes-table th, .decisoes-table td { padding: 12px 15px; text-align: left; border-bottom: 1px solid rgba(239, 68, 68, 0.2); }
+        .decisoes-table th { font-size: 0.75rem; text-transform: uppercase; color: #991b1b; font-weight: 600; }
+        .decisoes-table td { font-size: 0.9rem; color: #1e293b; }
+        .decisoes-table tr:hover { background: rgba(239, 68, 68, 0.05); }
+        .projeto-link { color: #991b1b; font-weight: 600; cursor: pointer; text-decoration: underline; }
+        .projeto-link:hover { color: #7f1d1d; }
+
+        /* Filters */
+        .filters-section { background: white; border-radius: 16px; padding: 20px 25px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .filters-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr auto auto; gap: 15px; align-items: end; }
+        .filter-group label { display: block; font-size: 0.8rem; color: #64748b; margin-bottom: 6px; font-weight: 500; }
+        .filter-group input, .filter-group select { width: 100%; padding: 10px 14px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 0.9rem; transition: border-color 0.3s; }
         .filter-group input:focus, .filter-group select:focus { outline: none; border-color: #667eea; }
-        .checkbox-filter { display: flex; align-items: center; gap: 8px; padding: 10px 15px; background: #fee2e2; border-radius: 8px; cursor: pointer; border: 2px solid transparent; }
-        .checkbox-filter:hover { border-color: #ef4444; }
-        .checkbox-filter input { width: 18px; height: 18px; }
-        .checkbox-filter span { color: #991b1b; font-weight: 600; font-size: 13px; }
-        .btn-clear { background: none; border: 1px solid #e2e8f0; color: #64748b; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-size: 13px; }
-        .btn-clear:hover { background: #f8fafc; }
-        .empty-state { text-align: center; padding: 40px; color: #64748b; }
-        .empty-state h3 { margin-bottom: 10px; }
-        @media (max-width: 1024px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } .stats-grid { grid-template-columns: repeat(4, 1fr); } }
-        @media (max-width: 768px) { .kpi-grid { grid-template-columns: 1fr; } .stats-grid { grid-template-columns: repeat(2, 1fr); } .filters { flex-direction: column; } }
-        @media print { body { background: white; padding: 0; } .header-buttons, .filters, .btn { display: none !important; } .card, .section { box-shadow: none; border: 1px solid #e2e8f0; } }
+        .btn-clear { background: #64748b; padding: 10px 16px; font-size: 0.85rem; }
+        .checkbox-filter { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: #fff; border: 2px solid #ef4444; border-radius: 10px; cursor: pointer; transition: all 0.3s; }
+        .checkbox-filter:hover { background: #fef2f2; }
+        .checkbox-filter.active { background: #fef2f2; border-color: #dc2626; }
+        .checkbox-filter input { width: 18px; height: 18px; accent-color: #ef4444; }
+        .checkbox-filter span { font-size: 0.85rem; font-weight: 600; color: #991b1b; white-space: nowrap; }
+
+        /* Table */
+        .table-container { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 14px 16px; text-align: left; }
+        th { background: linear-gradient(135deg, #1e293b, #334155); color: white; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; }
+        tr { cursor: pointer; transition: background 0.2s; }
+        tr:nth-child(even) { background: #f8fafc; }
+        tr:hover { background: #e0e7ff; }
+        td { font-size: 0.9rem; color: #1e293b; }
+        .badge { padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+        .badge.concluido { background: #dcfce7; color: #166534; }
+        .badge.andamento { background: #dbeafe; color: #1e40af; }
+        .badge.atrasado { background: #fee2e2; color: #991b1b; }
+        .badge.aguardando { background: #fef3c7; color: #92400e; }
+        .badge.nao-iniciado { background: #f1f5f9; color: #475569; }
+        .rag-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+        .rag-dot.verde { background: #22c55e; }
+        .rag-dot.amarelo { background: #f59e0b; }
+        .rag-dot.vermelho { background: #ef4444; }
+        .progress-bar { width: 100px; height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 4px; }
+
+        /* Modal do Projeto */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(4px); }
+        .modal-overlay.active { display: flex; }
+        .modal { background: white; border-radius: 20px; width: 90%; max-width: 800px; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 80px rgba(0,0,0,0.3); }
+        .modal-header { background: linear-gradient(135deg, #667eea, #764ba2); padding: 25px 30px; color: white; display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h2 { font-size: 1.5rem; }
+        .modal-header p { opacity: 0.9; font-size: 0.9rem; margin-top: 5px; }
+        .modal-header-actions { display: flex; gap: 10px; align-items: center; }
+        .modal-close { background: rgba(255,255,255,0.2); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; font-size: 1.5rem; cursor: pointer; transition: background 0.3s; }
+        .modal-close:hover { background: rgba(255,255,255,0.3); }
+        .btn-print-project { background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 10px 18px; border-radius: 10px; font-size: 0.85rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.3s; }
+        .btn-print-project:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); }
+        .modal-body { padding: 30px; }
+        .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .info-box { background: #f8fafc; padding: 15px 20px; border-radius: 12px; }
+        .info-box label { font-size: 0.75rem; color: #64748b; text-transform: uppercase; display: block; margin-bottom: 6px; }
+        .info-box span { font-size: 1rem; color: #1e293b; font-weight: 500; }
+        .info-box.full-width { grid-column: 1 / -1; }
+        .info-box.bloqueador { background: #fef2f2; border: 1px solid #fecaca; }
+        .info-box.bloqueador span { color: #991b1b; }
+
+        /* Atividades no Modal */
+        .atividades-section { margin-top: 25px; padding-top: 20px; border-top: 2px solid #e2e8f0; }
+        .atividades-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .atividades-header h3 { font-size: 1.1rem; color: #1e293b; display: flex; align-items: center; gap: 10px; }
+        .atividades-list { max-height: 300px; overflow-y: auto; }
+        .atividade-item { display: flex; align-items: center; gap: 12px; padding: 10px 15px; border-radius: 8px; margin-bottom: 8px; }
+        .atividade-item.concluida { background: #f0fdf4; border-left: 3px solid #22c55e; }
+        .atividade-item.andamento { background: #eff6ff; border-left: 3px solid #3b82f6; }
+        .atividade-item.pendente { background: #f8fafc; border-left: 3px solid #94a3b8; }
+        .atividade-status { font-size: 1.2rem; }
+        .atividade-info { flex: 1; }
+        .atividade-nome { font-size: 0.9rem; font-weight: 500; color: #1e293b; }
+        .atividade-data { font-size: 0.75rem; color: #64748b; margin-top: 2px; }
+
+        /* Modal de Impressão */
+        .print-modal { max-width: 550px; }
+        .print-options { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+        .print-option { display: flex; align-items: center; gap: 15px; padding: 15px 20px; border: 2px solid #e2e8f0; border-radius: 12px; cursor: pointer; transition: all 0.3s; }
+        .print-option:hover { border-color: #667eea; background: #f8fafc; }
+        .print-option.selected { border-color: #667eea; background: linear-gradient(135deg, #eef2ff, #e0e7ff); }
+        .print-option input { display: none; }
+        .print-icon { font-size: 1.5rem; }
+        .print-label { font-weight: 600; color: #1e293b; }
+        .print-desc { font-size: 0.8rem; color: #64748b; margin-top: 4px; }
+        .projects-select-container { margin-top: 12px; max-height: 200px; overflow-y: auto; background: white; border-radius: 8px; padding: 10px; }
+        .project-search { width: 100%; padding: 10px 14px; border: 2px solid #e2e8f0; border-radius: 8px; margin-bottom: 10px; font-size: 0.9rem; }
+        .project-search:focus { outline: none; border-color: #667eea; }
+        .select-all-btn { display: inline-block; padding: 6px 12px; background: #667eea; color: white; border-radius: 6px; font-size: 0.8rem; cursor: pointer; margin-bottom: 10px; }
+        .select-all-btn:hover { background: #5a67d8; }
+        .project-checkbox { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
+        .project-checkbox:hover { background: #f1f5f9; }
+        .project-checkbox input { width: 18px; height: 18px; accent-color: #667eea; }
+        .project-checkbox span { font-size: 0.9rem; color: #1e293b; }
+
+        /* Print Styles */
+        @media print {
+            body { background: white; padding: 10px; }
+            .header-actions, .filters-section, .btn, .modal-overlay, .decisoes-section { display: none !important; }
+            .container { max-width: 100%; }
+            .status-cards { grid-template-columns: repeat(7, 1fr); }
+            .kpis-grid { grid-template-columns: repeat(4, 1fr); }
+            table { page-break-inside: auto; }
+            tr { page-break-inside: avoid; page-break-after: auto; }
+        }
+
+        @media (max-width: 1200px) {
+            .filters-grid { grid-template-columns: repeat(4, 1fr); }
+            .status-cards { grid-template-columns: repeat(4, 1fr); }
+            .kpis-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .filters-grid { grid-template-columns: 1fr 1fr; }
+            .status-cards { grid-template-columns: repeat(2, 1fr); }
+            .kpis-grid { grid-template-columns: 1fr; }
+            .info-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <div class="header-left">
-                <h1>📋 Visão Resumida - Infraestrutura <span class="version">v6.1</span></h1>
-                <p id="currentDate">Atualizado em: --</p>
+            <div class="header-top">
+                <div>
+                    <h1><span>📊</span> Visão Resumida - Infraestrutura <span class="version">v6.1.1</span></h1>
+                    <p class="update-info">Atualizado em: <span id="lastUpdate">--</span></p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn" onclick="openPrintModal()">🖨️ Imprimir</button>
+                    <button class="btn" style="background: linear-gradient(135deg, #ef4444, #dc2626);" onclick="openPdfModal()">📄 Gerar PDF</button>
+                    <button class="btn" style="background: linear-gradient(135deg, #10b981, #059669);" onclick="window.location.href='view-detalhada.html'">📋 Visão Detalhada</button>
+                    <button class="btn" style="background: linear-gradient(135deg, #f59e0b, #d97706);" onclick="window.location.href='admin.html'">⚙️ Admin</button>
+                </div>
             </div>
-            <div class="header-buttons">
-                <button class="btn btn-secondary" onclick="window.location.href='index.html'">← Voltar</button>
-                <button class="btn btn-primary" onclick="window.print()">🖨️ Imprimir</button>
-                <button class="btn btn-danger" onclick="gerarPDF()">📄 Gerar PDF</button>
-            </div>
-        </div>
 
-        <div class="kpi-grid">
-            <div class="kpi-card">
-                <div class="kpi-header"><span class="kpi-title">No Prazo</span><span class="kpi-help" title="% de projetos com Go-Live no prazo">?</span></div>
-                <div class="kpi-value" id="kpiPrazo">--%</div>
-                <div class="kpi-desc">de X com data</div>
-            </div>
-            <div class="kpi-card yellow">
-                <div class="kpi-header"><span class="kpi-title">Atraso Médio</span><span class="kpi-help" title="Média de dias de atraso">?</span></div>
-                <div class="kpi-value" id="kpiAtraso">-- dias</div>
-                <div class="kpi-desc">nos go-lives</div>
-            </div>
-            <div class="kpi-card blue">
-                <div class="kpi-header"><span class="kpi-title">Projetos Atualizados</span><span class="kpi-help" title="% atualizados nos últimos 7 dias">?</span></div>
-                <div class="kpi-value" id="kpiAtualizados">--%</div>
-                <div class="kpi-desc">últimos 7 dias</div>
-            </div>
-            <div class="kpi-card red">
-                <div class="kpi-header"><span class="kpi-title">Tempo Médio Parado</span><span class="kpi-help" title="Média de dias sem atualização">?</span></div>
-                <div class="kpi-value" id="kpiParado">-- dias</div>
-                <div class="kpi-desc">sem atualização</div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-body">
-                <div class="summary-box" id="summaryBox">
-                    <div class="summary-icon">📋</div>
-                    <div class="summary-text">
-                        <h4>Carregando...</h4>
-                        <p>Aguarde enquanto os dados são carregados.</p>
+            <!-- KPIs -->
+            <div class="kpis-grid">
+                <div class="kpi-card ontime">
+                    <div class="kpi-header">
+                        <span class="kpi-label">No Prazo</span>
+                        <span class="kpi-tooltip" data-tooltip="Fórmula: Projetos com Go Live Atual ≤ Original ÷ Total × 100&#10;Considera apenas projetos com ambas as datas preenchidas">?</span>
                     </div>
+                    <div class="kpi-value green" id="kpiOntime">--%</div>
+                    <div class="kpi-sub" id="kpiOntimeSub">de -- com data</div>
+                </div>
+                <div class="kpi-card delta">
+                    <div class="kpi-header">
+                        <span class="kpi-label">Atraso Médio</span>
+                        <span class="kpi-tooltip" data-tooltip="Fórmula: Soma (Atual - Original) ÷ Qtd com ambas datas&#10;Média de dias de atraso nos go-lives">?</span>
+                    </div>
+                    <div class="kpi-value yellow" id="kpiDelta">-- dias</div>
+                    <div class="kpi-sub">nos go-lives</div>
+                </div>
+                <div class="kpi-card taxa">
+                    <div class="kpi-header">
+                        <span class="kpi-label">Projetos Atualizados</span>
+                        <span class="kpi-tooltip" data-tooltip="Fórmula: Projetos atualizados nos últimos 7 dias ÷ Total × 100&#10;Indica engajamento e manutenção dos dados">?</span>
+                    </div>
+                    <div class="kpi-value" id="kpiTaxa">--%</div>
+                    <div class="kpi-sub">últimos 7 dias</div>
+                </div>
+                <div class="kpi-card aging">
+                    <div class="kpi-header">
+                        <span class="kpi-label">Tempo Médio Parado</span>
+                        <span class="kpi-tooltip" data-tooltip="Fórmula: Soma dos dias parados ÷ Total de projetos&#10;Média de dias sem atualização">?</span>
+                    </div>
+                    <div class="kpi-value red" id="kpiAging">-- dias</div>
+                    <div class="kpi-sub">sem atualização</div>
                 </div>
             </div>
         </div>
 
-        <div class="card">
-            <div class="card-body">
-                <div class="stats-grid" id="statsGrid">
-                    <div class="stat-box"><div class="number" id="statTotal">0</div><div class="label">📊 Total</div></div>
-                    <div class="stat-box green"><div class="number" id="statConcluidos">0</div><div class="label">✅ Concluídos</div></div>
-                    <div class="stat-box"><div class="number" id="statAndamento">0</div><div class="label">⏳ Em Andamento</div></div>
-                    <div class="stat-box red"><div class="number" id="statAtrasados">0</div><div class="label">🔴 Atrasados</div></div>
-                    <div class="stat-box yellow"><div class="number" id="statAguardando">0</div><div class="label">⏸️ Aguardando</div></div>
-                    <div class="stat-box"><div class="number" id="statNaoIniciados">0</div><div class="label">📋 Não Iniciados</div></div>
-                    <div class="stat-box red"><div class="number" id="statCriticos">0</div><div class="label">🚨 Críticos</div></div>
+        <!-- Alert Bar -->
+        <div class="alert-bar" id="alertBar" style="display: none;">
+            <div class="alert-icon">⚠️</div>
+            <div class="alert-content">
+                <h3 id="alertTitle">Atenção Necessária!</h3>
+                <p id="alertText">Existem projetos que requerem ação imediata.</p>
+            </div>
+        </div>
+
+        <!-- Status Cards -->
+        <div class="status-cards">
+            <div class="status-card total active" onclick="filterByStatus('todos')">
+                <div class="number" id="totalProjects">0</div>
+                <div class="label">📁 Total</div>
+            </div>
+            <div class="status-card concluido" onclick="filterByStatus('Concluído')">
+                <div class="number" id="concluidosCount">0</div>
+                <div class="label">✅ Concluídos</div>
+            </div>
+            <div class="status-card andamento" onclick="filterByStatus('Em Andamento')">
+                <div class="number" id="andamentoCount">0</div>
+                <div class="label">🔄 Em Andamento</div>
+            </div>
+            <div class="status-card atrasado" onclick="filterByStatus('Atrasado')">
+                <div class="number" id="atrasadoCount">0</div>
+                <div class="label">⏰ Atrasados</div>
+            </div>
+            <div class="status-card aguardando" onclick="filterByStatus('Aguardando')">
+                <div class="number" id="aguardandoCount">0</div>
+                <div class="label">⏸️ Aguardando</div>
+            </div>
+            <div class="status-card nao-iniciado" onclick="filterByStatus('Não Iniciado')">
+                <div class="number" id="naoIniciadoCount">0</div>
+                <div class="label">📋 Não Iniciados</div>
+            </div>
+            <div class="status-card critico" onclick="filterByStatus('criticos')">
+                <div class="number" id="criticosCount">0</div>
+                <div class="label">🔴 Críticos</div>
+            </div>
+        </div>
+
+        <!-- Decisões Necessárias -->
+        <div class="decisoes-section" id="decisoesSection" style="display: none;">
+            <div class="decisoes-header" onclick="toggleDecisoes()">
+                <h3>🚨 Decisões Necessárias (Esta Semana)</h3>
+                <span class="decisoes-badge" id="decisoesBadge">0 itens</span>
+            </div>
+            <table class="decisoes-table" id="decisoesTable">
+                <thead>
+                    <tr>
+                        <th>Projeto</th>
+                        <th>Bloqueador</th>
+                        <th>Responsável</th>
+                        <th>Dias Parado</th>
+                        <th>Ação Sugerida</th>
+                    </tr>
+                </thead>
+                <tbody id="decisoesBody"></tbody>
+            </table>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters-section">
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label>🔍 Buscar Projeto</label>
+                    <input type="text" id="searchInput" placeholder="Digite o nome do projeto..." oninput="applyFilters()">
+                </div>
+                <div class="filter-group">
+                    <label>📊 Status</label>
+                    <select id="filterStatus" onchange="applyFilters()">
+                        <option value="">Todos</option>
+                        <option value="Concluído">Concluído</option>
+                        <option value="Em Andamento">Em Andamento</option>
+                        <option value="Atrasado">Atrasado</option>
+                        <option value="Aguardando">Aguardando</option>
+                        <option value="Não Iniciado">Não Iniciado</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>🚦 Situação</label>
+                    <select id="filterSituacao" onchange="applyFilters()">
+                        <option value="">Todas</option>
+                        <option value="Verde">Verde</option>
+                        <option value="Amarelo">Amarelo</option>
+                        <option value="Vermelho">Vermelho</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>👤 PMO</label>
+                    <select id="filterPmo" onchange="applyFilters()">
+                        <option value="">Todos</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>⏱️ Dias Parado</label>
+                    <select id="filterParado" onchange="applyFilters()">
+                        <option value="">Todos</option>
+                        <option value="7">7+ dias</option>
+                        <option value="15">15+ dias</option>
+                        <option value="30">30+ dias</option>
+                        <option value="60">60+ dias</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>📅 Go-Live</label>
+                    <select id="filterGoLive" onchange="applyFilters()">
+                        <option value="">Todos</option>
+                        <option value="mes">Este Mês</option>
+                        <option value="30">Próx. 30 dias</option>
+                        <option value="60">Próx. 60 dias</option>
+                        <option value="90">Próx. 90 dias</option>
+                        <option value="atrasados">Atrasados</option>
+                    </select>
+                </div>
+                <div class="checkbox-filter" id="criticosCheckbox" onclick="toggleCriticosFilter()">
+                    <input type="checkbox" id="filterCriticos">
+                    <span>🚨 Apenas Críticos</span>
+                </div>
+                <button class="btn btn-clear" onclick="clearFilters()">✕ Limpar</button>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Projeto</th>
+                        <th>Status</th>
+                        <th>Situação</th>
+                        <th>PMO</th>
+                        <th>Localização</th>
+                        <th>Progresso</th>
+                        <th>Go-Live</th>
+                        <th>Dias Parado</th>
+                    </tr>
+                </thead>
+                <tbody id="projectsTable"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal do Projeto -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div>
+                    <h2 id="modalTitle">Projeto</h2>
+                    <p id="modalSubtitle">Detalhes</p>
+                </div>
+                <div class="modal-header-actions">
+                    <button class="btn-print-project" onclick="printProject()">🖨️ Imprimir</button>
+                    <button class="modal-close" onclick="closeModal()">&times;</button>
                 </div>
             </div>
-        </div>
-
-        <div class="filters">
-            <div class="filter-group">
-                <label>Buscar Projeto</label>
-                <input type="text" id="filterSearch" placeholder="Digite o nome..." oninput="applyFilters()">
-            </div>
-            <div class="filter-group">
-                <label>Status</label>
-                <select id="filterStatus" onchange="applyFilters()">
-                    <option value="">Todos</option>
-                    <option value="Em Andamento">Em Andamento</option>
-                    <option value="Concluído">Concluído</option>
-                    <option value="Aguardando Cliente">Aguardando Cliente</option>
-                    <option value="Não Iniciado">Não Iniciado</option>
-                    <option value="Atrasado">Atrasado</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label>Situação</label>
-                <select id="filterSituacao" onchange="applyFilters()">
-                    <option value="">Todas</option>
-                    <option value="Verde">Verde</option>
-                    <option value="Amarelo">Amarelo</option>
-                    <option value="Vermelho">Vermelho</option>
-                    <option value="Cinza">Cinza</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label>PMO</label>
-                <select id="filterPMO" onchange="applyFilters()">
-                    <option value="">Todos</option>
-                </select>
-            </div>
-            <label class="checkbox-filter">
-                <input type="checkbox" id="filterCriticos" onchange="applyFilters()">
-                <span>🚨 Apenas Críticos</span>
-            </label>
-            <button class="btn-clear" onclick="clearFilters()">✕ Limpar</button>
-        </div>
-
-        <div class="section" id="decisoesSection">
-            <div class="section-header red">
-                <h3>📌 Decisões Necessárias (Esta Semana)</h3>
-                <span class="badge-count" id="decisoesCount">0 itens</span>
-            </div>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Projeto</th>
-                            <th>Bloqueador</th>
-                            <th>Responsável</th>
-                            <th>Dias Parado</th>
-                            <th>Ação Sugerida</th>
-                        </tr>
-                    </thead>
-                    <tbody id="decisoesTable"></tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="section">
-            <div class="section-header blue">
-                <h3>📋 Todos os Projetos</h3>
-                <span class="badge-count" id="projetosCount">0 projetos</span>
-            </div>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Projeto</th>
-                            <th>Localização</th>
-                            <th>Status</th>
-                            <th>Situação</th>
-                            <th>Progresso</th>
-                            <th>PMO</th>
-                            <th>Dias Parado</th>
-                        </tr>
-                    </thead>
-                    <tbody id="projetosTable"></tbody>
-                </table>
+            <div class="modal-body">
+                <div class="info-grid" id="modalInfo"></div>
+                <div class="atividades-section" id="atividadesSection"></div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <!-- Modal de Impressão -->
+    <div class="modal-overlay" id="printModalOverlay" onclick="closePrintModal(event)">
+        <div class="modal print-modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div><h2>🖨️ Opções de Impressão</h2></div>
+                <button class="modal-close" onclick="closePrintModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="print-options">
+                    <label class="print-option selected" onclick="selectPrintOption(this, 'current')">
+                        <input type="radio" name="print" value="current" checked>
+                        <span class="print-icon">📄</span>
+                        <div>
+                            <div class="print-label">Filtro atual</div>
+                            <div class="print-desc">Projetos visíveis na tela</div>
+                        </div>
+                    </label>
+                    <label class="print-option" onclick="selectPrintOption(this, 'all')">
+                        <input type="radio" name="print" value="all">
+                        <span class="print-icon">📑</span>
+                        <div>
+                            <div class="print-label">Todos os projetos</div>
+                            <div class="print-desc">Sem filtros aplicados</div>
+                        </div>
+                    </label>
+                    <label class="print-option" onclick="selectPrintOption(this, 'criticos')">
+                        <input type="radio" name="print" value="criticos">
+                        <span class="print-icon">🚨</span>
+                        <div>
+                            <div class="print-label">Apenas críticos</div>
+                            <div class="print-desc">Atrasados, vermelhos ou parados 15+ dias</div>
+                        </div>
+                    </label>
+                    <label class="print-option" onclick="selectPrintOption(this, 'specific')">
+                        <input type="radio" name="print" value="specific">
+                        <span class="print-icon">✅</span>
+                        <div>
+                            <div class="print-label">Projetos específicos</div>
+                            <div class="print-desc">Selecione os projetos desejados</div>
+                            <div class="projects-select-container" id="printProjectsContainer" onclick="event.stopPropagation()">
+                                <input type="text" class="project-search" id="printProjectSearch" placeholder="🔍 Buscar projeto..." oninput="filterPrintProjectCheckboxes()">
+                                <span class="select-all-btn" onclick="toggleSelectAllPrint()">Selecionar todos</span>
+                                <div id="printProjectsCheckboxList"></div>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+                <button class="btn" style="width:100%;" onclick="executePrint()">🖨️ Imprimir</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de PDF -->
+    <div class="modal-overlay" id="pdfModalOverlay" onclick="closePdfModal(event)">
+        <div class="modal print-modal" onclick="event.stopPropagation()">
+            <div class="modal-header" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
+                <div><h2>📄 Gerar PDF</h2></div>
+                <button class="modal-close" onclick="closePdfModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="print-options">
+                    <label class="print-option selected" onclick="selectPdfOption(this, 'current')">
+                        <input type="radio" name="pdf" value="current" checked>
+                        <span class="print-icon">📄</span>
+                        <div>
+                            <div class="print-label">Filtro atual</div>
+                            <div class="print-desc">Projetos visíveis na tela</div>
+                        </div>
+                    </label>
+                    <label class="print-option" onclick="selectPdfOption(this, 'all')">
+                        <input type="radio" name="pdf" value="all">
+                        <span class="print-icon">📑</span>
+                        <div>
+                            <div class="print-label">Todos os projetos</div>
+                            <div class="print-desc">Sem filtros aplicados</div>
+                        </div>
+                    </label>
+                    <label class="print-option" onclick="selectPdfOption(this, 'criticos')">
+                        <input type="radio" name="pdf" value="criticos">
+                        <span class="print-icon">🚨</span>
+                        <div>
+                            <div class="print-label">Apenas críticos</div>
+                            <div class="print-desc">Atrasados, vermelhos ou parados 15+ dias</div>
+                        </div>
+                    </label>
+                    <label class="print-option" onclick="selectPdfOption(this, 'specific')">
+                        <input type="radio" name="pdf" value="specific">
+                        <span class="print-icon">✅</span>
+                        <div>
+                            <div class="print-label">Projetos específicos</div>
+                            <div class="print-desc">Selecione os projetos desejados</div>
+                            <div class="projects-select-container" id="pdfProjectsContainer" onclick="event.stopPropagation()">
+                                <input type="text" class="project-search" id="pdfProjectSearch" placeholder="🔍 Buscar projeto..." oninput="filterPdfProjectCheckboxes()">
+                                <span class="select-all-btn" onclick="toggleSelectAllPdf()">Selecionar todos</span>
+                                <div id="pdfProjectsCheckboxList"></div>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+                <button class="btn" style="width:100%; background: linear-gradient(135deg, #ef4444, #dc2626);" onclick="executePdf()">📄 Gerar PDF</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        let projects = [];
-        let filteredProjects = [];
+        let projects = [], filteredProjects = [], atividades = [], currentProject = null;
+        let printOption = 'current', pdfOption = 'current';
 
         async function loadData() {
             try {
-                const response = await fetch('dados.json?t=' + Date.now());
-                if (!response.ok) throw new Error('Arquivo não encontrado');
-                
+                const response = await fetch('dados.json');
                 const data = await response.json();
-                projects = data.projects || [];
+                projects = data.projetos || [];
+                atividades = data.atividades || [];
                 filteredProjects = [...projects];
-                
-                document.getElementById('currentDate').textContent = 'Atualizado em: ' + 
-                    (data.lastUpdate ? new Date(data.lastUpdate).toLocaleString('pt-BR') : new Date().toLocaleString('pt-BR'));
-                
-                populatePMOFilter();
-                calculateKPIs();
-                showDashboard();
-            } catch (e) {
-                console.error('Erro:', e);
-                document.getElementById('summaryBox').innerHTML = `
-                    <div class="summary-icon">❌</div>
-                    <div class="summary-text">
-                        <h4>Dados não encontrados</h4>
-                        <p>Verifique se o arquivo dados.json está na mesma pasta. <a href="admin.html">Ir para Admin</a></p>
-                    </div>
-                `;
+                updateDashboard();
+                populateFilters();
+                document.getElementById('lastUpdate').textContent = data.ultimaAtualizacao || new Date().toLocaleString('pt-BR');
+            } catch (error) {
+                console.log('Tentando localStorage...');
+                const stored = localStorage.getItem('dashboardData');
+                if (stored) {
+                    const data = JSON.parse(stored);
+                    projects = data.projetos || [];
+                    atividades = data.atividades || [];
+                    filteredProjects = [...projects];
+                    updateDashboard();
+                    populateFilters();
+                    document.getElementById('lastUpdate').textContent = data.ultimaAtualizacao || '--';
+                }
             }
         }
 
-        function populatePMOFilter() {
-            const pmos = [...new Set(projects.map(p => p.pmoInterno).filter(p => p && p !== '-'))];
-            const select = document.getElementById('filterPMO');
-            pmos.sort().forEach(pmo => {
-                const option = document.createElement('option');
-                option.value = pmo;
-                option.textContent = pmo;
-                select.appendChild(option);
-            });
+        function normalizeStatus(status) {
+            if (!status) return 'Não Iniciado';
+            const s = status.toLowerCase().trim();
+            if (s.includes('conclu')) return 'Concluído';
+            if (s.includes('andamento')) return 'Em Andamento';
+            if (s.includes('atrasa')) return 'Atrasado';
+            if (s.includes('aguard') || s.includes('cliente')) return 'Aguardando';
+            return 'Não Iniciado';
         }
 
-        function calculateKPIs() {
-            const comData = projects.filter(p => p.goLiveOriginal && p.goLiveAtual);
-            let noPrazo = 0, totalAtraso = 0, atrasados = 0;
+        function isCritico(p) {
+            const status = normalizeStatus(p.status);
+            const situacao = (p.situacao || '').toLowerCase();
+            const diasParado = parseInt(p.diasParado) || 0;
+            const temBloqueador = p.bloqueador && p.bloqueador !== '-' && p.bloqueador.trim() !== '';
+            return status === 'Atrasado' || situacao === 'vermelho' || diasParado >= 15 || temBloqueador;
+        }
+
+        function updateDashboard() {
+            const counts = { total: 0, concluido: 0, andamento: 0, atrasado: 0, aguardando: 0, naoIniciado: 0, criticos: 0 };
             
-            comData.forEach(p => {
-                const original = parseDate(p.goLiveOriginal);
-                const atual = parseDate(p.goLiveAtual);
-                if (original && atual) {
-                    const diff = Math.floor((atual - original) / (1000 * 60 * 60 * 24));
-                    if (diff <= 0) noPrazo++;
-                    else { totalAtraso += diff; atrasados++; }
+            filteredProjects.forEach(p => {
+                counts.total++;
+                const status = normalizeStatus(p.status);
+                if (status === 'Concluído') counts.concluido++;
+                else if (status === 'Em Andamento') counts.andamento++;
+                else if (status === 'Atrasado') counts.atrasado++;
+                else if (status === 'Aguardando') counts.aguardando++;
+                else counts.naoIniciado++;
+                if (isCritico(p)) counts.criticos++;
+            });
+
+            document.getElementById('totalProjects').textContent = counts.total;
+            document.getElementById('concluidosCount').textContent = counts.concluido;
+            document.getElementById('andamentoCount').textContent = counts.andamento;
+            document.getElementById('atrasadoCount').textContent = counts.atrasado;
+            document.getElementById('aguardandoCount').textContent = counts.aguardando;
+            document.getElementById('naoIniciadoCount').textContent = counts.naoIniciado;
+            document.getElementById('criticosCount').textContent = counts.criticos;
+
+            renderKPIs();
+            renderTable();
+            renderDecisoes();
+            renderAlertBar();
+        }
+
+        function renderKPIs() {
+            let comDatas = 0, noPrazo = 0, somaAtraso = 0, atualizados7d = 0, somaDiasParado = 0;
+            const hoje = new Date();
+            
+            filteredProjects.forEach(p => {
+                const goLiveOriginal = p.goLiveOriginal ? new Date(p.goLiveOriginal.split('/').reverse().join('-')) : null;
+                const goLiveAtual = p.goLiveAtual ? new Date(p.goLiveAtual.split('/').reverse().join('-')) : null;
+                
+                if (goLiveOriginal && goLiveAtual) {
+                    comDatas++;
+                    if (goLiveAtual <= goLiveOriginal) noPrazo++;
+                    const diff = Math.ceil((goLiveAtual - goLiveOriginal) / (1000 * 60 * 60 * 24));
+                    somaAtraso += Math.max(0, diff);
                 }
+                
+                const ultAtual = p.ultAtual ? new Date(p.ultAtual.split('/').reverse().join('-')) : null;
+                if (ultAtual) {
+                    const diffDias = Math.ceil((hoje - ultAtual) / (1000 * 60 * 60 * 24));
+                    if (diffDias <= 7) atualizados7d++;
+                }
+                
+                somaDiasParado += parseInt(p.diasParado) || 0;
             });
-            
-            const pctPrazo = comData.length > 0 ? Math.round((noPrazo / comData.length) * 100) : 0;
-            const mediaAtraso = atrasados > 0 ? Math.round(totalAtraso / atrasados) : 0;
-            
-            const atualizados = projects.filter(p => {
-                if (!p.ultimaAtualizacao) return false;
-                const ultima = parseDate(p.ultimaAtualizacao);
-                if (!ultima) return false;
-                const diff = Math.floor((new Date() - ultima) / (1000 * 60 * 60 * 24));
-                return diff <= 7;
-            }).length;
-            const pctAtualizados = projects.length > 0 ? Math.round((atualizados / projects.length) * 100) : 0;
-            
-            const naoConc = projects.filter(p => p.status !== 'Concluído');
-            const mediaParado = naoConc.length > 0 ? Math.round(naoConc.reduce((sum, p) => sum + (p.diasParado || 0), 0) / naoConc.length) : 0;
-            
-            document.getElementById('kpiPrazo').textContent = pctPrazo + '%';
-            document.getElementById('kpiAtraso').textContent = mediaAtraso + ' dias';
-            document.getElementById('kpiAtualizados').textContent = pctAtualizados + '%';
-            document.getElementById('kpiParado').textContent = mediaParado + ' dias';
-            
-            document.querySelector('.kpi-card:nth-child(1) .kpi-desc').textContent = `de ${comData.length} com data`;
+
+            const total = filteredProjects.length || 1;
+            const percentOntime = comDatas > 0 ? Math.round((noPrazo / comDatas) * 100) : 0;
+            const mediaAtraso = comDatas > 0 ? Math.round(somaAtraso / comDatas) : 0;
+            const percentAtualizado = Math.round((atualizados7d / total) * 100);
+            const mediaAging = Math.round(somaDiasParado / total);
+
+            document.getElementById('kpiOntime').textContent = percentOntime + '%';
+            document.getElementById('kpiOntime').className = 'kpi-value ' + (percentOntime >= 70 ? 'green' : percentOntime >= 50 ? 'yellow' : 'red');
+            document.getElementById('kpiOntimeSub').textContent = `de ${comDatas} com data`;
+
+            document.getElementById('kpiDelta').textContent = mediaAtraso + ' dias';
+            document.getElementById('kpiDelta').className = 'kpi-value ' + (mediaAtraso <= 15 ? 'green' : mediaAtraso <= 30 ? 'yellow' : 'red');
+
+            document.getElementById('kpiTaxa').textContent = percentAtualizado + '%';
+            document.getElementById('kpiTaxa').className = 'kpi-value ' + (percentAtualizado >= 70 ? 'green' : percentAtualizado >= 50 ? 'yellow' : 'red');
+
+            document.getElementById('kpiAging').textContent = mediaAging + ' dias';
+            document.getElementById('kpiAging').className = 'kpi-value ' + (mediaAging <= 7 ? 'green' : mediaAging <= 15 ? 'yellow' : 'red');
         }
 
-        function parseDate(str) {
-            if (!str) return null;
-            const parts = String(str).split('/');
-            if (parts.length === 3) return new Date(parts[2], parts[1] - 1, parts[0]);
-            return new Date(str);
+        function renderAlertBar() {
+            const atrasados = filteredProjects.filter(p => normalizeStatus(p.status) === 'Atrasado').length;
+            const parados15 = filteredProjects.filter(p => (parseInt(p.diasParado) || 0) >= 15).length;
+            const alertBar = document.getElementById('alertBar');
+            
+            if (atrasados > 0 || parados15 > 0) {
+                alertBar.style.display = 'flex';
+                alertBar.className = 'alert-bar' + (atrasados > 0 ? ' critical' : '');
+                document.getElementById('alertIcon').innerHTML = atrasados > 0 ? '🚨' : '⚠️';
+                document.getElementById('alertTitle').textContent = 'Atenção Necessária!';
+                document.getElementById('alertText').textContent = `${atrasados} projeto(s) atrasado(s) e ${parados15} parado(s) há 15+ dias. Revisar antes da próxima reunião.`;
+            } else {
+                alertBar.style.display = 'none';
+            }
+        }
+
+        function renderDecisoes() {
+            const criticos = projects.filter(p => isCritico(p)).sort((a, b) => (parseInt(b.diasParado) || 0) - (parseInt(a.diasParado) || 0));
+            const section = document.getElementById('decisoesSection');
+            const badge = document.getElementById('decisoesBadge');
+            const tbody = document.getElementById('decisoesBody');
+
+            if (criticos.length === 0) {
+                section.style.display = 'none';
+                return;
+            }
+
+            section.style.display = 'block';
+            badge.textContent = criticos.length + ' itens';
+
+            tbody.innerHTML = criticos.map(p => {
+                const bloqueador = p.bloqueador && p.bloqueador !== '-' ? p.bloqueador : 'Até o momento nenhum, acompanhando semanalmente';
+                const acao = p.bloqueador && p.bloqueador !== '-' ? 'Resolver bloqueador' : 'Acompanhar';
+                return `<tr onclick="openModal(projects.indexOf(projects.find(pr => pr.projeto === '${p.projeto}')))">
+                    <td><span class="projeto-link">${p.projeto}</span></td>
+                    <td>${bloqueador.substring(0, 50)}${bloqueador.length > 50 ? '...' : ''}</td>
+                    <td>${p.pmoInterno || '-'}</td>
+                    <td>${p.diasParado || 0}d</td>
+                    <td>${acao}</td>
+                </tr>`;
+            }).join('');
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('projectsTable');
+            tbody.innerHTML = filteredProjects.map((p, i) => {
+                const status = normalizeStatus(p.status);
+                const statusClass = status.toLowerCase().replace(/\s+/g, '-').replace('í', 'i').replace('ã', 'a');
+                const situacao = (p.situacao || 'verde').toLowerCase();
+                const progresso = parseInt(p.progresso) || 0;
+                const originalIndex = projects.indexOf(p);
+                
+                return `<tr onclick="openModal(${originalIndex})">
+                    <td><strong>${p.projeto}</strong></td>
+                    <td><span class="badge ${statusClass}">${status}</span></td>
+                    <td><span class="rag-dot ${situacao}"></span> ${p.situacao || 'Verde'}</td>
+                    <td>${p.pmoInterno || '-'}</td>
+                    <td>${p.localizacao || '-'}</td>
+                    <td><div class="progress-bar"><div class="progress-fill" style="width: ${progresso}%"></div></div> ${progresso}%</td>
+                    <td>${p.goLiveAtual || '-'}</td>
+                    <td>${p.diasParado || 0}d</td>
+                </tr>`;
+            }).join('');
+        }
+
+        function populateFilters() {
+            const pmos = [...new Set(projects.map(p => p.pmoInterno).filter(Boolean))].sort();
+            const select = document.getElementById('filterPmo');
+            select.innerHTML = '<option value="">Todos</option>' + pmos.map(pmo => `<option value="${pmo}">${pmo}</option>`).join('');
         }
 
         function applyFilters() {
-            const search = document.getElementById('filterSearch').value.toLowerCase();
+            const search = document.getElementById('searchInput').value.toLowerCase();
             const status = document.getElementById('filterStatus').value;
-            const situacao = document.getElementById('filterSituacao').value;
-            const pmo = document.getElementById('filterPMO').value;
-            const criticos = document.getElementById('filterCriticos').checked;
-            
+            const situacao = document.getElementById('filterSituacao').value.toLowerCase();
+            const pmo = document.getElementById('filterPmo').value;
+            const parado = parseInt(document.getElementById('filterParado').value) || 0;
+            const goLive = document.getElementById('filterGoLive').value;
+            const apenaCriticos = document.getElementById('filterCriticos').checked;
+
             filteredProjects = projects.filter(p => {
-                if (search && !p.nome.toLowerCase().includes(search)) return false;
-                if (status && p.status !== status) return false;
-                if (situacao && p.situacao !== situacao) return false;
+                if (search && !p.projeto.toLowerCase().includes(search)) return false;
+                if (status && normalizeStatus(p.status) !== status) return false;
+                if (situacao && (p.situacao || '').toLowerCase() !== situacao) return false;
                 if (pmo && p.pmoInterno !== pmo) return false;
-                if (criticos && !p.isCritico) return false;
+                if (parado && (parseInt(p.diasParado) || 0) < parado) return false;
+                if (apenaCriticos && !isCritico(p)) return false;
+                
+                if (goLive) {
+                    const goLiveAtual = p.goLiveAtual ? new Date(p.goLiveAtual.split('/').reverse().join('-')) : null;
+                    const hoje = new Date();
+                    hoje.setHours(0, 0, 0, 0);
+                    
+                    if (goLive === 'mes') {
+                        const fimMes = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0);
+                        if (!goLiveAtual || goLiveAtual < hoje || goLiveAtual > fimMes) return false;
+                    } else if (goLive === 'atrasados') {
+                        if (!goLiveAtual || goLiveAtual >= hoje || normalizeStatus(p.status) === 'Concluído') return false;
+                    } else {
+                        const dias = parseInt(goLive);
+                        const limite = new Date(hoje);
+                        limite.setDate(limite.getDate() + dias);
+                        if (!goLiveAtual || goLiveAtual < hoje || goLiveAtual > limite) return false;
+                    }
+                }
+                
                 return true;
             });
-            
-            showDashboard();
+
+            updateDashboard();
+            updateActiveCards();
         }
 
-        function clearFilters() {
-            document.getElementById('filterSearch').value = '';
+        function filterByStatus(status) {
+            clearFilters(false);
+            if (status === 'todos') {
+                filteredProjects = [...projects];
+            } else if (status === 'criticos') {
+                filteredProjects = projects.filter(p => isCritico(p));
+            } else {
+                filteredProjects = projects.filter(p => normalizeStatus(p.status) === status);
+            }
+            updateDashboard();
+            updateActiveCards(status);
+        }
+
+        function updateActiveCards(active = 'todos') {
+            document.querySelectorAll('.status-card').forEach(card => card.classList.remove('active'));
+            const map = { 'todos': 'total', 'Concluído': 'concluido', 'Em Andamento': 'andamento', 'Atrasado': 'atrasado', 'Aguardando': 'aguardando', 'Não Iniciado': 'nao-iniciado', 'criticos': 'critico' };
+            const cls = map[active] || 'total';
+            document.querySelector(`.status-card.${cls}`)?.classList.add('active');
+        }
+
+        function toggleCriticosFilter() {
+            const checkbox = document.getElementById('filterCriticos');
+            checkbox.checked = !checkbox.checked;
+            document.getElementById('criticosCheckbox').classList.toggle('active', checkbox.checked);
+            applyFilters();
+        }
+
+        function clearFilters(apply = true) {
+            document.getElementById('searchInput').value = '';
             document.getElementById('filterStatus').value = '';
             document.getElementById('filterSituacao').value = '';
-            document.getElementById('filterPMO').value = '';
+            document.getElementById('filterPmo').value = '';
+            document.getElementById('filterParado').value = '';
+            document.getElementById('filterGoLive').value = '';
             document.getElementById('filterCriticos').checked = false;
-            filteredProjects = [...projects];
-            showDashboard();
-        }
-
-        function showDashboard() {
-            // Stats
-            const total = filteredProjects.length;
-            const concluidos = filteredProjects.filter(p => p.status === 'Concluído').length;
-            const andamento = filteredProjects.filter(p => p.status === 'Em Andamento').length;
-            const atrasados = filteredProjects.filter(p => p.status === 'Atrasado').length;
-            const aguardando = filteredProjects.filter(p => p.status === 'Aguardando Cliente').length;
-            const naoIniciados = filteredProjects.filter(p => p.status === 'Não Iniciado').length;
-            const criticos = filteredProjects.filter(p => p.isCritico).length;
-            
-            document.getElementById('statTotal').textContent = total;
-            document.getElementById('statConcluidos').textContent = concluidos;
-            document.getElementById('statAndamento').textContent = andamento;
-            document.getElementById('statAtrasados').textContent = atrasados;
-            document.getElementById('statAguardando').textContent = aguardando;
-            document.getElementById('statNaoIniciados').textContent = naoIniciados;
-            document.getElementById('statCriticos').textContent = criticos;
-            
-            // Summary
-            const summaryBox = document.getElementById('summaryBox');
-            if (criticos > 0) {
-                summaryBox.className = 'summary-box danger';
-                summaryBox.innerHTML = `<div class="summary-icon">🚨</div><div class="summary-text"><h4>Atenção Necessária!</h4><p>${criticos} projeto(s) crítico(s) requerem ação imediata.</p></div>`;
-            } else if (andamento > 0) {
-                summaryBox.className = 'summary-box warning';
-                summaryBox.innerHTML = `<div class="summary-icon">⏳</div><div class="summary-text"><h4>Projetos em Andamento</h4><p>${andamento} projeto(s) em execução. ${concluidos} concluído(s).</p></div>`;
-            } else {
-                summaryBox.className = 'summary-box';
-                summaryBox.innerHTML = `<div class="summary-icon">✅</div><div class="summary-text"><h4>Tudo em ordem!</h4><p>Todos os projetos estão no prazo.</p></div>`;
+            document.getElementById('criticosCheckbox').classList.remove('active');
+            if (apply) {
+                filteredProjects = [...projects];
+                updateDashboard();
+                updateActiveCards();
             }
-            
-            // Decisões
-            const decisoes = filteredProjects.filter(p => p.bloqueador && p.bloqueador.trim() !== '' && p.status !== 'Concluído');
-            document.getElementById('decisoesCount').textContent = decisoes.length + ' itens';
-            document.getElementById('decisoesTable').innerHTML = decisoes.length > 0 ? decisoes.map(p => `
-                <tr>
-                    <td><strong>${p.nome}</strong></td>
-                    <td>${truncate(p.bloqueador, 60)}</td>
-                    <td>${p.pmoInterno}</td>
-                    <td>${p.diasParado}d</td>
-                    <td>Acompanhar</td>
-                </tr>
-            `).join('') : '<tr><td colspan="5" class="empty-state">Nenhuma decisão pendente</td></tr>';
-            
-            // Projetos
-            document.getElementById('projetosCount').textContent = filteredProjects.length + ' projetos';
-            document.getElementById('projetosTable').innerHTML = filteredProjects.map(p => `
-                <tr>
-                    <td><strong>${p.nome}</strong></td>
-                    <td>${p.localizacao}</td>
-                    <td><span class="badge badge-${getStatusBadge(p.status)}">${p.status}</span></td>
-                    <td><span class="badge badge-${p.situacao.toLowerCase()}">${p.situacao}</span></td>
-                    <td><div class="progress-bar"><div class="progress-fill" style="width: ${p.progresso}%"></div></div>${p.progresso}%</td>
-                    <td>${p.pmoInterno}</td>
-                    <td>${p.diasParado}d</td>
-                </tr>
-            `).join('');
         }
 
-        function getStatusBadge(status) {
-            const map = { 'Concluído': 'verde', 'Em Andamento': 'amarelo', 'Aguardando Cliente': 'amarelo', 'Não Iniciado': 'cinza', 'Atrasado': 'vermelho' };
-            return map[status] || 'cinza';
+        function toggleDecisoes() {
+            const table = document.getElementById('decisoesTable');
+            table.style.display = table.style.display === 'none' ? 'table' : 'none';
         }
 
-        function truncate(str, len) {
-            return str && str.length > len ? str.substring(0, len) + '...' : str || '-';
+        // === MODAL DO PROJETO ===
+        function openModal(index) {
+            currentProject = projects[index];
+            const p = currentProject;
+            if (!p) return;
+
+            document.getElementById('modalTitle').textContent = p.projeto;
+            document.getElementById('modalSubtitle').textContent = `${normalizeStatus(p.status)} • ${p.localizacao || '-'}`;
+
+            const info = document.getElementById('modalInfo');
+            info.innerHTML = `
+                <div class="info-box"><label>Status</label><span class="badge ${normalizeStatus(p.status).toLowerCase().replace(/\s+/g, '-')}">${normalizeStatus(p.status)}</span></div>
+                <div class="info-box"><label>Situação</label><span><span class="rag-dot ${(p.situacao || 'verde').toLowerCase()}"></span> ${p.situacao || 'Verde'}</span></div>
+                <div class="info-box"><label>Localização</label><span>${p.localizacao || '-'}</span></div>
+                <div class="info-box"><label>PMO Interno</label><span>${p.pmoInterno || '-'}</span></div>
+                <div class="info-box"><label>Go Live Original</label><span>${p.goLiveOriginal || '-'}</span></div>
+                <div class="info-box"><label>Go Live Atual</label><span>${p.goLiveAtual || '-'}</span></div>
+                <div class="info-box"><label>Progresso</label><span><div class="progress-bar" style="width:150px;display:inline-block;vertical-align:middle;margin-right:10px;"><div class="progress-fill" style="width:${p.progresso || 0}%"></div></div> ${p.progresso || 0}%</span></div>
+                <div class="info-box"><label>Dias Parado</label><span>${p.diasParado || 0} dias</span></div>
+                ${p.bloqueador && p.bloqueador !== '-' ? `<div class="info-box bloqueador full-width"><label>🚨 Bloqueador</label><span>${p.bloqueador}</span></div>` : ''}
+                ${p.observacoes && p.observacoes !== '-' ? `<div class="info-box full-width"><label>📝 Observações</label><span>${p.observacoes}</span></div>` : ''}
+            `;
+
+            // Atividades do projeto
+            const atividadesProjeto = atividades.filter(a => a.projeto === p.projeto);
+            const atividadesSection = document.getElementById('atividadesSection');
+            
+            if (atividadesProjeto.length > 0) {
+                const concluidas = atividadesProjeto.filter(a => (a.status || '').toLowerCase().includes('conclu'));
+                const andamento = atividadesProjeto.filter(a => (a.status || '').toLowerCase().includes('andamento'));
+                const pendentes = atividadesProjeto.filter(a => !concluidas.includes(a) && !andamento.includes(a));
+
+                atividadesSection.innerHTML = `
+                    <div class="atividades-header">
+                        <h3>📋 Atividades (${concluidas.length}/${atividadesProjeto.length})</h3>
+                    </div>
+                    <div class="atividades-list">
+                        ${concluidas.map(a => `
+                            <div class="atividade-item concluida">
+                                <span class="atividade-status">✅</span>
+                                <div class="atividade-info">
+                                    <div class="atividade-nome">${a.atividade}</div>
+                                    <div class="atividade-data">Concluída em ${a.dataConclusao || '-'}</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                        ${andamento.map(a => `
+                            <div class="atividade-item andamento">
+                                <span class="atividade-status">🔄</span>
+                                <div class="atividade-info">
+                                    <div class="atividade-nome">${a.atividade}</div>
+                                    <div class="atividade-data">Em andamento</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                        ${pendentes.map(a => `
+                            <div class="atividade-item pendente">
+                                <span class="atividade-status">⏳</span>
+                                <div class="atividade-info">
+                                    <div class="atividade-nome">${a.atividade}</div>
+                                    <div class="atividade-data">Pendente</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } else {
+                atividadesSection.innerHTML = '';
+            }
+
+            document.getElementById('modalOverlay').classList.add('active');
         }
 
-        function gerarPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            
-            doc.setFontSize(18);
-            doc.text('Status dos Projetos - Infraestrutura', 14, 20);
-            doc.setFontSize(10);
-            doc.text('Gerado em: ' + new Date().toLocaleString('pt-BR'), 14, 28);
-            
-            const tableData = filteredProjects.map(p => [p.nome, p.status, p.situacao, p.progresso + '%', p.pmoInterno, p.diasParado + 'd']);
-            
-            doc.autoTable({
-                startY: 35,
-                head: [['Projeto', 'Status', 'Situação', 'Progresso', 'PMO', 'Dias Parado']],
-                body: tableData,
-                styles: { fontSize: 9 },
-                headStyles: { fillColor: [102, 126, 234] }
+        function closeModal(e) {
+            if (e && e.target !== e.currentTarget) return;
+            document.getElementById('modalOverlay').classList.remove('active');
+            currentProject = null;
+        }
+
+        // === IMPRIMIR PROJETO INDIVIDUAL ===
+        function printProject() {
+            if (!currentProject) return;
+            const p = currentProject;
+            const atividadesProjeto = atividades.filter(a => a.projeto === p.projeto);
+            const concluidas = atividadesProjeto.filter(a => (a.status || '').toLowerCase().includes('conclu'));
+            const andamento = atividadesProjeto.filter(a => (a.status || '').toLowerCase().includes('andamento'));
+            const pendentes = atividadesProjeto.filter(a => !concluidas.includes(a) && !andamento.includes(a));
+
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>${p.projeto} - Relatório</title>
+                    <style>
+                        body { font-family: 'Segoe UI', Arial, sans-serif; padding: 30px; max-width: 900px; margin: 0 auto; }
+                        .header { text-align: center; border-bottom: 3px solid #667eea; padding-bottom: 20px; margin-bottom: 30px; }
+                        .header h1 { color: #1a1a2e; margin: 0 0 10px 0; }
+                        .header .badge { display: inline-block; padding: 8px 20px; border-radius: 20px; font-size: 0.9rem; }
+                        .badge.concluido { background: #dcfce7; color: #166534; }
+                        .badge.em-andamento { background: #dbeafe; color: #1e40af; }
+                        .badge.atrasado { background: #fee2e2; color: #991b1b; }
+                        .badge.aguardando { background: #fef3c7; color: #92400e; }
+                        .badge.nao-iniciado { background: #f1f5f9; color: #475569; }
+                        .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; }
+                        .info-box { background: #f8fafc; padding: 15px; border-radius: 8px; border-left: 3px solid #667eea; }
+                        .info-box label { font-size: 0.75rem; color: #64748b; text-transform: uppercase; display: block; margin-bottom: 5px; }
+                        .info-box span { font-size: 1rem; color: #1e293b; font-weight: 500; }
+                        .bloqueador { background: #fef2f2 !important; border-left-color: #ef4444 !important; }
+                        .bloqueador span { color: #991b1b !important; }
+                        .atividades { margin-top: 30px; }
+                        .atividades h3 { color: #1e293b; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #e2e8f0; }
+                        .section { margin-bottom: 20px; }
+                        .section-title { font-weight: 600; padding: 8px 15px; border-radius: 6px; margin-bottom: 10px; }
+                        .section-title.concluidas { background: #dcfce7; color: #166534; }
+                        .section-title.andamento { background: #dbeafe; color: #1e40af; }
+                        .section-title.pendentes { background: #f1f5f9; color: #475569; }
+                        .atividade { padding: 10px 15px; margin: 5px 0; background: #f8fafc; border-radius: 6px; display: flex; justify-content: space-between; }
+                        .atividade .nome { color: #1e293b; }
+                        .atividade .data { color: #64748b; font-size: 0.85rem; }
+                        .obs-box { background: #fffbeb; padding: 15px; border-radius: 8px; border-left: 3px solid #f59e0b; margin-top: 20px; }
+                        .obs-box h4 { margin: 0 0 10px 0; color: #92400e; }
+                        .obs-box p { margin: 0; color: #78350f; }
+                        .footer { margin-top: 40px; padding-top: 20px; border-top: 2px solid #e2e8f0; text-align: center; color: #64748b; font-size: 0.85rem; }
+                        @media print { body { padding: 20px; } }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>${p.projeto}</h1>
+                        <span class="badge ${normalizeStatus(p.status).toLowerCase().replace(/\s+/g, '-')}">${normalizeStatus(p.status)}</span>
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-box"><label>Localização</label><span>${p.localizacao || '-'}</span></div>
+                        <div class="info-box"><label>PMO Interno</label><span>${p.pmoInterno || '-'}</span></div>
+                        <div class="info-box"><label>Situação</label><span>${p.situacao || 'Verde'}</span></div>
+                        <div class="info-box"><label>Go Live Original</label><span>${p.goLiveOriginal || '-'}</span></div>
+                        <div class="info-box"><label>Go Live Atual</label><span>${p.goLiveAtual || '-'}</span></div>
+                        <div class="info-box"><label>Progresso</label><span>${p.progresso || 0}%</span></div>
+                        <div class="info-box"><label>Dias Parado</label><span>${p.diasParado || 0} dias</span></div>
+                        <div class="info-box"><label>Última Atualização</label><span>${p.ultAtual || '-'}</span></div>
+                        ${p.bloqueador && p.bloqueador !== '-' ? `<div class="info-box bloqueador" style="grid-column: 1 / -1;"><label>🚨 Bloqueador</label><span>${p.bloqueador}</span></div>` : ''}
+                    </div>
+                    ${atividadesProjeto.length > 0 ? `
+                    <div class="atividades">
+                        <h3>📋 Atividades (${concluidas.length}/${atividadesProjeto.length})</h3>
+                        ${concluidas.length > 0 ? `
+                        <div class="section">
+                            <div class="section-title concluidas">✅ Concluídas (${concluidas.length})</div>
+                            ${concluidas.map(a => `<div class="atividade"><span class="nome">${a.atividade}</span><span class="data">${a.dataConclusao || '-'}</span></div>`).join('')}
+                        </div>` : ''}
+                        ${andamento.length > 0 ? `
+                        <div class="section">
+                            <div class="section-title andamento">🔄 Em Andamento (${andamento.length})</div>
+                            ${andamento.map(a => `<div class="atividade"><span class="nome">${a.atividade}</span></div>`).join('')}
+                        </div>` : ''}
+                        ${pendentes.length > 0 ? `
+                        <div class="section">
+                            <div class="section-title pendentes">⏳ Pendentes (${pendentes.length})</div>
+                            ${pendentes.map(a => `<div class="atividade"><span class="nome">${a.atividade}</span></div>`).join('')}
+                        </div>` : ''}
+                    </div>` : ''}
+                    ${p.observacoes && p.observacoes !== '-' ? `
+                    <div class="obs-box">
+                        <h4>📝 Observações</h4>
+                        <p>${p.observacoes}</p>
+                    </div>` : ''}
+                    <div class="footer">
+                        Dashboard de Projetos - Infraestrutura v6.1.1 • Invent Corp<br>
+                        Gerado em: ${new Date().toLocaleString('pt-BR')}
+                    </div>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.focus();
+            setTimeout(() => { printWindow.print(); }, 300);
+        }
+
+        // === MODAL DE IMPRESSÃO ===
+        function openPrintModal() {
+            // Preencher lista de projetos
+            const sortedProjects = [...projects].sort((a, b) => a.projeto.localeCompare(b.projeto));
+            document.getElementById('printProjectsCheckboxList').innerHTML = sortedProjects.map((p, i) => {
+                const originalIndex = projects.indexOf(p);
+                return `<label class="project-checkbox"><input type="checkbox" value="${originalIndex}"><span>${p.projeto}</span></label>`;
+            }).join('');
+            document.getElementById('printModalOverlay').classList.add('active');
+        }
+
+        function closePrintModal(e) {
+            if (e && e.target !== e.currentTarget) return;
+            document.getElementById('printModalOverlay').classList.remove('active');
+        }
+
+        function selectPrintOption(el, option) {
+            document.querySelectorAll('#printModalOverlay .print-option').forEach(o => o.classList.remove('selected'));
+            el.classList.add('selected');
+            printOption = option;
+        }
+
+        function filterPrintProjectCheckboxes() {
+            const search = document.getElementById('printProjectSearch').value.toLowerCase();
+            document.querySelectorAll('#printProjectsCheckboxList label').forEach(l => {
+                const name = l.querySelector('span').textContent.toLowerCase();
+                l.style.display = name.includes(search) ? '' : 'none';
             });
-            
-            doc.save('projetos-infraestrutura.pdf');
         }
 
-        loadData();
+        function toggleSelectAllPrint() {
+            const checkboxes = document.querySelectorAll('#printProjectsCheckboxList input[type="checkbox"]');
+            const allChecked = Array.from(checkboxes).every(c => c.checked);
+            checkboxes.forEach(c => c.checked = !allChecked);
+        }
+
+        function executePrint() {
+            closePrintModal();
+            let projectsToPrint = filteredProjects;
+
+            if (printOption === 'all') {
+                projectsToPrint = [...projects];
+            } else if (printOption === 'criticos') {
+                projectsToPrint = projects.filter(p => isCritico(p));
+            } else if (printOption === 'specific') {
+                const checkboxes = document.querySelectorAll('#printProjectsCheckboxList input[type="checkbox"]:checked');
+                if (checkboxes.length > 0) {
+                    const indices = Array.from(checkboxes).map(c => parseInt(c.value));
+                    projectsToPrint = indices.map(i => projects[i]).filter(p => p);
+                }
+            }
+
+            filteredProjects = projectsToPrint;
+            updateDashboard();
+            setTimeout(() => window.print(), 300);
+        }
+
+        // === MODAL DE PDF ===
+        function openPdfModal() {
+            const sortedProjects = [...projects].sort((a, b) => a.projeto.localeCompare(b.projeto));
+            document.getElementById('pdfProjectsCheckboxList').innerHTML = sortedProjects.map((p, i) => {
+                const originalIndex = projects.indexOf(p);
+                return `<label class="project-checkbox"><input type="checkbox" value="${originalIndex}"><span>${p.projeto}</span></label>`;
+            }).join('');
+            document.getElementById('pdfModalOverlay').classList.add('active');
+        }
+
+        function closePdfModal(e) {
+            if (e && e.target !== e.currentTarget) return;
+            document.getElementById('pdfModalOverlay').classList.remove('active');
+        }
+
+        function selectPdfOption(el, option) {
+            document.querySelectorAll('#pdfModalOverlay .print-option').forEach(o => o.classList.remove('selected'));
+            el.classList.add('selected');
+            pdfOption = option;
+        }
+
+        function filterPdfProjectCheckboxes() {
+            const search = document.getElementById('pdfProjectSearch').value.toLowerCase();
+            document.querySelectorAll('#pdfProjectsCheckboxList label').forEach(l => {
+                const name = l.querySelector('span').textContent.toLowerCase();
+                l.style.display = name.includes(search) ? '' : 'none';
+            });
+        }
+
+        function toggleSelectAllPdf() {
+            const checkboxes = document.querySelectorAll('#pdfProjectsCheckboxList input[type="checkbox"]');
+            const allChecked = Array.from(checkboxes).every(c => c.checked);
+            checkboxes.forEach(c => c.checked = !allChecked);
+        }
+
+        function executePdf() {
+            closePdfModal();
+            let projectsToPdf = filteredProjects;
+
+            if (pdfOption === 'all') {
+                projectsToPdf = [...projects];
+            } else if (pdfOption === 'criticos') {
+                projectsToPdf = projects.filter(p => isCritico(p));
+            } else if (pdfOption === 'specific') {
+                const checkboxes = document.querySelectorAll('#pdfProjectsCheckboxList input[type="checkbox"]:checked');
+                if (checkboxes.length > 0) {
+                    const indices = Array.from(checkboxes).map(c => parseInt(c.value));
+                    projectsToPdf = indices.map(i => projects[i]).filter(p => p);
+                }
+            }
+
+            generatePDF(projectsToPdf);
+        }
+
+        function generatePDF(projectsList) {
+            const hoje = new Date().toLocaleDateString('pt-BR');
+            const hora = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+            const counts = { concluido: 0, andamento: 0, atrasado: 0, aguardando: 0, naoIniciado: 0 };
+            projectsList.forEach(p => {
+                const status = normalizeStatus(p.status);
+                if (status === 'Concluído') counts.concluido++;
+                else if (status === 'Em Andamento') counts.andamento++;
+                else if (status === 'Atrasado') counts.atrasado++;
+                else if (status === 'Aguardando') counts.aguardando++;
+                else counts.naoIniciado++;
+            });
+
+            let html = `
+                <div style="font-family: Arial, sans-serif; padding: 20px;">
+                    <div style="text-align: center; margin-bottom: 30px; border-bottom: 3px solid #667eea; padding-bottom: 20px;">
+                        <h1 style="color: #1a1a2e; margin: 0;">📊 Relatório de Projetos - Infraestrutura</h1>
+                        <p style="color: #666; margin: 10px 0 0 0;">Gerado em: ${hoje} às ${hora}</p>
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap;">
+                        <div style="background: #f0fdf4; padding: 15px 25px; border-radius: 10px; border-left: 4px solid #22c55e;">
+                            <div style="font-size: 24px; font-weight: bold; color: #166534;">${counts.concluido}</div>
+                            <div style="font-size: 12px; color: #15803d;">Concluídos</div>
+                        </div>
+                        <div style="background: #eff6ff; padding: 15px 25px; border-radius: 10px; border-left: 4px solid #3b82f6;">
+                            <div style="font-size: 24px; font-weight: bold; color: #1e40af;">${counts.andamento}</div>
+                            <div style="font-size: 12px; color: #1d4ed8;">Em Andamento</div>
+                        </div>
+                        <div style="background: #fef2f2; padding: 15px 25px; border-radius: 10px; border-left: 4px solid #ef4444;">
+                            <div style="font-size: 24px; font-weight: bold; color: #991b1b;">${counts.atrasado}</div>
+                            <div style="font-size: 12px; color: #b91c1c;">Atrasados</div>
+                        </div>
+                        <div style="background: #fffbeb; padding: 15px 25px; border-radius: 10px; border-left: 4px solid #f59e0b;">
+                            <div style="font-size: 24px; font-weight: bold; color: #92400e;">${counts.aguardando}</div>
+                            <div style="font-size: 12px; color: #b45309;">Aguardando</div>
+                        </div>
+                    </div>
+                    
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 11px;">
+                        <thead>
+                            <tr style="background: #1e293b; color: white;">
+                                <th style="padding: 12px 8px; text-align: left;">Projeto</th>
+                                <th style="padding: 12px 8px; text-align: left;">Status</th>
+                                <th style="padding: 12px 8px; text-align: left;">Situação</th>
+                                <th style="padding: 12px 8px; text-align: left;">PMO</th>
+                                <th style="padding: 12px 8px; text-align: left;">Go-Live</th>
+                                <th style="padding: 12px 8px; text-align: left;">Progresso</th>
+                                <th style="padding: 12px 8px; text-align: left;">Dias Parado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${projectsList.map((p, i) => {
+                                const status = normalizeStatus(p.status);
+                                const bgColor = i % 2 === 0 ? '#ffffff' : '#f8fafc';
+                                const statusColors = {
+                                    'Concluído': '#dcfce7',
+                                    'Em Andamento': '#dbeafe',
+                                    'Atrasado': '#fee2e2',
+                                    'Aguardando': '#fef3c7',
+                                    'Não Iniciado': '#f1f5f9'
+                                };
+                                return `<tr style="background: ${bgColor};">
+                                    <td style="padding: 10px 8px; border-bottom: 1px solid #e2e8f0;"><strong>${p.projeto}</strong></td>
+                                    <td style="padding: 10px 8px; border-bottom: 1px solid #e2e8f0;"><span style="background: ${statusColors[status]}; padding: 4px 10px; border-radius: 12px; font-size: 10px;">${status}</span></td>
+                                    <td style="padding: 10px 8px; border-bottom: 1px solid #e2e8f0;">${p.situacao || 'Verde'}</td>
+                                    <td style="padding: 10px 8px; border-bottom: 1px solid #e2e8f0;">${p.pmoInterno || '-'}</td>
+                                    <td style="padding: 10px 8px; border-bottom: 1px solid #e2e8f0;">${p.goLiveAtual || '-'}</td>
+                                    <td style="padding: 10px 8px; border-bottom: 1px solid #e2e8f0;">${p.progresso || 0}%</td>
+                                    <td style="padding: 10px 8px; border-bottom: 1px solid #e2e8f0;">${p.diasParado || 0}d</td>
+                                </tr>`;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                    
+                    <div style="margin-top: 30px; text-align: center; color: #64748b; font-size: 11px; border-top: 1px solid #e2e8f0; padding-top: 15px;">
+                        Dashboard de Projetos - Infraestrutura v6.1.1 • Invent Corp
+                    </div>
+                </div>
+            `;
+
+            const element = document.createElement('div');
+            element.innerHTML = html;
+            document.body.appendChild(element);
+
+            const opt = {
+                margin: 10,
+                filename: 'Relatorio_Projetos_Infraestrutura_' + hoje.replace(/\//g, '-') + '.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                document.body.removeChild(element);
+            });
+        }
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                closeModal();
+                closePrintModal();
+                closePdfModal();
+            }
+        });
+
+        window.addEventListener('load', loadData);
     </script>
 </body>
 </html>

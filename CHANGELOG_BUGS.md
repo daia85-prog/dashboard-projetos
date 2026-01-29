@@ -1,88 +1,102 @@
-# 📋 Changelog e Histórico de Bugs
+# 📋 CHANGELOG & REGISTRO DE BUGS - Dashboard Projetos Infraestrutura
 
-## Dashboard de Projetos - Infraestrutura
-
----
-
-## v6.0 (20/01/2026) - Nova Arquitetura ⭐
-
-### 🚀 Grandes Mudanças
-- **Nova estrutura de dados**: Múltiplas linhas de atividades por projeto
-- **Importação via arquivo**: Arraste o Excel direto no admin
-- **Timeline de atividades**: Modal com visualização detalhada
-- **Análise de gargalos**: Top 5 atividades que mais atrasam
-
-### ✅ Novas Funcionalidades
-- **Aba "Atividades" na planilha**
-  - 20 atividades padrão por projeto
-  - Campos: ID, Projeto, Atividade, Status, Responsável
-  - Data Início, Data Fim, Dias Duração, Observações
-  
-- **Admin.html redesenhado**
-  - Upload de arquivo via drag & drop
-  - Leitura automática de abas "Projetos" e "Atividades"
-  - Preview com 3 abas: Projetos, Atividades, Análise
-  - Estatísticas de importação
-  
-- **Modal com Timeline**
-  - Barra de progresso visual (verde/amarelo/cinza)
-  - Seções: Concluídas, Em Andamento, Pendentes
-  - Mostra Data Início → Data Fim
-  - Dias de duração por atividade
-  
-- **Compatibilidade v5**
-  - Suporta formato antigo (string "STATUS|DATA|DESC;...")
-  - Suporta formato novo (array de objetos)
-
-### 📊 Dados de Teste
-- 25 projetos reais extraídos das planilhas
-- 500 atividades (25 x 20)
-- Bloqueadores e observações reais
+> **Última atualização:** 29/01/2026  
+> **Versão atual:** 6.1.1
 
 ---
 
-## v5.5.2 (20/01/2026) - Refinamentos de Nomenclatura
-
-### ✅ Melhorias
-- `etapaAtual` padronizado (mantém `etapa` para compatibilidade)
-- `observacoes` padronizado no JSON
-- Linha de exemplo na planilha
-- README.md e CHANGELOG_BUGS.md
-
----
-
-## v5.5.1 (20/01/2026) - Padronização Core
-
-### ✅ Melhorias
-- Função `parseDateBR()` - Converte qualquer formato para dd/mm/aaaa
-- Função `cleanBloqueador()` - Remove NaN, -, vazio
-- Cálculo automático de "Dias Parado"
-- Preview com destaque para dias > 15
+## v6.1.1 (29/01/2026) - Correção de Modais
 
 ### 🐛 Bugs Corrigidos
-- Bloqueador mostrava "NaN" quando vazio
-- Datas em formato ISO não eram convertidas
+
+#### BUG #015 - Modal de Impressão sem opções de filtro
+**Problema:** Ao clicar em "Imprimir", o diálogo do navegador abria direto sem as opções de filtro que existiam antes.
+
+**Antes esperado:**
+- Modal com 4 opções: Filtro atual, Todos os projetos, Apenas críticos, Projetos específicos
+- Lista de checkboxes para selecionar projetos específicos
+- Busca por nome do projeto
+
+**Solução:** Restaurado modal completo de impressão com todas as funcionalidades.
+
+**Arquivos afetados:** `view-simples.html`, `view-detalhada.html`
 
 ---
 
-## v5.5.0 (20/01/2026) - Resumo Executivo + Alert Inteligente
+#### BUG #016 - Modal de PDF sem opções de filtro  
+**Problema:** Ao clicar em "Gerar PDF", gerava o PDF direto sem opções de filtro.
 
-### ✅ Novas Funcionalidades
-- Resumo Executivo automático
-- Alert Bar inteligente (vermelho/amarelo/verde)
-- Ícones nos Cards de Status
-- Hierarquia visual melhorada
-- Botão "Gerar PDF"
+**Antes esperado:**
+- Modal idêntico ao de impressão com 4 opções
+- Permitir gerar PDF apenas dos projetos críticos ou específicos
+
+**Solução:** Restaurado modal completo de PDF com mesmas funcionalidades do modal de impressão.
+
+**Arquivos afetados:** `view-simples.html`, `view-detalhada.html`
+
+---
+
+#### BUG #017 - Botão "Imprimir" sumiu do modal de detalhes do projeto
+**Problema:** Ao abrir o modal de detalhes de um projeto (clicando na linha), não tinha mais o botão "🖨️ Imprimir" que permitia imprimir apenas aquele projeto.
+
+**Antes esperado:**
+- Botão verde "🖨️ Imprimir" no cabeçalho do modal, ao lado do X de fechar
+- Ao clicar, abre nova janela formatada com os dados daquele projeto específico
+
+**Solução:** Restaurado botão `printProject()` no header do modal de detalhes.
+
+**Arquivos afetados:** `view-simples.html`, `view-detalhada.html`
+
+---
+
+## v6.1 (28/01/2026) - Correção de Carregamento
 
 ### 🐛 Bugs Corrigidos
-- Layout da index.html quebrado → corrigido com CSS grid
+- localStorage não carregava dados salvos → Corrigido para priorizar dados.json
+
+---
+
+## v6.0 (20/01/2026) - Arquitetura Dual (Projetos + Atividades)
+
+### ✅ Novas Funcionalidades
+- Separação em duas tabelas: Projetos e Atividades
+- 20 atividades padronizadas por projeto
+- Timeline visual no modal de detalhes
+- Checklist de atividades com status individual
+- Admin com drag-and-drop de Excel
+- KPIs com tooltips explicativos
+- Filtro "🚨 Apenas Críticos"
+- Seção "Decisões Necessárias" expandida
+
+### 🛠️ Melhorias
+- Cálculo automático de progresso baseado em atividades
+- Cálculo automático de dias parado
+- Export de dados.json pelo admin
+
+---
+
+## v5.5.1 (20/01/2026) - Correções
+
+### 🐛 Bugs Corrigidos
+- Bloqueador com "NaN dias" → Validação de datas
+- Layout index.html quebrado → CSS grid corrigido
+
+---
+
+## v5.5.0 (19/01/2026) - Index como Hub
+
+### ✅ Novas Funcionalidades
+- Index.html redesenhado como página inicial
+- Cards de resumo rápido
+- Botões para views
+- Seção "Próximos Go Lives"
 
 ---
 
 ## v5.4.1 (20/01/2026) - Modal PDF com Opções
 
 ### ✅ Novas Funcionalidades
-- Modal de PDF com opções de seleção
+- Modal de PDF com opções de seleção (igual impressão)
 
 ---
 
@@ -95,34 +109,43 @@
 
 ---
 
-## Bugs Conhecidos
+## v5.3 (17/01/2026) - Melhorias UX
 
-### Em Monitoramento
-- [ ] Em telas < 320px, alguns elementos podem sobrepor
-- [ ] Impressão em Firefox pode ter margens diferentes
-
-### Resolvidos
-- [x] v6.0: Compatibilidade com formato v5 de atividades
-- [x] v5.5.1: Bloqueador com NaN
-- [x] v5.5.0: Layout index.html quebrado
+### ✅ Novas Funcionalidades
+- KPIs renomeados (No Prazo, Atraso Médio, etc.)
+- Filtro por Go-Live (Este mês, 30/60/90 dias)
+- Impressão por projetos específicos (checkboxes)
+- Busca de projetos na lista de impressão
 
 ---
 
-## Roadmap Futuro
+## 📁 LISTA DE ARQUIVOS DO PROJETO
 
-### v6.1 (Planejado)
-- [ ] Filtro por responsável
-- [ ] Gráfico de Gantt simplificado
-- [ ] Export para Excel das atividades
+| # | Arquivo | Descrição |
+|---|---------|-----------|
+| 1 | `admin.html` | Interface de administração - upload de Excel |
+| 2 | `dados.json` | Dados em JSON (projetos + atividades) |
+| 3 | `index.html` | Página inicial com resumo e navegação |
+| 4 | `Template_Projetos_v6.xlsx` | Planilha modelo para importação |
+| 5 | `view-detalhada.html` | Dashboard com análise detalhada |
+| 6 | `view-simples.html` | Dashboard resumido com KPIs |
+| 7 | `CHANGELOG_BUGS.md` | Este arquivo - histórico de versões |
+| 8 | `README.md` | Documentação técnica completa |
 
-### v6.2 (Planejado)
-- [ ] Notificações de atividades atrasadas
-- [ ] Dashboard de responsáveis
-- [ ] Comparativo entre projetos
+---
+
+## 🎯 REGRAS DE NEGÓCIO - PROJETO CRÍTICO
+
+Um projeto é **CRÍTICO** se atender QUALQUER condição:
+1. ⏰ Status = "Atrasado"
+2. 🔴 Situação = "Vermelho"
+3. 📅 Dias Parado ≥ 15
+4. 🚫 Possui Bloqueador preenchido
 
 ---
 
 ## Contato
 
 **Desenvolvido por:** Infraestrutura TI - Invent Corp  
-**Última atualização:** 20/01/2026
+**PMO:** Daiana  
+**Última atualização:** 29/01/2026
