@@ -1,7 +1,87 @@
 # 📋 CHANGELOG & REGISTRO DE BUGS - Dashboard Projetos Infraestrutura
 
 > **Última atualização:** 29/01/2026  
-> **Versão atual:** 6.1.1
+> **Versão atual:** 6.2
+
+---
+
+## v6.2 (29/01/2026) - Valor para Diretoria 🚀
+
+### ✅ Novos Recursos
+
+#### 1. KPI "Saúde do Portfólio" (index.html)
+Card destacado no topo mostrando:
+- Indicador visual: 🟢 Saudável / 🟡 Moderada / 🔴 Crítica
+- % de projetos críticos (meta < 10%)
+- Atraso médio em dias
+
+**Regras de cor:**
+- Verde: < 10% críticos
+- Amarelo: 10-25% críticos
+- Vermelho: > 25% críticos
+
+#### 2. Seção "Decisões Necessárias" (index.html)
+Bloco destacado mostrando até 5 projetos críticos COM bloqueador:
+- Nome do projeto
+- Descrição do bloqueador
+- "Bloqueia há X dias"
+- Responsável (PMO)
+- Ordenado por dias parado (desc)
+
+#### 3. Distribuição por PMO (view-detalhada.html)
+Seção "👥 Distribuição de projetos por PMO interno":
+- Gráfico de barras horizontais
+- Total de projetos por PMO
+- Badge com quantidade de críticos
+- Ordenado por quantidade total
+
+#### 4. Botão "🏠 Início" (todas as views)
+Adicionado botão de navegação para retornar à página inicial:
+- view-simples.html ✅
+- view-detalhada.html ✅
+- admin.html ✅
+
+#### 5. Rodapé com versão e data (todas as páginas)
+Rodapé padronizado exibindo:
+Dashboard Projetos Infraestrutura · v6.2 · Atualizado em: DD/MM/AAAA HH:MM
+
+#### 6. Microcopy orientada à ação
+- Alert bar: "X projeto(s) atrasado(s) e Y parado(s) há 15+ dias. Clique para ver detalhes."
+- Botão "🚨 Ver Críticos" na alert bar do index
+
+#### 7. Card "Projetos Críticos" (index.html) 🆕
+Card destacado em vermelho na navegação principal:
+- Contagem de projetos críticos em tempo real
+- Link direto para view-detalhada.html?filter=criticos
+- Destaque visual diferenciado
+
+#### 8. Filtros "Janela de Go-Live" (index.html) 🆕
+Botões executivos na seção Próximos Go Lives:
+- Todos | Até 30 dias | 30-60 dias | 60-90 dias
+- Filtragem dinâmica da timeline
+
+#### 9. Modal com Resumo Executivo (views) 🆕
+Bloco resumo no topo do modal de projeto:
+- Badges: Status, Situação (cor), Progresso
+- Linha resumo: Go-Live (com delta), Dias parado, PMO
+- Bloqueador destacado quando existir
+- Delta positivo/negativo em relação ao go-live original
+
+#### 10. Suporte a Filtro via URL 🆕
+- view-detalhada.html?filter=criticos → ativa filtro automaticamente
+- view-simples.html?filter=criticos → ativa filtro automaticamente
+
+---
+
+### 🐛 Bugs Corrigidos
+
+#### BUG #018 - Botão "Voltar/Início" faltando na view-simples
+**Problema:** Barra de botões não tinha opção para retornar ao index.html
+**Solução:** Adicionado botão "🏠 Início" como primeiro da esquerda
+
+#### BUG #019 - Botão "Voltar/Início" faltando na view-detalhada
+**Problema:** Mesmo problema da view-simples
+**Solução:** Adicionado botão "🏠 Início" como primeiro da esquerda
 
 ---
 
@@ -10,142 +90,50 @@
 ### 🐛 Bugs Corrigidos
 
 #### BUG #015 - Modal de Impressão sem opções de filtro
-**Problema:** Ao clicar em "Imprimir", o diálogo do navegador abria direto sem as opções de filtro que existiam antes.
+**Problema:** Diálogo de impressão abria direto sem opções de filtro
+**Solução:** Restaurado modal com 4 opções: Filtro atual, Todos, Críticos, Específicos
 
-**Antes esperado:**
-- Modal com 4 opções: Filtro atual, Todos os projetos, Apenas críticos, Projetos específicos
-- Lista de checkboxes para selecionar projetos específicos
-- Busca por nome do projeto
+#### BUG #016 - Modal de PDF sem opções de filtro
+**Problema:** PDF gerava direto sem opções de filtro
+**Solução:** Restaurado modal idêntico ao de impressão
 
-**Solução:** Restaurado modal completo de impressão com todas as funcionalidades.
-
-**Arquivos afetados:** `view-simples.html`, `view-detalhada.html`
-
----
-
-#### BUG #016 - Modal de PDF sem opções de filtro  
-**Problema:** Ao clicar em "Gerar PDF", gerava o PDF direto sem opções de filtro.
-
-**Antes esperado:**
-- Modal idêntico ao de impressão com 4 opções
-- Permitir gerar PDF apenas dos projetos críticos ou específicos
-
-**Solução:** Restaurado modal completo de PDF com mesmas funcionalidades do modal de impressão.
-
-**Arquivos afetados:** `view-simples.html`, `view-detalhada.html`
+#### BUG #017 - Botão "Imprimir" sumiu do modal de detalhes
+**Problema:** Modal de projeto não tinha mais o botão de imprimir individual
+**Solução:** Restaurado botão "🖨️ Imprimir" no header do modal
 
 ---
 
-#### BUG #017 - Botão "Imprimir" sumiu do modal de detalhes do projeto
-**Problema:** Ao abrir o modal de detalhes de um projeto (clicando na linha), não tinha mais o botão "🖨️ Imprimir" que permitia imprimir apenas aquele projeto.
-
-**Antes esperado:**
-- Botão verde "🖨️ Imprimir" no cabeçalho do modal, ao lado do X de fechar
-- Ao clicar, abre nova janela formatada com os dados daquele projeto específico
-
-**Solução:** Restaurado botão `printProject()` no header do modal de detalhes.
-
-**Arquivos afetados:** `view-simples.html`, `view-detalhada.html`
-
----
-
-## v6.1 (28/01/2026) - Correção de Carregamento
-
-### 🐛 Bugs Corrigidos
-- localStorage não carregava dados salvos → Corrigido para priorizar dados.json
-
----
-
-## v6.0 (20/01/2026) - Arquitetura Dual (Projetos + Atividades)
+## v6.0 (20/01/2026) - Arquitetura Dual
 
 ### ✅ Novas Funcionalidades
 - Separação em duas tabelas: Projetos e Atividades
 - 20 atividades padronizadas por projeto
 - Timeline visual no modal de detalhes
-- Checklist de atividades com status individual
 - Admin com drag-and-drop de Excel
 - KPIs com tooltips explicativos
 - Filtro "🚨 Apenas Críticos"
-- Seção "Decisões Necessárias" expandida
-
-### 🛠️ Melhorias
-- Cálculo automático de progresso baseado em atividades
-- Cálculo automático de dias parado
-- Export de dados.json pelo admin
 
 ---
 
-## v5.5.1 (20/01/2026) - Correções
-
-### 🐛 Bugs Corrigidos
-- Bloqueador com "NaN dias" → Validação de datas
-- Layout index.html quebrado → CSS grid corrigido
-
----
-
-## v5.5.0 (19/01/2026) - Index como Hub
-
-### ✅ Novas Funcionalidades
-- Index.html redesenhado como página inicial
-- Cards de resumo rápido
-- Botões para views
-- Seção "Próximos Go Lives"
-
----
-
-## v5.4.1 (20/01/2026) - Modal PDF com Opções
-
-### ✅ Novas Funcionalidades
-- Modal de PDF com opções de seleção (igual impressão)
-
----
-
-## v5.4.0 (19/01/2026) - Checklist de 20 Atividades
-
-### ✅ Novas Funcionalidades
-- Migração de 12 etapas fixas para 20 atividades flexíveis
-- Formato estruturado: `STATUS|DATA|DESCRIÇÃO;...`
-- Modal com checklist visual
-
----
-
-## v5.3 (17/01/2026) - Melhorias UX
-
-### ✅ Novas Funcionalidades
-- KPIs renomeados (No Prazo, Atraso Médio, etc.)
-- Filtro por Go-Live (Este mês, 30/60/90 dias)
-- Impressão por projetos específicos (checkboxes)
-- Busca de projetos na lista de impressão
-
----
-
-## 📁 LISTA DE ARQUIVOS DO PROJETO
+## 📁 ARQUIVOS DO PROJETO
 
 | # | Arquivo | Descrição |
 |---|---------|-----------|
-| 1 | `admin.html` | Interface de administração - upload de Excel |
-| 2 | `dados.json` | Dados em JSON (projetos + atividades) |
-| 3 | `index.html` | Página inicial com resumo e navegação |
-| 4 | `Template_Projetos_v6.xlsx` | Planilha modelo para importação |
-| 5 | `view-detalhada.html` | Dashboard com análise detalhada |
-| 6 | `view-simples.html` | Dashboard resumido com KPIs |
-| 7 | `CHANGELOG_BUGS.md` | Este arquivo - histórico de versões |
-| 8 | `README.md` | Documentação técnica completa |
+| 1 | admin.html | Administração - upload Excel |
+| 2 | dados.json | Dados JSON |
+| 3 | index.html | Página inicial |
+| 4 | Template_Projetos_v6.xlsx | Planilha modelo |
+| 5 | view-detalhada.html | Dashboard detalhado |
+| 6 | view-simples.html | Dashboard resumido |
+| 7 | CHANGELOG_BUGS.md | Este arquivo |
+| 8 | README.md | Documentação |
 
 ---
 
-## 🎯 REGRAS DE NEGÓCIO - PROJETO CRÍTICO
+## 🎯 PROJETO CRÍTICO = Atrasado OU Vermelho OU Parado≥15 OU Bloqueador
 
-Um projeto é **CRÍTICO** se atender QUALQUER condição:
-1. ⏰ Status = "Atrasado"
-2. 🔴 Situação = "Vermelho"
-3. 📅 Dias Parado ≥ 15
-4. 🚫 Possui Bloqueador preenchido
+## 📊 SAÚDE: Verde(<10%) | Amarelo(10-25%) | Vermelho(>25%)
 
 ---
 
-## Contato
-
-**Desenvolvido por:** Infraestrutura TI - Invent Corp  
-**PMO:** Daiana  
-**Última atualização:** 29/01/2026
+**Contato:** Infraestrutura TI - Invent Corp | PMO: Daiana

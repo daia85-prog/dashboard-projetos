@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visão Detalhada - Infraestrutura v6.1.1</title>
+    <title>Visão Detalhada - Infraestrutura v6.2</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -84,6 +84,25 @@
         .btn-print-project { background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 10px 18px; border-radius: 10px; font-size: 0.85rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.3s; }
         .btn-print-project:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); }
         .modal-body { padding: 30px; }
+        
+        /* Resumo Executivo no Modal */
+        .modal-resumo { background: linear-gradient(135deg, #f8fafc, #f1f5f9); border-radius: 12px; padding: 20px; margin-bottom: 25px; border: 1px solid #e2e8f0; }
+        .resumo-badges { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; }
+        .resumo-badge { padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .resumo-badge.status { background: #dbeafe; color: #1e40af; }
+        .resumo-badge.situacao-verde { background: #dcfce7; color: #166534; }
+        .resumo-badge.situacao-amarelo { background: #fef3c7; color: #92400e; }
+        .resumo-badge.situacao-vermelho { background: #fee2e2; color: #991b1b; }
+        .resumo-badge.progresso { background: #e0e7ff; color: #4338ca; }
+        .resumo-linha { display: flex; gap: 20px; flex-wrap: wrap; font-size: 0.9rem; color: #475569; }
+        .resumo-item { display: flex; align-items: center; gap: 6px; }
+        .resumo-item strong { color: #1e293b; }
+        .resumo-delta { padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; font-weight: 600; }
+        .resumo-delta.positivo { background: #dcfce7; color: #166534; }
+        .resumo-delta.negativo { background: #fee2e2; color: #991b1b; }
+        .resumo-bloqueador { background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 12px 15px; margin-top: 15px; }
+        .resumo-bloqueador strong { color: #991b1b; font-size: 0.85rem; }
+        .resumo-bloqueador p { color: #b91c1c; font-size: 0.9rem; margin-top: 5px; }
         .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
         .info-box { background: #f8fafc; padding: 15px 20px; border-radius: 12px; }
         .info-box label { font-size: 0.75rem; color: #64748b; text-transform: uppercase; display: block; margin-bottom: 6px; }
@@ -132,6 +151,32 @@
         .project-checkbox input { width: 18px; height: 18px; accent-color: #667eea; }
         .project-checkbox span { font-size: 0.9rem; color: #1e293b; }
 
+        /* Footer */
+        .dashboard-footer { 
+            text-align: center; 
+            padding: 20px; 
+            margin-top: 30px; 
+            color: rgba(255,255,255,0.6); 
+            font-size: 0.85rem; 
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .dashboard-footer a { color: rgba(255,255,255,0.8); text-decoration: none; }
+        .dashboard-footer a:hover { text-decoration: underline; }
+
+        /* Seção PMO */
+        .pmo-section { background: white; border-radius: 16px; padding: 20px 25px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .pmo-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .pmo-header h3 { font-size: 1rem; color: #1e293b; display: flex; align-items: center; gap: 10px; }
+        .pmo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
+        .pmo-item { background: #f8fafc; border-radius: 12px; padding: 15px; display: flex; align-items: center; gap: 15px; }
+        .pmo-bar-container { flex: 1; }
+        .pmo-name { font-weight: 600; color: #1e293b; font-size: 0.9rem; margin-bottom: 8px; }
+        .pmo-bar { height: 20px; background: #e2e8f0; border-radius: 10px; overflow: hidden; }
+        .pmo-bar-fill { height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 10px; transition: width 0.5s; }
+        .pmo-stats { display: flex; gap: 10px; margin-top: 5px; }
+        .pmo-stats span { font-size: 0.75rem; color: #64748b; }
+        .pmo-criticos { background: #fee2e2; color: #991b1b; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+
         /* Print Styles */
         @media print {
             body { background: white; padding: 10px; }
@@ -158,10 +203,11 @@
         <div class="header">
             <div class="header-top">
                 <div>
-                    <h1><span>📋</span> Visão Detalhada - Infraestrutura <span class="version">v6.1.1</span></h1>
+                    <h1><span>📋</span> Visão Detalhada - Infraestrutura <span class="version">v6.2</span></h1>
                     <p class="update-info">Atualizado em: <span id="lastUpdate">--</span></p>
                 </div>
                 <div class="header-actions">
+                    <button class="btn" style="background: linear-gradient(135deg, #6366f1, #4f46e5);" onclick="window.location.href='index.html'">🏠 Início</button>
                     <button class="btn" onclick="openPrintModal()">🖨️ Imprimir</button>
                     <button class="btn" style="background: linear-gradient(135deg, #ef4444, #dc2626);" onclick="openPdfModal()">📄 Gerar PDF</button>
                     <button class="btn" style="background: linear-gradient(135deg, #10b981, #059669);" onclick="window.location.href='view-simples.html'">📊 Visão Resumida</button>
@@ -200,6 +246,14 @@
                 <div class="number" id="criticosCount">0</div>
                 <div class="label">🔴 Críticos</div>
             </div>
+        </div>
+
+        <!-- Seção Distribuição por PMO -->
+        <div class="pmo-section" id="pmoSection">
+            <div class="pmo-header">
+                <h3>👥 Distribuição de Projetos por PMO Interno</h3>
+            </div>
+            <div class="pmo-grid" id="pmoGrid"></div>
         </div>
 
         <!-- Filters -->
@@ -282,6 +336,7 @@
                 </div>
             </div>
             <div class="modal-body">
+                <div class="modal-resumo" id="modalResumo"></div>
                 <div class="info-grid" id="modalInfo"></div>
                 <div class="atividades-section" id="atividadesSection"></div>
             </div>
@@ -392,6 +447,11 @@
         </div>
     </div>
 
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+        Dashboard Projetos Infraestrutura · v6.2 · Atualizado em: <span id="footerUpdate">--</span>
+    </footer>
+
     <script>
         let projects = [], filteredProjects = [], atividades = [], currentProject = null;
         let printOption = 'current', pdfOption = 'current';
@@ -406,6 +466,7 @@
                 updateDashboard();
                 populateFilters();
                 document.getElementById('lastUpdate').textContent = data.ultimaAtualizacao || new Date().toLocaleString('pt-BR');
+                document.getElementById('footerUpdate').textContent = data.ultimaAtualizacao || new Date().toLocaleString('pt-BR');
             } catch (error) {
                 console.log('Tentando localStorage...');
                 const stored = localStorage.getItem('dashboardData');
@@ -417,6 +478,7 @@
                     updateDashboard();
                     populateFilters();
                     document.getElementById('lastUpdate').textContent = data.ultimaAtualizacao || '--';
+                    document.getElementById('footerUpdate').textContent = data.ultimaAtualizacao || '--';
                 }
             }
         }
@@ -462,6 +524,45 @@
             document.getElementById('criticosCount').textContent = counts.criticos;
 
             renderSections();
+            renderPMOChart();
+        }
+
+        function renderPMOChart() {
+            const pmos = {};
+            filteredProjects.forEach(p => {
+                const pmo = p.pmoInterno || 'Não definido';
+                if (!pmos[pmo]) pmos[pmo] = { total: 0, criticos: 0 };
+                pmos[pmo].total++;
+                if (isCritico(p)) pmos[pmo].criticos++;
+            });
+
+            const pmoList = Object.entries(pmos)
+                .map(([nome, dados]) => ({ nome, ...dados }))
+                .sort((a, b) => b.total - a.total);
+
+            const maxTotal = Math.max(...pmoList.map(p => p.total), 1);
+            const grid = document.getElementById('pmoGrid');
+
+            if (pmoList.length === 0) {
+                grid.innerHTML = '<p style="color: #64748b; text-align: center;">Nenhum projeto carregado</p>';
+                return;
+            }
+
+            grid.innerHTML = pmoList.map(pmo => {
+                const percent = Math.round((pmo.total / maxTotal) * 100);
+                return `
+                    <div class="pmo-item">
+                        <div class="pmo-bar-container">
+                            <div class="pmo-name">${pmo.nome}</div>
+                            <div class="pmo-bar"><div class="pmo-bar-fill" style="width: ${percent}%"></div></div>
+                            <div class="pmo-stats">
+                                <span>${pmo.total} projeto${pmo.total !== 1 ? 's' : ''}</span>
+                                ${pmo.criticos > 0 ? `<span class="pmo-criticos">${pmo.criticos} crítico${pmo.criticos !== 1 ? 's' : ''}</span>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
 
         function renderSections() {
@@ -615,6 +716,42 @@
             document.getElementById('modalTitle').textContent = p.projeto;
             document.getElementById('modalSubtitle').textContent = `${normalizeStatus(p.status)} • ${p.localizacao || '-'}`;
 
+            // Resumo executivo
+            const resumo = document.getElementById('modalResumo');
+            const situacaoClass = (p.situacao || 'verde').toLowerCase();
+            
+            // Calcular delta de go-live
+            let deltaGoLive = '';
+            if (p.goLiveOriginal && p.goLiveAtual && p.goLiveOriginal !== '-' && p.goLiveAtual !== '-') {
+                const original = new Date(p.goLiveOriginal.split('/').reverse().join('-'));
+                const atual = new Date(p.goLiveAtual.split('/').reverse().join('-'));
+                const diffDias = Math.ceil((atual - original) / (1000 * 60 * 60 * 24));
+                if (diffDias > 0) {
+                    deltaGoLive = `<span class="resumo-delta negativo">+${diffDias} dias</span>`;
+                } else if (diffDias < 0) {
+                    deltaGoLive = `<span class="resumo-delta positivo">${diffDias} dias</span>`;
+                }
+            }
+
+            resumo.innerHTML = `
+                <div class="resumo-badges">
+                    <span class="resumo-badge status">${normalizeStatus(p.status)}</span>
+                    <span class="resumo-badge situacao-${situacaoClass}">${p.situacao || 'Verde'}</span>
+                    <span class="resumo-badge progresso">${p.progresso || 0}% concluído</span>
+                </div>
+                <div class="resumo-linha">
+                    <div class="resumo-item">📅 <strong>Go Live:</strong> ${p.goLiveAtual || 'Sem data'} ${deltaGoLive}</div>
+                    <div class="resumo-item">⏱️ <strong>Parado há:</strong> ${p.diasParado || 0} dias</div>
+                    <div class="resumo-item">👤 <strong>PMO:</strong> ${p.pmoInterno || 'Não definido'}</div>
+                </div>
+                ${p.bloqueador && p.bloqueador !== '-' && p.bloqueador.trim() !== '' ? `
+                    <div class="resumo-bloqueador">
+                        <strong>🚨 Bloqueador:</strong>
+                        <p>${p.bloqueador}</p>
+                    </div>
+                ` : ''}
+            `;
+
             const info = document.getElementById('modalInfo');
             info.innerHTML = `
                 <div class="info-box"><label>Status</label><span class="badge ${normalizeStatus(p.status).toLowerCase().replace(/\s+/g, '-')}">${normalizeStatus(p.status)}</span></div>
@@ -625,7 +762,6 @@
                 <div class="info-box"><label>Go Live Atual</label><span>${p.goLiveAtual || '-'}</span></div>
                 <div class="info-box"><label>Progresso</label><span><div class="progress-mini" style="width:150px;display:inline-block;vertical-align:middle;margin-right:10px;"><div class="progress-mini-fill" style="width:${p.progresso || 0}%"></div></div> ${p.progresso || 0}%</span></div>
                 <div class="info-box"><label>Dias Parado</label><span>${p.diasParado || 0} dias</span></div>
-                ${p.bloqueador && p.bloqueador !== '-' ? `<div class="info-box bloqueador full-width"><label>🚨 Bloqueador</label><span>${p.bloqueador}</span></div>` : ''}
                 ${p.observacoes && p.observacoes !== '-' ? `<div class="info-box full-width"><label>📝 Observações</label><span>${p.observacoes}</span></div>` : ''}
             `;
 
@@ -775,7 +911,7 @@
                         <p>${p.observacoes}</p>
                     </div>` : ''}
                     <div class="footer">
-                        Dashboard de Projetos - Infraestrutura v6.1.1 • Invent Corp<br>
+                        Dashboard de Projetos - Infraestrutura v6.2 • Invent Corp<br>
                         Gerado em: ${new Date().toLocaleString('pt-BR')}
                     </div>
                 </body>
@@ -973,7 +1109,7 @@
                     </table>
                     
                     <div style="margin-top: 30px; text-align: center; color: #64748b; font-size: 11px; border-top: 1px solid #e2e8f0; padding-top: 15px;">
-                        Dashboard de Projetos - Infraestrutura v6.1.1 • Invent Corp
+                        Dashboard de Projetos - Infraestrutura v6.2 • Invent Corp
                     </div>
                 </div>
             `;
@@ -1003,7 +1139,24 @@
             }
         });
 
-        window.addEventListener('load', loadData);
+        // Verificar parâmetro de URL para filtro
+        function checkUrlFilter() {
+            const params = new URLSearchParams(window.location.search);
+            const filter = params.get('filter');
+            if (filter === 'criticos') {
+                // Ativar checkbox de críticos
+                const checkbox = document.getElementById('filterCriticos');
+                if (checkbox) {
+                    checkbox.checked = true;
+                    applyFilters();
+                }
+            }
+        }
+
+        window.addEventListener('load', async function() {
+            await loadData();
+            checkUrlFilter();
+        });
     </script>
 </body>
 </html>
