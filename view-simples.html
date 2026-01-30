@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visão Resumida - Infraestrutura v6.2</title>
+    <title>Visão Resumida - Infraestrutura v6.2.1</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -224,7 +224,7 @@
         <div class="header">
             <div class="header-top">
                 <div>
-                    <h1><span>📊</span> Visão Resumida - Infraestrutura <span class="version">v6.2</span></h1>
+                    <h1><span>📊</span> Visão Resumida - Infraestrutura <span class="version">v6.2.1</span></h1>
                     <p class="update-info">Atualizado em: <span id="lastUpdate">--</span></p>
                 </div>
                 <div class="header-actions">
@@ -467,7 +467,7 @@
                         <span class="print-icon">🚨</span>
                         <div>
                             <div class="print-label">Apenas críticos</div>
-                            <div class="print-desc">Atrasados, vermelhos ou parados 15+ dias</div>
+                            <div class="print-desc">Atrasados, vermelhos, parados 15+ dias ou com bloqueador</div>
                         </div>
                     </label>
                     <label class="print-option" onclick="selectPrintOption(this, 'specific')">
@@ -519,7 +519,7 @@
                         <span class="print-icon">🚨</span>
                         <div>
                             <div class="print-label">Apenas críticos</div>
-                            <div class="print-desc">Atrasados, vermelhos ou parados 15+ dias</div>
+                            <div class="print-desc">Atrasados, vermelhos, parados 15+ dias ou com bloqueador</div>
                         </div>
                     </label>
                     <label class="print-option" onclick="selectPdfOption(this, 'specific')">
@@ -543,7 +543,7 @@
 
     <!-- Footer -->
     <footer class="dashboard-footer">
-        Dashboard Projetos Infraestrutura · v6.2 · Atualizado em: <span id="footerUpdate">--</span>
+        Dashboard Projetos Infraestrutura · v6.2.1 · Atualizado em: <span id="footerUpdate">--</span>
     </footer>
 
     <script>
@@ -854,6 +854,14 @@
                 }
             }
 
+            // 2.6 - Determinar próxima ação
+            let proximaAcao = '';
+            if (p.bloqueador && p.bloqueador !== '-' && p.bloqueador.trim() !== '') {
+                proximaAcao = 'Resolver: ' + (p.bloqueador.length > 80 ? p.bloqueador.slice(0, 80) + '...' : p.bloqueador);
+            } else if (p.observacoes && p.observacoes !== '-' && p.observacoes.trim() !== '') {
+                proximaAcao = p.observacoes.length > 80 ? p.observacoes.slice(0, 80) + '...' : p.observacoes;
+            }
+
             resumo.innerHTML = `
                 <div class="resumo-badges">
                     <span class="resumo-badge status">${normalizeStatus(p.status)}</span>
@@ -865,6 +873,12 @@
                     <div class="resumo-item">⏱️ <strong>Parado há:</strong> ${p.diasParado || 0} dias</div>
                     <div class="resumo-item">👤 <strong>PMO:</strong> ${p.pmoInterno || 'Não definido'}</div>
                 </div>
+                ${proximaAcao ? `
+                    <div style="margin-top: 12px; padding: 10px 15px; background: #eff6ff; border-radius: 8px; border-left: 3px solid #3b82f6;">
+                        <strong style="color: #1e40af; font-size: 0.85rem;">➡️ Próxima ação:</strong>
+                        <span style="color: #1e293b; font-size: 0.9rem; margin-left: 8px;">${proximaAcao}</span>
+                    </div>
+                ` : ''}
                 ${p.bloqueador && p.bloqueador !== '-' && p.bloqueador.trim() !== '' ? `
                     <div class="resumo-bloqueador">
                         <strong>🚨 Bloqueador:</strong>

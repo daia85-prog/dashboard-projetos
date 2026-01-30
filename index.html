@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Projetos - Infraestrutura v6.2</title>
+    <title>Dashboard Projetos - Infraestrutura v6.2.1</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); min-height: 100vh; padding: 20px; }
@@ -129,7 +129,7 @@
         <div class="header">
             <h1>📊 Dashboard de Projetos</h1>
             <p>Infraestrutura TI - Invent Corp</p>
-            <span class="version-badge">v6.2</span>
+            <span class="version-badge">v6.2.1</span>
         </div>
         
         <!-- KPI Saúde do Portfólio -->
@@ -195,7 +195,10 @@
         <!-- Decisões Necessárias -->
         <div class="decisoes-box" id="decisoesBox" style="display: none;">
             <div class="decisoes-header">
-                <h3>🔌 Decisões Necessárias</h3>
+                <div>
+                    <h3>🔌 Decisões Necessárias</h3>
+                    <p style="font-size: 0.75rem; color: #b91c1c; margin-top: 4px; font-weight: 400;">Projetos críticos com bloqueador, ordenados por tempo parado</p>
+                </div>
                 <span class="decisoes-badge" id="decisoesBadge">0 itens</span>
             </div>
             <div id="decisoesList"></div>
@@ -244,7 +247,7 @@
         
         <!-- Footer -->
         <footer class="dashboard-footer">
-            Dashboard Projetos Infraestrutura · v6.2 · Atualizado em: <span id="footerUpdate">--</span>
+            Dashboard Projetos Infraestrutura · v6.2.1 · Atualizado em: <span id="footerUpdate">--</span>
         </footer>
     </div>
 
@@ -381,8 +384,8 @@
             document.getElementById('saudeIcon').textContent = icone;
             document.getElementById('saudeValue').textContent = saude;
             document.getElementById('saudeValue').className = 'saude-value ' + classe;
-            document.getElementById('saudeCriticos').textContent = percentCriticos + '%';
-            document.getElementById('saudeAtraso').textContent = mediaAtraso + ' dias';
+            document.getElementById('saudeCriticos').textContent = percentCriticos + '% (meta < 10%)';
+            document.getElementById('saudeAtraso').textContent = mediaAtraso + ' dias (meta < 3)';
         }
 
         function renderAlertBox(counts) {
@@ -392,7 +395,11 @@
                 alertBox.className = counts.atrasado > 0 ? 'alert-box critical' : 'alert-box';
                 document.getElementById('alertIcon').textContent = counts.atrasado > 0 ? '🚨' : '⚠️';
                 document.getElementById('alertTitle').textContent = 'Atenção Necessária!';
-                document.getElementById('alertText').textContent = `${counts.atrasado} projeto(s) atrasado(s) e ${counts.parados15} parado(s) há 15+ dias. Clique para ver detalhes.`;
+                // 2.4 - Texto diferente do card (detalha tipo de problema)
+                let textoAlerta = [];
+                if (counts.atrasado > 0) textoAlerta.push(`${counts.atrasado} atrasado(s)`);
+                if (counts.parados15 > 0) textoAlerta.push(`${counts.parados15} parado(s) há 15+ dias`);
+                document.getElementById('alertText').textContent = textoAlerta.join(' e ') + '. Clique para ver detalhes.';
             } else {
                 alertBox.style.display = 'none';
             }
@@ -482,7 +489,10 @@
             const lista = document.getElementById('golivesList');
 
             if (proximos.length === 0) {
-                lista.innerHTML = '<p style="color: #64748b; text-align: center; padding: 20px;">Nenhum go-live neste período</p>';
+                const mensagem = currentGoLiveFilter === 'all' 
+                    ? 'Nenhum Go-Live programado. Verifique se as datas estão preenchidas nos projetos.'
+                    : 'Nenhum Go-Live previsto nesta janela. Clique em "Todos" para ver todas as datas.';
+                lista.innerHTML = `<p style="color: #64748b; text-align: center; padding: 20px;">${mensagem}</p>`;
                 return;
             }
 

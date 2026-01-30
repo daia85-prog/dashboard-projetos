@@ -1,7 +1,43 @@
 # 📋 CHANGELOG & REGISTRO DE BUGS - Dashboard Projetos Infraestrutura
 
 > **Última atualização:** 29/01/2026  
-> **Versão atual:** 6.2
+> **Versão atual:** 6.2.1
+
+---
+
+## v6.2.1 (29/01/2026) - Refinamentos Executivos 🎯
+
+### ✅ Melhorias Pontuais
+
+#### 2.1 Meta no Card Saúde
+- Linha de % críticos agora mostra: "12% (meta < 10%)"
+- Linha de atraso médio agora mostra: "4 dias (meta < 3)"
+- Tira dúvida na reunião sem precisar explicar
+
+#### 2.2 Subtítulo em Decisões Necessárias
+- Adicionado: "Projetos críticos com bloqueador, ordenados por tempo parado"
+- Explica a lógica de priorização para a diretoria
+
+#### 2.3 PMO Mais Carregado
+- Nova linha de destaque: "Mais carregado: Daiana (8 projetos, 3 críticos)"
+- Facilita discussão de capacidade e carga
+
+#### 2.4 Alert Bar Diferenciada
+- Texto agora detalha tipo de problema: "1 atrasado e 2 parados há 15+ dias"
+- Card mostra volume total, alert mostra detalhamento
+
+#### 2.5 Mensagem Go-Live Vazio
+- Quando filtro não encontra nada: "Nenhum Go-Live previsto nesta janela. Clique em 'Todos' para ver todas as datas."
+- Quando não há Go-Lives: "Verifique se as datas estão preenchidas nos projetos."
+
+#### 2.6 Próxima Ação no Modal
+- Nova linha "➡️ Próxima ação:" no resumo executivo
+- Usa bloqueador (prefixado com "Resolver:") ou observações
+- Foco em ação, não só status
+
+#### 3. Texto "Apenas Críticos" Atualizado
+- Descrição agora inclui: "Atrasados, vermelhos, parados 15+ dias ou com bloqueador"
+- Alinhado com a lógica real do isCritico()
 
 ---
 
