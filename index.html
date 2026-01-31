@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard de Infraestrutura v7.1 - Visão Macro</title>
+    <title>Dashboard de Infraestrutura v7.2 - Visão Macro</title>
     <style>
         * {
             margin: 0;
@@ -491,7 +491,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>📊 Dashboard de Infraestrutura v7.1</h1>
+            <h1>📊 Dashboard de Infraestrutura v7.2</h1>
             <p class="subtitle">Gestão de Projetos | Invent Corp</p>
             <a href="admin.html" class="back-btn">⚙️ Administração</a>
         </div>
@@ -651,7 +651,7 @@
             return null;
         }
         
-        // VISÃO EXECUTIVA - Agrupa por Macro Etapa
+        // VISÃO EXECUTIVA - Agrupa projetos por Fase Atual (CORRIGIDO v7.2)
         function renderVisaoExecutiva() {
             const container = document.getElementById('macroCardsContainer');
             
@@ -663,7 +663,7 @@
                 return;
             }
             
-            // Agrupar atividades por macro etapa
+            // Macro etapas disponíveis
             const macroEtapas = [
                 '1. Iniciação',
                 '2. Planejamento & Documentação',
@@ -675,35 +675,59 @@
                 '8. Encerramento'
             ];
             
+            // Agrupar projetos por FASE ATUAL (cada projeto em apenas UMA fase)
+            const projetosPorFase = {};
+            
+            filteredProjects.forEach(project => {
+                const faseAtual = calcularFaseAtual(project.projeto);
+                
+                if (faseAtual && faseAtual.nome) {
+                    if (!projetosPorFase[faseAtual.nome]) {
+                        projetosPorFase[faseAtual.nome] = [];
+                    }
+                    
+                    projetosPorFase[faseAtual.nome].push({
+                        nome: project.projeto,
+                        percentualFase: faseAtual.percentual
+                    });
+                }
+            });
+            
             let html = '';
             
+            // Renderizar cada macro etapa
             macroEtapas.forEach(macro => {
-                // Filtrar atividades desta macro dos projetos filtrados
-                const atividadesMacro = activitiesData.filter(a => {
-                    const projeto = a.projeto.trim();
-                    return a.macroEtapa === macro && 
-                           filteredProjects.some(p => p.projeto.trim() === projeto);
+                const projetosFase = projetosPorFase[macro];
+                
+                if (!projetosFase || projetosFase.length === 0) return; // Pula fase sem projetos
+                
+                const numProjetos = projetosFase.length;
+                
+                // Calcular percentual médio da fase (média dos percentuais de cada projeto)
+                const percentualMedio = Math.round(
+                    projetosFase.reduce((sum, p) => sum + p.percentualFase, 0) / numProjetos
+                );
+                
+                // Contar atividades da fase de todos os projetos
+                let totalAtividades = 0;
+                let atividadesConcluidas = 0;
+                
+                projetosFase.forEach(proj => {
+                    const atividadesFase = activitiesData.filter(a => 
+                        a.projeto.trim() === proj.nome.trim() && a.macroEtapa === macro
+                    );
+                    totalAtividades += atividadesFase.length;
+                    atividadesConcluidas += atividadesFase.filter(a => a.status === 'Concluído').length;
                 });
                 
-                if (atividadesMacro.length === 0) return; // Pula macro sem atividades
-                
-                // Calcular estatísticas
-                const total = atividadesMacro.length;
-                const concluidas = atividadesMacro.filter(a => a.status === 'Concluído').length;
-                const percentage = Math.round((concluidas / total) * 100);
-                
-                // Definir cor do card
-                const colorClass = getColorClass(percentage);
-                
-                // Projetos envolvidos (únicos)
-                const projetosUnicos = [...new Set(atividadesMacro.map(a => a.projeto))];
-                const numProjetos = projetosUnicos.length;
+                // Definir cor do card baseado no percentual médio
+                const colorClass = getColorClass(percentualMedio);
                 
                 // Mensagem de alerta
                 let alertaHtml = '';
-                if (percentage === 0) {
+                if (percentualMedio === 0) {
                     alertaHtml = '<div class="macro-alert info">⏳ Aguardando início em todos os projetos</div>';
-                } else if (percentage < 40) {
+                } else if (percentualMedio < 40) {
                     alertaHtml = '<div class="macro-alert warning">⚠️ Fase com baixa execução no portfólio</div>';
                 }
                 
@@ -716,26 +740,26 @@
                                     <span class="macro-count">(${numProjetos} projeto${numProjetos !== 1 ? 's' : ''})</span>
                                 </div>
                             </div>
-                            <div class="macro-percentage ${colorClass}">${percentage}%</div>
+                            <div class="macro-percentage ${colorClass}">${percentualMedio}%</div>
                         </div>
                         
                         <div class="macro-progress">
-                            <div class="macro-progress-bar ${colorClass}" style="width: ${percentage}%"></div>
+                            <div class="macro-progress-bar ${colorClass}" style="width: ${percentualMedio}%"></div>
                         </div>
                         
                         ${alertaHtml}
                         
                         <div class="macro-stats">
                             <div class="macro-stat">
-                                <strong>${concluidas}</strong>/${total} atividades concluídas
+                                <strong>${atividadesConcluidas}</strong>/${totalAtividades} atividades concluídas
                             </div>
                         </div>
                         
                         <div class="macro-projects">
-                            <div class="macro-projects-label">Projetos envolvidos:</div>
+                            <div class="macro-projects-label">Projetos nesta fase:</div>
                             <div class="macro-project-badges">
-                                ${projetosUnicos.map(p => 
-                                    `<span class="project-badge" onclick="filterByProject('${p}')" title="Clique para ver detalhes de ${p}">${p}</span>`
+                                ${projetosFase.map(p => 
+                                    `<span class="project-badge" onclick="filterByProject('${p.nome}')" title="Clique para ver detalhes de ${p.nome}">${p.nome}</span>`
                                 ).join('')}
                             </div>
                         </div>
