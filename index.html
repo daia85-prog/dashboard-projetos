@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard de Infraestrutura v7.2 - Visão Macro</title>
+    <title>Dashboard de Infraestrutura v7.2.1 - Visão Macro</title>
     <style>
         * {
             margin: 0;
@@ -491,8 +491,11 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>📊 Dashboard de Infraestrutura v7.2</h1>
+            <h1>📊 Dashboard de Infraestrutura v7.2.1</h1>
             <p class="subtitle">Gestão de Projetos | Invent Corp</p>
+            <div style="background: rgba(255,255,255,0.2); padding: 10px; border-radius: 8px; margin-top: 15px; font-size: 0.9em;">
+                💡 <strong>Dados de teste carregados!</strong> Use Admin → Upload Excel para carregar seus dados reais.
+            </div>
             <a href="admin.html" class="back-btn">⚙️ Administração</a>
         </div>
         
@@ -563,16 +566,125 @@
             const storedProjects = localStorage.getItem('projectsData');
             const storedActivities = localStorage.getItem('activitiesData');
             
-            if (storedProjects) {
+            // Se não houver dados, carrega dados fictícios para teste
+            if (!storedProjects || !storedActivities) {
+                loadSampleData();
+            } else {
                 projectsData = JSON.parse(storedProjects);
-            }
-            
-            if (storedActivities) {
                 activitiesData = JSON.parse(storedActivities);
             }
             
             populateFilters();
             renderCurrentView();
+        }
+        
+        // Carregar dados fictícios para teste (v7.2.1)
+        function loadSampleData() {
+            // Projetos de exemplo
+            projectsData = [
+                {
+                    projeto: 'COUGAR',
+                    status: 'Em andamento',
+                    dataInicio: '01/12/2024',
+                    dataPrevista: '28/02/2025',
+                    responsavel: 'Daia',
+                    localizacao: 'São Paulo - SP'
+                },
+                {
+                    projeto: 'BETA',
+                    status: 'Atrasado',
+                    dataInicio: '15/11/2024',
+                    dataPrevista: '31/03/2025',
+                    responsavel: 'Daia',
+                    localizacao: 'Rio de Janeiro - RJ'
+                },
+                {
+                    projeto: 'NAVEPARK',
+                    status: 'Concluído',
+                    dataInicio: '01/09/2024',
+                    dataPrevista: '20/01/2025',
+                    responsavel: 'Daia',
+                    localizacao: 'Curitiba - PR'
+                }
+            ];
+            
+            // Atividades de exemplo (20 atividades padrão por projeto)
+            const atividadesPadrao = [
+                { ordem: 1, nome: 'KICKOFF INTERNO', macroEtapa: '1. Iniciação' },
+                { ordem: 2, nome: 'Definir escopo e objetivos', macroEtapa: '1. Iniciação' },
+                { ordem: 3, nome: 'Identificar stakeholders', macroEtapa: '1. Iniciação' },
+                { ordem: 4, nome: 'Criar cronograma inicial', macroEtapa: '2. Planejamento & Documentação' },
+                { ordem: 5, nome: 'Elaborar documentação técnica', macroEtapa: '2. Planejamento & Documentação' },
+                { ordem: 6, nome: 'Revisar orçamento', macroEtapa: '2. Planejamento & Documentação' },
+                { ordem: 7, nome: 'Solicitar recursos técnicos', macroEtapa: '3. Provisionamento de Recursos' },
+                { ordem: 8, nome: 'Aprovar aquisições', macroEtapa: '3. Provisionamento de Recursos' },
+                { ordem: 9, nome: 'Alocar equipe', macroEtapa: '3. Provisionamento de Recursos' },
+                { ordem: 10, nome: 'Configurar infraestrutura', macroEtapa: '4. Implementação' },
+                { ordem: 11, nome: 'Desenvolver solução', macroEtapa: '4. Implementação' },
+                { ordem: 12, nome: 'Integrar sistemas', macroEtapa: '4. Implementação' },
+                { ordem: 13, nome: 'Documentar implementação', macroEtapa: '4. Implementação' },
+                { ordem: 14, nome: 'Executar testes unitários', macroEtapa: '5. Testes & Homologação' },
+                { ordem: 15, nome: 'Realizar homologação', macroEtapa: '5. Testes & Homologação' },
+                { ordem: 16, nome: 'Validar com usuários', macroEtapa: '5. Testes & Homologação' },
+                { ordem: 17, nome: 'Deploy em produção', macroEtapa: '6. Deploy em Produção' },
+                { ordem: 18, nome: 'Monitorar estabilidade', macroEtapa: '7. Estabilização' },
+                { ordem: 19, nome: 'Treinar usuários finais', macroEtapa: '7. Estabilização' },
+                { ordem: 20, nome: 'Encerrar projeto e documentar lições', macroEtapa: '8. Encerramento' }
+            ];
+            
+            activitiesData = [];
+            
+            // COUGAR - 35% concluído (7 de 20 atividades) - Fase atual: Testes
+            atividadesPadrao.forEach((ativ, index) => {
+                let status = 'Aguardando';
+                if (index < 7) status = 'Concluído'; // Atividades 1-7 concluídas (até Provisionamento)
+                else if (index >= 13 && index < 16) status = 'Aguardando'; // Testes aguardando
+                
+                activitiesData.push({
+                    projeto: 'COUGAR',
+                    atividade: ativ.nome,
+                    macroEtapa: ativ.macroEtapa,
+                    status: status,
+                    dataInicio: index < 7 ? '01/12/2024' : '',
+                    dataConclusao: index < 7 ? '15/12/2024' : ''
+                });
+            });
+            
+            // BETA - 10% concluído (2 de 20 atividades) - Fase atual: Provisionamento
+            atividadesPadrao.forEach((ativ, index) => {
+                let status = 'Aguardando';
+                if (index < 2) status = 'Concluído'; // Atividades 1-2 concluídas (Iniciação parcial)
+                else if (index >= 6 && index < 9) status = 'Aguardando'; // Provisionamento aguardando
+                
+                activitiesData.push({
+                    projeto: 'BETA',
+                    atividade: ativ.nome,
+                    macroEtapa: ativ.macroEtapa,
+                    status: status,
+                    dataInicio: index < 2 ? '15/11/2024' : '',
+                    dataConclusao: index < 2 ? '30/11/2024' : ''
+                });
+            });
+            
+            // NAVEPARK - 100% concluído (20 de 20 atividades) - Fase atual: Encerramento
+            atividadesPadrao.forEach((ativ, index) => {
+                activitiesData.push({
+                    projeto: 'NAVEPARK',
+                    atividade: ativ.nome,
+                    macroEtapa: ativ.macroEtapa,
+                    status: 'Concluído',
+                    dataInicio: '01/09/2024',
+                    dataConclusao: '20/01/2025'
+                });
+            });
+            
+            // Salvar no localStorage
+            localStorage.setItem('projectsData', JSON.stringify(projectsData));
+            localStorage.setItem('activitiesData', JSON.stringify(activitiesData));
+            
+            console.log('✅ Dados fictícios carregados para teste (v7.2.1)');
+            console.log('Projetos:', projectsData.length);
+            console.log('Atividades:', activitiesData.length);
         }
         
         // Alternar entre visões
@@ -723,10 +835,24 @@
                 // Definir cor do card baseado no percentual médio
                 const colorClass = getColorClass(percentualMedio);
                 
-                // Mensagem de alerta
+                // Mensagem de alerta contextual (v7.2.1 - CORRIGIDO)
                 let alertaHtml = '';
                 if (percentualMedio === 0) {
-                    alertaHtml = '<div class="macro-alert info">⏳ Aguardando início em todos os projetos</div>';
+                    // Verifica se os projetos têm progresso geral ou se realmente estão parados
+                    const projetosComProgresso = projetosFase.filter(p => {
+                        const proj = filteredProjects.find(fp => fp.nome === p.nome || fp.projeto === p.nome);
+                        if (!proj) return false;
+                        
+                        const atividadesProj = activitiesData.filter(a => a.projeto.trim() === p.nome.trim());
+                        const concluidas = atividadesProj.filter(a => a.status === 'Concluído').length;
+                        return concluidas > 0;
+                    });
+                    
+                    if (projetosComProgresso.length > 0) {
+                        alertaHtml = '<div class="macro-alert info">📌 Atividades desta fase ainda não iniciadas</div>';
+                    } else {
+                        alertaHtml = '<div class="macro-alert info">⏳ Aguardando início em todos os projetos</div>';
+                    }
                 } else if (percentualMedio < 40) {
                     alertaHtml = '<div class="macro-alert warning">⚠️ Fase com baixa execução no portfólio</div>';
                 }
