@@ -493,8 +493,9 @@
         <div class="header">
             <h1>📊 Dashboard de Infraestrutura v7.2.1</h1>
             <p class="subtitle">Gestão de Projetos | Invent Corp</p>
-            <div style="background: rgba(255,255,255,0.2); padding: 10px; border-radius: 8px; margin-top: 15px; font-size: 0.9em;">
-                💡 <strong>Dados de teste carregados!</strong> Use Admin → Upload Excel para carregar seus dados reais.
+            <div style="background: rgba(255,255,255,0.2); padding: 10px; border-radius: 8px; margin-top: 15px; font-size: 0.9em; display: flex; align-items: center; justify-content: space-between;">
+                <span>💡 <strong>Dados de teste carregados!</strong> Use Admin → Upload Excel para carregar seus dados reais.</span>
+                <button onclick="recarregarDadosTeste()" style="background: rgba(255,255,255,0.3); border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: 600; margin-left: 15px;">🔄 Recarregar Dados Teste</button>
             </div>
             <a href="admin.html" class="back-btn">⚙️ Administração</a>
         </div>
@@ -562,6 +563,18 @@
         let currentView = 'executiva';
         
         // Carregar dados do localStorage
+        // Recarregar dados de teste (limpa localStorage e carrega novamente)
+        function recarregarDadosTeste() {
+            if (confirm('Tem certeza? Isso vai remover todos os dados atuais e recarregar os dados de teste.')) {
+                localStorage.removeItem('projectsData');
+                localStorage.removeItem('activitiesData');
+                loadSampleData();
+                populateFilters();
+                renderCurrentView();
+                alert('✅ Dados de teste recarregados com sucesso!');
+            }
+        }
+        
         function loadData() {
             const storedProjects = localStorage.getItem('projectsData');
             const storedActivities = localStorage.getItem('activitiesData');
@@ -738,7 +751,24 @@
                 '8. Encerramento'
             ];
             
-            // Encontrar última fase com atividades em andamento ou concluídas
+            // Verificar se projeto está 100% concluído
+            const todasConcluidas = atividadesProjeto.every(a => a.status === 'Concluído');
+            if (todasConcluidas) {
+                // Projeto 100% → Última fase com atividades
+                for (let i = macrosOrdenadas.length - 1; i >= 0; i--) {
+                    const macro = macrosOrdenadas[i];
+                    const atividadesFase = atividadesProjeto.filter(a => a.macroEtapa === macro);
+                    
+                    if (atividadesFase.length > 0) {
+                        return {
+                            nome: macro,
+                            percentual: 100
+                        };
+                    }
+                }
+            }
+            
+            // Encontrar última fase com atividades em andamento ou iniciadas
             for (let i = macrosOrdenadas.length - 1; i >= 0; i--) {
                 const macro = macrosOrdenadas[i];
                 const atividadesFase = atividadesProjeto.filter(a => a.macroEtapa === macro);
