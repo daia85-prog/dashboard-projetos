@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard de Infraestrutura v7.0 - Visão Macro</title>
+    <title>Dashboard de Infraestrutura v7.1 - Visão Macro</title>
     <style>
         * {
             margin: 0;
@@ -50,7 +50,7 @@
             border-bottom: 2px solid #e9ecef;
         }
         
-        /* TOGGLE VISÃO EXECUTIVA/COMPLETA */
+        /* TOGGLE VISÃO EXECUTIVA/PROJETO */
         .view-toggle {
             display: flex;
             justify-content: center;
@@ -119,15 +119,15 @@
         /* CARDS VISÃO EXECUTIVA */
         .macro-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
             margin-bottom: 30px;
         }
         
         .macro-card {
             background: white;
             border-radius: 12px;
-            padding: 20px;
+            padding: 25px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             transition: transform 0.3s, box-shadow 0.3s;
             border-left: 5px solid #667eea;
@@ -140,14 +140,17 @@
         
         .macro-card.success {
             border-left-color: #28a745;
+            background: linear-gradient(to right, rgba(40, 167, 69, 0.03) 0%, white 30%);
         }
         
         .macro-card.warning {
             border-left-color: #ffc107;
+            background: linear-gradient(to right, rgba(255, 193, 7, 0.03) 0%, white 30%);
         }
         
         .macro-card.danger {
             border-left-color: #dc3545;
+            background: linear-gradient(to right, rgba(220, 53, 69, 0.03) 0%, white 30%);
         }
         
         .macro-header {
@@ -164,12 +167,21 @@
             flex: 1;
         }
         
+        .macro-count {
+            font-size: 0.85em;
+            color: #6c757d;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+        
         .macro-percentage {
-            font-size: 1.5em;
+            font-size: 1.8em;
             font-weight: 700;
-            padding: 5px 12px;
-            border-radius: 20px;
+            padding: 8px 16px;
+            border-radius: 25px;
             background: #f8f9fa;
+            min-width: 80px;
+            text-align: center;
         }
         
         .macro-percentage.success {
@@ -188,7 +200,7 @@
         }
         
         .macro-progress {
-            height: 8px;
+            height: 10px;
             background: #e9ecef;
             border-radius: 10px;
             overflow: hidden;
@@ -215,10 +227,11 @@
         
         .macro-stats {
             display: flex;
-            gap: 15px;
+            flex-direction: column;
+            gap: 8px;
             margin-bottom: 15px;
-            font-size: 0.85em;
-            color: #6c757d;
+            font-size: 0.9em;
+            color: #495057;
         }
         
         .macro-stat {
@@ -227,9 +240,32 @@
             gap: 5px;
         }
         
+        /* MENSAGENS DE ALERTA */
+        .macro-alert {
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.85em;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .macro-alert.warning {
+            background: #fff3cd;
+            color: #856404;
+            border-left: 3px solid #ffc107;
+        }
+        
+        .macro-alert.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border-left: 3px solid #17a2b8;
+        }
+        
         .macro-projects {
-            margin-top: 10px;
-            padding-top: 10px;
+            margin-top: 12px;
+            padding-top: 12px;
             border-top: 1px solid #e9ecef;
         }
         
@@ -248,18 +284,26 @@
         
         .project-badge {
             display: inline-block;
-            padding: 4px 12px;
+            padding: 5px 14px;
             background: #e9ecef;
             border-radius: 15px;
             font-size: 0.8em;
-            font-weight: 500;
+            font-weight: 600;
             color: #495057;
+            cursor: pointer;
+            transition: all 0.2s;
         }
         
-        /* CARDS PROJETOS (VISÃO COMPLETA) */
+        .project-badge:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        /* CARDS PROJETOS (VISÃO POR PROJETO) */
         .project-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 20px;
         }
         
@@ -346,6 +390,26 @@
             font-weight: 600;
         }
         
+        /* FASE ATUAL NO CARD DO PROJETO */
+        .project-current-phase {
+            background: #e7f3ff;
+            border-left: 3px solid #2196F3;
+            padding: 10px 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+        }
+        
+        .project-current-phase strong {
+            color: #1976D2;
+        }
+        
+        .phase-progress {
+            color: #666;
+            font-size: 0.85em;
+            margin-top: 4px;
+        }
+        
         .progress-section {
             margin-top: 15px;
         }
@@ -427,19 +491,19 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>📊 Dashboard de Infraestrutura v7.0</h1>
+            <h1>📊 Dashboard de Infraestrutura v7.1</h1>
             <p class="subtitle">Gestão de Projetos | Invent Corp</p>
             <a href="admin.html" class="back-btn">⚙️ Administração</a>
         </div>
         
         <div class="controls">
-            <!-- TOGGLE VISÃO EXECUTIVA/COMPLETA -->
+            <!-- TOGGLE VISÃO EXECUTIVA/PROJETO -->
             <div class="view-toggle">
                 <button id="btnExecutiva" class="active" onclick="changeView('executiva')">
                     🎯 Visão Executiva (Macro)
                 </button>
-                <button id="btnCompleta" onclick="changeView('completa')">
-                    📋 Visão Completa (Detalhes)
+                <button id="btnProjeto" onclick="changeView('projeto')">
+                    📋 Visão por Projeto (Micro)
                 </button>
             </div>
             
@@ -482,8 +546,8 @@
                 <div id="macroCardsContainer"></div>
             </div>
             
-            <!-- Container para Visão Completa -->
-            <div id="viewCompleta" style="display: none;">
+            <!-- Container para Visão por Projeto -->
+            <div id="viewProjeto" style="display: none;">
                 <div id="projectCardsContainer"></div>
             </div>
         </div>
@@ -517,11 +581,11 @@
             
             // Atualizar botões
             document.getElementById('btnExecutiva').classList.toggle('active', view === 'executiva');
-            document.getElementById('btnCompleta').classList.toggle('active', view === 'completa');
+            document.getElementById('btnProjeto').classList.toggle('active', view === 'projeto');
             
             // Atualizar containers
             document.getElementById('viewExecutiva').style.display = view === 'executiva' ? 'block' : 'none';
-            document.getElementById('viewCompleta').style.display = view === 'completa' ? 'block' : 'none';
+            document.getElementById('viewProjeto').style.display = view === 'projeto' ? 'block' : 'none';
             
             renderCurrentView();
         }
@@ -531,8 +595,60 @@
             if (currentView === 'executiva') {
                 renderVisaoExecutiva();
             } else {
-                renderVisaoCompleta();
+                renderVisaoPorProjeto();
             }
+        }
+        
+        // Determinar cor baseada em percentual
+        function getColorClass(percentage) {
+            if (percentage >= 80) return 'success';
+            if (percentage >= 40) return 'warning';
+            return 'danger';
+        }
+        
+        // Calcular fase atual de um projeto
+        function calcularFaseAtual(projeto) {
+            const atividadesProjeto = activitiesData.filter(a => 
+                a.projeto.trim() === projeto.trim() && a.macroEtapa
+            );
+            
+            if (atividadesProjeto.length === 0) return null;
+            
+            // Ordenar por número da macro (1, 2, 3...)
+            const macrosOrdenadas = [
+                '1. Iniciação',
+                '2. Planejamento & Documentação',
+                '3. Provisionamento de Recursos',
+                '4. Implementação',
+                '5. Testes & Homologação',
+                '6. Deploy em Produção',
+                '7. Estabilização',
+                '8. Encerramento'
+            ];
+            
+            // Encontrar última fase com atividades em andamento ou concluídas
+            for (let i = macrosOrdenadas.length - 1; i >= 0; i--) {
+                const macro = macrosOrdenadas[i];
+                const atividadesFase = atividadesProjeto.filter(a => a.macroEtapa === macro);
+                
+                if (atividadesFase.length > 0) {
+                    const emAndamento = atividadesFase.some(a => 
+                        a.status === 'Em andamento' || a.status === 'Aguardando'
+                    );
+                    const concluidas = atividadesFase.filter(a => a.status === 'Concluído').length;
+                    const total = atividadesFase.length;
+                    const percentualFase = Math.round((concluidas / total) * 100);
+                    
+                    if (emAndamento || percentualFase > 0) {
+                        return {
+                            nome: macro,
+                            percentual: percentualFase
+                        };
+                    }
+                }
+            }
+            
+            return null;
         }
         
         // VISÃO EXECUTIVA - Agrupa por Macro Etapa
@@ -577,32 +693,37 @@
                 const percentage = Math.round((concluidas / total) * 100);
                 
                 // Definir cor do card
-                let cardClass = '';
-                let percentClass = '';
-                if (percentage === 100) {
-                    cardClass = 'success';
-                    percentClass = 'success';
-                } else if (percentage >= 50) {
-                    cardClass = 'warning';
-                    percentClass = 'warning';
-                } else {
-                    cardClass = 'danger';
-                    percentClass = 'danger';
+                const colorClass = getColorClass(percentage);
+                
+                // Projetos envolvidos (únicos)
+                const projetosUnicos = [...new Set(atividadesMacro.map(a => a.projeto))];
+                const numProjetos = projetosUnicos.length;
+                
+                // Mensagem de alerta
+                let alertaHtml = '';
+                if (percentage === 0) {
+                    alertaHtml = '<div class="macro-alert info">⏳ Aguardando início em todos os projetos</div>';
+                } else if (percentage < 40) {
+                    alertaHtml = '<div class="macro-alert warning">⚠️ Fase com baixa execução no portfólio</div>';
                 }
                 
-                // Projetos envolvidos
-                const projetosUnicos = [...new Set(atividadesMacro.map(a => a.projeto))];
-                
                 html += `
-                    <div class="macro-card ${cardClass}">
+                    <div class="macro-card ${colorClass}">
                         <div class="macro-header">
-                            <div class="macro-title">${macro}</div>
-                            <div class="macro-percentage ${percentClass}">${percentage}%</div>
+                            <div style="flex: 1;">
+                                <div class="macro-title">
+                                    ${macro}
+                                    <span class="macro-count">(${numProjetos} projeto${numProjetos !== 1 ? 's' : ''})</span>
+                                </div>
+                            </div>
+                            <div class="macro-percentage ${colorClass}">${percentage}%</div>
                         </div>
                         
                         <div class="macro-progress">
-                            <div class="macro-progress-bar ${percentClass}" style="width: ${percentage}%"></div>
+                            <div class="macro-progress-bar ${colorClass}" style="width: ${percentage}%"></div>
                         </div>
+                        
+                        ${alertaHtml}
                         
                         <div class="macro-stats">
                             <div class="macro-stat">
@@ -613,7 +734,9 @@
                         <div class="macro-projects">
                             <div class="macro-projects-label">Projetos envolvidos:</div>
                             <div class="macro-project-badges">
-                                ${projetosUnicos.map(p => `<span class="project-badge">${p}</span>`).join('')}
+                                ${projetosUnicos.map(p => 
+                                    `<span class="project-badge" onclick="filterByProject('${p}')" title="Clique para ver detalhes de ${p}">${p}</span>`
+                                ).join('')}
                             </div>
                         </div>
                     </div>
@@ -627,8 +750,15 @@
             container.innerHTML = html;
         }
         
-        // VISÃO COMPLETA - Cards de projetos (layout atual)
-        function renderVisaoCompleta() {
+        // Filtrar por projeto (quando clica no badge)
+        function filterByProject(projeto) {
+            document.getElementById('filterSearch').value = projeto;
+            changeView('projeto');
+            applyFilters();
+        }
+        
+        // VISÃO POR PROJETO - Cards de projetos (layout atual)
+        function renderVisaoPorProjeto() {
             const container = document.getElementById('projectCardsContainer');
             
             // Filtrar projetos
@@ -653,12 +783,26 @@
                 if (project.status === 'Concluído') statusClass = 'concluido';
                 else if (progress < 30) statusClass = 'atrasado';
                 
+                // Calcular fase atual
+                const faseAtual = calcularFaseAtual(project.projeto);
+                let faseAtualHtml = '';
+                if (faseAtual) {
+                    faseAtualHtml = `
+                        <div class="project-current-phase">
+                            <strong>Fase atual:</strong> ${faseAtual.nome}
+                            <div class="phase-progress">${faseAtual.percentual}% da fase concluído</div>
+                        </div>
+                    `;
+                }
+                
                 html += `
                     <div class="project-card ${statusClass}" onclick="window.location.href='view-detalhada.html?projeto=${encodeURIComponent(project.projeto)}'">
                         <div class="project-header">
                             <div class="project-name">${project.projeto}</div>
                             <div class="project-status ${statusClass}">${project.status}</div>
                         </div>
+                        
+                        ${faseAtualHtml}
                         
                         <div class="project-info">
                             <div class="info-row">
@@ -681,7 +825,7 @@
                         
                         <div class="progress-section">
                             <div class="progress-label">
-                                <span>Progresso</span>
+                                <span>Progresso Geral</span>
                                 <span><strong>${progress}%</strong></span>
                             </div>
                             <div class="progress-bar-container">
