@@ -591,7 +591,7 @@
             renderCurrentView();
         }
         
-        // Carregar dados fictícios para teste (v7.2.1)
+        // Carregar dados fictícios para teste (v7.2.1 FINAL - CORRIGIDO)
         function loadSampleData() {
             // Projetos de exemplo
             projectsData = [
@@ -621,66 +621,139 @@
                 }
             ];
             
-            // Atividades de exemplo (20 atividades padrão por projeto)
-            const atividadesPadrao = [
-                { ordem: 1, nome: 'KICKOFF INTERNO', macroEtapa: '1. Iniciação' },
-                { ordem: 2, nome: 'Definir escopo e objetivos', macroEtapa: '1. Iniciação' },
-                { ordem: 3, nome: 'Identificar stakeholders', macroEtapa: '1. Iniciação' },
-                { ordem: 4, nome: 'Criar cronograma inicial', macroEtapa: '2. Planejamento & Documentação' },
-                { ordem: 5, nome: 'Elaborar documentação técnica', macroEtapa: '2. Planejamento & Documentação' },
-                { ordem: 6, nome: 'Revisar orçamento', macroEtapa: '2. Planejamento & Documentação' },
-                { ordem: 7, nome: 'Solicitar recursos técnicos', macroEtapa: '3. Provisionamento de Recursos' },
-                { ordem: 8, nome: 'Aprovar aquisições', macroEtapa: '3. Provisionamento de Recursos' },
-                { ordem: 9, nome: 'Alocar equipe', macroEtapa: '3. Provisionamento de Recursos' },
-                { ordem: 10, nome: 'Configurar infraestrutura', macroEtapa: '4. Implementação' },
-                { ordem: 11, nome: 'Desenvolver solução', macroEtapa: '4. Implementação' },
-                { ordem: 12, nome: 'Integrar sistemas', macroEtapa: '4. Implementação' },
-                { ordem: 13, nome: 'Documentar implementação', macroEtapa: '4. Implementação' },
-                { ordem: 14, nome: 'Executar testes unitários', macroEtapa: '5. Testes & Homologação' },
-                { ordem: 15, nome: 'Realizar homologação', macroEtapa: '5. Testes & Homologação' },
-                { ordem: 16, nome: 'Validar com usuários', macroEtapa: '5. Testes & Homologação' },
-                { ordem: 17, nome: 'Deploy em produção', macroEtapa: '6. Deploy em Produção' },
-                { ordem: 18, nome: 'Monitorar estabilidade', macroEtapa: '7. Estabilização' },
-                { ordem: 19, nome: 'Treinar usuários finais', macroEtapa: '7. Estabilização' },
-                { ordem: 20, nome: 'Encerrar projeto e documentar lições', macroEtapa: '8. Encerramento' }
-            ];
-            
             activitiesData = [];
             
-            // COUGAR - 35% concluído (7 de 20 atividades) - Fase atual: Testes
-            atividadesPadrao.forEach((ativ, index) => {
-                let status = 'Aguardando';
-                if (index < 7) status = 'Concluído'; // Atividades 1-7 concluídas (até Provisionamento)
-                else if (index >= 13 && index < 16) status = 'Aguardando'; // Testes aguardando
-                
-                activitiesData.push({
-                    projeto: 'COUGAR',
-                    atividade: ativ.nome,
-                    macroEtapa: ativ.macroEtapa,
-                    status: status,
-                    dataInicio: index < 7 ? '01/12/2024' : '',
-                    dataConclusao: index < 7 ? '15/12/2024' : ''
-                });
-            });
+            // ===== COUGAR - 35% (7/20) - Fase atual: 5. Testes & Homologação =====
+            // Iniciação: 100% (3/3)
+            activitiesData.push(
+                { projeto: 'COUGAR', atividade: 'KICKOFF INTERNO', macroEtapa: '1. Iniciação', status: 'Concluído', dataInicio: '01/12/2024', dataConclusao: '02/12/2024' },
+                { projeto: 'COUGAR', atividade: 'Definir escopo e objetivos', macroEtapa: '1. Iniciação', status: 'Concluído', dataInicio: '01/12/2024', dataConclusao: '03/12/2024' },
+                { projeto: 'COUGAR', atividade: 'Identificar stakeholders', macroEtapa: '1. Iniciação', status: 'Concluído', dataInicio: '01/12/2024', dataConclusao: '04/12/2024' }
+            );
             
-            // BETA - 10% concluído (2 de 20 atividades) - Fase atual: Provisionamento
-            atividadesPadrao.forEach((ativ, index) => {
-                let status = 'Aguardando';
-                if (index < 2) status = 'Concluído'; // Atividades 1-2 concluídas (Iniciação parcial)
-                else if (index >= 6 && index < 9) status = 'Aguardando'; // Provisionamento aguardando
-                
-                activitiesData.push({
-                    projeto: 'BETA',
-                    atividade: ativ.nome,
-                    macroEtapa: ativ.macroEtapa,
-                    status: status,
-                    dataInicio: index < 2 ? '15/11/2024' : '',
-                    dataConclusao: index < 2 ? '30/11/2024' : ''
-                });
-            });
+            // Planejamento: 100% (3/3)
+            activitiesData.push(
+                { projeto: 'COUGAR', atividade: 'Criar cronograma inicial', macroEtapa: '2. Planejamento & Documentação', status: 'Concluído', dataInicio: '05/12/2024', dataConclusao: '06/12/2024' },
+                { projeto: 'COUGAR', atividade: 'Elaborar documentação técnica', macroEtapa: '2. Planejamento & Documentação', status: 'Concluído', dataInicio: '05/12/2024', dataConclusao: '07/12/2024' },
+                { projeto: 'COUGAR', atividade: 'Revisar orçamento', macroEtapa: '2. Planejamento & Documentação', status: 'Concluído', dataInicio: '05/12/2024', dataConclusao: '08/12/2024' }
+            );
             
-            // NAVEPARK - 100% concluído (20 de 20 atividades) - Fase atual: Encerramento
-            atividadesPadrao.forEach((ativ, index) => {
+            // Provisionamento: 33% (1/3)
+            activitiesData.push(
+                { projeto: 'COUGAR', atividade: 'Solicitar recursos técnicos', macroEtapa: '3. Provisionamento de Recursos', status: 'Concluído', dataInicio: '09/12/2024', dataConclusao: '10/12/2024' },
+                { projeto: 'COUGAR', atividade: 'Aprovar aquisições', macroEtapa: '3. Provisionamento de Recursos', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
+                { projeto: 'COUGAR', atividade: 'Alocar equipe', macroEtapa: '3. Provisionamento de Recursos', status: 'Aguardando', dataInicio: '', dataConclusao: '' }
+            );
+            
+            // Implementação: 0% (0/4)
+            activitiesData.push(
+                { projeto: 'COUGAR', atividade: 'Configurar infraestrutura', macroEtapa: '4. Implementação', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
+                { projeto: 'COUGAR', atividade: 'Desenvolver solução', macroEtapa: '4. Implementação', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
+                { projeto: 'COUGAR', atividade: 'Integrar sistemas', macroEtapa: '4. Implementação', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
+                { projeto: 'COUGAR', atividade: 'Documentar implementação', macroEtapa: '4. Implementação', status: 'Aguardando', dataInicio: '', dataConclusao: '' }
+            );
+            
+            // Testes: 0% (0/3) ← FASE ATUAL
+            activitiesData.push(
+                { projeto: 'COUGAR', atividade: 'Executar testes unitários', macroEtapa: '5. Testes & Homologação', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
+                { projeto: 'COUGAR', atividade: 'Realizar homologação', macroEtapa: '5. Testes & Homologação', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
+                { projeto: 'COUGAR', atividade: 'Validar com usuários', macroEtapa: '5. Testes & Homologação', status: 'Aguardando', dataInicio: '', dataConclusao: '' }
+            );
+            
+            // Deploy: 0% (0/1)
+            activitiesData.push(
+                { projeto: 'COUGAR', atividade: 'Deploy em produção', macroEtapa: '6. Deploy em Produção', status: 'Aguardando', dataInicio: '', dataConclusao: '' }
+            );
+            
+            // Estabilização: 0% (0/2)
+            activitiesData.push(
+                { projeto: 'COUGAR', atividade: 'Monitorar estabilidade', macroEtapa: '7. Estabilização', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
+                { projeto: 'COUGAR', atividade: 'Treinar usuários finais', macroEtapa: '7. Estabilização', status: 'Aguardando', dataInicio: '', dataConclusao: '' }
+            );
+            
+            // Encerramento: 0% (0/1)
+            activitiesData.push(
+                { projeto: 'COUGAR', atividade: 'Encerrar projeto e documentar lições', macroEtapa: '8. Encerramento', status: 'Aguardando', dataInicio: '', dataConclusao: '' }
+            );
+            
+            // ===== BETA - 10% (2/20) - Fase atual: 3. Provisionamento de Recursos =====
+            // Iniciação: 67% (2/3)
+            activitiesData.push(
+                { projeto: 'BETA', atividade: 'KICKOFF INTERNO', macroEtapa: '1. Iniciação', status: 'Concluído', dataInicio: '15/11/2024', dataConclusao: '16/11/2024' },
+                { projeto: 'BETA', atividade: 'Definir escopo e objetivos', macroEtapa: '1. Iniciação', status: 'Concluído', dataInicio: '15/11/2024', dataConclusao: '17/11/2024' },
+                { projeto: 'BETA', atividade: 'Identificar stakeholders', macroEtapa: '1. Iniciação', status: 'Aguardando', dataInicio: '', dataConclusao: '' }
+            );
+            
+            // Planejamento: 0% (0/3)
+            activitiesData.push(
+                { projeto: 'BETA', atividade: 'Criar cronograma inicial', macroEtapa: '2. Planejamento & Documentação', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
+                { projeto: 'BETA', atividade: 'Elaborar documentação técnica', macroEtapa: '2. Planejamento & Documentação', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
+                { projeto: 'BETA', atividade: 'Revisar orçamento', macroEtapa: '2. Planejamento & Documentação', status: 'Aguardando', dataInicio: '', dataConclusao: '' }
+            );
+            
+            // Provisionamento: 0% (0/3) ← FASE ATUAL
+            activitiesData.push(
+                { projeto: 'BETA', atividade: 'Solicitar recursos técnicos', macroEtapa: '3. Provisionamento de Recursos', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
+                { projeto: 'BETA', atividade: 'Aprovar aquisições', macroEtapa: '3. Provisionamento de Recursos', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
+                { projeto: 'BETA', atividade: 'Alocar equipe', macroEtapa: '3. Provisionamento de Recursos', status: 'Aguardando', dataInicio: '', dataConclusao: '' }
+            );
+            
+            // Implementação: 0% (0/4)
+            activitiesData.push(
+                { projeto: 'BETA', atividade: 'Configurar infraestrutura', macroEtapa: '4. Implementação', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
+                { projeto: 'BETA', atividade: 'Desenvolver solução', macroEtapa: '4. Implementação', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
+                { projeto: 'BETA', atividade: 'Integrar sistemas', macroEtapa: '4. Implementação', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
+                { projeto: 'BETA', atividade: 'Documentar implementação', macroEtapa: '4. Implementação', status: 'Aguardando', dataInicio: '', dataConclusao: '' }
+            );
+            
+            // Testes: 0% (0/3)
+            activitiesData.push(
+                { projeto: 'BETA', atividade: 'Executar testes unitários', macroEtapa: '5. Testes & Homologação', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
+                { projeto: 'BETA', atividade: 'Realizar homologação', macroEtapa: '5. Testes & Homologação', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
+                { projeto: 'BETA', atividade: 'Validar com usuários', macroEtapa: '5. Testes & Homologação', status: 'Aguardando', dataInicio: '', dataConclusao: '' }
+            );
+            
+            // Deploy: 0% (0/1)
+            activitiesData.push(
+                { projeto: 'BETA', atividade: 'Deploy em produção', macroEtapa: '6. Deploy em Produção', status: 'Aguardando', dataInicio: '', dataConclusao: '' }
+            );
+            
+            // Estabilização: 0% (0/2)
+            activitiesData.push(
+                { projeto: 'BETA', atividade: 'Monitorar estabilidade', macroEtapa: '7. Estabilização', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
+                { projeto: 'BETA', atividade: 'Treinar usuários finais', macroEtapa: '7. Estabilização', status: 'Aguardando', dataInicio: '', dataConclusao: '' }
+            );
+            
+            // Encerramento: 0% (0/1)
+            activitiesData.push(
+                { projeto: 'BETA', atividade: 'Encerrar projeto e documentar lições', macroEtapa: '8. Encerramento', status: 'Aguardando', dataInicio: '', dataConclusao: '' }
+            );
+            
+            // ===== NAVEPARK - 100% (20/20) - Fase atual: 8. Encerramento =====
+            const atividadesNavepark = [
+                { nome: 'KICKOFF INTERNO', macroEtapa: '1. Iniciação' },
+                { nome: 'Definir escopo e objetivos', macroEtapa: '1. Iniciação' },
+                { nome: 'Identificar stakeholders', macroEtapa: '1. Iniciação' },
+                { nome: 'Criar cronograma inicial', macroEtapa: '2. Planejamento & Documentação' },
+                { nome: 'Elaborar documentação técnica', macroEtapa: '2. Planejamento & Documentação' },
+                { nome: 'Revisar orçamento', macroEtapa: '2. Planejamento & Documentação' },
+                { nome: 'Solicitar recursos técnicos', macroEtapa: '3. Provisionamento de Recursos' },
+                { nome: 'Aprovar aquisições', macroEtapa: '3. Provisionamento de Recursos' },
+                { nome: 'Alocar equipe', macroEtapa: '3. Provisionamento de Recursos' },
+                { nome: 'Configurar infraestrutura', macroEtapa: '4. Implementação' },
+                { nome: 'Desenvolver solução', macroEtapa: '4. Implementação' },
+                { nome: 'Integrar sistemas', macroEtapa: '4. Implementação' },
+                { nome: 'Documentar implementação', macroEtapa: '4. Implementação' },
+                { nome: 'Executar testes unitários', macroEtapa: '5. Testes & Homologação' },
+                { nome: 'Realizar homologação', macroEtapa: '5. Testes & Homologação' },
+                { nome: 'Validar com usuários', macroEtapa: '5. Testes & Homologação' },
+                { nome: 'Deploy em produção', macroEtapa: '6. Deploy em Produção' },
+                { nome: 'Monitorar estabilidade', macroEtapa: '7. Estabilização' },
+                { nome: 'Treinar usuários finais', macroEtapa: '7. Estabilização' },
+                { nome: 'Encerrar projeto e documentar lições', macroEtapa: '8. Encerramento' }
+            ];
+            
+            atividadesNavepark.forEach(ativ => {
                 activitiesData.push({
                     projeto: 'NAVEPARK',
                     atividade: ativ.nome,
@@ -695,9 +768,12 @@
             localStorage.setItem('projectsData', JSON.stringify(projectsData));
             localStorage.setItem('activitiesData', JSON.stringify(activitiesData));
             
-            console.log('✅ Dados fictícios carregados para teste (v7.2.1)');
+            console.log('✅ Dados fictícios carregados (v7.2.1 FINAL - CORRIGIDO)');
             console.log('Projetos:', projectsData.length);
             console.log('Atividades:', activitiesData.length);
+            console.log('COUGAR: 7/20 atividades (35%) - Fase atual: Testes');
+            console.log('BETA: 2/20 atividades (10%) - Fase atual: Provisionamento');
+            console.log('NAVEPARK: 20/20 atividades (100%) - Fase atual: Encerramento');
         }
         
         // Alternar entre visões
