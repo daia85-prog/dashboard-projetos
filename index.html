@@ -3,1137 +3,531 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard de Infraestrutura v7.2.1 - Visão Macro</title>
+    <title>Dashboard de Infraestrutura v7.3.1</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
-        }
-        
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-        
-        .header h1 {
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
-        
-        .header .subtitle {
-            opacity: 0.9;
-            font-size: 0.95em;
-        }
-        
-        .controls {
-            padding: 25px 30px;
-            background: #f8f9fa;
-            border-bottom: 2px solid #e9ecef;
-        }
-        
-        /* TOGGLE VISÃO EXECUTIVA/PROJETO */
-        .view-toggle {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .view-toggle button {
-            padding: 12px 30px;
-            font-size: 1em;
-            font-weight: 600;
-            border: 2px solid #667eea;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: white;
-            color: #667eea;
-        }
-        
-        .view-toggle button.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            transform: scale(1.05);
-        }
-        
-        .view-toggle button:hover:not(.active) {
-            background: #f0f0f0;
-            transform: translateY(-2px);
-        }
-        
-        .filters {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .filter-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #333;
-            font-size: 0.9em;
-        }
-        
-        .filter-group select,
-        .filter-group input {
-            width: 100%;
-            padding: 10px 15px;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 0.95em;
-            transition: border-color 0.3s;
-        }
-        
-        .filter-group select:focus,
-        .filter-group input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        
-        .content {
-            padding: 30px;
-        }
-        
-        /* CARDS VISÃO EXECUTIVA */
-        .macro-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 25px;
-            margin-bottom: 30px;
-        }
-        
-        .macro-card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            border-left: 5px solid #667eea;
-        }
-        
-        .macro-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-        
-        .macro-card.success {
-            border-left-color: #28a745;
-            background: linear-gradient(to right, rgba(40, 167, 69, 0.03) 0%, white 30%);
-        }
-        
-        .macro-card.warning {
-            border-left-color: #ffc107;
-            background: linear-gradient(to right, rgba(255, 193, 7, 0.03) 0%, white 30%);
-        }
-        
-        .macro-card.danger {
-            border-left-color: #dc3545;
-            background: linear-gradient(to right, rgba(220, 53, 69, 0.03) 0%, white 30%);
-        }
-        
-        .macro-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .macro-title {
-            font-size: 1.1em;
-            font-weight: 700;
-            color: #333;
-            flex: 1;
-        }
-        
-        .macro-count {
-            font-size: 0.85em;
-            color: #6c757d;
-            font-weight: 500;
-            margin-left: 8px;
-        }
-        
-        .macro-percentage {
-            font-size: 1.8em;
-            font-weight: 700;
-            padding: 8px 16px;
-            border-radius: 25px;
-            background: #f8f9fa;
-            min-width: 80px;
-            text-align: center;
-        }
-        
-        .macro-percentage.success {
-            color: #28a745;
-            background: #d4edda;
-        }
-        
-        .macro-percentage.warning {
-            color: #856404;
-            background: #fff3cd;
-        }
-        
-        .macro-percentage.danger {
-            color: #721c24;
-            background: #f8d7da;
-        }
-        
-        .macro-progress {
-            height: 10px;
-            background: #e9ecef;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 15px;
-        }
-        
-        .macro-progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            transition: width 0.5s ease;
-        }
-        
-        .macro-progress-bar.success {
-            background: linear-gradient(90deg, #28a745 0%, #20c997 100%);
-        }
-        
-        .macro-progress-bar.warning {
-            background: linear-gradient(90deg, #ffc107 0%, #ff8c00 100%);
-        }
-        
-        .macro-progress-bar.danger {
-            background: linear-gradient(90deg, #dc3545 0%, #c82333 100%);
-        }
-        
-        .macro-stats {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 15px;
-            font-size: 0.9em;
-            color: #495057;
-        }
-        
-        .macro-stat {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        /* MENSAGENS DE ALERTA */
-        .macro-alert {
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 0.85em;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .macro-alert.warning {
-            background: #fff3cd;
-            color: #856404;
-            border-left: 3px solid #ffc107;
-        }
-        
-        .macro-alert.info {
-            background: #d1ecf1;
-            color: #0c5460;
-            border-left: 3px solid #17a2b8;
-        }
-        
-        .macro-projects {
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid #e9ecef;
-        }
-        
-        .macro-projects-label {
-            font-size: 0.85em;
-            font-weight: 600;
-            color: #6c757d;
-            margin-bottom: 8px;
-        }
-        
-        .macro-project-badges {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        
-        .project-badge {
-            display: inline-block;
-            padding: 5px 14px;
-            background: #e9ecef;
-            border-radius: 15px;
-            font-size: 0.8em;
-            font-weight: 600;
-            color: #495057;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .project-badge:hover {
-            background: #667eea;
-            color: white;
-            transform: translateY(-2px);
-        }
-        
-        /* CARDS PROJETOS (VISÃO POR PROJETO) */
-        .project-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 20px;
-        }
-        
-        .project-card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            border-left: 5px solid #007bff;
-            cursor: pointer;
-        }
-        
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-        
-        .project-card.concluido {
-            border-left-color: #28a745;
-        }
-        
-        .project-card.andamento {
-            border-left-color: #ffc107;
-        }
-        
-        .project-card.atrasado {
-            border-left-color: #dc3545;
-        }
-        
-        .project-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .project-name {
-            font-size: 1.3em;
-            font-weight: 700;
-            color: #333;
-        }
-        
-        .project-status {
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: 600;
-        }
-        
-        .project-status.concluido {
-            background: #d4edda;
-            color: #155724;
-        }
-        
-        .project-status.andamento {
-            background: #fff3cd;
-            color: #856404;
-        }
-        
-        .project-status.atrasado {
-            background: #f8d7da;
-            color: #721c24;
-        }
-        
-        .project-info {
-            margin-bottom: 15px;
-        }
-        
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 0.9em;
-        }
-        
-        .info-label {
-            color: #6c757d;
-            font-weight: 500;
-        }
-        
-        .info-value {
-            color: #333;
-            font-weight: 600;
-        }
-        
-        /* FASE ATUAL NO CARD DO PROJETO */
-        .project-current-phase {
-            background: #e7f3ff;
-            border-left: 3px solid #2196F3;
-            padding: 10px 12px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            font-size: 0.9em;
-        }
-        
-        .project-current-phase strong {
-            color: #1976D2;
-        }
-        
-        .phase-progress {
-            color: #666;
-            font-size: 0.85em;
-            margin-top: 4px;
-        }
-        
-        .progress-section {
-            margin-top: 15px;
-        }
-        
-        .progress-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 0.9em;
-        }
-        
-        .progress-bar-container {
-            height: 12px;
-            background: #e9ecef;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            transition: width 0.5s ease;
-        }
-        
-        .no-data {
-            text-align: center;
-            padding: 60px 20px;
-            color: #6c757d;
-        }
-        
-        .no-data h3 {
-            font-size: 1.5em;
-            margin-bottom: 10px;
-        }
-        
-        /* Botão voltar admin */
-        .back-btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background: white;
-            color: #667eea;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            margin-top: 10px;
-            transition: all 0.3s;
-        }
-        
-        .back-btn:hover {
-            background: #f8f9fa;
-            transform: translateY(-2px);
-        }
-        
-        /* Responsivo */
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.5em;
-            }
-            
-            .filters {
-                grid-template-columns: 1fr;
-            }
-            
-            .view-toggle {
-                flex-direction: column;
-            }
-            
-            .view-toggle button {
-                width: 100%;
-            }
-            
-            .macro-cards,
-            .project-cards {
-                grid-template-columns: 1fr;
-            }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        
+        .container { max-width: 1200px; margin: 0 auto; background: white; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); overflow: hidden; }
+        
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 25px; text-align: center; }
+        .header h1 { font-size: 1.5em; margin-bottom: 5px; }
+        .header p { opacity: 0.9; font-size: 0.85em; }
+        
+        .nav { background: #f8fafc; padding: 15px; display: flex; justify-content: center; gap: 10px; border-bottom: 1px solid #e2e8f0; }
+        .nav a { padding: 10px 20px; background: #6b7280; color: white; text-decoration: none; border-radius: 8px; font-weight: 500; font-size: 0.9em; }
+        .nav a:hover { background: #4b5563; }
+        
+        .content { padding: 25px; }
+        
+        .toggle { display: flex; justify-content: center; margin-bottom: 20px; }
+        .toggle button { padding: 12px 30px; border: 2px solid #667eea; background: white; color: #667eea; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .toggle button:first-child { border-radius: 25px 0 0 25px; }
+        .toggle button:last-child { border-radius: 0 25px 25px 0; border-left: none; }
+        .toggle button.active { background: #667eea; color: white; }
+        
+        .filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 20px; padding: 15px; background: #f8fafc; border-radius: 10px; }
+        .filter-group label { display: block; font-size: 0.8em; color: #64748b; margin-bottom: 4px; }
+        .filter-group input, .filter-group select { width: 100%; padding: 8px 10px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.9em; }
+        
+        /* Fase cards (Macro) */
+        .phases { display: flex; flex-direction: column; gap: 15px; }
+        .phase-card { border-left: 4px solid #e2e8f0; padding: 15px 20px; background: #f8fafc; border-radius: 0 10px 10px 0; }
+        .phase-card.verde { border-left-color: #22c55e; }
+        .phase-card.amarelo { border-left-color: #f59e0b; }
+        .phase-card.vermelho { border-left-color: #ef4444; }
+        
+        .phase-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .phase-title { font-weight: 700; color: #1e293b; }
+        .phase-count { font-size: 0.85em; color: #64748b; }
+        .phase-percent { font-size: 1.3em; font-weight: 700; }
+        .phase-percent.verde { color: #22c55e; }
+        .phase-percent.amarelo { color: #f59e0b; }
+        .phase-percent.vermelho { color: #ef4444; }
+        
+        .phase-bar { height: 8px; background: #e2e8f0; border-radius: 4px; margin-bottom: 10px; overflow: hidden; }
+        .phase-bar-fill { height: 100%; border-radius: 4px; }
+        .phase-bar-fill.verde { background: #22c55e; }
+        .phase-bar-fill.amarelo { background: #f59e0b; }
+        .phase-bar-fill.vermelho { background: #ef4444; }
+        
+        .phase-info { font-size: 0.85em; color: #64748b; margin-bottom: 8px; }
+        .phase-projects { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+        .phase-projects span { font-size: 0.85em; color: #64748b; }
+        .badge { background: #e0e7ff; color: #4338ca; padding: 5px 12px; border-radius: 15px; font-size: 0.8em; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .badge:hover { background: #4338ca; color: white; }
+        
+        /* Project cards (Micro) */
+        .projects { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; }
+        .project-card { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 15px; cursor: pointer; transition: all 0.2s; border-left: 4px solid #e2e8f0; }
+        .project-card:hover { box-shadow: 0 5px 20px rgba(0,0,0,0.1); transform: translateY(-2px); }
+        .project-card.verde { border-left-color: #22c55e; }
+        .project-card.amarelo { border-left-color: #f59e0b; }
+        .project-card.vermelho { border-left-color: #ef4444; }
+        
+        .project-name { font-weight: 700; color: #1e293b; margin-bottom: 8px; font-size: 1.1em; }
+        .project-meta { display: flex; gap: 15px; font-size: 0.85em; color: #64748b; margin-bottom: 10px; }
+        .project-phase { background: #eff6ff; color: #1d4ed8; padding: 6px 10px; border-radius: 6px; font-size: 0.8em; margin-bottom: 10px; }
+        
+        .progress { margin-bottom: 8px; }
+        .progress-header { display: flex; justify-content: space-between; font-size: 0.85em; margin-bottom: 4px; }
+        .progress-bar { height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; }
+        .progress-fill { height: 100%; border-radius: 3px; }
+        .progress-fill.verde { background: #22c55e; }
+        .progress-fill.amarelo { background: #f59e0b; }
+        .progress-fill.vermelho { background: #ef4444; }
+        
+        .status-badge { display: inline-block; padding: 3px 10px; border-radius: 5px; font-size: 0.75em; font-weight: 600; }
+        .status-badge.concluido { background: #dcfce7; color: #166534; }
+        .status-badge.em-andamento { background: #dbeafe; color: #1e40af; }
+        .status-badge.aguardando { background: #fef3c7; color: #92400e; }
+        .status-badge.nao-iniciado { background: #f3f4f6; color: #4b5563; }
+        
+        .empty { text-align: center; padding: 40px; color: #64748b; }
+        
+        /* Modal */
+        .modal-bg { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-bg.show { display: flex; }
+        .modal { background: white; border-radius: 12px; max-width: 700px; width: 100%; max-height: 85vh; overflow: hidden; }
+        .modal-head { background: #667eea; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .modal-head h2 { font-size: 1.1em; }
+        .modal-close { background: rgba(255,255,255,0.2); border: none; color: white; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 1.2em; }
+        .modal-body { padding: 20px; max-height: calc(85vh - 60px); overflow-y: auto; }
+        
+        .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px; }
+        .summary-item { text-align: center; padding: 10px; background: #f8fafc; border-radius: 8px; }
+        .summary-item .num { font-size: 1.4em; font-weight: 700; }
+        .summary-item .lbl { font-size: 0.75em; color: #64748b; }
+        
+        .activity-list { border: 1px solid #e2e8f0; border-radius: 8px; }
+        .activity { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-bottom: 1px solid #e2e8f0; }
+        .activity:last-child { border-bottom: none; }
+        .activity:nth-child(even) { background: #f8fafc; }
+        .activity-name { font-size: 0.9em; color: #1e293b; }
+        .activity-fase { font-size: 0.75em; color: #64748b; }
+        
+        .timestamp { text-align: center; padding: 15px; color: #94a3b8; font-size: 0.8em; border-top: 1px solid #e2e8f0; margin-top: 20px; }
+        
+        @media (max-width: 600px) {
+            .filters { grid-template-columns: 1fr; }
+            .projects { grid-template-columns: 1fr; }
+            .summary { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>📊 Dashboard de Infraestrutura v7.2.1</h1>
-            <p class="subtitle">Gestão de Projetos | Invent Corp</p>
-            <div style="background: rgba(255,255,255,0.2); padding: 10px; border-radius: 8px; margin-top: 15px; font-size: 0.9em; display: flex; align-items: center; justify-content: space-between;">
-                <span>💡 <strong>Dados de teste carregados!</strong> Use Admin → Upload Excel para carregar seus dados reais.</span>
-                <button onclick="recarregarDadosTeste()" style="background: rgba(255,255,255,0.3); border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: 600; margin-left: 15px;">🔄 Recarregar Dados Teste</button>
-            </div>
-            <a href="admin.html" class="back-btn">⚙️ Administração</a>
-        </div>
+        <header class="header">
+            <h1>📊 Dashboard de Infraestrutura v7.3.1</h1>
+            <p>Gestão de Projetos | Invent Corp</p>
+        </header>
         
-        <div class="controls">
-            <!-- TOGGLE VISÃO EXECUTIVA/PROJETO -->
-            <div class="view-toggle">
-                <button id="btnExecutiva" class="active" onclick="changeView('executiva')">
-                    🎯 Visão Executiva (Macro)
-                </button>
-                <button id="btnProjeto" onclick="changeView('projeto')">
-                    📋 Visão por Projeto (Micro)
-                </button>
+        <nav class="nav">
+            <a href="admin.html">⚙️ Administração</a>
+        </nav>
+        
+        <main class="content">
+            <div class="toggle">
+                <button id="btnMacro" class="active" onclick="setView('macro')">📊 Visão Executiva (Macro)</button>
+                <button id="btnMicro" onclick="setView('micro')">📋 Visão por Projeto (Micro)</button>
             </div>
             
             <div class="filters">
                 <div class="filter-group">
-                    <label>🔍 Buscar Projeto:</label>
-                    <input type="text" id="filterSearch" placeholder="Digite o nome do projeto..." onkeyup="applyFilters()">
+                    <label>🔍 Buscar:</label>
+                    <input type="text" id="search" placeholder="Nome do projeto..." oninput="render()">
                 </div>
-                
                 <div class="filter-group">
                     <label>📊 Status:</label>
-                    <select id="filterStatus" onchange="applyFilters()">
-                        <option value="">Todos os Status</option>
-                        <option value="Planejamento">Planejamento</option>
-                        <option value="Em andamento">Em andamento</option>
+                    <select id="filterStatus" onchange="render()">
+                        <option value="">Todos</option>
                         <option value="Concluído">Concluído</option>
-                        <option value="Pausado">Pausado</option>
+                        <option value="Em andamento">Em andamento</option>
+                        <option value="Aguardando">Aguardando</option>
+                        <option value="Não Iniciado">Não Iniciado</option>
                     </select>
                 </div>
-                
                 <div class="filter-group">
-                    <label>📍 Localização:</label>
-                    <select id="filterLocation" onchange="applyFilters()">
-                        <option value="">Todas as Localizações</option>
-                    </select>
+                    <label>📍 Local:</label>
+                    <select id="filterLocal" onchange="render()"></select>
                 </div>
-                
                 <div class="filter-group">
                     <label>👤 Responsável:</label>
-                    <select id="filterResponsible" onchange="applyFilters()">
-                        <option value="">Todos os Responsáveis</option>
-                    </select>
+                    <select id="filterResp" onchange="render()"></select>
                 </div>
             </div>
-        </div>
-        
-        <div class="content">
-            <!-- Container para Visão Executiva -->
-            <div id="viewExecutiva" style="display: block;">
-                <div id="macroCardsContainer"></div>
-            </div>
             
-            <!-- Container para Visão por Projeto -->
-            <div id="viewProjeto" style="display: none;">
-                <div id="projectCardsContainer"></div>
-            </div>
-        </div>
+            <div id="macroView" class="phases"></div>
+            <div id="microView" class="projects" style="display:none;"></div>
+            
+            <div class="timestamp" id="ts"></div>
+        </main>
     </div>
     
-    <script>
-        let projectsData = [];
-        let activitiesData = [];
-        let currentView = 'executiva';
-        
-        // Carregar dados do localStorage
-        // Recarregar dados de teste (limpa localStorage e carrega novamente)
-        function recarregarDadosTeste() {
-            if (confirm('Tem certeza? Isso vai remover todos os dados atuais e recarregar os dados de teste.')) {
-                localStorage.removeItem('projectsData');
-                localStorage.removeItem('activitiesData');
-                loadSampleData();
-                populateFilters();
-                renderCurrentView();
-                alert('✅ Dados de teste recarregados com sucesso!');
-            }
+    <div class="modal-bg" id="modal" onclick="fecharModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-head">
+                <h2 id="modalTitle">Atividades</h2>
+                <button class="modal-close" onclick="fecharModal()">×</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+<script>
+// ===================== DADOS DE TESTE =====================
+const PROJETOS = [
+    { nome: 'COUGAR', local: 'São Paulo', resp: 'Maria Silva' },
+    { nome: 'BETA', local: 'Rio de Janeiro', resp: 'João Santos' },
+    { nome: 'NAVEPARK', local: 'Curitiba', resp: 'Ana Costa' },
+    { nome: 'ESPERANÇA', local: 'Belo Horizonte', resp: 'Carlos Lima' },
+    { nome: 'PBL GUATEMALA', local: 'Guatemala', resp: 'Pedro Souza' },
+    { nome: 'CRISTAL MG', local: 'Belo Horizonte', resp: 'Maria Silva' }
+];
+
+const FASES = [
+    '1. Iniciação',
+    '2. Planejamento & Documentação', 
+    '3. Provisionamento de Recursos',
+    '4. Implementação',
+    '5. Testes & Homologação',
+    '6. Deploy em Produção',
+    '7. Estabilização',
+    '8. Encerramento'
+];
+
+// Atividades com status variados para testar
+const ATIVIDADES = [
+    // COUGAR - Fase atual: 4. Implementação (tem Em andamento)
+    { proj: 'COUGAR', nome: 'KICKOFF INTERNO', fase: '1. Iniciação', status: 'Concluído' },
+    { proj: 'COUGAR', nome: 'Documentação Layout', fase: '2. Planejamento & Documentação', status: 'Concluído' },
+    { proj: 'COUGAR', nome: 'Solicitação VPN', fase: '3. Provisionamento de Recursos', status: 'Concluído' },
+    { proj: 'COUGAR', nome: 'Solicitação IPs', fase: '3. Provisionamento de Recursos', status: 'Concluído' },
+    { proj: 'COUGAR', nome: 'Instalação Equipamentos', fase: '4. Implementação', status: 'Concluído' },
+    { proj: 'COUGAR', nome: 'Configuração Rede', fase: '4. Implementação', status: 'Em andamento' },
+    { proj: 'COUGAR', nome: 'Testes Homologação', fase: '5. Testes & Homologação', status: 'Não Iniciado' },
+    { proj: 'COUGAR', nome: 'Deploy Produção', fase: '6. Deploy em Produção', status: 'Não Iniciado' },
+    { proj: 'COUGAR', nome: 'Monitoramento', fase: '7. Estabilização', status: 'Não Iniciado' },
+    { proj: 'COUGAR', nome: 'Aceite Formal', fase: '8. Encerramento', status: 'Não Iniciado' },
+    
+    // BETA - Fase atual: 2. Planejamento (tem Em andamento)
+    { proj: 'BETA', nome: 'KICKOFF INTERNO', fase: '1. Iniciação', status: 'Concluído' },
+    { proj: 'BETA', nome: 'Documentação Layout', fase: '2. Planejamento & Documentação', status: 'Em andamento' },
+    { proj: 'BETA', nome: 'Solicitação VPN', fase: '3. Provisionamento de Recursos', status: 'Não Iniciado' },
+    { proj: 'BETA', nome: 'Instalação Equipamentos', fase: '4. Implementação', status: 'Não Iniciado' },
+    { proj: 'BETA', nome: 'Testes Homologação', fase: '5. Testes & Homologação', status: 'Não Iniciado' },
+    { proj: 'BETA', nome: 'Deploy Produção', fase: '6. Deploy em Produção', status: 'Não Iniciado' },
+    { proj: 'BETA', nome: 'Monitoramento', fase: '7. Estabilização', status: 'Não Iniciado' },
+    { proj: 'BETA', nome: 'Aceite Formal', fase: '8. Encerramento', status: 'Não Iniciado' },
+    
+    // NAVEPARK - 100% Concluído - Fase: 8. Encerramento
+    { proj: 'NAVEPARK', nome: 'KICKOFF INTERNO', fase: '1. Iniciação', status: 'Concluído' },
+    { proj: 'NAVEPARK', nome: 'Documentação Layout', fase: '2. Planejamento & Documentação', status: 'Concluído' },
+    { proj: 'NAVEPARK', nome: 'Solicitação VPN', fase: '3. Provisionamento de Recursos', status: 'Concluído' },
+    { proj: 'NAVEPARK', nome: 'Instalação Equipamentos', fase: '4. Implementação', status: 'Concluído' },
+    { proj: 'NAVEPARK', nome: 'Testes Homologação', fase: '5. Testes & Homologação', status: 'Concluído' },
+    { proj: 'NAVEPARK', nome: 'Deploy Produção', fase: '6. Deploy em Produção', status: 'Concluído' },
+    { proj: 'NAVEPARK', nome: 'Monitoramento', fase: '7. Estabilização', status: 'Concluído' },
+    { proj: 'NAVEPARK', nome: 'Aceite Formal', fase: '8. Encerramento', status: 'Concluído' },
+    
+    // ESPERANÇA - Fase atual: 1. Iniciação (aguardando)
+    { proj: 'ESPERANÇA', nome: 'KICKOFF INTERNO', fase: '1. Iniciação', status: 'Aguardando' },
+    { proj: 'ESPERANÇA', nome: 'Documentação Layout', fase: '2. Planejamento & Documentação', status: 'Não Iniciado' },
+    { proj: 'ESPERANÇA', nome: 'Solicitação VPN', fase: '3. Provisionamento de Recursos', status: 'Não Iniciado' },
+    { proj: 'ESPERANÇA', nome: 'Instalação Equipamentos', fase: '4. Implementação', status: 'Não Iniciado' },
+    { proj: 'ESPERANÇA', nome: 'Testes Homologação', fase: '5. Testes & Homologação', status: 'Não Iniciado' },
+    { proj: 'ESPERANÇA', nome: 'Deploy Produção', fase: '6. Deploy em Produção', status: 'Não Iniciado' },
+    { proj: 'ESPERANÇA', nome: 'Monitoramento', fase: '7. Estabilização', status: 'Não Iniciado' },
+    { proj: 'ESPERANÇA', nome: 'Aceite Formal', fase: '8. Encerramento', status: 'Não Iniciado' },
+    
+    // PBL GUATEMALA - Não iniciado - Fase: 1. Iniciação
+    { proj: 'PBL GUATEMALA', nome: 'KICKOFF INTERNO', fase: '1. Iniciação', status: 'Não Iniciado' },
+    { proj: 'PBL GUATEMALA', nome: 'Documentação Layout', fase: '2. Planejamento & Documentação', status: 'Não Iniciado' },
+    { proj: 'PBL GUATEMALA', nome: 'Solicitação VPN', fase: '3. Provisionamento de Recursos', status: 'Não Iniciado' },
+    { proj: 'PBL GUATEMALA', nome: 'Instalação Equipamentos', fase: '4. Implementação', status: 'Não Iniciado' },
+    { proj: 'PBL GUATEMALA', nome: 'Testes Homologação', fase: '5. Testes & Homologação', status: 'Não Iniciado' },
+    { proj: 'PBL GUATEMALA', nome: 'Deploy Produção', fase: '6. Deploy em Produção', status: 'Não Iniciado' },
+    { proj: 'PBL GUATEMALA', nome: 'Monitoramento', fase: '7. Estabilização', status: 'Não Iniciado' },
+    { proj: 'PBL GUATEMALA', nome: 'Aceite Formal', fase: '8. Encerramento', status: 'Não Iniciado' },
+    
+    // CRISTAL MG - Fase atual: 5. Testes (tem Em andamento)
+    { proj: 'CRISTAL MG', nome: 'KICKOFF INTERNO', fase: '1. Iniciação', status: 'Concluído' },
+    { proj: 'CRISTAL MG', nome: 'Documentação Layout', fase: '2. Planejamento & Documentação', status: 'Concluído' },
+    { proj: 'CRISTAL MG', nome: 'Solicitação VPN', fase: '3. Provisionamento de Recursos', status: 'Concluído' },
+    { proj: 'CRISTAL MG', nome: 'Solicitação IPs', fase: '3. Provisionamento de Recursos', status: 'Concluído' },
+    { proj: 'CRISTAL MG', nome: 'Instalação Equipamentos', fase: '4. Implementação', status: 'Concluído' },
+    { proj: 'CRISTAL MG', nome: 'Configuração Rede', fase: '4. Implementação', status: 'Concluído' },
+    { proj: 'CRISTAL MG', nome: 'Testes Homologação', fase: '5. Testes & Homologação', status: 'Em andamento' },
+    { proj: 'CRISTAL MG', nome: 'Deploy Produção', fase: '6. Deploy em Produção', status: 'Não Iniciado' },
+    { proj: 'CRISTAL MG', nome: 'Monitoramento', fase: '7. Estabilização', status: 'Não Iniciado' },
+    { proj: 'CRISTAL MG', nome: 'Aceite Formal', fase: '8. Encerramento', status: 'Não Iniciado' }
+];
+
+// ===================== ESTADO =====================
+let view = 'macro';
+let projetoFiltro = '';
+
+// ===================== FUNÇÕES DE CÁLCULO =====================
+function getAtividades(proj) {
+    return ATIVIDADES.filter(a => a.proj === proj);
+}
+
+function calcProgresso(proj) {
+    const ativs = getAtividades(proj);
+    if (ativs.length === 0) return 0;
+    const done = ativs.filter(a => a.status === 'Concluído').length;
+    return Math.round((done / ativs.length) * 100);
+}
+
+function calcStatus(proj) {
+    const prog = calcProgresso(proj);
+    if (prog === 100) return 'Concluído';
+    if (prog === 0) {
+        const ativs = getAtividades(proj);
+        if (ativs.some(a => a.status === 'Aguardando')) return 'Aguardando';
+        return 'Não Iniciado';
+    }
+    const ativs = getAtividades(proj);
+    if (ativs.some(a => a.status === 'Em andamento')) return 'Em andamento';
+    if (ativs.some(a => a.status === 'Aguardando')) return 'Aguardando';
+    return 'Em andamento';
+}
+
+function calcFaseAtual(proj) {
+    const ativs = getAtividades(proj);
+    if (ativs.length === 0) return FASES[0];
+    
+    // Se todas concluídas -> Encerramento
+    if (ativs.every(a => a.status === 'Concluído')) return FASES[7];
+    
+    // Procura fase com "Em andamento" (prioridade 1)
+    for (const fase of FASES) {
+        const ativsFase = ativs.filter(a => a.fase === fase);
+        if (ativsFase.some(a => a.status === 'Em andamento')) return fase;
+    }
+    
+    // Procura fase com "Aguardando" (prioridade 2)
+    for (const fase of FASES) {
+        const ativsFase = ativs.filter(a => a.fase === fase);
+        if (ativsFase.some(a => a.status === 'Aguardando')) return fase;
+    }
+    
+    // Procura primeira fase não totalmente concluída
+    for (const fase of FASES) {
+        const ativsFase = ativs.filter(a => a.fase === fase);
+        if (ativsFase.length > 0 && !ativsFase.every(a => a.status === 'Concluído')) {
+            return fase;
         }
+    }
+    
+    return FASES[0];
+}
+
+function getCor(pct) {
+    if (pct >= 100) return 'verde';
+    if (pct >= 50) return 'amarelo';
+    return 'vermelho';
+}
+
+function getStatusClass(s) {
+    return s.toLowerCase().replace(/ /g, '-').replace('ã', 'a');
+}
+
+// ===================== FILTROS =====================
+function getProjetosFiltrados() {
+    const search = document.getElementById('search').value.toLowerCase();
+    const status = document.getElementById('filterStatus').value;
+    const local = document.getElementById('filterLocal').value;
+    const resp = document.getElementById('filterResp').value;
+    
+    return PROJETOS.filter(p => {
+        const pStatus = calcStatus(p.nome);
+        const matchSearch = !search || p.nome.toLowerCase().includes(search);
+        const matchStatus = !status || pStatus === status;
+        const matchLocal = !local || p.local === local;
+        const matchResp = !resp || p.resp === resp;
+        const matchFiltro = !projetoFiltro || p.nome === projetoFiltro;
+        return matchSearch && matchStatus && matchLocal && matchResp && matchFiltro;
+    });
+}
+
+function populateFilters() {
+    const locais = [...new Set(PROJETOS.map(p => p.local))].sort();
+    const resps = [...new Set(PROJETOS.map(p => p.resp))].sort();
+    
+    document.getElementById('filterLocal').innerHTML = '<option value="">Todos</option>' + 
+        locais.map(l => `<option value="${l}">${l}</option>`).join('');
+    document.getElementById('filterResp').innerHTML = '<option value="">Todos</option>' + 
+        resps.map(r => `<option value="${r}">${r}</option>`).join('');
+}
+
+// ===================== RENDERIZAÇÃO =====================
+function setView(v) {
+    view = v;
+    document.getElementById('btnMacro').classList.toggle('active', v === 'macro');
+    document.getElementById('btnMicro').classList.toggle('active', v === 'micro');
+    document.getElementById('macroView').style.display = v === 'macro' ? 'flex' : 'none';
+    document.getElementById('microView').style.display = v === 'micro' ? 'grid' : 'none';
+    render();
+}
+
+function render() {
+    if (view === 'macro') renderMacro();
+    else renderMicro();
+    updateTimestamp();
+}
+
+function renderMacro() {
+    const container = document.getElementById('macroView');
+    const projetos = getProjetosFiltrados();
+    
+    // Agrupa por fase atual
+    const porFase = {};
+    FASES.forEach(f => porFase[f] = []);
+    
+    projetos.forEach(p => {
+        const fase = calcFaseAtual(p.nome);
+        porFase[fase].push(p);
+    });
+    
+    let html = '';
+    
+    FASES.forEach(fase => {
+        const projs = porFase[fase];
+        if (projs.length === 0) return;
         
-        function loadData() {
-            const storedProjects = localStorage.getItem('projectsData');
-            const storedActivities = localStorage.getItem('activitiesData');
-            
-            // Se não houver dados, carrega dados fictícios para teste
-            if (!storedProjects || !storedActivities) {
-                loadSampleData();
-            } else {
-                projectsData = JSON.parse(storedProjects);
-                activitiesData = JSON.parse(storedActivities);
-            }
-            
-            populateFilters();
-            renderCurrentView();
-        }
+        // Calcula % médio da fase
+        let totalAtivs = 0, concluidas = 0;
+        projs.forEach(p => {
+            const ativsFase = getAtividades(p.nome).filter(a => a.fase === fase);
+            totalAtivs += ativsFase.length;
+            concluidas += ativsFase.filter(a => a.status === 'Concluído').length;
+        });
+        const pct = totalAtivs > 0 ? Math.round((concluidas / totalAtivs) * 100) : 0;
+        const cor = getCor(pct);
         
-        // Carregar dados fictícios para teste (v7.2.1 FINAL - CORRIGIDO)
-        function loadSampleData() {
-            // Projetos de exemplo
-            projectsData = [
-                {
-                    projeto: 'COUGAR',
-                    status: 'Em andamento',
-                    dataInicio: '01/12/2024',
-                    dataPrevista: '28/02/2025',
-                    responsavel: 'Daia',
-                    localizacao: 'São Paulo - SP'
-                },
-                {
-                    projeto: 'BETA',
-                    status: 'Atrasado',
-                    dataInicio: '15/11/2024',
-                    dataPrevista: '31/03/2025',
-                    responsavel: 'Daia',
-                    localizacao: 'Rio de Janeiro - RJ'
-                },
-                {
-                    projeto: 'NAVEPARK',
-                    status: 'Concluído',
-                    dataInicio: '01/09/2024',
-                    dataPrevista: '20/01/2025',
-                    responsavel: 'Daia',
-                    localizacao: 'Curitiba - PR'
-                }
-            ];
-            
-            activitiesData = [];
-            
-            // ===== COUGAR - 35% (7/20) - Fase atual: 5. Testes & Homologação =====
-            // Iniciação: 100% (3/3)
-            activitiesData.push(
-                { projeto: 'COUGAR', atividade: 'KICKOFF INTERNO', macroEtapa: '1. Iniciação', status: 'Concluído', dataInicio: '01/12/2024', dataConclusao: '02/12/2024' },
-                { projeto: 'COUGAR', atividade: 'Definir escopo e objetivos', macroEtapa: '1. Iniciação', status: 'Concluído', dataInicio: '01/12/2024', dataConclusao: '03/12/2024' },
-                { projeto: 'COUGAR', atividade: 'Identificar stakeholders', macroEtapa: '1. Iniciação', status: 'Concluído', dataInicio: '01/12/2024', dataConclusao: '04/12/2024' }
-            );
-            
-            // Planejamento: 100% (3/3)
-            activitiesData.push(
-                { projeto: 'COUGAR', atividade: 'Criar cronograma inicial', macroEtapa: '2. Planejamento & Documentação', status: 'Concluído', dataInicio: '05/12/2024', dataConclusao: '06/12/2024' },
-                { projeto: 'COUGAR', atividade: 'Elaborar documentação técnica', macroEtapa: '2. Planejamento & Documentação', status: 'Concluído', dataInicio: '05/12/2024', dataConclusao: '07/12/2024' },
-                { projeto: 'COUGAR', atividade: 'Revisar orçamento', macroEtapa: '2. Planejamento & Documentação', status: 'Concluído', dataInicio: '05/12/2024', dataConclusao: '08/12/2024' }
-            );
-            
-            // Provisionamento: 33% (1/3)
-            activitiesData.push(
-                { projeto: 'COUGAR', atividade: 'Solicitar recursos técnicos', macroEtapa: '3. Provisionamento de Recursos', status: 'Concluído', dataInicio: '09/12/2024', dataConclusao: '10/12/2024' },
-                { projeto: 'COUGAR', atividade: 'Aprovar aquisições', macroEtapa: '3. Provisionamento de Recursos', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
-                { projeto: 'COUGAR', atividade: 'Alocar equipe', macroEtapa: '3. Provisionamento de Recursos', status: 'Aguardando', dataInicio: '', dataConclusao: '' }
-            );
-            
-            // Implementação: 0% (0/4)
-            activitiesData.push(
-                { projeto: 'COUGAR', atividade: 'Configurar infraestrutura', macroEtapa: '4. Implementação', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
-                { projeto: 'COUGAR', atividade: 'Desenvolver solução', macroEtapa: '4. Implementação', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
-                { projeto: 'COUGAR', atividade: 'Integrar sistemas', macroEtapa: '4. Implementação', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
-                { projeto: 'COUGAR', atividade: 'Documentar implementação', macroEtapa: '4. Implementação', status: 'Aguardando', dataInicio: '', dataConclusao: '' }
-            );
-            
-            // Testes: 0% (0/3) ← FASE ATUAL
-            activitiesData.push(
-                { projeto: 'COUGAR', atividade: 'Executar testes unitários', macroEtapa: '5. Testes & Homologação', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
-                { projeto: 'COUGAR', atividade: 'Realizar homologação', macroEtapa: '5. Testes & Homologação', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
-                { projeto: 'COUGAR', atividade: 'Validar com usuários', macroEtapa: '5. Testes & Homologação', status: 'Aguardando', dataInicio: '', dataConclusao: '' }
-            );
-            
-            // Deploy: 0% (0/1)
-            activitiesData.push(
-                { projeto: 'COUGAR', atividade: 'Deploy em produção', macroEtapa: '6. Deploy em Produção', status: 'Aguardando', dataInicio: '', dataConclusao: '' }
-            );
-            
-            // Estabilização: 0% (0/2)
-            activitiesData.push(
-                { projeto: 'COUGAR', atividade: 'Monitorar estabilidade', macroEtapa: '7. Estabilização', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
-                { projeto: 'COUGAR', atividade: 'Treinar usuários finais', macroEtapa: '7. Estabilização', status: 'Aguardando', dataInicio: '', dataConclusao: '' }
-            );
-            
-            // Encerramento: 0% (0/1)
-            activitiesData.push(
-                { projeto: 'COUGAR', atividade: 'Encerrar projeto e documentar lições', macroEtapa: '8. Encerramento', status: 'Aguardando', dataInicio: '', dataConclusao: '' }
-            );
-            
-            // ===== BETA - 10% (2/20) - Fase atual: 3. Provisionamento de Recursos =====
-            // Iniciação: 67% (2/3)
-            activitiesData.push(
-                { projeto: 'BETA', atividade: 'KICKOFF INTERNO', macroEtapa: '1. Iniciação', status: 'Concluído', dataInicio: '15/11/2024', dataConclusao: '16/11/2024' },
-                { projeto: 'BETA', atividade: 'Definir escopo e objetivos', macroEtapa: '1. Iniciação', status: 'Concluído', dataInicio: '15/11/2024', dataConclusao: '17/11/2024' },
-                { projeto: 'BETA', atividade: 'Identificar stakeholders', macroEtapa: '1. Iniciação', status: 'Aguardando', dataInicio: '', dataConclusao: '' }
-            );
-            
-            // Planejamento: 0% (0/3)
-            activitiesData.push(
-                { projeto: 'BETA', atividade: 'Criar cronograma inicial', macroEtapa: '2. Planejamento & Documentação', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
-                { projeto: 'BETA', atividade: 'Elaborar documentação técnica', macroEtapa: '2. Planejamento & Documentação', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
-                { projeto: 'BETA', atividade: 'Revisar orçamento', macroEtapa: '2. Planejamento & Documentação', status: 'Aguardando', dataInicio: '', dataConclusao: '' }
-            );
-            
-            // Provisionamento: 0% (0/3) ← FASE ATUAL
-            activitiesData.push(
-                { projeto: 'BETA', atividade: 'Solicitar recursos técnicos', macroEtapa: '3. Provisionamento de Recursos', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
-                { projeto: 'BETA', atividade: 'Aprovar aquisições', macroEtapa: '3. Provisionamento de Recursos', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
-                { projeto: 'BETA', atividade: 'Alocar equipe', macroEtapa: '3. Provisionamento de Recursos', status: 'Aguardando', dataInicio: '', dataConclusao: '' }
-            );
-            
-            // Implementação: 0% (0/4)
-            activitiesData.push(
-                { projeto: 'BETA', atividade: 'Configurar infraestrutura', macroEtapa: '4. Implementação', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
-                { projeto: 'BETA', atividade: 'Desenvolver solução', macroEtapa: '4. Implementação', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
-                { projeto: 'BETA', atividade: 'Integrar sistemas', macroEtapa: '4. Implementação', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
-                { projeto: 'BETA', atividade: 'Documentar implementação', macroEtapa: '4. Implementação', status: 'Aguardando', dataInicio: '', dataConclusao: '' }
-            );
-            
-            // Testes: 0% (0/3)
-            activitiesData.push(
-                { projeto: 'BETA', atividade: 'Executar testes unitários', macroEtapa: '5. Testes & Homologação', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
-                { projeto: 'BETA', atividade: 'Realizar homologação', macroEtapa: '5. Testes & Homologação', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
-                { projeto: 'BETA', atividade: 'Validar com usuários', macroEtapa: '5. Testes & Homologação', status: 'Aguardando', dataInicio: '', dataConclusao: '' }
-            );
-            
-            // Deploy: 0% (0/1)
-            activitiesData.push(
-                { projeto: 'BETA', atividade: 'Deploy em produção', macroEtapa: '6. Deploy em Produção', status: 'Aguardando', dataInicio: '', dataConclusao: '' }
-            );
-            
-            // Estabilização: 0% (0/2)
-            activitiesData.push(
-                { projeto: 'BETA', atividade: 'Monitorar estabilidade', macroEtapa: '7. Estabilização', status: 'Aguardando', dataInicio: '', dataConclusao: '' },
-                { projeto: 'BETA', atividade: 'Treinar usuários finais', macroEtapa: '7. Estabilização', status: 'Aguardando', dataInicio: '', dataConclusao: '' }
-            );
-            
-            // Encerramento: 0% (0/1)
-            activitiesData.push(
-                { projeto: 'BETA', atividade: 'Encerrar projeto e documentar lições', macroEtapa: '8. Encerramento', status: 'Aguardando', dataInicio: '', dataConclusao: '' }
-            );
-            
-            // ===== NAVEPARK - 100% (20/20) - Fase atual: 8. Encerramento =====
-            const atividadesNavepark = [
-                { nome: 'KICKOFF INTERNO', macroEtapa: '1. Iniciação' },
-                { nome: 'Definir escopo e objetivos', macroEtapa: '1. Iniciação' },
-                { nome: 'Identificar stakeholders', macroEtapa: '1. Iniciação' },
-                { nome: 'Criar cronograma inicial', macroEtapa: '2. Planejamento & Documentação' },
-                { nome: 'Elaborar documentação técnica', macroEtapa: '2. Planejamento & Documentação' },
-                { nome: 'Revisar orçamento', macroEtapa: '2. Planejamento & Documentação' },
-                { nome: 'Solicitar recursos técnicos', macroEtapa: '3. Provisionamento de Recursos' },
-                { nome: 'Aprovar aquisições', macroEtapa: '3. Provisionamento de Recursos' },
-                { nome: 'Alocar equipe', macroEtapa: '3. Provisionamento de Recursos' },
-                { nome: 'Configurar infraestrutura', macroEtapa: '4. Implementação' },
-                { nome: 'Desenvolver solução', macroEtapa: '4. Implementação' },
-                { nome: 'Integrar sistemas', macroEtapa: '4. Implementação' },
-                { nome: 'Documentar implementação', macroEtapa: '4. Implementação' },
-                { nome: 'Executar testes unitários', macroEtapa: '5. Testes & Homologação' },
-                { nome: 'Realizar homologação', macroEtapa: '5. Testes & Homologação' },
-                { nome: 'Validar com usuários', macroEtapa: '5. Testes & Homologação' },
-                { nome: 'Deploy em produção', macroEtapa: '6. Deploy em Produção' },
-                { nome: 'Monitorar estabilidade', macroEtapa: '7. Estabilização' },
-                { nome: 'Treinar usuários finais', macroEtapa: '7. Estabilização' },
-                { nome: 'Encerrar projeto e documentar lições', macroEtapa: '8. Encerramento' }
-            ];
-            
-            atividadesNavepark.forEach(ativ => {
-                activitiesData.push({
-                    projeto: 'NAVEPARK',
-                    atividade: ativ.nome,
-                    macroEtapa: ativ.macroEtapa,
-                    status: 'Concluído',
-                    dataInicio: '01/09/2024',
-                    dataConclusao: '20/01/2025'
-                });
-            });
-            
-            // Salvar no localStorage
-            localStorage.setItem('projectsData', JSON.stringify(projectsData));
-            localStorage.setItem('activitiesData', JSON.stringify(activitiesData));
-            
-            console.log('✅ Dados fictícios carregados (v7.2.1 FINAL - CORRIGIDO)');
-            console.log('Projetos:', projectsData.length);
-            console.log('Atividades:', activitiesData.length);
-            console.log('COUGAR: 7/20 atividades (35%) - Fase atual: Testes');
-            console.log('BETA: 2/20 atividades (10%) - Fase atual: Provisionamento');
-            console.log('NAVEPARK: 20/20 atividades (100%) - Fase atual: Encerramento');
-        }
-        
-        // Alternar entre visões
-        function changeView(view) {
-            currentView = view;
-            
-            // Atualizar botões
-            document.getElementById('btnExecutiva').classList.toggle('active', view === 'executiva');
-            document.getElementById('btnProjeto').classList.toggle('active', view === 'projeto');
-            
-            // Atualizar containers
-            document.getElementById('viewExecutiva').style.display = view === 'executiva' ? 'block' : 'none';
-            document.getElementById('viewProjeto').style.display = view === 'projeto' ? 'block' : 'none';
-            
-            renderCurrentView();
-        }
-        
-        // Renderizar visão atual
-        function renderCurrentView() {
-            if (currentView === 'executiva') {
-                renderVisaoExecutiva();
-            } else {
-                renderVisaoPorProjeto();
-            }
-        }
-        
-        // Determinar cor baseada em percentual
-        function getColorClass(percentage) {
-            if (percentage >= 80) return 'success';
-            if (percentage >= 40) return 'warning';
-            return 'danger';
-        }
-        
-        // Calcular fase atual de um projeto
-        function calcularFaseAtual(projeto) {
-            const atividadesProjeto = activitiesData.filter(a => 
-                a.projeto.trim() === projeto.trim() && a.macroEtapa
-            );
-            
-            if (atividadesProjeto.length === 0) return null;
-            
-            // Ordenar por número da macro (1, 2, 3...)
-            const macrosOrdenadas = [
-                '1. Iniciação',
-                '2. Planejamento & Documentação',
-                '3. Provisionamento de Recursos',
-                '4. Implementação',
-                '5. Testes & Homologação',
-                '6. Deploy em Produção',
-                '7. Estabilização',
-                '8. Encerramento'
-            ];
-            
-            // Verificar se projeto está 100% concluído
-            const todasConcluidas = atividadesProjeto.every(a => a.status === 'Concluído');
-            if (todasConcluidas) {
-                // Projeto 100% → Última fase com atividades
-                for (let i = macrosOrdenadas.length - 1; i >= 0; i--) {
-                    const macro = macrosOrdenadas[i];
-                    const atividadesFase = atividadesProjeto.filter(a => a.macroEtapa === macro);
-                    
-                    if (atividadesFase.length > 0) {
-                        return {
-                            nome: macro,
-                            percentual: 100
-                        };
-                    }
-                }
-            }
-            
-            // Encontrar última fase com atividades em andamento ou iniciadas
-            for (let i = macrosOrdenadas.length - 1; i >= 0; i--) {
-                const macro = macrosOrdenadas[i];
-                const atividadesFase = atividadesProjeto.filter(a => a.macroEtapa === macro);
-                
-                if (atividadesFase.length > 0) {
-                    const emAndamento = atividadesFase.some(a => 
-                        a.status === 'Em andamento' || a.status === 'Aguardando'
-                    );
-                    const concluidas = atividadesFase.filter(a => a.status === 'Concluído').length;
-                    const total = atividadesFase.length;
-                    const percentualFase = Math.round((concluidas / total) * 100);
-                    
-                    if (emAndamento || percentualFase > 0) {
-                        return {
-                            nome: macro,
-                            percentual: percentualFase
-                        };
-                    }
-                }
-            }
-            
-            return null;
-        }
-        
-        // VISÃO EXECUTIVA - Agrupa projetos por Fase Atual (CORRIGIDO v7.2)
-        function renderVisaoExecutiva() {
-            const container = document.getElementById('macroCardsContainer');
-            
-            // Filtrar projetos
-            const filteredProjects = applyProjectFilters(projectsData);
-            
-            if (filteredProjects.length === 0) {
-                container.innerHTML = '<div class="no-data"><h3>Nenhum projeto encontrado</h3><p>Ajuste os filtros ou carregue novos dados.</p></div>';
-                return;
-            }
-            
-            // Macro etapas disponíveis
-            const macroEtapas = [
-                '1. Iniciação',
-                '2. Planejamento & Documentação',
-                '3. Provisionamento de Recursos',
-                '4. Implementação',
-                '5. Testes & Homologação',
-                '6. Deploy em Produção',
-                '7. Estabilização',
-                '8. Encerramento'
-            ];
-            
-            // Agrupar projetos por FASE ATUAL (cada projeto em apenas UMA fase)
-            const projetosPorFase = {};
-            
-            filteredProjects.forEach(project => {
-                const faseAtual = calcularFaseAtual(project.projeto);
-                
-                if (faseAtual && faseAtual.nome) {
-                    if (!projetosPorFase[faseAtual.nome]) {
-                        projetosPorFase[faseAtual.nome] = [];
-                    }
-                    
-                    projetosPorFase[faseAtual.nome].push({
-                        nome: project.projeto,
-                        percentualFase: faseAtual.percentual
-                    });
-                }
-            });
-            
-            let html = '';
-            
-            // Renderizar cada macro etapa
-            macroEtapas.forEach(macro => {
-                const projetosFase = projetosPorFase[macro];
-                
-                if (!projetosFase || projetosFase.length === 0) return; // Pula fase sem projetos
-                
-                const numProjetos = projetosFase.length;
-                
-                // Calcular percentual médio da fase (média dos percentuais de cada projeto)
-                const percentualMedio = Math.round(
-                    projetosFase.reduce((sum, p) => sum + p.percentualFase, 0) / numProjetos
-                );
-                
-                // Contar atividades da fase de todos os projetos
-                let totalAtividades = 0;
-                let atividadesConcluidas = 0;
-                
-                projetosFase.forEach(proj => {
-                    const atividadesFase = activitiesData.filter(a => 
-                        a.projeto.trim() === proj.nome.trim() && a.macroEtapa === macro
-                    );
-                    totalAtividades += atividadesFase.length;
-                    atividadesConcluidas += atividadesFase.filter(a => a.status === 'Concluído').length;
-                });
-                
-                // Definir cor do card baseado no percentual médio
-                const colorClass = getColorClass(percentualMedio);
-                
-                // Mensagem de alerta contextual (v7.2.1 - CORRIGIDO)
-                let alertaHtml = '';
-                if (percentualMedio === 0) {
-                    // Verifica se os projetos têm progresso geral ou se realmente estão parados
-                    const projetosComProgresso = projetosFase.filter(p => {
-                        const proj = filteredProjects.find(fp => fp.nome === p.nome || fp.projeto === p.nome);
-                        if (!proj) return false;
-                        
-                        const atividadesProj = activitiesData.filter(a => a.projeto.trim() === p.nome.trim());
-                        const concluidas = atividadesProj.filter(a => a.status === 'Concluído').length;
-                        return concluidas > 0;
-                    });
-                    
-                    if (projetosComProgresso.length > 0) {
-                        alertaHtml = '<div class="macro-alert info">📌 Atividades desta fase ainda não iniciadas</div>';
-                    } else {
-                        alertaHtml = '<div class="macro-alert info">⏳ Aguardando início em todos os projetos</div>';
-                    }
-                } else if (percentualMedio < 40) {
-                    alertaHtml = '<div class="macro-alert warning">⚠️ Fase com baixa execução no portfólio</div>';
-                }
-                
-                html += `
-                    <div class="macro-card ${colorClass}">
-                        <div class="macro-header">
-                            <div style="flex: 1;">
-                                <div class="macro-title">
-                                    ${macro}
-                                    <span class="macro-count">(${numProjetos} projeto${numProjetos !== 1 ? 's' : ''})</span>
-                                </div>
-                            </div>
-                            <div class="macro-percentage ${colorClass}">${percentualMedio}%</div>
-                        </div>
-                        
-                        <div class="macro-progress">
-                            <div class="macro-progress-bar ${colorClass}" style="width: ${percentualMedio}%"></div>
-                        </div>
-                        
-                        ${alertaHtml}
-                        
-                        <div class="macro-stats">
-                            <div class="macro-stat">
-                                <strong>${atividadesConcluidas}</strong>/${totalAtividades} atividades concluídas
-                            </div>
-                        </div>
-                        
-                        <div class="macro-projects">
-                            <div class="macro-projects-label">Projetos nesta fase:</div>
-                            <div class="macro-project-badges">
-                                ${projetosFase.map(p => 
-                                    `<span class="project-badge" onclick="filterByProject('${p.nome}')" title="Clique para ver detalhes de ${p.nome}">${p.nome}</span>`
-                                ).join('')}
-                            </div>
-                        </div>
+        html += `
+            <div class="phase-card ${cor}">
+                <div class="phase-header">
+                    <div>
+                        <span class="phase-title">${fase}</span>
+                        <span class="phase-count">(${projs.length} projeto${projs.length > 1 ? 's' : ''})</span>
                     </div>
-                `;
-            });
-            
-            if (html === '') {
-                html = '<div class="no-data"><h3>Nenhuma macro etapa com dados</h3><p>Os projetos filtrados não possuem macro etapas definidas ainda.</p></div>';
-            }
-            
-            container.innerHTML = html;
-        }
+                    <span class="phase-percent ${cor}">${pct}%</span>
+                </div>
+                <div class="phase-bar"><div class="phase-bar-fill ${cor}" style="width:${pct}%"></div></div>
+                <div class="phase-info">${concluidas}/${totalAtivs} atividades concluídas nesta fase</div>
+                <div class="phase-projects">
+                    <span>Projetos:</span>
+                    ${projs.map(p => `<span class="badge" onclick="filtrarProjeto('${p.nome}')">${p.nome}</span>`).join('')}
+                </div>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html || '<div class="empty">Nenhum projeto encontrado</div>';
+}
+
+function renderMicro() {
+    const container = document.getElementById('microView');
+    const projetos = getProjetosFiltrados();
+    
+    if (projetos.length === 0) {
+        container.innerHTML = '<div class="empty">Nenhum projeto encontrado</div>';
+        return;
+    }
+    
+    container.innerHTML = projetos.map(p => {
+        const prog = calcProgresso(p.nome);
+        const status = calcStatus(p.nome);
+        const fase = calcFaseAtual(p.nome);
+        const cor = getCor(prog);
         
-        // Filtrar por projeto (quando clica no badge)
-        function filterByProject(projeto) {
-            document.getElementById('filterSearch').value = projeto;
-            changeView('projeto');
-            applyFilters();
-        }
-        
-        // VISÃO POR PROJETO - Cards de projetos (layout atual)
-        function renderVisaoPorProjeto() {
-            const container = document.getElementById('projectCardsContainer');
-            
-            // Filtrar projetos
-            const filteredProjects = applyProjectFilters(projectsData);
-            
-            if (filteredProjects.length === 0) {
-                container.innerHTML = '<div class="no-data"><h3>Nenhum projeto encontrado</h3><p>Ajuste os filtros ou carregue novos dados.</p></div>';
-                return;
-            }
-            
-            let html = '';
-            
-            filteredProjects.forEach(project => {
-                // Calcular progresso
-                const projectActivities = activitiesData.filter(a => a.projeto === project.projeto);
-                const totalActivities = projectActivities.length;
-                const completedActivities = projectActivities.filter(a => a.status === 'Concluído').length;
-                const progress = totalActivities > 0 ? Math.round((completedActivities / totalActivities) * 100) : 0;
-                
-                // Determinar classe de status
-                let statusClass = 'andamento';
-                if (project.status === 'Concluído') statusClass = 'concluido';
-                else if (progress < 30) statusClass = 'atrasado';
-                
-                // Calcular fase atual
-                const faseAtual = calcularFaseAtual(project.projeto);
-                let faseAtualHtml = '';
-                if (faseAtual) {
-                    faseAtualHtml = `
-                        <div class="project-current-phase">
-                            <strong>Fase atual:</strong> ${faseAtual.nome}
-                            <div class="phase-progress">${faseAtual.percentual}% da fase concluído</div>
-                        </div>
-                    `;
-                }
-                
-                html += `
-                    <div class="project-card ${statusClass}" onclick="window.location.href='view-detalhada.html?projeto=${encodeURIComponent(project.projeto)}'">
-                        <div class="project-header">
-                            <div class="project-name">${project.projeto}</div>
-                            <div class="project-status ${statusClass}">${project.status}</div>
-                        </div>
-                        
-                        ${faseAtualHtml}
-                        
-                        <div class="project-info">
-                            <div class="info-row">
-                                <span class="info-label">📅 Início:</span>
-                                <span class="info-value">${project.dataInicio || 'N/A'}</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-label">🎯 Previsão:</span>
-                                <span class="info-value">${project.dataPrevista || 'N/A'}</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-label">👤 Responsável:</span>
-                                <span class="info-value">${project.responsavel || 'N/A'}</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-label">📍 Local:</span>
-                                <span class="info-value">${project.localizacao || 'N/A'}</span>
-                            </div>
-                        </div>
-                        
-                        <div class="progress-section">
-                            <div class="progress-label">
-                                <span>Progresso Geral</span>
-                                <span><strong>${progress}%</strong></span>
-                            </div>
-                            <div class="progress-bar-container">
-                                <div class="progress-bar" style="width: ${progress}%"></div>
-                            </div>
-                        </div>
+        return `
+            <div class="project-card ${cor}" onclick="abrirModal('${p.nome}')">
+                <div class="project-name">${p.nome}</div>
+                <div class="project-meta">
+                    <span>📍 ${p.local}</span>
+                    <span>👤 ${p.resp}</span>
+                </div>
+                <div class="project-phase">📘 Fase atual: ${fase}</div>
+                <div class="progress">
+                    <div class="progress-header">
+                        <span>Progresso</span>
+                        <span style="color:${cor === 'verde' ? '#22c55e' : cor === 'amarelo' ? '#f59e0b' : '#ef4444'}">${prog}%</span>
                     </div>
-                `;
-            });
-            
-            container.innerHTML = html;
-        }
-        
-        // Aplicar filtros nos projetos
-        function applyProjectFilters(projects) {
-            const searchText = document.getElementById('filterSearch').value.toLowerCase();
-            const statusFilter = document.getElementById('filterStatus').value;
-            const locationFilter = document.getElementById('filterLocation').value;
-            const responsibleFilter = document.getElementById('filterResponsible').value;
-            
-            return projects.filter(project => {
-                const matchSearch = project.projeto.toLowerCase().includes(searchText);
-                const matchStatus = !statusFilter || project.status === statusFilter;
-                const matchLocation = !locationFilter || project.localizacao === locationFilter;
-                const matchResponsible = !responsibleFilter || project.responsavel === responsibleFilter;
-                
-                return matchSearch && matchStatus && matchLocation && matchResponsible;
-            });
-        }
-        
-        // Aplicar filtros (chamado quando usuário muda filtros)
-        function applyFilters() {
-            renderCurrentView();
-        }
-        
-        // Popular dropdowns de filtros
-        function populateFilters() {
-            // Localizações únicas
-            const locations = [...new Set(projectsData.map(p => p.localizacao))].filter(Boolean).sort();
-            const locationSelect = document.getElementById('filterLocation');
-            locationSelect.innerHTML = '<option value="">Todas as Localizações</option>' +
-                locations.map(loc => `<option value="${loc}">${loc}</option>`).join('');
-            
-            // Responsáveis únicos
-            const responsibles = [...new Set(projectsData.map(p => p.responsavel))].filter(Boolean).sort();
-            const responsibleSelect = document.getElementById('filterResponsible');
-            responsibleSelect.innerHTML = '<option value="">Todos os Responsáveis</option>' +
-                responsibles.map(resp => `<option value="${resp}">${resp}</option>`).join('');
-        }
-        
-        // Inicializar ao carregar página
-        window.addEventListener('DOMContentLoaded', loadData);
-    </script>
+                    <div class="progress-bar"><div class="progress-fill ${cor}" style="width:${prog}%"></div></div>
+                </div>
+                <span class="status-badge ${getStatusClass(status)}">${status}</span>
+            </div>
+        `;
+    }).join('');
+}
+
+// ===================== MODAL =====================
+function abrirModal(proj) {
+    const ativs = getAtividades(proj);
+    const prog = calcProgresso(proj);
+    const fase = calcFaseAtual(proj);
+    
+    const done = ativs.filter(a => a.status === 'Concluído').length;
+    const doing = ativs.filter(a => a.status === 'Em andamento').length;
+    const wait = ativs.filter(a => a.status === 'Aguardando').length;
+    const notStarted = ativs.filter(a => a.status === 'Não Iniciado').length;
+    
+    document.getElementById('modalTitle').textContent = `📋 ${proj}`;
+    
+    document.getElementById('modalBody').innerHTML = `
+        <div class="summary">
+            <div class="summary-item"><div class="num" style="color:#22c55e">${done}</div><div class="lbl">Concluídas</div></div>
+            <div class="summary-item"><div class="num" style="color:#3b82f6">${doing}</div><div class="lbl">Em andamento</div></div>
+            <div class="summary-item"><div class="num" style="color:#f59e0b">${wait}</div><div class="lbl">Aguardando</div></div>
+            <div class="summary-item"><div class="num" style="color:#6b7280">${notStarted}</div><div class="lbl">Não iniciadas</div></div>
+        </div>
+        <p style="margin-bottom:12px;color:#64748b"><strong>Fase atual:</strong> ${fase} | <strong>Progresso:</strong> ${prog}%</p>
+        <div class="activity-list">
+            ${ativs.map(a => `
+                <div class="activity">
+                    <div>
+                        <div class="activity-name">${a.nome}</div>
+                        <div class="activity-fase">${a.fase}</div>
+                    </div>
+                    <span class="status-badge ${getStatusClass(a.status)}">${a.status}</span>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    document.getElementById('modal').classList.add('show');
+}
+
+function fecharModal(e) {
+    if (!e || e.target.id === 'modal') {
+        document.getElementById('modal').classList.remove('show');
+    }
+}
+
+// ===================== NAVEGAÇÃO =====================
+function filtrarProjeto(nome) {
+    projetoFiltro = nome;
+    document.getElementById('search').value = nome;
+    setView('micro');
+}
+
+function updateTimestamp() {
+    document.getElementById('ts').textContent = 'Atualizado em: ' + new Date().toLocaleString('pt-BR');
+}
+
+// ===================== INICIALIZAÇÃO =====================
+document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharModal(); });
+
+window.addEventListener('DOMContentLoaded', () => {
+    // Limpa localStorage antigo para evitar conflitos
+    localStorage.removeItem('infraDashboard');
+    
+    populateFilters();
+    render();
+});
+</script>
 </body>
 </html>

@@ -3,433 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Dashboard de Infraestrutura v7.2.1</title>
+    <title>Admin - Dashboard v7.3.1</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
-        }
-        
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-        
-        .header h1 {
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
-        
-        .content {
-            padding: 40px;
-        }
-        
-        .upload-section {
-            background: #f8f9fa;
-            border: 3px dashed #667eea;
-            border-radius: 15px;
-            padding: 40px;
-            text-align: center;
-            margin-bottom: 30px;
-            transition: all 0.3s;
-        }
-        
-        .upload-section:hover {
-            border-color: #764ba2;
-            background: #f0f0f0;
-        }
-        
-        .upload-section h2 {
-            color: #333;
-            margin-bottom: 15px;
-        }
-        
-        .upload-section p {
-            color: #6c757d;
-            margin-bottom: 20px;
-            font-size: 0.95em;
-        }
-        
-        input[type="file"] {
-            display: none;
-        }
-        
-        .upload-btn {
-            display: inline-block;
-            padding: 15px 40px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 1.1em;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: none;
-        }
-        
-        .upload-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
-        }
-        
-        .info-box {
-            background: #e7f3ff;
-            border-left: 5px solid #2196F3;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-        }
-        
-        .info-box h3 {
-            color: #1976D2;
-            margin-bottom: 10px;
-        }
-        
-        .info-box ul {
-            margin-left: 20px;
-            color: #333;
-        }
-        
-        .info-box li {
-            margin-bottom: 8px;
-            line-height: 1.6;
-        }
-        
-        .status-box {
-            background: #fff;
-            border: 2px solid #e9ecef;
-            border-radius: 12px;
-            padding: 25px;
-            margin-top: 30px;
-            display: none;
-        }
-        
-        .status-box.show {
-            display: block;
-        }
-        
-        .status-box h3 {
-            color: #333;
-            margin-bottom: 15px;
-        }
-        
-        .status-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid #e9ecef;
-        }
-        
-        .status-item:last-child {
-            border-bottom: none;
-        }
-        
-        .status-label {
-            color: #6c757d;
-            font-weight: 500;
-        }
-        
-        .status-value {
-            color: #333;
-            font-weight: 700;
-        }
-        
-        .success-message {
-            background: #d4edda;
-            color: #155724;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            font-weight: 600;
-            margin-top: 20px;
-            display: none;
-        }
-        
-        .success-message.show {
-            display: block;
-        }
-        
-        .error-message {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            font-weight: 600;
-            margin-top: 20px;
-            display: none;
-        }
-        
-        .error-message.show {
-            display: block;
-        }
-        
-        .btn-view {
-            display: inline-block;
-            padding: 15px 40px;
-            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-            color: white;
-            text-decoration: none;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 1.1em;
-            margin-top: 20px;
-            transition: all 0.3s;
-        }
-        
-        .btn-view:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(40, 167, 69, 0.4);
-        }
-        
-        .warning-box {
-            background: #fff3cd;
-            border-left: 5px solid #ffc107;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-        
-        .warning-box h3 {
-            color: #856404;
-            margin-bottom: 10px;
-        }
-        
-        .warning-box p {
-            color: #856404;
-            line-height: 1.6;
-        }
-        
-        .version-badge {
-            display: inline-block;
-            background: white;
-            color: #667eea;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 1.1em;
-            margin-top: 10px;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #667eea, #764ba2); min-height: 100vh; padding: 20px; }
+        .container { max-width: 700px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+        .header { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 20px; text-align: center; }
+        .header h1 { font-size: 1.4em; }
+        .content { padding: 25px; }
+        .nav { margin-bottom: 20px; }
+        .nav a { display: inline-block; padding: 10px 20px; background: #667eea; color: white; text-decoration: none; border-radius: 8px; font-weight: 500; }
+        .nav a:hover { background: #5a67d8; }
+        .info { background: #f0fdf4; border: 1px solid #22c55e; border-radius: 10px; padding: 15px; margin-bottom: 20px; }
+        .info h3 { color: #166534; margin-bottom: 8px; }
+        .info p { color: #15803d; font-size: 0.9em; }
+        .instructions { background: #fffbeb; border: 1px solid #fbbf24; border-radius: 10px; padding: 15px; }
+        .instructions h3 { color: #92400e; margin-bottom: 10px; }
+        .instructions ul { color: #78350f; padding-left: 20px; font-size: 0.9em; }
+        .instructions li { margin-bottom: 8px; }
+        .instructions code { background: rgba(0,0,0,0.1); padding: 2px 6px; border-radius: 4px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>⚙️ Administração - Dashboard de Infraestrutura</h1>
-            <span class="version-badge">v7.2.1</span>
-            <p style="opacity: 0.9; margin-top: 10px;">Gestão de Dados | Macro Etapas</p>
-        </div>
-        
-        <div class="content">
-            <div class="info-box">
-                <h3>📋 Estrutura Necessária do Excel</h3>
+        <header class="header">
+            <h1>⚙️ Administração - v7.3.1</h1>
+        </header>
+        <main class="content">
+            <nav class="nav">
+                <a href="index.html">🏠 Voltar ao Dashboard</a>
+            </nav>
+            
+            <div class="info">
+                <h3>✅ Dados de Teste Ativos</h3>
+                <p>O dashboard está usando dados de demonstração com 6 projetos em diferentes fases.</p>
+                <p style="margin-top:8px"><strong>Projetos:</strong> COUGAR, BETA, NAVEPARK, ESPERANÇA, PBL GUATEMALA, CRISTAL MG</p>
+            </div>
+            
+            <div class="instructions">
+                <h3>📋 Para usar seus dados reais</h3>
                 <ul>
-                    <li><strong>Aba "PROJETOS":</strong> Projeto, Status, Data Início, Data Prevista, Responsável, Localização</li>
-                    <li><strong>Aba "ATIVIDADES":</strong> Projeto, Atividade, Data Início, Data Fim, Status, <strong>Macro Etapa</strong> (NOVA!)</li>
+                    <li>Edite o arquivo <code>index.html</code></li>
+                    <li>Substitua os arrays <code>PROJETOS</code> e <code>ATIVIDADES</code> pelos seus dados</li>
+                    <li>Mantenha a mesma estrutura de campos</li>
+                    <li>As fases devem corresponder exatamente aos valores do array <code>FASES</code></li>
                 </ul>
             </div>
-            
-            <div class="warning-box">
-                <h3>🆕 Nova Coluna: Macro Etapa</h3>
-                <p>
-                    <strong>A coluna F "Macro Etapa"</strong> deve conter uma das 8 opções:<br>
-                    1. Iniciação | 2. Planejamento & Documentação | 3. Provisionamento de Recursos | 
-                    4. Implementação | 5. Testes & Homologação | 6. Deploy em Produção | 
-                    7. Estabilização | 8. Encerramento
-                </p>
-                <p style="margin-top: 10px;">
-                    ⚠️ Projetos SEM macro etapa preenchida aparecerão apenas na Visão por Projeto.
-                    Projetos COM macro etapa preenchida aparecem também na Visão Executiva agrupados.
-                </p>
-            </div>
-            
-            <div class="upload-section">
-                <h2>📤 Carregar Dados do Excel</h2>
-                <p>Arraste e solte o arquivo Excel ou clique no botão abaixo</p>
-                <label for="fileInput" class="upload-btn">Selecionar Arquivo Excel</label>
-                <input type="file" id="fileInput" accept=".xlsx,.xls,.csv">
-            </div>
-            
-            <div class="status-box" id="statusBox">
-                <h3>📊 Resumo dos Dados Carregados</h3>
-                <div class="status-item">
-                    <span class="status-label">Total de Projetos:</span>
-                    <span class="status-value" id="totalProjects">0</span>
-                </div>
-                <div class="status-item">
-                    <span class="status-label">Total de Atividades:</span>
-                    <span class="status-value" id="totalActivities">0</span>
-                </div>
-                <div class="status-item">
-                    <span class="status-label">Atividades com Macro Etapa:</span>
-                    <span class="status-value" id="activitiesWithMacro">0</span>
-                </div>
-                <div class="status-item">
-                    <span class="status-label">Atividades sem Macro Etapa:</span>
-                    <span class="status-value" id="activitiesWithoutMacro">0</span>
-                </div>
-            </div>
-            
-            <div class="success-message" id="successMessage">
-                ✅ Dados carregados com sucesso! Você pode visualizar o dashboard agora.
-            </div>
-            
-            <div class="error-message" id="errorMessage"></div>
-            
-            <div style="text-align: center;">
-                <a href="index.html" class="btn-view">📊 Ver Dashboard v7.2.1</a>
-            </div>
-        </div>
+        </main>
     </div>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script>
-        const fileInput = document.getElementById('fileInput');
-        
-        fileInput.addEventListener('change', handleFile);
-        
-        function handleFile(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            
-            const reader = new FileReader();
-            
-            reader.onload = function(e) {
-                try {
-                    const data = new Uint8Array(e.target.result);
-                    const workbook = XLSX.read(data, { type: 'array' });
-                    
-                    // Validar estrutura
-                    if (!workbook.SheetNames.includes('PROJETOS')) {
-                        showError('Aba "PROJETOS" não encontrada no arquivo.');
-                        return;
-                    }
-                    
-                    if (!workbook.SheetNames.includes('ATIVIDADES')) {
-                        showError('Aba "ATIVIDADES" não encontrada no arquivo.');
-                        return;
-                    }
-                    
-                    // Processar aba PROJETOS
-                    const projectsSheet = workbook.Sheets['PROJETOS'];
-                    const projectsRaw = XLSX.utils.sheet_to_json(projectsSheet, { header: 1 });
-                    
-                    if (projectsRaw.length < 2) {
-                        showError('Aba PROJETOS está vazia ou sem dados.');
-                        return;
-                    }
-                    
-                    const projectsHeaders = projectsRaw[0];
-                    const projectsData = projectsRaw.slice(1).filter(row => row.length > 0).map(row => {
-                        return {
-                            projeto: row[0] || '',
-                            status: row[1] || 'Em andamento',
-                            dataInicio: row[2] || '',
-                            dataPrevista: row[3] || '',
-                            responsavel: row[4] || '',
-                            localizacao: row[5] || ''
-                        };
-                    });
-                    
-                    // Processar aba ATIVIDADES (agora com coluna Macro Etapa)
-                    const activitiesSheet = workbook.Sheets['ATIVIDADES'];
-                    const activitiesRaw = XLSX.utils.sheet_to_json(activitiesSheet, { header: 1 });
-                    
-                    if (activitiesRaw.length < 2) {
-                        showError('Aba ATIVIDADES está vazia ou sem dados.');
-                        return;
-                    }
-                    
-                    const activitiesHeaders = activitiesRaw[0];
-                    const activitiesData = activitiesRaw.slice(1).filter(row => row.length > 0).map(row => {
-                        return {
-                            projeto: row[0] || '',
-                            atividade: row[1] || '',
-                            dataInicio: row[2] || '',
-                            dataFim: row[3] || '',
-                            status: row[4] || 'Não iniciado',
-                            macroEtapa: row[5] || '' // NOVA COLUNA F - Macro Etapa
-                        };
-                    });
-                    
-                    // Contar atividades com/sem macro
-                    const withMacro = activitiesData.filter(a => a.macroEtapa && a.macroEtapa.trim() !== '').length;
-                    const withoutMacro = activitiesData.length - withMacro;
-                    
-                    // Salvar no localStorage
-                    localStorage.setItem('projectsData', JSON.stringify(projectsData));
-                    localStorage.setItem('activitiesData', JSON.stringify(activitiesData));
-                    
-                    // Atualizar UI
-                    document.getElementById('totalProjects').textContent = projectsData.length;
-                    document.getElementById('totalActivities').textContent = activitiesData.length;
-                    document.getElementById('activitiesWithMacro').textContent = withMacro;
-                    document.getElementById('activitiesWithoutMacro').textContent = withoutMacro;
-                    
-                    document.getElementById('statusBox').classList.add('show');
-                    document.getElementById('successMessage').classList.add('show');
-                    document.getElementById('errorMessage').classList.remove('show');
-                    
-                } catch (error) {
-                    showError('Erro ao processar o arquivo: ' + error.message);
-                }
-            };
-            
-            reader.readAsArrayBuffer(file);
-        }
-        
-        function showError(message) {
-            const errorDiv = document.getElementById('errorMessage');
-            errorDiv.textContent = '❌ ' + message;
-            errorDiv.classList.add('show');
-            document.getElementById('successMessage').classList.remove('show');
-        }
-        
-        // Drag & Drop
-        const uploadSection = document.querySelector('.upload-section');
-        
-        uploadSection.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            uploadSection.style.borderColor = '#764ba2';
-            uploadSection.style.background = '#f0f0f0';
-        });
-        
-        uploadSection.addEventListener('dragleave', (e) => {
-            e.preventDefault();
-            uploadSection.style.borderColor = '#667eea';
-            uploadSection.style.background = '#f8f9fa';
-        });
-        
-        uploadSection.addEventListener('drop', (e) => {
-            e.preventDefault();
-            uploadSection.style.borderColor = '#667eea';
-            uploadSection.style.background = '#f8f9fa';
-            
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                fileInput.files = files;
-                handleFile({ target: { files: files } });
-            }
-        });
-    </script>
 </body>
 </html>
