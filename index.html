@@ -3,32 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard de Infraestrutura v7.3.1</title>
+    <title>Dashboard de Infraestrutura v7.4</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
         
-        .container { max-width: 1200px; margin: 0 auto; background: white; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); overflow: hidden; }
+        .container { max-width: 1300px; margin: 0 auto; background: white; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); overflow: hidden; }
         
         .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 25px; text-align: center; }
         .header h1 { font-size: 1.5em; margin-bottom: 5px; }
         .header p { opacity: 0.9; font-size: 0.85em; }
         
-        .nav { background: #f8fafc; padding: 15px; display: flex; justify-content: center; gap: 10px; border-bottom: 1px solid #e2e8f0; }
-        .nav a { padding: 10px 20px; background: #6b7280; color: white; text-decoration: none; border-radius: 8px; font-weight: 500; font-size: 0.9em; }
+        .nav { background: #f8fafc; padding: 12px 20px; display: flex; justify-content: center; gap: 10px; border-bottom: 1px solid #e2e8f0; flex-wrap: wrap; }
+        .nav a { padding: 9px 18px; background: #6b7280; color: white; text-decoration: none; border-radius: 8px; font-weight: 500; font-size: 0.85em; transition: all 0.2s; }
         .nav a:hover { background: #4b5563; }
+        .nav a.green { background: #22c55e; }
+        .nav a.green:hover { background: #16a34a; }
         
-        .content { padding: 25px; }
+        .content { padding: 20px 25px; }
         
-        .toggle { display: flex; justify-content: center; margin-bottom: 20px; }
-        .toggle button { padding: 12px 30px; border: 2px solid #667eea; background: white; color: #667eea; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .toggle { display: flex; justify-content: center; margin-bottom: 18px; }
+        .toggle button { padding: 11px 28px; border: 2px solid #667eea; background: white; color: #667eea; font-weight: 600; cursor: pointer; transition: all 0.2s; font-size: 0.95em; }
         .toggle button:first-child { border-radius: 25px 0 0 25px; }
         .toggle button:last-child { border-radius: 0 25px 25px 0; border-left: none; }
         .toggle button.active { background: #667eea; color: white; }
         
-        .filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 20px; padding: 15px; background: #f8fafc; border-radius: 10px; }
-        .filter-group label { display: block; font-size: 0.8em; color: #64748b; margin-bottom: 4px; }
+        .filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 18px; padding: 15px; background: #f8fafc; border-radius: 10px; align-items: end; }
+        .filter-group label { display: block; font-size: 0.78em; color: #64748b; margin-bottom: 4px; font-weight: 500; }
         .filter-group input, .filter-group select { width: 100%; padding: 8px 10px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.9em; }
+        .filter-group input:focus, .filter-group select:focus { outline: none; border-color: #667eea; }
+        
+        .checkbox-group { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: #fef2f2; border: 2px solid #fca5a5; border-radius: 8px; cursor: pointer; }
+        .checkbox-group input { width: 16px; height: 16px; cursor: pointer; }
+        .checkbox-group span { font-size: 0.85em; color: #dc2626; font-weight: 600; }
+        
+        /* KPI Cards */
+        .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px; }
+        .kpi { text-align: center; padding: 15px 10px; background: #f8fafc; border-radius: 10px; border-left: 4px solid #e2e8f0; }
+        .kpi.verde { border-left-color: #22c55e; }
+        .kpi.amarelo { border-left-color: #f59e0b; }
+        .kpi.vermelho { border-left-color: #ef4444; }
+        .kpi.azul { border-left-color: #3b82f6; }
+        .kpi .num { font-size: 1.8em; font-weight: 700; color: #1e293b; }
+        .kpi .lbl { font-size: 0.8em; color: #64748b; }
         
         /* Fase cards (Macro) */
         .phases { display: flex; flex-direction: column; gap: 15px; }
@@ -53,23 +70,36 @@
         
         .phase-info { font-size: 0.85em; color: #64748b; margin-bottom: 8px; }
         .phase-projects { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
-        .phase-projects span { font-size: 0.85em; color: #64748b; }
+        .phase-projects > span:first-child { font-size: 0.85em; color: #64748b; }
         .badge { background: #e0e7ff; color: #4338ca; padding: 5px 12px; border-radius: 15px; font-size: 0.8em; font-weight: 600; cursor: pointer; transition: all 0.2s; }
         .badge:hover { background: #4338ca; color: white; }
+        .badge.critico { background: #fee2e2; color: #dc2626; }
+        .badge.critico:hover { background: #dc2626; color: white; }
         
         /* Project cards (Micro) */
-        .projects { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; }
+        .projects { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 15px; }
         .project-card { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 15px; cursor: pointer; transition: all 0.2s; border-left: 4px solid #e2e8f0; }
         .project-card:hover { box-shadow: 0 5px 20px rgba(0,0,0,0.1); transform: translateY(-2px); }
         .project-card.verde { border-left-color: #22c55e; }
         .project-card.amarelo { border-left-color: #f59e0b; }
         .project-card.vermelho { border-left-color: #ef4444; }
         
-        .project-name { font-weight: 700; color: #1e293b; margin-bottom: 8px; font-size: 1.1em; }
-        .project-meta { display: flex; gap: 15px; font-size: 0.85em; color: #64748b; margin-bottom: 10px; }
-        .project-phase { background: #eff6ff; color: #1d4ed8; padding: 6px 10px; border-radius: 6px; font-size: 0.8em; margin-bottom: 10px; }
+        .project-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px; }
+        .project-name { font-weight: 700; color: #1e293b; font-size: 1.1em; }
+        .priority { padding: 3px 8px; border-radius: 4px; font-size: 0.7em; font-weight: 700; text-transform: uppercase; }
+        .priority.alta { background: #fee2e2; color: #dc2626; }
+        .priority.media { background: #fef3c7; color: #d97706; }
+        .priority.baixa { background: #dcfce7; color: #16a34a; }
         
-        .progress { margin-bottom: 8px; }
+        .project-meta { display: flex; flex-wrap: wrap; gap: 12px; font-size: 0.82em; color: #64748b; margin-bottom: 10px; }
+        .project-meta span { display: flex; align-items: center; gap: 3px; }
+        
+        .project-phase { background: #eff6ff; color: #1d4ed8; padding: 6px 10px; border-radius: 6px; font-size: 0.8em; margin-bottom: 10px; display: inline-block; }
+        
+        .project-dates { display: flex; gap: 15px; font-size: 0.8em; margin-bottom: 10px; color: #64748b; }
+        .project-dates .atrasado { color: #dc2626; font-weight: 600; }
+        
+        .progress { margin-bottom: 10px; }
         .progress-header { display: flex; justify-content: space-between; font-size: 0.85em; margin-bottom: 4px; }
         .progress-bar { height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; }
         .progress-fill { height: 100%; border-radius: 3px; }
@@ -77,52 +107,74 @@
         .progress-fill.amarelo { background: #f59e0b; }
         .progress-fill.vermelho { background: #ef4444; }
         
-        .status-badge { display: inline-block; padding: 3px 10px; border-radius: 5px; font-size: 0.75em; font-weight: 600; }
+        .project-footer { display: flex; justify-content: space-between; align-items: center; }
+        .status-badge { display: inline-block; padding: 4px 10px; border-radius: 5px; font-size: 0.75em; font-weight: 600; }
         .status-badge.concluido { background: #dcfce7; color: #166534; }
         .status-badge.em-andamento { background: #dbeafe; color: #1e40af; }
         .status-badge.aguardando { background: #fef3c7; color: #92400e; }
         .status-badge.nao-iniciado { background: #f3f4f6; color: #4b5563; }
+        .status-badge.atrasado { background: #fee2e2; color: #991b1b; }
+        
+        .delay-badge { font-size: 0.75em; color: #dc2626; font-weight: 600; }
         
         .empty { text-align: center; padding: 40px; color: #64748b; }
         
         /* Modal */
         .modal-bg { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
         .modal-bg.show { display: flex; }
-        .modal { background: white; border-radius: 12px; max-width: 700px; width: 100%; max-height: 85vh; overflow: hidden; }
+        .modal { background: white; border-radius: 12px; max-width: 750px; width: 100%; max-height: 85vh; overflow: hidden; }
         .modal-head { background: #667eea; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
         .modal-head h2 { font-size: 1.1em; }
         .modal-close { background: rgba(255,255,255,0.2); border: none; color: white; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 1.2em; }
         .modal-body { padding: 20px; max-height: calc(85vh - 60px); overflow-y: auto; }
         
+        .modal-info { display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #e2e8f0; }
+        .modal-info-item { font-size: 0.9em; color: #64748b; }
+        .modal-info-item strong { color: #1e293b; }
+        
         .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px; }
-        .summary-item { text-align: center; padding: 10px; background: #f8fafc; border-radius: 8px; }
+        .summary-item { text-align: center; padding: 12px 8px; background: #f8fafc; border-radius: 8px; }
         .summary-item .num { font-size: 1.4em; font-weight: 700; }
         .summary-item .lbl { font-size: 0.75em; color: #64748b; }
         
         .activity-list { border: 1px solid #e2e8f0; border-radius: 8px; }
-        .activity { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-bottom: 1px solid #e2e8f0; }
+        .activity { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: center; padding: 10px 12px; border-bottom: 1px solid #e2e8f0; }
         .activity:last-child { border-bottom: none; }
         .activity:nth-child(even) { background: #f8fafc; }
-        .activity-name { font-size: 0.9em; color: #1e293b; }
+        .activity-info { min-width: 0; }
+        .activity-name { font-size: 0.9em; color: #1e293b; font-weight: 500; }
         .activity-fase { font-size: 0.75em; color: #64748b; }
+        .activity-dates { font-size: 0.75em; color: #94a3b8; }
+        .activity-resp { font-size: 0.75em; color: #64748b; text-align: right; min-width: 80px; }
         
         .timestamp { text-align: center; padding: 15px; color: #94a3b8; font-size: 0.8em; border-top: 1px solid #e2e8f0; margin-top: 20px; }
         
         @media (max-width: 600px) {
-            .filters { grid-template-columns: 1fr; }
+            .filters { grid-template-columns: 1fr 1fr; }
             .projects { grid-template-columns: 1fr; }
             .summary { grid-template-columns: repeat(2, 1fr); }
+            .kpis { grid-template-columns: repeat(2, 1fr); }
+            .activity { grid-template-columns: 1fr auto; }
+            .activity-resp { display: none; }
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; }
+            .nav, .toggle, .filters { display: none; }
+            .project-card { break-inside: avoid; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header class="header">
-            <h1>📊 Dashboard de Infraestrutura v7.3.1</h1>
+            <h1>📊 Dashboard de Infraestrutura v7.4</h1>
             <p>Gestão de Projetos | Invent Corp</p>
         </header>
         
         <nav class="nav">
+            <a href="view-detalhada.html" class="green">📋 Visão Detalhada</a>
             <a href="admin.html">⚙️ Administração</a>
         </nav>
         
@@ -131,6 +183,8 @@
                 <button id="btnMacro" class="active" onclick="setView('macro')">📊 Visão Executiva (Macro)</button>
                 <button id="btnMicro" onclick="setView('micro')">📋 Visão por Projeto (Micro)</button>
             </div>
+            
+            <div class="kpis" id="kpis"></div>
             
             <div class="filters">
                 <div class="filter-group">
@@ -145,6 +199,16 @@
                         <option value="Em andamento">Em andamento</option>
                         <option value="Aguardando">Aguardando</option>
                         <option value="Não Iniciado">Não Iniciado</option>
+                        <option value="Atrasado">Atrasado</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>⚡ Prioridade:</label>
+                    <select id="filterPrior" onchange="render()">
+                        <option value="">Todas</option>
+                        <option value="Alta">Alta</option>
+                        <option value="Média">Média</option>
+                        <option value="Baixa">Baixa</option>
                     </select>
                 </div>
                 <div class="filter-group">
@@ -155,6 +219,10 @@
                     <label>👤 Responsável:</label>
                     <select id="filterResp" onchange="render()"></select>
                 </div>
+                <label class="checkbox-group">
+                    <input type="checkbox" id="filterCritico" onchange="render()">
+                    <span>🚨 Apenas Críticos</span>
+                </label>
             </div>
             
             <div id="macroView" class="phases"></div>
@@ -177,12 +245,12 @@
 <script>
 // ===================== DADOS DE TESTE =====================
 const PROJETOS = [
-    { nome: 'COUGAR', local: 'São Paulo', resp: 'Maria Silva' },
-    { nome: 'BETA', local: 'Rio de Janeiro', resp: 'João Santos' },
-    { nome: 'NAVEPARK', local: 'Curitiba', resp: 'Ana Costa' },
-    { nome: 'ESPERANÇA', local: 'Belo Horizonte', resp: 'Carlos Lima' },
-    { nome: 'PBL GUATEMALA', local: 'Guatemala', resp: 'Pedro Souza' },
-    { nome: 'CRISTAL MG', local: 'Belo Horizonte', resp: 'Maria Silva' }
+    { nome: 'COUGAR', local: 'São Paulo', resp: 'Maria Silva', prioridade: 'Alta', dataInicio: '2025-10-01', dataPrevista: '2026-03-15' },
+    { nome: 'BETA', local: 'Rio de Janeiro', resp: 'João Santos', prioridade: 'Alta', dataInicio: '2025-11-15', dataPrevista: '2026-04-01' },
+    { nome: 'NAVEPARK', local: 'Curitiba', resp: 'Ana Costa', prioridade: 'Média', dataInicio: '2025-06-01', dataPrevista: '2026-01-10' },
+    { nome: 'ESPERANÇA', local: 'Belo Horizonte', resp: 'Carlos Lima', prioridade: 'Média', dataInicio: '2025-12-01', dataPrevista: '2026-05-20' },
+    { nome: 'PBL GUATEMALA', local: 'Guatemala', resp: 'Pedro Souza', prioridade: 'Baixa', dataInicio: '2026-01-15', dataPrevista: '2026-06-01' },
+    { nome: 'CRISTAL MG', local: 'Belo Horizonte', resp: 'Maria Silva', prioridade: 'Alta', dataInicio: '2025-09-01', dataPrevista: '2026-01-20' }
 ];
 
 const FASES = [
@@ -196,76 +264,98 @@ const FASES = [
     '8. Encerramento'
 ];
 
-// Atividades com status variados para testar
 const ATIVIDADES = [
-    // COUGAR - Fase atual: 4. Implementação (tem Em andamento)
-    { proj: 'COUGAR', nome: 'KICKOFF INTERNO', fase: '1. Iniciação', status: 'Concluído' },
-    { proj: 'COUGAR', nome: 'Documentação Layout', fase: '2. Planejamento & Documentação', status: 'Concluído' },
-    { proj: 'COUGAR', nome: 'Solicitação VPN', fase: '3. Provisionamento de Recursos', status: 'Concluído' },
-    { proj: 'COUGAR', nome: 'Solicitação IPs', fase: '3. Provisionamento de Recursos', status: 'Concluído' },
-    { proj: 'COUGAR', nome: 'Instalação Equipamentos', fase: '4. Implementação', status: 'Concluído' },
-    { proj: 'COUGAR', nome: 'Configuração Rede', fase: '4. Implementação', status: 'Em andamento' },
-    { proj: 'COUGAR', nome: 'Testes Homologação', fase: '5. Testes & Homologação', status: 'Não Iniciado' },
-    { proj: 'COUGAR', nome: 'Deploy Produção', fase: '6. Deploy em Produção', status: 'Não Iniciado' },
-    { proj: 'COUGAR', nome: 'Monitoramento', fase: '7. Estabilização', status: 'Não Iniciado' },
-    { proj: 'COUGAR', nome: 'Aceite Formal', fase: '8. Encerramento', status: 'Não Iniciado' },
+    // COUGAR - Fase atual: 4. Implementação
+    { proj: 'COUGAR', nome: 'KICKOFF INTERNO', fase: '1. Iniciação', status: 'Concluído', dataInicio: '2025-10-01', dataFim: '2025-10-05', resp: 'Maria Silva' },
+    { proj: 'COUGAR', nome: 'Documentação Layout', fase: '2. Planejamento & Documentação', status: 'Concluído', dataInicio: '2025-10-06', dataFim: '2025-10-20', resp: 'Ana Costa' },
+    { proj: 'COUGAR', nome: 'Solicitação VPN', fase: '3. Provisionamento de Recursos', status: 'Concluído', dataInicio: '2025-10-21', dataFim: '2025-11-05', resp: 'João Santos' },
+    { proj: 'COUGAR', nome: 'Solicitação IPs', fase: '3. Provisionamento de Recursos', status: 'Concluído', dataInicio: '2025-10-21', dataFim: '2025-11-05', resp: 'João Santos' },
+    { proj: 'COUGAR', nome: 'Instalação Equipamentos', fase: '4. Implementação', status: 'Concluído', dataInicio: '2025-11-10', dataFim: '2025-12-01', resp: 'Pedro Souza' },
+    { proj: 'COUGAR', nome: 'Configuração Rede', fase: '4. Implementação', status: 'Em andamento', dataInicio: '2025-12-05', dataFim: '2026-01-15', resp: 'Carlos Lima' },
+    { proj: 'COUGAR', nome: 'Testes Homologação', fase: '5. Testes & Homologação', status: 'Não Iniciado', dataInicio: '2026-01-20', dataFim: '2026-02-10', resp: 'Maria Silva' },
+    { proj: 'COUGAR', nome: 'Deploy Produção', fase: '6. Deploy em Produção', status: 'Não Iniciado', dataInicio: '2026-02-15', dataFim: '2026-02-28', resp: 'João Santos' },
+    { proj: 'COUGAR', nome: 'Monitoramento', fase: '7. Estabilização', status: 'Não Iniciado', dataInicio: '2026-03-01', dataFim: '2026-03-10', resp: 'Ana Costa' },
+    { proj: 'COUGAR', nome: 'Aceite Formal', fase: '8. Encerramento', status: 'Não Iniciado', dataInicio: '2026-03-11', dataFim: '2026-03-15', resp: 'Maria Silva' },
     
-    // BETA - Fase atual: 2. Planejamento (tem Em andamento)
-    { proj: 'BETA', nome: 'KICKOFF INTERNO', fase: '1. Iniciação', status: 'Concluído' },
-    { proj: 'BETA', nome: 'Documentação Layout', fase: '2. Planejamento & Documentação', status: 'Em andamento' },
-    { proj: 'BETA', nome: 'Solicitação VPN', fase: '3. Provisionamento de Recursos', status: 'Não Iniciado' },
-    { proj: 'BETA', nome: 'Instalação Equipamentos', fase: '4. Implementação', status: 'Não Iniciado' },
-    { proj: 'BETA', nome: 'Testes Homologação', fase: '5. Testes & Homologação', status: 'Não Iniciado' },
-    { proj: 'BETA', nome: 'Deploy Produção', fase: '6. Deploy em Produção', status: 'Não Iniciado' },
-    { proj: 'BETA', nome: 'Monitoramento', fase: '7. Estabilização', status: 'Não Iniciado' },
-    { proj: 'BETA', nome: 'Aceite Formal', fase: '8. Encerramento', status: 'Não Iniciado' },
+    // BETA - Fase atual: 2. Planejamento
+    { proj: 'BETA', nome: 'KICKOFF INTERNO', fase: '1. Iniciação', status: 'Concluído', dataInicio: '2025-11-15', dataFim: '2025-11-20', resp: 'João Santos' },
+    { proj: 'BETA', nome: 'Documentação Layout', fase: '2. Planejamento & Documentação', status: 'Em andamento', dataInicio: '2025-11-25', dataFim: '2026-01-10', resp: 'Ana Costa' },
+    { proj: 'BETA', nome: 'Solicitação VPN', fase: '3. Provisionamento de Recursos', status: 'Não Iniciado', dataInicio: '2026-01-15', dataFim: '2026-02-01', resp: 'Carlos Lima' },
+    { proj: 'BETA', nome: 'Instalação Equipamentos', fase: '4. Implementação', status: 'Não Iniciado', dataInicio: '2026-02-05', dataFim: '2026-02-28', resp: 'Pedro Souza' },
+    { proj: 'BETA', nome: 'Testes Homologação', fase: '5. Testes & Homologação', status: 'Não Iniciado', dataInicio: '2026-03-01', dataFim: '2026-03-15', resp: 'Maria Silva' },
+    { proj: 'BETA', nome: 'Deploy Produção', fase: '6. Deploy em Produção', status: 'Não Iniciado', dataInicio: '2026-03-16', dataFim: '2026-03-25', resp: 'João Santos' },
+    { proj: 'BETA', nome: 'Monitoramento', fase: '7. Estabilização', status: 'Não Iniciado', dataInicio: '2026-03-26', dataFim: '2026-03-30', resp: 'Ana Costa' },
+    { proj: 'BETA', nome: 'Aceite Formal', fase: '8. Encerramento', status: 'Não Iniciado', dataInicio: '2026-03-31', dataFim: '2026-04-01', resp: 'João Santos' },
     
-    // NAVEPARK - 100% Concluído - Fase: 8. Encerramento
-    { proj: 'NAVEPARK', nome: 'KICKOFF INTERNO', fase: '1. Iniciação', status: 'Concluído' },
-    { proj: 'NAVEPARK', nome: 'Documentação Layout', fase: '2. Planejamento & Documentação', status: 'Concluído' },
-    { proj: 'NAVEPARK', nome: 'Solicitação VPN', fase: '3. Provisionamento de Recursos', status: 'Concluído' },
-    { proj: 'NAVEPARK', nome: 'Instalação Equipamentos', fase: '4. Implementação', status: 'Concluído' },
-    { proj: 'NAVEPARK', nome: 'Testes Homologação', fase: '5. Testes & Homologação', status: 'Concluído' },
-    { proj: 'NAVEPARK', nome: 'Deploy Produção', fase: '6. Deploy em Produção', status: 'Concluído' },
-    { proj: 'NAVEPARK', nome: 'Monitoramento', fase: '7. Estabilização', status: 'Concluído' },
-    { proj: 'NAVEPARK', nome: 'Aceite Formal', fase: '8. Encerramento', status: 'Concluído' },
+    // NAVEPARK - 100% Concluído
+    { proj: 'NAVEPARK', nome: 'KICKOFF INTERNO', fase: '1. Iniciação', status: 'Concluído', dataInicio: '2025-06-01', dataFim: '2025-06-05', resp: 'Ana Costa' },
+    { proj: 'NAVEPARK', nome: 'Documentação Layout', fase: '2. Planejamento & Documentação', status: 'Concluído', dataInicio: '2025-06-10', dataFim: '2025-07-01', resp: 'Maria Silva' },
+    { proj: 'NAVEPARK', nome: 'Solicitação VPN', fase: '3. Provisionamento de Recursos', status: 'Concluído', dataInicio: '2025-07-05', dataFim: '2025-07-20', resp: 'João Santos' },
+    { proj: 'NAVEPARK', nome: 'Instalação Equipamentos', fase: '4. Implementação', status: 'Concluído', dataInicio: '2025-07-25', dataFim: '2025-09-01', resp: 'Pedro Souza' },
+    { proj: 'NAVEPARK', nome: 'Testes Homologação', fase: '5. Testes & Homologação', status: 'Concluído', dataInicio: '2025-09-05', dataFim: '2025-10-01', resp: 'Carlos Lima' },
+    { proj: 'NAVEPARK', nome: 'Deploy Produção', fase: '6. Deploy em Produção', status: 'Concluído', dataInicio: '2025-10-05', dataFim: '2025-10-20', resp: 'Ana Costa' },
+    { proj: 'NAVEPARK', nome: 'Monitoramento', fase: '7. Estabilização', status: 'Concluído', dataInicio: '2025-10-25', dataFim: '2025-12-01', resp: 'Maria Silva' },
+    { proj: 'NAVEPARK', nome: 'Aceite Formal', fase: '8. Encerramento', status: 'Concluído', dataInicio: '2025-12-05', dataFim: '2026-01-10', resp: 'Ana Costa' },
     
     // ESPERANÇA - Fase atual: 1. Iniciação (aguardando)
-    { proj: 'ESPERANÇA', nome: 'KICKOFF INTERNO', fase: '1. Iniciação', status: 'Aguardando' },
-    { proj: 'ESPERANÇA', nome: 'Documentação Layout', fase: '2. Planejamento & Documentação', status: 'Não Iniciado' },
-    { proj: 'ESPERANÇA', nome: 'Solicitação VPN', fase: '3. Provisionamento de Recursos', status: 'Não Iniciado' },
-    { proj: 'ESPERANÇA', nome: 'Instalação Equipamentos', fase: '4. Implementação', status: 'Não Iniciado' },
-    { proj: 'ESPERANÇA', nome: 'Testes Homologação', fase: '5. Testes & Homologação', status: 'Não Iniciado' },
-    { proj: 'ESPERANÇA', nome: 'Deploy Produção', fase: '6. Deploy em Produção', status: 'Não Iniciado' },
-    { proj: 'ESPERANÇA', nome: 'Monitoramento', fase: '7. Estabilização', status: 'Não Iniciado' },
-    { proj: 'ESPERANÇA', nome: 'Aceite Formal', fase: '8. Encerramento', status: 'Não Iniciado' },
+    { proj: 'ESPERANÇA', nome: 'KICKOFF INTERNO', fase: '1. Iniciação', status: 'Aguardando', dataInicio: '2025-12-01', dataFim: '2025-12-10', resp: 'Carlos Lima' },
+    { proj: 'ESPERANÇA', nome: 'Documentação Layout', fase: '2. Planejamento & Documentação', status: 'Não Iniciado', dataInicio: '2025-12-15', dataFim: '2026-01-15', resp: 'Ana Costa' },
+    { proj: 'ESPERANÇA', nome: 'Solicitação VPN', fase: '3. Provisionamento de Recursos', status: 'Não Iniciado', dataInicio: '2026-01-20', dataFim: '2026-02-10', resp: 'João Santos' },
+    { proj: 'ESPERANÇA', nome: 'Instalação Equipamentos', fase: '4. Implementação', status: 'Não Iniciado', dataInicio: '2026-02-15', dataFim: '2026-03-15', resp: 'Pedro Souza' },
+    { proj: 'ESPERANÇA', nome: 'Testes Homologação', fase: '5. Testes & Homologação', status: 'Não Iniciado', dataInicio: '2026-03-20', dataFim: '2026-04-10', resp: 'Maria Silva' },
+    { proj: 'ESPERANÇA', nome: 'Deploy Produção', fase: '6. Deploy em Produção', status: 'Não Iniciado', dataInicio: '2026-04-15', dataFim: '2026-04-30', resp: 'Carlos Lima' },
+    { proj: 'ESPERANÇA', nome: 'Monitoramento', fase: '7. Estabilização', status: 'Não Iniciado', dataInicio: '2026-05-01', dataFim: '2026-05-15', resp: 'Ana Costa' },
+    { proj: 'ESPERANÇA', nome: 'Aceite Formal', fase: '8. Encerramento', status: 'Não Iniciado', dataInicio: '2026-05-16', dataFim: '2026-05-20', resp: 'Carlos Lima' },
     
-    // PBL GUATEMALA - Não iniciado - Fase: 1. Iniciação
-    { proj: 'PBL GUATEMALA', nome: 'KICKOFF INTERNO', fase: '1. Iniciação', status: 'Não Iniciado' },
-    { proj: 'PBL GUATEMALA', nome: 'Documentação Layout', fase: '2. Planejamento & Documentação', status: 'Não Iniciado' },
-    { proj: 'PBL GUATEMALA', nome: 'Solicitação VPN', fase: '3. Provisionamento de Recursos', status: 'Não Iniciado' },
-    { proj: 'PBL GUATEMALA', nome: 'Instalação Equipamentos', fase: '4. Implementação', status: 'Não Iniciado' },
-    { proj: 'PBL GUATEMALA', nome: 'Testes Homologação', fase: '5. Testes & Homologação', status: 'Não Iniciado' },
-    { proj: 'PBL GUATEMALA', nome: 'Deploy Produção', fase: '6. Deploy em Produção', status: 'Não Iniciado' },
-    { proj: 'PBL GUATEMALA', nome: 'Monitoramento', fase: '7. Estabilização', status: 'Não Iniciado' },
-    { proj: 'PBL GUATEMALA', nome: 'Aceite Formal', fase: '8. Encerramento', status: 'Não Iniciado' },
+    // PBL GUATEMALA - Não iniciado
+    { proj: 'PBL GUATEMALA', nome: 'KICKOFF INTERNO', fase: '1. Iniciação', status: 'Não Iniciado', dataInicio: '2026-01-15', dataFim: '2026-01-20', resp: 'Pedro Souza' },
+    { proj: 'PBL GUATEMALA', nome: 'Documentação Layout', fase: '2. Planejamento & Documentação', status: 'Não Iniciado', dataInicio: '2026-01-25', dataFim: '2026-02-15', resp: 'Ana Costa' },
+    { proj: 'PBL GUATEMALA', nome: 'Solicitação VPN', fase: '3. Provisionamento de Recursos', status: 'Não Iniciado', dataInicio: '2026-02-20', dataFim: '2026-03-10', resp: 'João Santos' },
+    { proj: 'PBL GUATEMALA', nome: 'Instalação Equipamentos', fase: '4. Implementação', status: 'Não Iniciado', dataInicio: '2026-03-15', dataFim: '2026-04-15', resp: 'Pedro Souza' },
+    { proj: 'PBL GUATEMALA', nome: 'Testes Homologação', fase: '5. Testes & Homologação', status: 'Não Iniciado', dataInicio: '2026-04-20', dataFim: '2026-05-10', resp: 'Maria Silva' },
+    { proj: 'PBL GUATEMALA', nome: 'Deploy Produção', fase: '6. Deploy em Produção', status: 'Não Iniciado', dataInicio: '2026-05-15', dataFim: '2026-05-25', resp: 'Carlos Lima' },
+    { proj: 'PBL GUATEMALA', nome: 'Monitoramento', fase: '7. Estabilização', status: 'Não Iniciado', dataInicio: '2026-05-26', dataFim: '2026-05-30', resp: 'Ana Costa' },
+    { proj: 'PBL GUATEMALA', nome: 'Aceite Formal', fase: '8. Encerramento', status: 'Não Iniciado', dataInicio: '2026-05-31', dataFim: '2026-06-01', resp: 'Pedro Souza' },
     
-    // CRISTAL MG - Fase atual: 5. Testes (tem Em andamento)
-    { proj: 'CRISTAL MG', nome: 'KICKOFF INTERNO', fase: '1. Iniciação', status: 'Concluído' },
-    { proj: 'CRISTAL MG', nome: 'Documentação Layout', fase: '2. Planejamento & Documentação', status: 'Concluído' },
-    { proj: 'CRISTAL MG', nome: 'Solicitação VPN', fase: '3. Provisionamento de Recursos', status: 'Concluído' },
-    { proj: 'CRISTAL MG', nome: 'Solicitação IPs', fase: '3. Provisionamento de Recursos', status: 'Concluído' },
-    { proj: 'CRISTAL MG', nome: 'Instalação Equipamentos', fase: '4. Implementação', status: 'Concluído' },
-    { proj: 'CRISTAL MG', nome: 'Configuração Rede', fase: '4. Implementação', status: 'Concluído' },
-    { proj: 'CRISTAL MG', nome: 'Testes Homologação', fase: '5. Testes & Homologação', status: 'Em andamento' },
-    { proj: 'CRISTAL MG', nome: 'Deploy Produção', fase: '6. Deploy em Produção', status: 'Não Iniciado' },
-    { proj: 'CRISTAL MG', nome: 'Monitoramento', fase: '7. Estabilização', status: 'Não Iniciado' },
-    { proj: 'CRISTAL MG', nome: 'Aceite Formal', fase: '8. Encerramento', status: 'Não Iniciado' }
+    // CRISTAL MG - Fase atual: 5. Testes (ATRASADO - data prevista já passou)
+    { proj: 'CRISTAL MG', nome: 'KICKOFF INTERNO', fase: '1. Iniciação', status: 'Concluído', dataInicio: '2025-09-01', dataFim: '2025-09-05', resp: 'Maria Silva' },
+    { proj: 'CRISTAL MG', nome: 'Documentação Layout', fase: '2. Planejamento & Documentação', status: 'Concluído', dataInicio: '2025-09-10', dataFim: '2025-09-30', resp: 'Ana Costa' },
+    { proj: 'CRISTAL MG', nome: 'Solicitação VPN', fase: '3. Provisionamento de Recursos', status: 'Concluído', dataInicio: '2025-10-01', dataFim: '2025-10-15', resp: 'João Santos' },
+    { proj: 'CRISTAL MG', nome: 'Solicitação IPs', fase: '3. Provisionamento de Recursos', status: 'Concluído', dataInicio: '2025-10-01', dataFim: '2025-10-15', resp: 'João Santos' },
+    { proj: 'CRISTAL MG', nome: 'Instalação Equipamentos', fase: '4. Implementação', status: 'Concluído', dataInicio: '2025-10-20', dataFim: '2025-11-15', resp: 'Pedro Souza' },
+    { proj: 'CRISTAL MG', nome: 'Configuração Rede', fase: '4. Implementação', status: 'Concluído', dataInicio: '2025-11-16', dataFim: '2025-12-01', resp: 'Carlos Lima' },
+    { proj: 'CRISTAL MG', nome: 'Testes Homologação', fase: '5. Testes & Homologação', status: 'Em andamento', dataInicio: '2025-12-05', dataFim: '2026-01-10', resp: 'Maria Silva' },
+    { proj: 'CRISTAL MG', nome: 'Deploy Produção', fase: '6. Deploy em Produção', status: 'Não Iniciado', dataInicio: '2026-01-12', dataFim: '2026-01-18', resp: 'João Santos' },
+    { proj: 'CRISTAL MG', nome: 'Monitoramento', fase: '7. Estabilização', status: 'Não Iniciado', dataInicio: '2026-01-19', dataFim: '2026-01-25', resp: 'Ana Costa' },
+    { proj: 'CRISTAL MG', nome: 'Aceite Formal', fase: '8. Encerramento', status: 'Não Iniciado', dataInicio: '2026-01-26', dataFim: '2026-01-30', resp: 'Maria Silva' }
 ];
 
 // ===================== ESTADO =====================
 let view = 'macro';
 let projetoFiltro = '';
+
+// ===================== FUNÇÕES AUXILIARES =====================
+const hoje = new Date();
+hoje.setHours(0,0,0,0);
+
+function parseDate(str) {
+    if (!str) return null;
+    const [y, m, d] = str.split('-').map(Number);
+    return new Date(y, m - 1, d);
+}
+
+function formatDate(str) {
+    if (!str) return '-';
+    const [y, m, d] = str.split('-');
+    return `${d}/${m}/${y}`;
+}
+
+function diasAtraso(dataPrevista) {
+    const prev = parseDate(dataPrevista);
+    if (!prev) return 0;
+    const diff = Math.floor((hoje - prev) / (1000 * 60 * 60 * 24));
+    return diff > 0 ? diff : 0;
+}
 
 // ===================== FUNÇÕES DE CÁLCULO =====================
 function getAtividades(proj) {
@@ -280,13 +370,20 @@ function calcProgresso(proj) {
 }
 
 function calcStatus(proj) {
+    const p = PROJETOS.find(x => x.nome === proj);
     const prog = calcProgresso(proj);
+    
     if (prog === 100) return 'Concluído';
+    
+    // Verifica atraso
+    if (p && diasAtraso(p.dataPrevista) > 0 && prog < 100) return 'Atrasado';
+    
     if (prog === 0) {
         const ativs = getAtividades(proj);
         if (ativs.some(a => a.status === 'Aguardando')) return 'Aguardando';
         return 'Não Iniciado';
     }
+    
     const ativs = getAtividades(proj);
     if (ativs.some(a => a.status === 'Em andamento')) return 'Em andamento';
     if (ativs.some(a => a.status === 'Aguardando')) return 'Aguardando';
@@ -297,22 +394,18 @@ function calcFaseAtual(proj) {
     const ativs = getAtividades(proj);
     if (ativs.length === 0) return FASES[0];
     
-    // Se todas concluídas -> Encerramento
     if (ativs.every(a => a.status === 'Concluído')) return FASES[7];
     
-    // Procura fase com "Em andamento" (prioridade 1)
     for (const fase of FASES) {
         const ativsFase = ativs.filter(a => a.fase === fase);
         if (ativsFase.some(a => a.status === 'Em andamento')) return fase;
     }
     
-    // Procura fase com "Aguardando" (prioridade 2)
     for (const fase of FASES) {
         const ativsFase = ativs.filter(a => a.fase === fase);
         if (ativsFase.some(a => a.status === 'Aguardando')) return fase;
     }
     
-    // Procura primeira fase não totalmente concluída
     for (const fase of FASES) {
         const ativsFase = ativs.filter(a => a.fase === fase);
         if (ativsFase.length > 0 && !ativsFase.every(a => a.status === 'Concluído')) {
@@ -321,6 +414,12 @@ function calcFaseAtual(proj) {
     }
     
     return FASES[0];
+}
+
+function isCritico(proj) {
+    const p = PROJETOS.find(x => x.nome === proj);
+    const status = calcStatus(proj);
+    return status === 'Atrasado' || p?.prioridade === 'Alta' || status === 'Aguardando';
 }
 
 function getCor(pct) {
@@ -337,17 +436,21 @@ function getStatusClass(s) {
 function getProjetosFiltrados() {
     const search = document.getElementById('search').value.toLowerCase();
     const status = document.getElementById('filterStatus').value;
+    const prior = document.getElementById('filterPrior').value;
     const local = document.getElementById('filterLocal').value;
     const resp = document.getElementById('filterResp').value;
+    const critico = document.getElementById('filterCritico').checked;
     
     return PROJETOS.filter(p => {
         const pStatus = calcStatus(p.nome);
         const matchSearch = !search || p.nome.toLowerCase().includes(search);
         const matchStatus = !status || pStatus === status;
+        const matchPrior = !prior || p.prioridade === prior;
         const matchLocal = !local || p.local === local;
         const matchResp = !resp || p.resp === resp;
+        const matchCritico = !critico || isCritico(p.nome);
         const matchFiltro = !projetoFiltro || p.nome === projetoFiltro;
-        return matchSearch && matchStatus && matchLocal && matchResp && matchFiltro;
+        return matchSearch && matchStatus && matchPrior && matchLocal && matchResp && matchCritico && matchFiltro;
     });
 }
 
@@ -361,6 +464,24 @@ function populateFilters() {
         resps.map(r => `<option value="${r}">${r}</option>`).join('');
 }
 
+// ===================== KPIs =====================
+function renderKPIs() {
+    const projetos = getProjetosFiltrados();
+    const total = projetos.length;
+    const concluidos = projetos.filter(p => calcStatus(p.nome) === 'Concluído').length;
+    const emAndamento = projetos.filter(p => calcStatus(p.nome) === 'Em andamento').length;
+    const atrasados = projetos.filter(p => calcStatus(p.nome) === 'Atrasado').length;
+    const criticos = projetos.filter(p => isCritico(p.nome)).length;
+    
+    document.getElementById('kpis').innerHTML = `
+        <div class="kpi azul"><div class="num">${total}</div><div class="lbl">Total Projetos</div></div>
+        <div class="kpi verde"><div class="num">${concluidos}</div><div class="lbl">Concluídos</div></div>
+        <div class="kpi amarelo"><div class="num">${emAndamento}</div><div class="lbl">Em Andamento</div></div>
+        <div class="kpi vermelho"><div class="num">${atrasados}</div><div class="lbl">Atrasados</div></div>
+        <div class="kpi vermelho"><div class="num">${criticos}</div><div class="lbl">Críticos</div></div>
+    `;
+}
+
 // ===================== RENDERIZAÇÃO =====================
 function setView(v) {
     view = v;
@@ -372,6 +493,7 @@ function setView(v) {
 }
 
 function render() {
+    renderKPIs();
     if (view === 'macro') renderMacro();
     else renderMicro();
     updateTimestamp();
@@ -381,7 +503,6 @@ function renderMacro() {
     const container = document.getElementById('macroView');
     const projetos = getProjetosFiltrados();
     
-    // Agrupa por fase atual
     const porFase = {};
     FASES.forEach(f => porFase[f] = []);
     
@@ -396,7 +517,6 @@ function renderMacro() {
         const projs = porFase[fase];
         if (projs.length === 0) return;
         
-        // Calcula % médio da fase
         let totalAtivs = 0, concluidas = 0;
         projs.forEach(p => {
             const ativsFase = getAtividades(p.nome).filter(a => a.fase === fase);
@@ -419,7 +539,7 @@ function renderMacro() {
                 <div class="phase-info">${concluidas}/${totalAtivs} atividades concluídas nesta fase</div>
                 <div class="phase-projects">
                     <span>Projetos:</span>
-                    ${projs.map(p => `<span class="badge" onclick="filtrarProjeto('${p.nome}')">${p.nome}</span>`).join('')}
+                    ${projs.map(p => `<span class="badge ${isCritico(p.nome) ? 'critico' : ''}" onclick="filtrarProjeto('${p.nome}')">${p.nome}</span>`).join('')}
                 </div>
             </div>
         `;
@@ -442,15 +562,24 @@ function renderMicro() {
         const status = calcStatus(p.nome);
         const fase = calcFaseAtual(p.nome);
         const cor = getCor(prog);
+        const atraso = diasAtraso(p.dataPrevista);
         
         return `
             <div class="project-card ${cor}" onclick="abrirModal('${p.nome}')">
-                <div class="project-name">${p.nome}</div>
+                <div class="project-header">
+                    <span class="project-name">${p.nome}</span>
+                    <span class="priority ${p.prioridade.toLowerCase()}">${p.prioridade}</span>
+                </div>
                 <div class="project-meta">
                     <span>📍 ${p.local}</span>
                     <span>👤 ${p.resp}</span>
                 </div>
                 <div class="project-phase">📘 Fase atual: ${fase}</div>
+                <div class="project-dates">
+                    <span>📅 Início: ${formatDate(p.dataInicio)}</span>
+                    <span>🎯 Previsto: ${formatDate(p.dataPrevista)}</span>
+                    ${atraso > 0 && prog < 100 ? `<span class="atrasado">⚠️ ${atraso} dias de atraso</span>` : ''}
+                </div>
                 <div class="progress">
                     <div class="progress-header">
                         <span>Progresso</span>
@@ -458,7 +587,10 @@ function renderMicro() {
                     </div>
                     <div class="progress-bar"><div class="progress-fill ${cor}" style="width:${prog}%"></div></div>
                 </div>
-                <span class="status-badge ${getStatusClass(status)}">${status}</span>
+                <div class="project-footer">
+                    <span class="status-badge ${getStatusClass(status)}">${status}</span>
+                    ${atraso > 0 && prog < 100 ? `<span class="delay-badge">🚨 Crítico</span>` : ''}
+                </div>
             </div>
         `;
     }).join('');
@@ -466,9 +598,12 @@ function renderMicro() {
 
 // ===================== MODAL =====================
 function abrirModal(proj) {
+    const p = PROJETOS.find(x => x.nome === proj);
     const ativs = getAtividades(proj);
     const prog = calcProgresso(proj);
     const fase = calcFaseAtual(proj);
+    const status = calcStatus(proj);
+    const atraso = diasAtraso(p?.dataPrevista);
     
     const done = ativs.filter(a => a.status === 'Concluído').length;
     const doing = ativs.filter(a => a.status === 'Em andamento').length;
@@ -478,20 +613,30 @@ function abrirModal(proj) {
     document.getElementById('modalTitle').textContent = `📋 ${proj}`;
     
     document.getElementById('modalBody').innerHTML = `
+        <div class="modal-info">
+            <span class="modal-info-item"><strong>Local:</strong> ${p?.local || '-'}</span>
+            <span class="modal-info-item"><strong>Responsável:</strong> ${p?.resp || '-'}</span>
+            <span class="modal-info-item"><strong>Prioridade:</strong> ${p?.prioridade || '-'}</span>
+            <span class="modal-info-item"><strong>Início:</strong> ${formatDate(p?.dataInicio)}</span>
+            <span class="modal-info-item"><strong>Previsto:</strong> ${formatDate(p?.dataPrevista)}</span>
+            ${atraso > 0 && prog < 100 ? `<span class="modal-info-item" style="color:#dc2626"><strong>⚠️ Atraso:</strong> ${atraso} dias</span>` : ''}
+        </div>
         <div class="summary">
             <div class="summary-item"><div class="num" style="color:#22c55e">${done}</div><div class="lbl">Concluídas</div></div>
             <div class="summary-item"><div class="num" style="color:#3b82f6">${doing}</div><div class="lbl">Em andamento</div></div>
             <div class="summary-item"><div class="num" style="color:#f59e0b">${wait}</div><div class="lbl">Aguardando</div></div>
             <div class="summary-item"><div class="num" style="color:#6b7280">${notStarted}</div><div class="lbl">Não iniciadas</div></div>
         </div>
-        <p style="margin-bottom:12px;color:#64748b"><strong>Fase atual:</strong> ${fase} | <strong>Progresso:</strong> ${prog}%</p>
+        <p style="margin-bottom:12px;color:#64748b"><strong>Fase atual:</strong> ${fase} | <strong>Progresso:</strong> ${prog}% | <strong>Status:</strong> ${status}</p>
         <div class="activity-list">
             ${ativs.map(a => `
                 <div class="activity">
-                    <div>
+                    <div class="activity-info">
                         <div class="activity-name">${a.nome}</div>
                         <div class="activity-fase">${a.fase}</div>
+                        <div class="activity-dates">📅 ${formatDate(a.dataInicio)} → ${formatDate(a.dataFim)}</div>
                     </div>
+                    <div class="activity-resp">👤 ${a.resp}</div>
                     <span class="status-badge ${getStatusClass(a.status)}">${a.status}</span>
                 </div>
             `).join('')}
@@ -522,9 +667,7 @@ function updateTimestamp() {
 document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharModal(); });
 
 window.addEventListener('DOMContentLoaded', () => {
-    // Limpa localStorage antigo para evitar conflitos
     localStorage.removeItem('infraDashboard');
-    
     populateFilters();
     render();
 });

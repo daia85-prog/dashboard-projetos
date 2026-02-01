@@ -3,50 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Dashboard v7.3.1</title>
+    <title>Admin - Dashboard v7.4</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #667eea, #764ba2); min-height: 100vh; padding: 20px; }
-        .container { max-width: 700px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+        .container { max-width: 800px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
         .header { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 20px; text-align: center; }
         .header h1 { font-size: 1.4em; }
         .content { padding: 25px; }
-        .nav { margin-bottom: 20px; }
-        .nav a { display: inline-block; padding: 10px 20px; background: #667eea; color: white; text-decoration: none; border-radius: 8px; font-weight: 500; }
+        .nav { display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
+        .nav a { padding: 10px 20px; background: #667eea; color: white; text-decoration: none; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
         .nav a:hover { background: #5a67d8; }
-        .info { background: #f0fdf4; border: 1px solid #22c55e; border-radius: 10px; padding: 15px; margin-bottom: 20px; }
-        .info h3 { color: #166534; margin-bottom: 8px; }
-        .info p { color: #15803d; font-size: 0.9em; }
-        .instructions { background: #fffbeb; border: 1px solid #fbbf24; border-radius: 10px; padding: 15px; }
-        .instructions h3 { color: #92400e; margin-bottom: 10px; }
+        .nav a.green { background: #22c55e; }
+        .nav a.green:hover { background: #16a34a; }
+        
+        .info { background: #f0fdf4; border: 1px solid #22c55e; border-radius: 10px; padding: 18px; margin-bottom: 20px; }
+        .info h3 { color: #166534; margin-bottom: 10px; font-size: 1.1em; }
+        .info p { color: #15803d; font-size: 0.9em; line-height: 1.6; }
+        
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-top: 15px; }
+        .stat { background: white; padding: 12px; border-radius: 8px; text-align: center; }
+        .stat .num { font-size: 1.5em; font-weight: 700; color: #667eea; }
+        .stat .lbl { font-size: 0.8em; color: #64748b; }
+        
+        .instructions { background: #fffbeb; border: 1px solid #fbbf24; border-radius: 10px; padding: 18px; margin-bottom: 20px; }
+        .instructions h3 { color: #92400e; margin-bottom: 12px; font-size: 1.1em; }
+        .instructions p { color: #78350f; font-size: 0.9em; margin-bottom: 10px; }
+        .instructions code { background: rgba(0,0,0,0.1); padding: 2px 6px; border-radius: 4px; font-size: 0.85em; }
         .instructions ul { color: #78350f; padding-left: 20px; font-size: 0.9em; }
-        .instructions li { margin-bottom: 8px; }
-        .instructions code { background: rgba(0,0,0,0.1); padding: 2px 6px; border-radius: 4px; }
+        .instructions li { margin-bottom: 8px; line-height: 1.5; }
+        
+        .code-block { background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 0.85em; overflow-x: auto; margin-top: 15px; }
+        .code-block .comment { color: #94a3b8; }
+        .code-block .key { color: #fbbf24; }
+        .code-block .string { color: #22c55e; }
     </style>
 </head>
 <body>
     <div class="container">
         <header class="header">
-            <h1>⚙️ Administração - v7.3.1</h1>
+            <h1>⚙️ Administração - Dashboard v7.4</h1>
         </header>
         <main class="content">
             <nav class="nav">
-                <a href="index.html">🏠 Voltar ao Dashboard</a>
+                <a href="index.html">🏠 Dashboard Principal</a>
+                <a href="view-detalhada.html" class="green">📋 Visão Detalhada</a>
             </nav>
             
             <div class="info">
-                <h3>✅ Dados de Teste Ativos</h3>
-                <p>O dashboard está usando dados de demonstração com 6 projetos em diferentes fases.</p>
-                <p style="margin-top:8px"><strong>Projetos:</strong> COUGAR, BETA, NAVEPARK, ESPERANÇA, PBL GUATEMALA, CRISTAL MG</p>
+                <h3>✅ Dados de Demonstração Ativos</h3>
+                <p>O dashboard está funcionando com dados de exemplo para demonstração.</p>
+                <div class="stats">
+                    <div class="stat"><div class="num">6</div><div class="lbl">Projetos</div></div>
+                    <div class="stat"><div class="num">58</div><div class="lbl">Atividades</div></div>
+                    <div class="stat"><div class="num">8</div><div class="lbl">Fases</div></div>
+                    <div class="stat"><div class="num">5</div><div class="lbl">Responsáveis</div></div>
+                </div>
             </div>
             
             <div class="instructions">
-                <h3>📋 Para usar seus dados reais</h3>
+                <h3>📋 Como Usar Seus Dados Reais</h3>
+                <p>Para substituir os dados de teste pelos seus dados reais, edite os arrays no arquivo <code>index.html</code>:</p>
+                
+                <div class="code-block">
+<span class="comment">// Array de projetos</span>
+<span class="key">const</span> PROJETOS = [
+  { 
+    <span class="key">nome</span>: <span class="string">'SEU PROJETO'</span>,
+    <span class="key">local</span>: <span class="string">'Localização'</span>,
+    <span class="key">resp</span>: <span class="string">'Responsável'</span>,
+    <span class="key">prioridade</span>: <span class="string">'Alta'</span>, <span class="comment">// Alta, Média, Baixa</span>
+    <span class="key">dataInicio</span>: <span class="string">'2025-01-01'</span>,
+    <span class="key">dataPrevista</span>: <span class="string">'2026-06-30'</span>
+  },
+  <span class="comment">// ... mais projetos</span>
+];
+
+<span class="comment">// Array de atividades</span>
+<span class="key">const</span> ATIVIDADES = [
+  {
+    <span class="key">proj</span>: <span class="string">'SEU PROJETO'</span>,
+    <span class="key">nome</span>: <span class="string">'Nome da Atividade'</span>,
+    <span class="key">fase</span>: <span class="string">'1. Iniciação'</span>,
+    <span class="key">status</span>: <span class="string">'Concluído'</span>, <span class="comment">// Concluído, Em andamento, Aguardando, Não Iniciado</span>
+    <span class="key">dataInicio</span>: <span class="string">'2025-01-05'</span>,
+    <span class="key">dataFim</span>: <span class="string">'2025-01-15'</span>,
+    <span class="key">resp</span>: <span class="string">'Responsável'</span>
+  },
+  <span class="comment">// ... mais atividades</span>
+];
+                </div>
+            </div>
+            
+            <div class="instructions">
+                <h3>📌 Fases Disponíveis</h3>
+                <p>Use exatamente estes valores no campo <code>fase</code> das atividades:</p>
                 <ul>
-                    <li>Edite o arquivo <code>index.html</code></li>
-                    <li>Substitua os arrays <code>PROJETOS</code> e <code>ATIVIDADES</code> pelos seus dados</li>
-                    <li>Mantenha a mesma estrutura de campos</li>
-                    <li>As fases devem corresponder exatamente aos valores do array <code>FASES</code></li>
+                    <li><code>1. Iniciação</code></li>
+                    <li><code>2. Planejamento & Documentação</code></li>
+                    <li><code>3. Provisionamento de Recursos</code></li>
+                    <li><code>4. Implementação</code></li>
+                    <li><code>5. Testes & Homologação</code></li>
+                    <li><code>6. Deploy em Produção</code></li>
+                    <li><code>7. Estabilização</code></li>
+                    <li><code>8. Encerramento</code></li>
+                </ul>
+            </div>
+            
+            <div class="instructions">
+                <h3>💡 Dicas</h3>
+                <ul>
+                    <li>O campo <code>proj</code> da atividade deve corresponder exatamente ao <code>nome</code> do projeto</li>
+                    <li>Datas devem estar no formato <code>YYYY-MM-DD</code> (ex: 2026-03-15)</li>
+                    <li>Projetos com data prevista no passado e não concluídos aparecem como "Atrasado"</li>
+                    <li>Projetos com prioridade "Alta" ou status "Atrasado"/"Aguardando" são considerados críticos</li>
                 </ul>
             </div>
         </main>

@@ -3,565 +3,460 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visão Detalhada - Infraestrutura v7.2.1</title>
+    <title>Visão Detalhada - Infraestrutura v7.4</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f1f5f9; min-height: 100vh; }
         
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #1a1d2e;
-            color: white;
-            padding: 20px;
-        }
+        .header { background: linear-gradient(135deg, #1e293b 0%, #334155 100%); color: white; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .header-left h1 { font-size: 1.2em; display: flex; align-items: center; gap: 10px; }
+        .version { background: #22c55e; padding: 4px 12px; border-radius: 12px; font-size: 0.7em; font-weight: 600; }
+        .timestamp { font-size: 0.8em; opacity: 0.8; margin-top: 5px; }
         
-        .container {
-            max-width: 1600px;
-            margin: 0 auto;
-        }
+        .nav-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+        .nav-btn { padding: 9px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85em; transition: all 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
+        .nav-btn.blue { background: #3b82f6; color: white; }
+        .nav-btn.purple { background: #8b5cf6; color: white; }
+        .nav-btn.red { background: #ef4444; color: white; }
+        .nav-btn.gray { background: #6b7280; color: white; }
+        .nav-btn:hover { transform: translateY(-1px); filter: brightness(1.1); }
         
-        .header {
-            background: white;
-            color: #333;
-            padding: 20px 30px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
         
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+        /* KPIs */
+        .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 25px; }
+        .kpi { background: white; padding: 18px 15px; border-radius: 10px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-left: 4px solid #e2e8f0; }
+        .kpi.verde { border-left-color: #22c55e; }
+        .kpi.amarelo { border-left-color: #f59e0b; }
+        .kpi.vermelho { border-left-color: #ef4444; }
+        .kpi.azul { border-left-color: #3b82f6; }
+        .kpi .num { font-size: 2em; font-weight: 700; color: #1e293b; }
+        .kpi .lbl { font-size: 0.85em; color: #64748b; margin-top: 3px; }
         
-        .header-left h1 {
-            font-size: 1.5em;
-        }
+        /* Status Sections */
+        .status-section { margin-bottom: 30px; }
+        .status-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #e2e8f0; }
+        .status-dot { width: 14px; height: 14px; border-radius: 50%; }
+        .status-dot.concluido { background: #22c55e; }
+        .status-dot.em-andamento { background: #3b82f6; }
+        .status-dot.aguardando { background: #f59e0b; }
+        .status-dot.nao-iniciado { background: #94a3b8; }
+        .status-dot.atrasado { background: #ef4444; }
+        .status-title { font-size: 1.15em; font-weight: 600; color: #1e293b; }
+        .status-count { background: #e2e8f0; color: #475569; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600; }
         
-        .version-badge {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 6px 18px;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 0.9em;
-        }
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 15px; }
         
-        .header-subtitle {
-            font-size: 0.85em;
-            color: #666;
-            margin-top: 5px;
-        }
+        .project-card { background: white; border-radius: 10px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); cursor: pointer; transition: all 0.2s; border-left: 4px solid #e2e8f0; }
+        .project-card:hover { box-shadow: 0 8px 25px rgba(0,0,0,0.1); transform: translateY(-2px); }
+        .project-card.concluido { border-left-color: #22c55e; }
+        .project-card.em-andamento { border-left-color: #3b82f6; }
+        .project-card.aguardando { border-left-color: #f59e0b; }
+        .project-card.nao-iniciado { border-left-color: #94a3b8; }
+        .project-card.atrasado { border-left-color: #ef4444; }
         
-        .header-buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
+        .project-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px; }
+        .project-name { font-size: 1.1em; font-weight: 700; color: #1e293b; }
+        .priority { padding: 3px 8px; border-radius: 4px; font-size: 0.7em; font-weight: 700; text-transform: uppercase; }
+        .priority.alta { background: #fee2e2; color: #dc2626; }
+        .priority.media { background: #fef3c7; color: #d97706; }
+        .priority.baixa { background: #dcfce7; color: #16a34a; }
         
-        .header-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .project-meta { display: flex; flex-wrap: wrap; gap: 12px; font-size: 0.85em; color: #64748b; margin-bottom: 10px; }
+        .project-phase { background: #eff6ff; color: #1d4ed8; padding: 5px 10px; border-radius: 6px; font-size: 0.8em; margin-bottom: 10px; display: inline-block; }
         
-        .btn-inicio {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
+        .project-dates { display: flex; gap: 12px; font-size: 0.8em; color: #64748b; margin-bottom: 10px; }
+        .project-dates .atrasado { color: #dc2626; font-weight: 600; }
         
-        .btn-imprimir {
-            background: #6c63ff;
-            color: white;
-        }
+        .progress-bar { height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; margin-bottom: 8px; }
+        .progress-fill { height: 100%; border-radius: 4px; }
+        .progress-fill.verde { background: #22c55e; }
+        .progress-fill.amarelo { background: #f59e0b; }
+        .progress-fill.vermelho { background: #ef4444; }
         
-        .btn-pdf {
-            background: #dc3545;
-            color: white;
-        }
+        .progress-text { font-size: 0.85em; color: #64748b; }
+        .progress-text strong { color: #1e293b; }
         
-        .btn-resumida {
-            background: #28a745;
-            color: white;
-        }
+        .empty { text-align: center; padding: 30px; color: #94a3b8; background: white; border-radius: 10px; }
         
-        .btn-admin {
-            background: #ff9800;
-            color: white;
-        }
+        /* Modal */
+        .modal-bg { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-bg.show { display: flex; }
+        .modal { background: white; border-radius: 12px; max-width: 750px; width: 100%; max-height: 85vh; overflow: hidden; }
+        .modal-head { background: #667eea; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .modal-head h2 { font-size: 1.1em; }
+        .modal-close { background: rgba(255,255,255,0.2); border: none; color: white; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 1.2em; }
+        .modal-body { padding: 20px; max-height: calc(85vh - 60px); overflow-y: auto; }
         
-        .header-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
+        .modal-info { display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #e2e8f0; }
+        .modal-info-item { font-size: 0.9em; color: #64748b; }
+        .modal-info-item strong { color: #1e293b; }
         
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
+        .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px; }
+        .summary-item { text-align: center; padding: 12px 8px; background: #f8fafc; border-radius: 8px; }
+        .summary-item .num { font-size: 1.4em; font-weight: 700; }
+        .summary-item .lbl { font-size: 0.75em; color: #64748b; }
         
-        .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-        }
+        .activity-list { border: 1px solid #e2e8f0; border-radius: 8px; }
+        .activity { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: center; padding: 10px 12px; border-bottom: 1px solid #e2e8f0; }
+        .activity:last-child { border-bottom: none; }
+        .activity:nth-child(even) { background: #f8fafc; }
+        .activity-info { min-width: 0; }
+        .activity-name { font-size: 0.9em; color: #1e293b; font-weight: 500; }
+        .activity-fase { font-size: 0.75em; color: #64748b; }
+        .activity-dates { font-size: 0.75em; color: #94a3b8; }
+        .activity-resp { font-size: 0.75em; color: #64748b; text-align: right; min-width: 80px; }
+        .status-badge { padding: 3px 8px; border-radius: 4px; font-size: 0.75em; font-weight: 600; }
+        .status-badge.concluido { background: #dcfce7; color: #166534; }
+        .status-badge.em-andamento { background: #dbeafe; color: #1e40af; }
+        .status-badge.aguardando { background: #fef3c7; color: #92400e; }
+        .status-badge.nao-iniciado { background: #f3f4f6; color: #4b5563; }
         
-        .stat-number {
-            font-size: 2.5em;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-        
-        .stat-label {
-            font-size: 0.85em;
-            text-transform: uppercase;
-            font-weight: 600;
-        }
-        
-        .stat-card.total .stat-number { color: #ff9800; }
-        .stat-card.concluidos .stat-number { color: #28a745; }
-        .stat-card.andamento .stat-number { color: #2196F3; }
-        .stat-card.atrasados .stat-number { color: #dc3545; }
-        .stat-card.aguardando .stat-number { color: #ffc107; }
-        .stat-card.nao-iniciados .stat-number { color: #9e9e9e; }
-        .stat-card.criticos .stat-number { color: #d32f2f; }
-        
-        .section {
-            background: white;
-            color: #333;
-            padding: 25px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-        }
-        
-        .section h2 {
-            font-size: 1.2em;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .filters-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-        
-        .filter-group label {
-            font-size: 0.85em;
-            font-weight: 600;
-            color: #666;
-        }
-        
-        .filter-group input,
-        .filter-group select {
-            padding: 10px;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 0.9em;
-        }
-        
-        .filter-group input:focus,
-        .filter-group select:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        
-        .projects-by-status {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        
-        .status-column {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 20px;
-        }
-        
-        .status-column.andamento {
-            border-top: 4px solid #2196F3;
-        }
-        
-        .status-column.atrasado {
-            border-top: 4px solid #dc3545;
-        }
-        
-        .status-column.aguardando {
-            border-top: 4px solid #ffc107;
-        }
-        
-        .status-column.nao-iniciado {
-            border-top: 4px solid #9e9e9e;
-        }
-        
-        .status-column.concluido {
-            border-top: 4px solid #28a745;
-        }
-        
-        .status-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .status-title {
-            font-weight: 700;
-            font-size: 1.1em;
-        }
-        
-        .status-count {
-            background: white;
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-weight: 700;
-        }
-        
-        .project-item {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .project-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        
-        .project-name {
-            font-weight: 700;
-            margin-bottom: 8px;
-            font-size: 1.05em;
-        }
-        
-        .project-info {
-            font-size: 0.85em;
-            color: #666;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        
-        .project-progress {
-            margin-top: 10px;
-        }
-        
-        .progress-bar {
-            height: 8px;
-            background: #e9ecef;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-top: 5px;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            transition: width 0.5s ease;
-        }
-        
-        .no-data {
-            text-align: center;
-            padding: 40px;
-            color: #999;
+        @media (max-width: 768px) {
+            .header { flex-direction: column; text-align: center; }
+            .nav-buttons { justify-content: center; }
+            .projects-grid { grid-template-columns: 1fr; }
+            .summary { grid-template-columns: repeat(2, 1fr); }
         }
         
         @media print {
-            body {
-                background: white;
-                color: black;
-            }
-            
-            .header-buttons {
-                display: none;
-            }
+            .header { background: #1e293b !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .nav-buttons { display: none; }
+            .project-card { break-inside: avoid; box-shadow: none; border: 1px solid #e2e8f0; }
+            .kpi { box-shadow: none; border: 1px solid #e2e8f0; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="header-left">
-                <div>
-                    <h1>📋 Visão Detalhada - Infraestrutura <span class="version-badge">v7.2.1</span></h1>
-                    <div class="header-subtitle">Atualizado em: <span id="lastUpdate">--</span></div>
-                </div>
-            </div>
-            <div class="header-buttons">
-                <a href="index.html" class="header-btn btn-inicio">🏠 Início</a>
-                <button class="header-btn btn-imprimir" onclick="window.print()">🖨️ Imprimir</button>
-                <button class="header-btn btn-pdf" onclick="alert('Função de PDF em desenvolvimento')">📄 Gerar PDF</button>
-                <a href="view-simples.html" class="header-btn btn-resumida">📊 Visão Resumida</a>
-                <a href="admin.html" class="header-btn btn-admin">⚙️ Admin</a>
-            </div>
+    <header class="header">
+        <div class="header-left">
+            <h1>📋 Visão Detalhada - Infraestrutura <span class="version">v7.4</span></h1>
+            <div class="timestamp" id="timestamp"></div>
         </div>
-        
-        <div class="stats-grid">
-            <div class="stat-card total">
-                <div class="stat-number" id="statTotal">0</div>
-                <div class="stat-label">Total</div>
-            </div>
-            <div class="stat-card concluidos">
-                <div class="stat-number" id="statConcluidos">0</div>
-                <div class="stat-label">Concluídos</div>
-            </div>
-            <div class="stat-card andamento">
-                <div class="stat-number" id="statAndamento">0</div>
-                <div class="stat-label">Em Andamento</div>
-            </div>
-            <div class="stat-card atrasados">
-                <div class="stat-number" id="statAtrasados">0</div>
-                <div class="stat-label">Atrasados</div>
-            </div>
-            <div class="stat-card aguardando">
-                <div class="stat-number" id="statAguardando">0</div>
-                <div class="stat-label">Aguardando</div>
-            </div>
-            <div class="stat-card nao-iniciados">
-                <div class="stat-number" id="statNaoIniciados">0</div>
-                <div class="stat-label">Não Iniciados</div>
-            </div>
-            <div class="stat-card criticos">
-                <div class="stat-number" id="statCriticos">0</div>
-                <div class="stat-label">Críticos</div>
-            </div>
-        </div>
-        
-        <div class="section">
-            <h2>🔍 Buscar Projeto</h2>
-            <div class="filters-grid">
-                <div class="filter-group">
-                    <label>🔎 Nome do Projeto</label>
-                    <input type="text" id="filterSearch" placeholder="Digite o nome..." onkeyup="applyFilters()">
-                </div>
-                <div class="filter-group">
-                    <label>📊 Status</label>
-                    <select id="filterStatus" onchange="applyFilters()">
-                        <option value="">Todos</option>
-                        <option value="Concluído">Concluído</option>
-                        <option value="Em andamento">Em andamento</option>
-                        <option value="Planejamento">Planejamento</option>
-                        <option value="Pausado">Pausado</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label>📍 Localização</label>
-                    <select id="filterLocation" onchange="applyFilters()">
-                        <option value="">Todas</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label>👤 Responsável</label>
-                    <select id="filterResponsible" onchange="applyFilters()">
-                        <option value="">Todos</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-        
-        <div id="projectsContainer"></div>
-    </div>
+        <nav class="nav-buttons">
+            <a href="index.html" class="nav-btn blue">🏠 Início</a>
+            <button class="nav-btn purple" onclick="window.print()">🖨️ Imprimir</button>
+            <button class="nav-btn red" onclick="gerarPDF()">📄 Gerar PDF</button>
+            <a href="admin.html" class="nav-btn gray">⚙️ Admin</a>
+        </nav>
+    </header>
     
-    <script>
-        let projectsData = [];
-        let activitiesData = [];
+    <main class="container">
+        <div class="kpis" id="kpis"></div>
+        <div id="content"></div>
+    </main>
+    
+    <div class="modal-bg" id="modal" onclick="fecharModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-head">
+                <h2 id="modalTitle">Atividades</h2>
+                <button class="modal-close" onclick="fecharModal()">×</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+<script>
+// Mesmos dados do index.html
+const PROJETOS = [
+    { nome: 'COUGAR', local: 'São Paulo', resp: 'Maria Silva', prioridade: 'Alta', dataInicio: '2025-10-01', dataPrevista: '2026-03-15' },
+    { nome: 'BETA', local: 'Rio de Janeiro', resp: 'João Santos', prioridade: 'Alta', dataInicio: '2025-11-15', dataPrevista: '2026-04-01' },
+    { nome: 'NAVEPARK', local: 'Curitiba', resp: 'Ana Costa', prioridade: 'Média', dataInicio: '2025-06-01', dataPrevista: '2026-01-10' },
+    { nome: 'ESPERANÇA', local: 'Belo Horizonte', resp: 'Carlos Lima', prioridade: 'Média', dataInicio: '2025-12-01', dataPrevista: '2026-05-20' },
+    { nome: 'PBL GUATEMALA', local: 'Guatemala', resp: 'Pedro Souza', prioridade: 'Baixa', dataInicio: '2026-01-15', dataPrevista: '2026-06-01' },
+    { nome: 'CRISTAL MG', local: 'Belo Horizonte', resp: 'Maria Silva', prioridade: 'Alta', dataInicio: '2025-09-01', dataPrevista: '2026-01-20' }
+];
+
+const FASES = [
+    '1. Iniciação', '2. Planejamento & Documentação', '3. Provisionamento de Recursos',
+    '4. Implementação', '5. Testes & Homologação', '6. Deploy em Produção',
+    '7. Estabilização', '8. Encerramento'
+];
+
+const ATIVIDADES = [
+    // COUGAR
+    { proj: 'COUGAR', nome: 'KICKOFF INTERNO', fase: '1. Iniciação', status: 'Concluído', dataInicio: '2025-10-01', dataFim: '2025-10-05', resp: 'Maria Silva' },
+    { proj: 'COUGAR', nome: 'Documentação Layout', fase: '2. Planejamento & Documentação', status: 'Concluído', dataInicio: '2025-10-06', dataFim: '2025-10-20', resp: 'Ana Costa' },
+    { proj: 'COUGAR', nome: 'Solicitação VPN', fase: '3. Provisionamento de Recursos', status: 'Concluído', dataInicio: '2025-10-21', dataFim: '2025-11-05', resp: 'João Santos' },
+    { proj: 'COUGAR', nome: 'Solicitação IPs', fase: '3. Provisionamento de Recursos', status: 'Concluído', dataInicio: '2025-10-21', dataFim: '2025-11-05', resp: 'João Santos' },
+    { proj: 'COUGAR', nome: 'Instalação Equipamentos', fase: '4. Implementação', status: 'Concluído', dataInicio: '2025-11-10', dataFim: '2025-12-01', resp: 'Pedro Souza' },
+    { proj: 'COUGAR', nome: 'Configuração Rede', fase: '4. Implementação', status: 'Em andamento', dataInicio: '2025-12-05', dataFim: '2026-01-15', resp: 'Carlos Lima' },
+    { proj: 'COUGAR', nome: 'Testes Homologação', fase: '5. Testes & Homologação', status: 'Não Iniciado', dataInicio: '2026-01-20', dataFim: '2026-02-10', resp: 'Maria Silva' },
+    { proj: 'COUGAR', nome: 'Deploy Produção', fase: '6. Deploy em Produção', status: 'Não Iniciado', dataInicio: '2026-02-15', dataFim: '2026-02-28', resp: 'João Santos' },
+    { proj: 'COUGAR', nome: 'Monitoramento', fase: '7. Estabilização', status: 'Não Iniciado', dataInicio: '2026-03-01', dataFim: '2026-03-10', resp: 'Ana Costa' },
+    { proj: 'COUGAR', nome: 'Aceite Formal', fase: '8. Encerramento', status: 'Não Iniciado', dataInicio: '2026-03-11', dataFim: '2026-03-15', resp: 'Maria Silva' },
+    
+    // BETA
+    { proj: 'BETA', nome: 'KICKOFF INTERNO', fase: '1. Iniciação', status: 'Concluído', dataInicio: '2025-11-15', dataFim: '2025-11-20', resp: 'João Santos' },
+    { proj: 'BETA', nome: 'Documentação Layout', fase: '2. Planejamento & Documentação', status: 'Em andamento', dataInicio: '2025-11-25', dataFim: '2026-01-10', resp: 'Ana Costa' },
+    { proj: 'BETA', nome: 'Solicitação VPN', fase: '3. Provisionamento de Recursos', status: 'Não Iniciado', dataInicio: '2026-01-15', dataFim: '2026-02-01', resp: 'Carlos Lima' },
+    { proj: 'BETA', nome: 'Instalação Equipamentos', fase: '4. Implementação', status: 'Não Iniciado', dataInicio: '2026-02-05', dataFim: '2026-02-28', resp: 'Pedro Souza' },
+    { proj: 'BETA', nome: 'Testes Homologação', fase: '5. Testes & Homologação', status: 'Não Iniciado', dataInicio: '2026-03-01', dataFim: '2026-03-15', resp: 'Maria Silva' },
+    { proj: 'BETA', nome: 'Deploy Produção', fase: '6. Deploy em Produção', status: 'Não Iniciado', dataInicio: '2026-03-16', dataFim: '2026-03-25', resp: 'João Santos' },
+    { proj: 'BETA', nome: 'Monitoramento', fase: '7. Estabilização', status: 'Não Iniciado', dataInicio: '2026-03-26', dataFim: '2026-03-30', resp: 'Ana Costa' },
+    { proj: 'BETA', nome: 'Aceite Formal', fase: '8. Encerramento', status: 'Não Iniciado', dataInicio: '2026-03-31', dataFim: '2026-04-01', resp: 'João Santos' },
+    
+    // NAVEPARK - 100% Concluído
+    { proj: 'NAVEPARK', nome: 'KICKOFF INTERNO', fase: '1. Iniciação', status: 'Concluído', dataInicio: '2025-06-01', dataFim: '2025-06-05', resp: 'Ana Costa' },
+    { proj: 'NAVEPARK', nome: 'Documentação Layout', fase: '2. Planejamento & Documentação', status: 'Concluído', dataInicio: '2025-06-10', dataFim: '2025-07-01', resp: 'Maria Silva' },
+    { proj: 'NAVEPARK', nome: 'Solicitação VPN', fase: '3. Provisionamento de Recursos', status: 'Concluído', dataInicio: '2025-07-05', dataFim: '2025-07-20', resp: 'João Santos' },
+    { proj: 'NAVEPARK', nome: 'Instalação Equipamentos', fase: '4. Implementação', status: 'Concluído', dataInicio: '2025-07-25', dataFim: '2025-09-01', resp: 'Pedro Souza' },
+    { proj: 'NAVEPARK', nome: 'Testes Homologação', fase: '5. Testes & Homologação', status: 'Concluído', dataInicio: '2025-09-05', dataFim: '2025-10-01', resp: 'Carlos Lima' },
+    { proj: 'NAVEPARK', nome: 'Deploy Produção', fase: '6. Deploy em Produção', status: 'Concluído', dataInicio: '2025-10-05', dataFim: '2025-10-20', resp: 'Ana Costa' },
+    { proj: 'NAVEPARK', nome: 'Monitoramento', fase: '7. Estabilização', status: 'Concluído', dataInicio: '2025-10-25', dataFim: '2025-12-01', resp: 'Maria Silva' },
+    { proj: 'NAVEPARK', nome: 'Aceite Formal', fase: '8. Encerramento', status: 'Concluído', dataInicio: '2025-12-05', dataFim: '2026-01-10', resp: 'Ana Costa' },
+    
+    // ESPERANÇA
+    { proj: 'ESPERANÇA', nome: 'KICKOFF INTERNO', fase: '1. Iniciação', status: 'Aguardando', dataInicio: '2025-12-01', dataFim: '2025-12-10', resp: 'Carlos Lima' },
+    { proj: 'ESPERANÇA', nome: 'Documentação Layout', fase: '2. Planejamento & Documentação', status: 'Não Iniciado', dataInicio: '2025-12-15', dataFim: '2026-01-15', resp: 'Ana Costa' },
+    { proj: 'ESPERANÇA', nome: 'Solicitação VPN', fase: '3. Provisionamento de Recursos', status: 'Não Iniciado', dataInicio: '2026-01-20', dataFim: '2026-02-10', resp: 'João Santos' },
+    { proj: 'ESPERANÇA', nome: 'Instalação Equipamentos', fase: '4. Implementação', status: 'Não Iniciado', dataInicio: '2026-02-15', dataFim: '2026-03-15', resp: 'Pedro Souza' },
+    { proj: 'ESPERANÇA', nome: 'Testes Homologação', fase: '5. Testes & Homologação', status: 'Não Iniciado', dataInicio: '2026-03-20', dataFim: '2026-04-10', resp: 'Maria Silva' },
+    { proj: 'ESPERANÇA', nome: 'Deploy Produção', fase: '6. Deploy em Produção', status: 'Não Iniciado', dataInicio: '2026-04-15', dataFim: '2026-04-30', resp: 'Carlos Lima' },
+    { proj: 'ESPERANÇA', nome: 'Monitoramento', fase: '7. Estabilização', status: 'Não Iniciado', dataInicio: '2026-05-01', dataFim: '2026-05-15', resp: 'Ana Costa' },
+    { proj: 'ESPERANÇA', nome: 'Aceite Formal', fase: '8. Encerramento', status: 'Não Iniciado', dataInicio: '2026-05-16', dataFim: '2026-05-20', resp: 'Carlos Lima' },
+    
+    // PBL GUATEMALA
+    { proj: 'PBL GUATEMALA', nome: 'KICKOFF INTERNO', fase: '1. Iniciação', status: 'Não Iniciado', dataInicio: '2026-01-15', dataFim: '2026-01-20', resp: 'Pedro Souza' },
+    { proj: 'PBL GUATEMALA', nome: 'Documentação Layout', fase: '2. Planejamento & Documentação', status: 'Não Iniciado', dataInicio: '2026-01-25', dataFim: '2026-02-15', resp: 'Ana Costa' },
+    { proj: 'PBL GUATEMALA', nome: 'Solicitação VPN', fase: '3. Provisionamento de Recursos', status: 'Não Iniciado', dataInicio: '2026-02-20', dataFim: '2026-03-10', resp: 'João Santos' },
+    { proj: 'PBL GUATEMALA', nome: 'Instalação Equipamentos', fase: '4. Implementação', status: 'Não Iniciado', dataInicio: '2026-03-15', dataFim: '2026-04-15', resp: 'Pedro Souza' },
+    { proj: 'PBL GUATEMALA', nome: 'Testes Homologação', fase: '5. Testes & Homologação', status: 'Não Iniciado', dataInicio: '2026-04-20', dataFim: '2026-05-10', resp: 'Maria Silva' },
+    { proj: 'PBL GUATEMALA', nome: 'Deploy Produção', fase: '6. Deploy em Produção', status: 'Não Iniciado', dataInicio: '2026-05-15', dataFim: '2026-05-25', resp: 'Carlos Lima' },
+    { proj: 'PBL GUATEMALA', nome: 'Monitoramento', fase: '7. Estabilização', status: 'Não Iniciado', dataInicio: '2026-05-26', dataFim: '2026-05-30', resp: 'Ana Costa' },
+    { proj: 'PBL GUATEMALA', nome: 'Aceite Formal', fase: '8. Encerramento', status: 'Não Iniciado', dataInicio: '2026-05-31', dataFim: '2026-06-01', resp: 'Pedro Souza' },
+    
+    // CRISTAL MG
+    { proj: 'CRISTAL MG', nome: 'KICKOFF INTERNO', fase: '1. Iniciação', status: 'Concluído', dataInicio: '2025-09-01', dataFim: '2025-09-05', resp: 'Maria Silva' },
+    { proj: 'CRISTAL MG', nome: 'Documentação Layout', fase: '2. Planejamento & Documentação', status: 'Concluído', dataInicio: '2025-09-10', dataFim: '2025-09-30', resp: 'Ana Costa' },
+    { proj: 'CRISTAL MG', nome: 'Solicitação VPN', fase: '3. Provisionamento de Recursos', status: 'Concluído', dataInicio: '2025-10-01', dataFim: '2025-10-15', resp: 'João Santos' },
+    { proj: 'CRISTAL MG', nome: 'Solicitação IPs', fase: '3. Provisionamento de Recursos', status: 'Concluído', dataInicio: '2025-10-01', dataFim: '2025-10-15', resp: 'João Santos' },
+    { proj: 'CRISTAL MG', nome: 'Instalação Equipamentos', fase: '4. Implementação', status: 'Concluído', dataInicio: '2025-10-20', dataFim: '2025-11-15', resp: 'Pedro Souza' },
+    { proj: 'CRISTAL MG', nome: 'Configuração Rede', fase: '4. Implementação', status: 'Concluído', dataInicio: '2025-11-16', dataFim: '2025-12-01', resp: 'Carlos Lima' },
+    { proj: 'CRISTAL MG', nome: 'Testes Homologação', fase: '5. Testes & Homologação', status: 'Em andamento', dataInicio: '2025-12-05', dataFim: '2026-01-10', resp: 'Maria Silva' },
+    { proj: 'CRISTAL MG', nome: 'Deploy Produção', fase: '6. Deploy em Produção', status: 'Não Iniciado', dataInicio: '2026-01-12', dataFim: '2026-01-18', resp: 'João Santos' },
+    { proj: 'CRISTAL MG', nome: 'Monitoramento', fase: '7. Estabilização', status: 'Não Iniciado', dataInicio: '2026-01-19', dataFim: '2026-01-25', resp: 'Ana Costa' },
+    { proj: 'CRISTAL MG', nome: 'Aceite Formal', fase: '8. Encerramento', status: 'Não Iniciado', dataInicio: '2026-01-26', dataFim: '2026-01-30', resp: 'Maria Silva' }
+];
+
+const hoje = new Date();
+hoje.setHours(0,0,0,0);
+
+function parseDate(str) {
+    if (!str) return null;
+    const [y, m, d] = str.split('-').map(Number);
+    return new Date(y, m - 1, d);
+}
+
+function formatDate(str) {
+    if (!str) return '-';
+    const [y, m, d] = str.split('-');
+    return `${d}/${m}/${y}`;
+}
+
+function diasAtraso(dataPrevista) {
+    const prev = parseDate(dataPrevista);
+    if (!prev) return 0;
+    const diff = Math.floor((hoje - prev) / (1000 * 60 * 60 * 24));
+    return diff > 0 ? diff : 0;
+}
+
+function getAtividades(proj) {
+    return ATIVIDADES.filter(a => a.proj === proj);
+}
+
+function calcProgresso(proj) {
+    const ativs = getAtividades(proj);
+    if (ativs.length === 0) return 0;
+    const done = ativs.filter(a => a.status === 'Concluído').length;
+    return Math.round((done / ativs.length) * 100);
+}
+
+function calcStatus(proj) {
+    const p = PROJETOS.find(x => x.nome === proj);
+    const prog = calcProgresso(proj);
+    
+    if (prog === 100) return 'Concluído';
+    if (p && diasAtraso(p.dataPrevista) > 0 && prog < 100) return 'Atrasado';
+    if (prog === 0) {
+        const ativs = getAtividades(proj);
+        if (ativs.some(a => a.status === 'Aguardando')) return 'Aguardando';
+        return 'Não Iniciado';
+    }
+    const ativs = getAtividades(proj);
+    if (ativs.some(a => a.status === 'Em andamento')) return 'Em andamento';
+    if (ativs.some(a => a.status === 'Aguardando')) return 'Aguardando';
+    return 'Em andamento';
+}
+
+function calcFaseAtual(proj) {
+    const ativs = getAtividades(proj);
+    if (ativs.length === 0) return FASES[0];
+    if (ativs.every(a => a.status === 'Concluído')) return FASES[7];
+    
+    for (const fase of FASES) {
+        const ativsFase = ativs.filter(a => a.fase === fase);
+        if (ativsFase.some(a => a.status === 'Em andamento')) return fase;
+    }
+    for (const fase of FASES) {
+        const ativsFase = ativs.filter(a => a.fase === fase);
+        if (ativsFase.some(a => a.status === 'Aguardando')) return fase;
+    }
+    for (const fase of FASES) {
+        const ativsFase = ativs.filter(a => a.fase === fase);
+        if (ativsFase.length > 0 && !ativsFase.every(a => a.status === 'Concluído')) return fase;
+    }
+    return FASES[0];
+}
+
+function getCor(pct) {
+    if (pct >= 100) return 'verde';
+    if (pct >= 50) return 'amarelo';
+    return 'vermelho';
+}
+
+function getStatusClass(s) {
+    return s.toLowerCase().replace(/ /g, '-').replace('ã', 'a');
+}
+
+function renderKPIs() {
+    const total = PROJETOS.length;
+    const concluidos = PROJETOS.filter(p => calcStatus(p.nome) === 'Concluído').length;
+    const emAndamento = PROJETOS.filter(p => calcStatus(p.nome) === 'Em andamento').length;
+    const aguardando = PROJETOS.filter(p => calcStatus(p.nome) === 'Aguardando').length;
+    const atrasados = PROJETOS.filter(p => calcStatus(p.nome) === 'Atrasado').length;
+    
+    document.getElementById('kpis').innerHTML = `
+        <div class="kpi azul"><div class="num">${total}</div><div class="lbl">Total Projetos</div></div>
+        <div class="kpi verde"><div class="num">${concluidos}</div><div class="lbl">Concluídos</div></div>
+        <div class="kpi amarelo"><div class="num">${emAndamento}</div><div class="lbl">Em Andamento</div></div>
+        <div class="kpi amarelo"><div class="num">${aguardando}</div><div class="lbl">Aguardando</div></div>
+        <div class="kpi vermelho"><div class="num">${atrasados}</div><div class="lbl">Atrasados</div></div>
+    `;
+}
+
+function render() {
+    renderKPIs();
+    
+    const statusOrder = ['Atrasado', 'Em andamento', 'Aguardando', 'Não Iniciado', 'Concluído'];
+    const porStatus = {};
+    statusOrder.forEach(s => porStatus[s] = []);
+    
+    PROJETOS.forEach(p => {
+        const status = calcStatus(p.nome);
+        if (porStatus[status]) porStatus[status].push(p);
+    });
+    
+    let html = '';
+    
+    statusOrder.forEach(status => {
+        const projs = porStatus[status];
+        if (projs.length === 0) return;
         
-        function loadData() {
-            const storedProjects = localStorage.getItem('projectsData');
-            const storedActivities = localStorage.getItem('activitiesData');
-            
-            if (storedProjects) {
-                projectsData = JSON.parse(storedProjects);
-            }
-            
-            if (storedActivities) {
-                activitiesData = JSON.parse(storedActivities);
-            }
-            
-            updateLastUpdate();
-            populateFilters();
-            renderProjects();
-            updateStats();
-        }
-        
-        function updateLastUpdate() {
-            const now = new Date();
-            document.getElementById('lastUpdate').textContent = now.toLocaleString('pt-BR');
-        }
-        
-        function populateFilters() {
-            const locations = [...new Set(projectsData.map(p => p.localizacao))].filter(Boolean).sort();
-            const locationSelect = document.getElementById('filterLocation');
-            locationSelect.innerHTML = '<option value="">Todas</option>' +
-                locations.map(loc => `<option value="${loc}">${loc}</option>`).join('');
-            
-            const responsibles = [...new Set(projectsData.map(p => p.responsavel))].filter(Boolean).sort();
-            const responsibleSelect = document.getElementById('filterResponsible');
-            responsibleSelect.innerHTML = '<option value="">Todos</option>' +
-                responsibles.map(resp => `<option value="${resp}">${resp}</option>`).join('');
-        }
-        
-        function applyFilters() {
-            renderProjects();
-            updateStats();
-        }
-        
-        function getFilteredProjects() {
-            const searchText = document.getElementById('filterSearch').value.toLowerCase();
-            const statusFilter = document.getElementById('filterStatus').value;
-            const locationFilter = document.getElementById('filterLocation').value;
-            const responsibleFilter = document.getElementById('filterResponsible').value;
-            
-            return projectsData.filter(project => {
-                const matchSearch = project.projeto.toLowerCase().includes(searchText);
-                const matchStatus = !statusFilter || project.status === statusFilter;
-                const matchLocation = !locationFilter || project.localizacao === locationFilter;
-                const matchResponsible = !responsibleFilter || project.responsavel === responsibleFilter;
-                
-                return matchSearch && matchStatus && matchLocation && matchResponsible;
-            });
-        }
-        
-        function calculateProgress(projeto) {
-            const projectActivities = activitiesData.filter(a => a.projeto === projeto);
-            if (projectActivities.length === 0) return 0;
-            const completed = projectActivities.filter(a => a.status === 'Concluído').length;
-            return Math.round((completed / projectActivities.length) * 100);
-        }
-        
-        function classifyStatus(project, progress) {
-            if (project.status === 'Concluído') return 'concluido';
-            if (progress < 30) return 'atrasado';
-            if (progress < 60) return 'aguardando';
-            if (project.status === 'Planejamento') return 'nao-iniciado';
-            return 'andamento';
-        }
-        
-        function renderProjects() {
-            const container = document.getElementById('projectsContainer');
-            const filtered = getFilteredProjects();
-            
-            const groups = {
-                'andamento': [],
-                'atrasado': [],
-                'aguardando': [],
-                'nao-iniciado': [],
-                'concluido': []
-            };
-            
-            filtered.forEach(project => {
-                const progress = calculateProgress(project.projeto);
-                const status = classifyStatus(project, progress);
-                groups[status].push({ ...project, progress });
-            });
-            
-            const statusLabels = {
-                'andamento': 'Em Andamento',
-                'atrasado': 'Atrasado',
-                'aguardando': 'Aguardando',
-                'nao-iniciado': 'Não Iniciado',
-                'concluido': 'Concluído'
-            };
-            
-            let html = '<div class="section"><h2>📊 Projetos por Status</h2><div class="projects-by-status">';
-            
-            Object.keys(groups).forEach(status => {
-                const projects = groups[status];
-                if (projects.length === 0) return;
-                
-                html += `
-                    <div class="status-column ${status}">
-                        <div class="status-header">
-                            <div class="status-title">${statusLabels[status]}</div>
-                            <div class="status-count">${projects.length}</div>
-                        </div>
-                `;
-                
-                projects.forEach(project => {
-                    html += `
-                        <div class="project-item">
-                            <div class="project-name">${project.projeto}</div>
-                            <div class="project-info">
-                                <div>📍 ${project.localizacao || 'N/A'}</div>
-                                <div>👤 ${project.responsavel || 'N/A'}</div>
-                                <div>🎯 Previsão: ${project.dataPrevista || 'N/A'}</div>
-                            </div>
-                            <div class="project-progress">
-                                <div style="display: flex; justify-content: space-between; font-size: 0.85em; margin-bottom: 5px;">
-                                    <span>Progresso</span>
-                                    <strong>${project.progress}%</strong>
+        html += `
+            <section class="status-section">
+                <div class="status-header">
+                    <span class="status-dot ${getStatusClass(status)}"></span>
+                    <span class="status-title">${status}</span>
+                    <span class="status-count">${projs.length} projeto${projs.length > 1 ? 's' : ''}</span>
+                </div>
+                <div class="projects-grid">
+                    ${projs.map(p => {
+                        const prog = calcProgresso(p.nome);
+                        const fase = calcFaseAtual(p.nome);
+                        const cor = getCor(prog);
+                        const atraso = diasAtraso(p.dataPrevista);
+                        
+                        return `
+                            <div class="project-card ${getStatusClass(status)}" onclick="abrirModal('${p.nome}')">
+                                <div class="project-header">
+                                    <span class="project-name">${p.nome}</span>
+                                    <span class="priority ${p.prioridade.toLowerCase()}">${p.prioridade}</span>
                                 </div>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: ${project.progress}%"></div>
+                                <div class="project-meta">
+                                    <span>📍 ${p.local}</span>
+                                    <span>👤 ${p.resp}</span>
                                 </div>
+                                <span class="project-phase">📘 ${fase}</span>
+                                <div class="project-dates">
+                                    <span>🎯 Previsto: ${formatDate(p.dataPrevista)}</span>
+                                    ${atraso > 0 && prog < 100 ? `<span class="atrasado">⚠️ ${atraso} dias atraso</span>` : ''}
+                                </div>
+                                <div class="progress-bar"><div class="progress-fill ${cor}" style="width:${prog}%"></div></div>
+                                <div class="progress-text">Progresso: <strong>${prog}%</strong></div>
                             </div>
-                        </div>
-                    `;
-                });
-                
-                html += '</div>';
-            });
-            
-            html += '</div></div>';
-            container.innerHTML = html || '<div class="section"><div class="no-data">Nenhum projeto encontrado</div></div>';
-        }
-        
-        function updateStats() {
-            const filtered = getFilteredProjects();
-            
-            let concluidos = 0, andamento = 0, atrasados = 0, aguardando = 0, naoIniciados = 0, criticos = 0;
-            
-            filtered.forEach(project => {
-                const progress = calculateProgress(project.projeto);
-                const status = classifyStatus(project, progress);
-                
-                if (status === 'concluido') concluidos++;
-                else if (status === 'andamento') andamento++;
-                else if (status === 'atrasado') { atrasados++; criticos++; }
-                else if (status === 'aguardando') aguardando++;
-                else if (status === 'nao-iniciado') naoIniciados++;
-            });
-            
-            document.getElementById('statTotal').textContent = filtered.length;
-            document.getElementById('statConcluidos').textContent = concluidos;
-            document.getElementById('statAndamento').textContent = andamento;
-            document.getElementById('statAtrasados').textContent = atrasados;
-            document.getElementById('statAguardando').textContent = aguardando;
-            document.getElementById('statNaoIniciados').textContent = naoIniciados;
-            document.getElementById('statCriticos').textContent = criticos;
-        }
-        
-        window.addEventListener('DOMContentLoaded', loadData);
-    </script>
+                        `;
+                    }).join('')}
+                </div>
+            </section>
+        `;
+    });
+    
+    document.getElementById('content').innerHTML = html || '<div class="empty">Nenhum projeto encontrado</div>';
+    document.getElementById('timestamp').textContent = 'Atualizado em: ' + new Date().toLocaleString('pt-BR');
+}
+
+function abrirModal(proj) {
+    const p = PROJETOS.find(x => x.nome === proj);
+    const ativs = getAtividades(proj);
+    const prog = calcProgresso(proj);
+    const fase = calcFaseAtual(proj);
+    const status = calcStatus(proj);
+    const atraso = diasAtraso(p?.dataPrevista);
+    
+    const done = ativs.filter(a => a.status === 'Concluído').length;
+    const doing = ativs.filter(a => a.status === 'Em andamento').length;
+    const wait = ativs.filter(a => a.status === 'Aguardando').length;
+    const notStarted = ativs.filter(a => a.status === 'Não Iniciado').length;
+    
+    document.getElementById('modalTitle').textContent = `📋 ${proj}`;
+    
+    document.getElementById('modalBody').innerHTML = `
+        <div class="modal-info">
+            <span class="modal-info-item"><strong>Local:</strong> ${p?.local || '-'}</span>
+            <span class="modal-info-item"><strong>Responsável:</strong> ${p?.resp || '-'}</span>
+            <span class="modal-info-item"><strong>Prioridade:</strong> ${p?.prioridade || '-'}</span>
+            <span class="modal-info-item"><strong>Início:</strong> ${formatDate(p?.dataInicio)}</span>
+            <span class="modal-info-item"><strong>Previsto:</strong> ${formatDate(p?.dataPrevista)}</span>
+            ${atraso > 0 && prog < 100 ? `<span class="modal-info-item" style="color:#dc2626"><strong>⚠️ Atraso:</strong> ${atraso} dias</span>` : ''}
+        </div>
+        <div class="summary">
+            <div class="summary-item"><div class="num" style="color:#22c55e">${done}</div><div class="lbl">Concluídas</div></div>
+            <div class="summary-item"><div class="num" style="color:#3b82f6">${doing}</div><div class="lbl">Em andamento</div></div>
+            <div class="summary-item"><div class="num" style="color:#f59e0b">${wait}</div><div class="lbl">Aguardando</div></div>
+            <div class="summary-item"><div class="num" style="color:#6b7280">${notStarted}</div><div class="lbl">Não iniciadas</div></div>
+        </div>
+        <p style="margin-bottom:12px;color:#64748b"><strong>Fase atual:</strong> ${fase} | <strong>Progresso:</strong> ${prog}%</p>
+        <div class="activity-list">
+            ${ativs.map(a => `
+                <div class="activity">
+                    <div class="activity-info">
+                        <div class="activity-name">${a.nome}</div>
+                        <div class="activity-fase">${a.fase}</div>
+                        <div class="activity-dates">📅 ${formatDate(a.dataInicio)} → ${formatDate(a.dataFim)}</div>
+                    </div>
+                    <div class="activity-resp">👤 ${a.resp}</div>
+                    <span class="status-badge ${getStatusClass(a.status)}">${a.status}</span>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    document.getElementById('modal').classList.add('show');
+}
+
+function fecharModal(e) {
+    if (!e || e.target.id === 'modal') {
+        document.getElementById('modal').classList.remove('show');
+    }
+}
+
+function gerarPDF() {
+    alert('💡 Para gerar PDF:\n\n1. Clique em "Imprimir"\n2. Em "Destino", selecione "Salvar como PDF"\n3. Clique em "Salvar"\n\nO navegador vai gerar um PDF com o layout otimizado para impressão.');
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharModal(); });
+window.addEventListener('DOMContentLoaded', render);
+</script>
 </body>
 </html>
