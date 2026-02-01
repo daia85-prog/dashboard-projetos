@@ -242,6 +242,10 @@
                     </label>
                 </div>
                 <div class="print-projects-list" id="printProjectsList"></div>
+                <div class="print-select-buttons" id="printSelectButtons" style="display:none;margin-top:10px;gap:10px;">
+                    <button type="button" onclick="marcarTodos(true)" style="flex:1;padding:8px 12px;background:#22c55e;color:white;border:none;border-radius:6px;font-weight:600;cursor:pointer;">✅ Marcar todos</button>
+                    <button type="button" onclick="marcarTodos(false)" style="flex:1;padding:8px 12px;background:#ef4444;color:white;border:none;border-radius:6px;font-weight:600;cursor:pointer;">❌ Desmarcar todos</button>
+                </div>
                 <div class="print-buttons">
                     <button class="btn-cancel" onclick="fecharPrintModal()">Cancelar</button>
                     <button class="btn-execute" id="btnExecutePrint" onclick="executarPrint()">🖨️ Imprimir</button>
@@ -430,7 +434,13 @@ function abrirPrintModal(mode){
     document.getElementById('printModal').classList.add('show');
 }
 function fecharPrintModal(e){if(!e||e.target.id==='printModal')document.getElementById('printModal').classList.remove('show')}
-function selecionarOpcao(el,tipo){document.querySelectorAll('.print-option').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');el.querySelector('input').checked=true;document.getElementById('printProjectsList').classList.toggle('show',tipo==='especificos')}
+function selecionarOpcao(el,tipo){
+    document.querySelectorAll('.print-option').forEach(o=>o.classList.remove('selected'));
+    el.classList.add('selected');
+    el.querySelector('input').checked=true;
+    document.getElementById('printProjectsList').classList.toggle('show',tipo==='especificos');
+    document.getElementById('printSelectButtons').style.display=tipo==='especificos'?'flex':'none';
+}
 
 function executarPrint(){
     const tipo=document.querySelector('input[name="printType"]:checked').value;
@@ -441,6 +451,10 @@ function executarPrint(){
     if(!projetos.length){alert('Nenhum projeto selecionado!');return}
     fecharPrintModal();
     if(printMode==='pdf'){gerarPDF(projetos)}else{imprimirLista(projetos)}
+}
+
+function marcarTodos(marcar){
+    document.querySelectorAll('#printProjectsList input[type="checkbox"]').forEach(cb=>cb.checked=marcar);
 }
 
 function imprimirLista(projetos){

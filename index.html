@@ -353,6 +353,10 @@
                     </label>
                 </div>
                 <div class="print-projects-list" id="printProjectsList"></div>
+                <div class="print-select-buttons" id="printSelectButtons" style="display:none;margin-top:10px;gap:10px;">
+                    <button type="button" onclick="marcarTodos(true)" style="flex:1;padding:8px 12px;background:#22c55e;color:white;border:none;border-radius:6px;font-weight:600;cursor:pointer;">✅ Marcar todos</button>
+                    <button type="button" onclick="marcarTodos(false)" style="flex:1;padding:8px 12px;background:#ef4444;color:white;border:none;border-radius:6px;font-weight:600;cursor:pointer;">❌ Desmarcar todos</button>
+                </div>
                 <div class="print-buttons">
                     <button class="btn-cancel" onclick="fecharPrintModal()">Cancelar</button>
                     <button class="btn-execute" id="btnExecutePrint" onclick="executarPrint()">🖨️ Imprimir</button>
@@ -568,6 +572,7 @@ function selecionarOpcao(el,tipo){
     el.classList.add('selected');
     el.querySelector('input').checked=true;
     document.getElementById('printProjectsList').classList.toggle('show',tipo==='especificos');
+    document.getElementById('printSelectButtons').style.display=tipo==='especificos'?'flex':'none';
 }
 
 function executarPrint(){
@@ -584,6 +589,18 @@ function executarPrint(){
     if(printMode==='pdf'){gerarPDF(projetos)}
     else{imprimirLista(projetos)}
 }
+
+function marcarTodos(marcar){
+    document.querySelectorAll('#printProjectsList input[type="checkbox"]').forEach(cb=>cb.checked=marcar);
+}
+
+// Corrigir filtro ao digitar
+document.addEventListener('DOMContentLoaded',function(){
+    document.getElementById('search').addEventListener('input',function(){
+        if(this.value.trim()===''){projetoFiltro=''}
+        render();
+    });
+});
 
 function imprimirLista(projetos){
     const w=window.open('','_blank');
