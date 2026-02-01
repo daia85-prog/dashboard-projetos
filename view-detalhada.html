@@ -35,6 +35,13 @@
         .kpi .num { font-size: 2em; font-weight: 700; color: #1e293b; }
         .kpi .lbl { font-size: 0.85em; color: #64748b; margin-top: 3px; }
         
+        .filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 20px; padding: 15px; background: white; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); align-items: end; }
+        .filter-group label { display: block; font-size: 0.78em; color: #64748b; margin-bottom: 4px; font-weight: 500; }
+        .filter-group input, .filter-group select { width: 100%; padding: 8px 10px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.9em; }
+        .checkbox-group { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: #fef2f2; border: 2px solid #fca5a5; border-radius: 8px; cursor: pointer; }
+        .checkbox-group input { width: 16px; height: 16px; cursor: pointer; }
+        .checkbox-group span { font-size: 0.85em; color: #dc2626; font-weight: 600; }
+        
         .status-section { margin-bottom: 30px; }
         .status-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #e2e8f0; }
         .status-dot { width: 14px; height: 14px; border-radius: 50%; }
@@ -167,7 +174,7 @@
         @media print {
             body { background: white !important; }
             .header { background: #1e293b !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-            .nav-buttons { display: none !important; }
+            .nav-buttons, .filters { display: none !important; }
             .container { max-width: 100% !important; padding: 15px !important; }
             .kpi, .project-card { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; box-shadow: none !important; border: 1px solid #e2e8f0 !important; break-inside: avoid !important; }
             .progress-fill { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
@@ -193,6 +200,46 @@
             <strong>Fases:</strong> 1. Iniciação · 2. Planejamento · 3. Provisionamento · 4. Implementação · 5. Testes · 6. Deploy · 7. Estabilização · 8. Encerramento
         </div>
         <div class="kpis" id="kpis"></div>
+        
+        <div class="filters">
+            <div class="filter-group">
+                <label>🔍 Buscar:</label>
+                <input type="text" id="search" placeholder="Nome do projeto..." oninput="render()">
+            </div>
+            <div class="filter-group">
+                <label>📊 Status:</label>
+                <select id="filterStatus" onchange="render()">
+                    <option value="">Todos</option>
+                    <option value="Concluído">Concluído</option>
+                    <option value="Em andamento">Em andamento</option>
+                    <option value="Aguardando">Aguardando</option>
+                    <option value="Não Iniciado">Não Iniciado</option>
+                    <option value="Atrasado">Atrasado</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>⚡ Prioridade:</label>
+                <select id="filterPrior" onchange="render()">
+                    <option value="">Todas</option>
+                    <option value="Alta">Alta</option>
+                    <option value="Média">Média</option>
+                    <option value="Baixa">Baixa</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>📍 Local:</label>
+                <select id="filterLocal" onchange="render()"></select>
+            </div>
+            <div class="filter-group">
+                <label>👤 Responsável:</label>
+                <select id="filterResp" onchange="render()"></select>
+            </div>
+            <label class="checkbox-group">
+                <input type="checkbox" id="filterCritico" onchange="render()">
+                <span>🚨 Apenas Críticos</span>
+            </label>
+        </div>
+        
         <div id="content"></div>
     </main>
     
@@ -219,8 +266,15 @@
             </div>
             <div class="modal-body">
                 <div class="print-options">
-                    <label class="print-option selected" onclick="selecionarOpcao(this, 'todos')">
-                        <input type="radio" name="printType" value="todos" checked>
+                    <label class="print-option selected" onclick="selecionarOpcao(this, 'atual')">
+                        <input type="radio" name="printType" value="atual" checked>
+                        <div class="print-option-text">
+                            <div class="print-option-title">📋 Filtro Atual</div>
+                            <div class="print-option-desc">Projetos visíveis com os filtros aplicados</div>
+                        </div>
+                    </label>
+                    <label class="print-option" onclick="selecionarOpcao(this, 'todos')">
+                        <input type="radio" name="printType" value="todos">
                         <div class="print-option-text">
                             <div class="print-option-title">📁 Todos os Projetos</div>
                             <div class="print-option-desc">Incluir todos os projetos</div>
@@ -345,13 +399,41 @@ function isCritico(p){const pr=PROJETOS.find(x=>x.nome===p),s=calcStatus(p);retu
 function getCor(pct){return pct>=100?'verde':pct>=50?'amarelo':'vermelho'}
 function getStatusClass(s){return s.toLowerCase().replace(/ /g,'-').replace('ã','a')}
 
-function renderKPIs(){const t=PROJETOS.length,c=PROJETOS.filter(p=>calcStatus(p.nome)==='Concluído').length,e=PROJETOS.filter(p=>calcStatus(p.nome)==='Em andamento').length,ag=PROJETOS.filter(p=>calcStatus(p.nome)==='Aguardando').length,at=PROJETOS.filter(p=>calcStatus(p.nome)==='Atrasado').length;document.getElementById('kpis').innerHTML=`<div class="kpi azul"><div class="num">${t}</div><div class="lbl">Total</div></div><div class="kpi verde"><div class="num">${c}</div><div class="lbl">Concluídos</div></div><div class="kpi amarelo"><div class="num">${e}</div><div class="lbl">Em Andamento</div></div><div class="kpi amarelo"><div class="num">${ag}</div><div class="lbl">Aguardando</div></div><div class="kpi vermelho"><div class="num">${at}</div><div class="lbl">Atrasados</div></div>`}
+function getProjetosFiltrados(){
+    const s=document.getElementById('search').value.toLowerCase();
+    const st=document.getElementById('filterStatus').value;
+    const pr=document.getElementById('filterPrior').value;
+    const lo=document.getElementById('filterLocal').value;
+    const re=document.getElementById('filterResp').value;
+    const cr=document.getElementById('filterCritico').checked;
+    return PROJETOS.filter(p=>{
+        const ps=calcStatus(p.nome);
+        return(!s||p.nome.toLowerCase().includes(s))&&(!st||ps===st)&&(!pr||p.prioridade===pr)&&(!lo||p.local===lo)&&(!re||p.resp===re)&&(!cr||isCritico(p.nome));
+    });
+}
+
+function populateFilters(){
+    const l=[...new Set(PROJETOS.map(p=>p.local))].sort();
+    const r=[...new Set(PROJETOS.map(p=>p.resp))].sort();
+    document.getElementById('filterLocal').innerHTML='<option value="">Todos</option>'+l.map(x=>`<option value="${x}">${x}</option>`).join('');
+    document.getElementById('filterResp').innerHTML='<option value="">Todos</option>'+r.map(x=>`<option value="${x}">${x}</option>`).join('');
+}
+
+function renderKPIs(){
+    const ps=getProjetosFiltrados();
+    const t=ps.length;
+    const c=ps.filter(p=>calcStatus(p.nome)==='Concluído').length;
+    const e=ps.filter(p=>calcStatus(p.nome)==='Em andamento').length;
+    const ag=ps.filter(p=>calcStatus(p.nome)==='Aguardando').length;
+    const at=ps.filter(p=>calcStatus(p.nome)==='Atrasado').length;
+    document.getElementById('kpis').innerHTML=`<div class="kpi azul"><div class="num">${t}</div><div class="lbl">Total</div></div><div class="kpi verde"><div class="num">${c}</div><div class="lbl">Concluídos</div></div><div class="kpi amarelo"><div class="num">${e}</div><div class="lbl">Em Andamento</div></div><div class="kpi amarelo"><div class="num">${ag}</div><div class="lbl">Aguardando</div></div><div class="kpi vermelho"><div class="num">${at}</div><div class="lbl">Atrasados</div></div>`;
+}
 
 function render(){
     renderKPIs();
     const so=['Atrasado','Em andamento','Aguardando','Não Iniciado','Concluído'],ps={};
     so.forEach(s=>ps[s]=[]);
-    PROJETOS.forEach(p=>{const s=calcStatus(p.nome);if(ps[s])ps[s].push(p)});
+    getProjetosFiltrados().forEach(p=>{const s=calcStatus(p.nome);if(ps[s])ps[s].push(p)});
     let h='';
     so.forEach(s=>{
         const pjs=ps[s];if(!pjs.length)return;
@@ -360,7 +442,7 @@ function render(){
             return`<div class="project-card ${getStatusClass(s)}" onclick="abrirModal('${p.nome}')"><div class="project-header"><span class="project-name">${p.nome}</span><span class="priority ${p.prioridade.toLowerCase()}">${p.prioridade}</span></div><div class="project-meta"><span>📍 ${p.local}</span><span>👤 ${p.resp}</span></div><span class="project-phase">📘 Fase: ${fa}</span><div class="project-dates"><span>🎯 Término previsto: ${formatDate(p.dataPrevista)}</span>${at>0&&pg<100?`<span class="atrasado">⚠️ ${at} dias atraso</span>`:''}</div><div class="progress-bar"><div class="progress-fill ${cor}" style="width:${pg}%"></div></div><div class="progress-text">Progresso: <strong>${pg}%</strong></div></div>`;
         }).join('')}</div></section>`;
     });
-    document.getElementById('content').innerHTML=h||'<div class="empty">Nenhum projeto encontrado</div>';
+    document.getElementById('content').innerHTML=h||'<div class="empty">Nenhum projeto encontrado com os filtros aplicados</div>';
     document.getElementById('timestamp').textContent='Atualizado em: '+new Date().toLocaleString('pt-BR');
 }
 
@@ -445,7 +527,8 @@ function selecionarOpcao(el,tipo){
 function executarPrint(){
     const tipo=document.querySelector('input[name="printType"]:checked').value;
     let projetos=[];
-    if(tipo==='todos'){projetos=PROJETOS}
+    if(tipo==='atual'){projetos=getProjetosFiltrados()}
+    else if(tipo==='todos'){projetos=PROJETOS}
     else if(tipo==='criticos'){projetos=PROJETOS.filter(p=>isCritico(p.nome))}
     else if(tipo==='especificos'){const checks=document.querySelectorAll('#printProjectsList input:checked');projetos=PROJETOS.filter(p=>[...checks].some(c=>c.value===p.nome))}
     if(!projetos.length){alert('Nenhum projeto selecionado!');return}
@@ -470,7 +553,7 @@ function gerarPDF(projetos){
 }
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){fecharModal();fecharPrintModal();fecharActivityModal()}});
-window.addEventListener('DOMContentLoaded',render);
+window.addEventListener('DOMContentLoaded',()=>{populateFilters();render()});
 </script>
 </body>
 </html>
