@@ -1,103 +1,132 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Dashboard v7.5</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #667eea, #764ba2); min-height: 100vh; padding: 20px; }
-        .container { max-width: 800px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
-        .header { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 20px; text-align: center; }
-        .header h1 { font-size: 1.4em; }
-        .content { padding: 25px; }
-        .nav { display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
-        .nav a { padding: 10px 20px; background: #667eea; color: white; text-decoration: none; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
-        .nav a:hover { background: #5a67d8; }
-        .nav a.green { background: #22c55e; }
-        .nav a.green:hover { background: #16a34a; }
-        
-        .info { background: #f0fdf4; border: 1px solid #22c55e; border-radius: 10px; padding: 18px; margin-bottom: 20px; }
-        .info h3 { color: #166534; margin-bottom: 10px; font-size: 1.1em; }
-        .info p { color: #15803d; font-size: 0.9em; line-height: 1.6; }
-        
-        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-top: 15px; }
-        .stat { background: white; padding: 12px; border-radius: 8px; text-align: center; }
-        .stat .num { font-size: 1.5em; font-weight: 700; color: #667eea; }
-        .stat .lbl { font-size: 0.8em; color: #64748b; }
-        
-        .instructions { background: #fffbeb; border: 1px solid #fbbf24; border-radius: 10px; padding: 18px; margin-bottom: 20px; }
-        .instructions h3 { color: #92400e; margin-bottom: 12px; font-size: 1.1em; }
-        .instructions p { color: #78350f; font-size: 0.9em; margin-bottom: 10px; }
-        .instructions code { background: rgba(0,0,0,0.1); padding: 2px 6px; border-radius: 4px; font-size: 0.85em; }
-        .instructions ul { color: #78350f; padding-left: 20px; font-size: 0.9em; }
-        .instructions li { margin-bottom: 8px; line-height: 1.5; }
-        
-        .new-features { background: #eff6ff; border: 1px solid #3b82f6; border-radius: 10px; padding: 18px; margin-bottom: 20px; }
-        .new-features h3 { color: #1d4ed8; margin-bottom: 12px; font-size: 1.1em; }
-        .new-features ul { color: #1e40af; padding-left: 20px; font-size: 0.9em; }
-        .new-features li { margin-bottom: 8px; line-height: 1.5; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Admin - Dashboard v8</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;padding:20px}
+.container{max-width:1300px;margin:0 auto;background:#fff;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.2);overflow:hidden}
+.header{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;padding:20px 25px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px}
+.header h1{font-size:1.4em}
+.nav-links{display:flex;gap:10px}
+.nav-links a{color:#fff;text-decoration:none;padding:8px 16px;background:rgba(255,255,255,.2);border-radius:6px;font-weight:600;font-size:.9em}
+.nav-links a:hover{background:rgba(255,255,255,.3)}
+.content{padding:25px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:15px;margin-bottom:25px}
+.stat{text-align:center;padding:20px;background:#f8fafc;border-radius:10px;border-top:4px solid #e2e8f0}
+.stat.azul{border-top-color:#3b82f6}
+.stat.verde{border-top-color:#22c55e}
+.stat.amarelo{border-top-color:#f59e0b}
+.stat.roxo{border-top-color:#8b5cf6}
+.stat.vermelho{border-top-color:#ef4444}
+.stat .num{font-size:2.2em;font-weight:700;color:#1e293b}
+.stat .lbl{color:#64748b;font-size:.85em;margin-top:5px}
+.stat.azul .num{color:#3b82f6}
+.stat.verde .num{color:#22c55e}
+.stat.amarelo .num{color:#f59e0b}
+.stat.roxo .num{color:#8b5cf6}
+.stat.vermelho .num{color:#ef4444}
+h3{color:#1e293b;margin-bottom:15px;font-size:1.1em}
+table{width:100%;border-collapse:collapse}
+th,td{padding:12px 15px;text-align:left;border-bottom:1px solid #e2e8f0}
+th{background:#f8fafc;color:#64748b;font-weight:600;font-size:.85em;position:sticky;top:0}
+tr:hover{background:#f8fafc}
+.status{padding:4px 10px;border-radius:5px;font-size:.75em;font-weight:600;display:inline-block}
+.status.concluido{background:#dcfce7;color:#166534}
+.status.em-andamento{background:#dbeafe;color:#1e40af}
+.status.planejamento{background:#f3e8ff;color:#7c3aed}
+.status.atrasado{background:#fee2e2;color:#991b1b}
+.priority{padding:3px 8px;border-radius:4px;font-size:.72em;font-weight:700}
+.priority.alta{background:#fee2e2;color:#dc2626}
+.priority.media{background:#fef3c7;color:#d97706}
+.priority.baixa{background:#dcfce7;color:#16a34a}
+.table-wrapper{max-height:500px;overflow-y:auto;border:1px solid #e2e8f0;border-radius:10px}
+.footer{text-align:center;padding:15px;background:#f8fafc;border-top:1px solid #e2e8f0;font-size:.8em;color:#64748b}
+</style>
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <h1>⚙️ Administração - Dashboard v7.5</h1>
-        </header>
-        <main class="content">
-            <nav class="nav">
-                <a href="index.html">🏠 Dashboard Principal</a>
-                <a href="view-detalhada.html" class="green">📋 Visão Detalhada</a>
-            </nav>
-            
-            <div class="info">
-                <h3>✅ Dashboard v7.5 - Melhorias Executivas</h3>
-                <p>Esta versão inclui melhorias focadas em visibilidade executiva e tomada de decisão.</p>
-                <div class="stats">
-                    <div class="stat"><div class="num">6</div><div class="lbl">Projetos</div></div>
-                    <div class="stat"><div class="num">58</div><div class="lbl">Atividades</div></div>
-                    <div class="stat"><div class="num">8</div><div class="lbl">Fases</div></div>
-                    <div class="stat"><div class="num">5</div><div class="lbl">Responsáveis</div></div>
-                </div>
-            </div>
-            
-            <div class="new-features">
-                <h3>🆕 Novidades da v7.5</h3>
-                <ul>
-                    <li><strong>Contexto no 0%:</strong> Mensagens explicativas diferenciando "fase ainda não iniciada" de "fase atrasada"</li>
-                    <li><strong>Chip ALERTA:</strong> Destaque visual nas fases com projetos críticos ou atrasados</li>
-                    <li><strong>Próxima Fase:</strong> Exibição da próxima fase no card do projeto (visão Micro)</li>
-                    <li><strong>Próxima Milestone:</strong> No modal, mostra a próxima atividade pendente com data</li>
-                    <li><strong>Legenda de Fases:</strong> Barra explicativa das 8 fases no topo da página</li>
-                    <li><strong>Impressão Corrigida:</strong> Layout otimizado para PDF com cores preservadas</li>
-                </ul>
-            </div>
-            
-            <div class="instructions">
-                <h3>📋 Fases do Projeto</h3>
-                <ul>
-                    <li><code>1. Iniciação</code> - Kickoff e alinhamento inicial</li>
-                    <li><code>2. Planejamento & Documentação</code> - Documentação e layout</li>
-                    <li><code>3. Provisionamento de Recursos</code> - VPN, IPs, recursos</li>
-                    <li><code>4. Implementação</code> - Instalação e configuração</li>
-                    <li><code>5. Testes & Homologação</code> - Validação e testes</li>
-                    <li><code>6. Deploy em Produção</code> - Go-live</li>
-                    <li><code>7. Estabilização</code> - Monitoramento pós-deploy</li>
-                    <li><code>8. Encerramento</code> - Aceite formal e documentação final</li>
-                </ul>
-            </div>
-            
-            <div class="instructions">
-                <h3>💡 Dicas de Uso</h3>
-                <ul>
-                    <li><strong>Visão Macro:</strong> Use para reuniões executivas - mostra distribuição por fase</li>
-                    <li><strong>Visão Micro:</strong> Use para acompanhamento detalhado de cada projeto</li>
-                    <li><strong>Visão Detalhada:</strong> Use para relatórios - agrupa por status com opção de imprimir</li>
-                    <li><strong>Filtro Críticos:</strong> Marque para ver apenas projetos que precisam de atenção</li>
-                    <li><strong>Clique nos badges:</strong> Na visão Macro, clique no nome do projeto para ir direto aos detalhes</li>
-                </ul>
-            </div>
-        </main>
-    </div>
+<div class="container">
+<header class="header">
+<h1>⚙️ Administração - Dashboard v8</h1>
+<nav class="nav-links">
+<a href="index.html">🏠 Executiva</a>
+<a href="view-projetos.html">📊 Alertas</a>
+<a href="view-detalhada.html">📋 Detalhada</a>
+</nav>
+</header>
+<main class="content">
+<div class="stats" id="stats"></div>
+<h3>📋 Lista de Projetos (<span id="totalCount">30</span>)</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>#</th><th>Projeto</th><th>Status</th><th>Prioridade</th><th>PMO</th><th>Local</th><th>Progresso</th></tr></thead>
+<tbody id="tbody"></tbody>
+</table>
+</div>
+</main>
+<footer class="footer">Admin Dashboard v8 | Invent Corp | 30 Projetos</footer>
+</div>
+<script>
+const PROJETOS=[
+{id:1,nome:"BARBECUE B2B",status:"Concluído",local:"São Paulo - SP",prioridade:"Alta",pmo:"ALEX",progresso:100},
+{id:2,nome:"BELEZA",status:"Concluído",local:"São Paulo - SP",prioridade:"Média",pmo:"ANDERSON",progresso:100},
+{id:3,nome:"BETA",status:"Concluído",local:"Rio de Janeiro - RJ",prioridade:"Alta",pmo:"ANDERSON",progresso:100},
+{id:4,nome:"BETA ESTEIO",status:"Planejamento",local:"Esteio - RS",prioridade:"Média",pmo:"ANDERSON",progresso:5},
+{id:5,nome:"BP",status:"Em andamento",local:"São Paulo - SP",prioridade:"Média",pmo:"GIOVANNI",progresso:15},
+{id:6,nome:"BR",status:"Planejamento",local:"Jaboatão - PE",prioridade:"Alta",pmo:"FÁBIO",progresso:5},
+{id:7,nome:"CANDELABRIA",status:"Concluído",local:"Candelária - RS",prioridade:"Média",pmo:"ALEX",progresso:100},
+{id:8,nome:"CDSK",status:"Em andamento",local:"São Paulo - SP",prioridade:"Alta",pmo:"VINICIUS",progresso:75},
+{id:9,nome:"COUGAR",status:"Concluído",local:"São Paulo - SP",prioridade:"Alta",pmo:"LEANDRO",progresso:100},
+{id:10,nome:"CRISTAL MG RETROFIT",status:"Em andamento",local:"Belo Horizonte - MG",prioridade:"Alta",pmo:"GIOVANNI",progresso:15},
+{id:11,nome:"DIA",status:"Atrasado",local:"São Paulo - SP",prioridade:"Alta",pmo:"ANDERSON",progresso:30},
+{id:12,nome:"DIAMANTE",status:"Planejamento",local:"Curitiba - PR",prioridade:"Média",pmo:"FÁBIO",progresso:0},
+{id:13,nome:"ELETRO",status:"Em andamento",local:"São Paulo - SP",prioridade:"Média",pmo:"GIOVANNI",progresso:35},
+{id:14,nome:"ESPERANÇA",status:"Concluído",local:"Belo Horizonte - MG",prioridade:"Média",pmo:"VINICIUS",progresso:100},
+{id:15,nome:"FLOWER",status:"Em andamento",local:"São Paulo - SP",prioridade:"Baixa",pmo:"ANDERSON",progresso:10},
+{id:16,nome:"GAVIÃO",status:"Concluído",local:"Fortaleza - CE",prioridade:"Alta",pmo:"FÁBIO",progresso:100},
+{id:17,nome:"MKT CHILE",status:"Planejamento",local:"Santiago - Chile",prioridade:"Média",pmo:"ALEX",progresso:0},
+{id:18,nome:"MKT PERU",status:"Planejamento",local:"Lima - Peru",prioridade:"Média",pmo:"ALEX",progresso:0},
+{id:19,nome:"MASTER",status:"Planejamento",local:"São Paulo - SP",prioridade:"Alta",pmo:"LEANDRO",progresso:0},
+{id:20,nome:"NAVEPARK",status:"Em andamento",local:"Curitiba - PR",prioridade:"Média",pmo:"ANDERSON",progresso:25},
+{id:21,nome:"OCTOPUS MS",status:"Em andamento",local:"Campo Grande - MS",prioridade:"Média",pmo:"ALEX",progresso:40},
+{id:22,nome:"OCTOPUS SC",status:"Concluído",local:"Florianópolis - SC",prioridade:"Média",pmo:"ALEX",progresso:100},
+{id:23,nome:"OPTIMUS PRIME",status:"Concluído",local:"São Paulo - SP",prioridade:"Alta",pmo:"GIOVANNI",progresso:100},
+{id:24,nome:"PBL GUATEMALA",status:"Em andamento",local:"Guatemala City",prioridade:"Alta",pmo:"FÁBIO",progresso:45},
+{id:25,nome:"PROMO B2B CD GRU",status:"Concluído",local:"Guarulhos - SP",prioridade:"Alta",pmo:"LEANDRO",progresso:100},
+{id:26,nome:"PTL SP",status:"Concluído",local:"São Paulo - SP",prioridade:"Média",pmo:"VINICIUS",progresso:100},
+{id:27,nome:"REISADO",status:"Concluído",local:"Recife - PE",prioridade:"Média",pmo:"FÁBIO",progresso:100},
+{id:28,nome:"REVERSE",status:"Em andamento",local:"São Paulo - SP",prioridade:"Alta",pmo:"ALEX",progresso:55},
+{id:29,nome:"SUPER DIVINOPOLIS",status:"Em andamento",local:"Divinópolis - MG",prioridade:"Média",pmo:"GIOVANNI",progresso:50},
+{id:30,nome:"TITANIO",status:"Em andamento",local:"São Paulo - SP",prioridade:"Alta",pmo:"ALEX",progresso:80}
+];
+function getStatusClass(s){return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/ /g,"-")}
+function render(){
+const t=PROJETOS.length;
+const c=PROJETOS.filter(p=>p.status==="Concluído").length;
+const e=PROJETOS.filter(p=>p.status==="Em andamento").length;
+const pl=PROJETOS.filter(p=>p.status==="Planejamento").length;
+const a=PROJETOS.filter(p=>p.status==="Atrasado").length;
+document.getElementById("stats").innerHTML=`
+<div class="stat azul"><div class="num">${t}</div><div class="lbl">Total</div></div>
+<div class="stat verde"><div class="num">${c}</div><div class="lbl">Concluídos</div></div>
+<div class="stat amarelo"><div class="num">${e}</div><div class="lbl">Em Andamento</div></div>
+<div class="stat roxo"><div class="num">${pl}</div><div class="lbl">Planejamento</div></div>
+<div class="stat vermelho"><div class="num">${a}</div><div class="lbl">Atrasados</div></div>`;
+document.getElementById("totalCount").textContent=t;
+document.getElementById("tbody").innerHTML=PROJETOS.map(p=>`
+<tr>
+<td>${p.id}</td>
+<td><strong>${p.nome}</strong></td>
+<td><span class="status ${getStatusClass(p.status)}">${p.status}</span></td>
+<td><span class="priority ${p.prioridade.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}">${p.prioridade}</span></td>
+<td>${p.pmo}</td>
+<td>${p.local}</td>
+<td>${p.progresso}%</td>
+</tr>`).join("");
+}
+render();
+</script>
 </body>
 </html>
