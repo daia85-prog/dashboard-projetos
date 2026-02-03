@@ -269,7 +269,7 @@
             <div class="kpis" id="kpis"></div>
             
             <div class="phases-legend">
-                <strong>Fases:</strong> 1. Iniciação · 2. Planejamento · 3. Provisionamento · 4. Implementação · 5. Testes · 6. Deploy · 7. Estabilização · 8. Encerramento
+                <strong>Fases:</strong> 1. Kickoff · 2. Levantamento & Design · 3. Provisionamento · 4. Implantação · 5. Homologação · 6. Go Live · 7. Hypercare · 8. Encerramento
             </div>
             
             <div class="filters">
@@ -428,60 +428,87 @@ const PROJETOS = [
     { nome: 'TITANIO', local: 'São Paulo - SP', resp: 'ALEX', prioridade: 'Alta', dataInicio: '2025-07-01', dataPrevista: '2026-02-28' }
 ];
 
-const FASES = ['1. Iniciação','2. Planejamento & Documentação','3. Provisionamento de Recursos','4. Implementação','5. Testes & Homologação','6. Deploy em Produção','7. Estabilização','8. Encerramento'];
+const FASES = [
+    '1. Kickoff',
+    '2. Levantamento & Design',
+    '3. Provisionamento',
+    '4. Implantação',
+    '5. Homologação',
+    '6. Go Live',
+    '7. Hypercare',
+    '8. Encerramento'
+];
 
-// Status de cada projeto (atividades concluídas por fase: 0-8)
+// Atividades por fase (2-3 cada)
+const ATIVIDADES_POR_FASE = {
+    '1. Kickoff': ['Reunião de Kickoff', 'Definição de Escopo'],
+    '2. Levantamento & Design': ['Levantamento Técnico', 'Documentação de Arquitetura', 'Elaboração do Cronograma'],
+    '3. Provisionamento': ['Solicitação de Acessos (VPN/IPs)', 'Aquisição de Equipamentos', 'Preparação de Ambiente'],
+    '4. Implantação': ['Instalação Física', 'Configuração de Rede', 'Integração de Sistemas'],
+    '5. Homologação': ['Testes Funcionais', 'Testes de Performance', 'Validação com Cliente'],
+    '6. Go Live': ['Janela de Mudança (GMUD)', 'Migração para Produção', 'Validação Pós-Migração'],
+    '7. Hypercare': ['Monitoramento Intensivo', 'Correção de Incidentes', 'Ajustes e Otimização'],
+    '8. Encerramento': ['Documentação Final', 'Treinamento/Repasse', 'Aceite Formal']
+};
+
+// Total de atividades por projeto
+const TOTAL_ATIVIDADES = Object.values(ATIVIDADES_POR_FASE).flat().length; // 22 atividades
+
+// Status de cada projeto (número de atividades concluídas: 0-22)
 const PROJETO_STATUS = {
-    'BARBECUE B2B': 8, 'BELEZA': 8, 'BETA': 8, 'BETA ESTEIO': 1, 'BP': 2,
-    'BR': 1, 'CANDELABRIA': 8, 'CDSK': 6, 'COUGAR': 8, 'CRISTAL MG RETROFIT': 2,
-    'DIA': 3, 'DIAMANTE': 0, 'ELETRO': 4, 'ESPERANÇA': 8, 'FLOWER': 2,
-    'GAVIÃO': 8, 'MKT CHILE': 0, 'MKT PERU': 0, 'MASTER': 0, 'NAVEPARK': 3,
-    'OCTOPUS MS': 4, 'OCTOPUS SC': 8, 'OPTIMUS PRIME': 8, 'PBL GUATEMALA': 4,
-    'PROMO B2B CD GRU': 8, 'PTL SP': 8, 'REISADO': 8, 'REVERSE': 5,
-    'SUPER DIVINOPOLIS': 4, 'TITANIO': 7
+    'BARBECUE B2B': 22, 'BELEZA': 22, 'BETA': 22, 'BETA ESTEIO': 1, 'BP': 3,
+    'BR': 1, 'CANDELABRIA': 22, 'CDSK': 17, 'COUGAR': 22, 'CRISTAL MG RETROFIT': 4,
+    'DIA': 7, 'DIAMANTE': 0, 'ELETRO': 10, 'ESPERANÇA': 22, 'FLOWER': 4,
+    'GAVIÃO': 22, 'MKT CHILE': 0, 'MKT PERU': 0, 'MASTER': 0, 'NAVEPARK': 8,
+    'OCTOPUS MS': 11, 'OCTOPUS SC': 22, 'OPTIMUS PRIME': 22, 'PBL GUATEMALA': 12,
+    'PROMO B2B CD GRU': 22, 'PTL SP': 22, 'REISADO': 22, 'REVERSE': 14,
+    'SUPER DIVINOPOLIS': 11, 'TITANIO': 19
 };
 
 // Gerar atividades automaticamente para cada projeto
 function gerarAtividades() {
     const atividades = [];
-    const atividadesPorFase = [
-        'KICKOFF INTERNO',
-        'Documentação Layout',
-        'Solicitação VPN',
-        'Instalação Equipamentos',
-        'Testes Homologação',
-        'Deploy Produção',
-        'Monitoramento',
-        'Aceite Formal'
-    ];
     
     PROJETOS.forEach(p => {
-        const fasesCompletas = PROJETO_STATUS[p.nome] || 0;
+        const atividadesConcluidas = PROJETO_STATUS[p.nome] || 0;
         const inicio = new Date(p.dataInicio);
         const fim = new Date(p.dataPrevista);
-        const duracao = (fim - inicio) / 8;
+        const duracaoTotal = fim - inicio;
         
-        atividadesPorFase.forEach((atv, i) => {
-            const dataInicio = new Date(inicio.getTime() + duracao * i);
-            const dataFim = new Date(inicio.getTime() + duracao * (i + 1));
-            let status = 'Não Iniciado';
+        let indiceAtividade = 0;
+        let tempoAcumulado = 0;
+        
+        FASES.forEach((fase, faseIndex) => {
+            const atividadesDaFase = ATIVIDADES_POR_FASE[fase];
+            const duracaoFase = duracaoTotal / 8; // 8 fases
+            const duracaoPorAtividade = duracaoFase / atividadesDaFase.length;
             
-            if (i < fasesCompletas) status = 'Concluído';
-            else if (i === fasesCompletas) {
-                const hoje = new Date();
-                if (dataInicio <= hoje) status = 'Em andamento';
-                else status = 'Aguardando';
-            }
-            
-            atividades.push({
-                proj: p.nome,
-                nome: atv,
-                fase: FASES[i],
-                status: status,
-                dataInicio: dataInicio.toISOString().split('T')[0],
-                dataFim: dataFim.toISOString().split('T')[0],
-                resp: p.resp,
-                descricao: `${atv} do projeto ${p.nome}`
+            atividadesDaFase.forEach((nomeAtividade, atvIndex) => {
+                const dataInicio = new Date(inicio.getTime() + tempoAcumulado);
+                tempoAcumulado += duracaoPorAtividade;
+                const dataFim = new Date(inicio.getTime() + tempoAcumulado);
+                
+                let status = 'Não Iniciado';
+                if (indiceAtividade < atividadesConcluidas) {
+                    status = 'Concluído';
+                } else if (indiceAtividade === atividadesConcluidas) {
+                    const hoje = new Date();
+                    if (dataInicio <= hoje) status = 'Em andamento';
+                    else status = 'Aguardando';
+                }
+                
+                atividades.push({
+                    proj: p.nome,
+                    nome: nomeAtividade,
+                    fase: fase,
+                    status: status,
+                    dataInicio: dataInicio.toISOString().split('T')[0],
+                    dataFim: dataFim.toISOString().split('T')[0],
+                    resp: p.resp,
+                    descricao: `${nomeAtividade} do projeto ${p.nome}`
+                });
+                
+                indiceAtividade++;
             });
         });
     });
@@ -503,7 +530,7 @@ function calcFaseAtual(p){const a=getAtividades(p);if(!a.length)return FASES[0];
 function calcProximaFase(p){const f=calcFaseAtual(p),i=FASES.indexOf(f);return i<FASES.length-1?FASES[i+1]:null}
 function calcProximaEntrega(p){const a=getAtividades(p).filter(x=>x.status!=='Concluído').sort((a,b)=>parseDate(a.dataInicio)-parseDate(b.dataInicio));return a.length?a[0]:null}
 function isCritico(p){const pr=PROJETOS.find(x=>x.nome===p),s=calcStatus(p);return s==='Atrasado'||pr?.prioridade==='Alta'||s==='Aguardando'}
-function getCor(pct){return pct>=100?'verde':pct>=50?'amarelo':'vermelho'}
+function getCor(pct){return pct>=80?'verde':pct>=40?'amarelo':'vermelho'}
 function getStatusClass(s){return s.toLowerCase().replace(/ /g,'-').replace('ã','a')}
 
 function getContextoFase(f,ps){if(ps.some(p=>calcStatus(p.nome)==='Atrasado'))return{tipo:'danger',texto:'🚨 Projeto(s) atrasado(s)'};let todasFut=true,algPassou=false;ps.forEach(p=>{const af=getAtividades(p.nome).filter(a=>a.fase===f);af.forEach(a=>{const d=parseDate(a.dataInicio);if(d&&d<=hoje){todasFut=false;if(a.status==='Não Iniciado')algPassou=true}})});if(todasFut)return{tipo:'gray',texto:'⏳ Aguardando início'};if(algPassou)return{tipo:'warning',texto:'⚠️ Atenção ao cronograma'};return null}
@@ -553,118 +580,231 @@ function filtrarProjeto(n){projetoFiltro=n;document.getElementById('search').val
 
 // TRATATIVAS POR ATIVIDADE - Preencha aqui ou importe do Excel
 const TRATATIVAS = {
-    // BARBECUE B2B
-    'BARBECUE B2B_KICKOFF INTERNO': [
-        { user: 'ALEX', role: 'PMO', date: '01/06/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado com sucesso.' },
-        { user: 'DAIANA', role: 'Gestora', date: '01/06/2025 14:00', type: 'comentario', content: 'Projeto prioritário. Acompanhar de perto.' }
+    // BARBECUE B2B (Concluído)
+    'BARBECUE B2B_Reunião de Kickoff': [
+        { user: 'ALEX', role: 'PMO', date: '01/06/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado com sucesso. Equipe completa presente.' },
+        { user: 'DAIANA', role: 'Gestora', date: '01/06/2025 14:00', type: 'comentario', content: 'Projeto prioritário para B2B. Acompanhar de perto.' }
     ],
     'BARBECUE B2B_Aceite Formal': [
-        { user: 'ALEX', role: 'PMO', date: '06/02/2026 10:00', type: 'resolucao', content: 'Projeto concluído com sucesso. Aceite assinado.' },
-        { user: 'DOUGLAS', role: 'Diretor', date: '06/02/2026 14:00', type: 'comentario', content: 'Parabéns à equipe pela entrega!' }
+        { user: 'ALEX', role: 'PMO', date: '06/02/2026 10:00', type: 'resolucao', content: 'Projeto concluído com sucesso. Aceite assinado pelo cliente.' },
+        { user: 'DOUGLAS', role: 'Diretor', date: '06/02/2026 14:00', type: 'comentario', content: 'Parabéns à equipe pela entrega no prazo!' }
     ],
-    // BETA
-    'BETA_KICKOFF INTERNO': [
-        { user: 'ANDERSON', role: 'PMO', date: '01/07/2025 10:00', type: 'atualizacao', content: 'Kickoff do projeto BETA realizado.' },
-        { user: 'DAIANA', role: 'Gestora', date: '01/07/2025 15:00', type: 'comentario', content: 'Prioridade alta. Acompanhar cronograma.' }
+    // BELEZA (Concluído)
+    'BELEZA_Reunião de Kickoff': [
+        { user: 'ANDERSON', role: 'PMO', date: '01/05/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado. Escopo alinhado com stakeholders.' }
+    ],
+    'BELEZA_Aceite Formal': [
+        { user: 'ANDERSON', role: 'PMO', date: '30/11/2025 10:00', type: 'resolucao', content: 'Projeto BELEZA concluído. Cliente satisfeito com a entrega.' }
+    ],
+    // BETA (Concluído)
+    'BETA_Reunião de Kickoff': [
+        { user: 'ANDERSON', role: 'PMO', date: '01/07/2025 10:00', type: 'atualizacao', content: 'Kickoff do projeto BETA realizado no Rio de Janeiro.' },
+        { user: 'DAIANA', role: 'Gestora', date: '01/07/2025 15:00', type: 'comentario', content: 'Prioridade alta. Acompanhar cronograma semanalmente.' }
     ],
     'BETA_Aceite Formal': [
-        { user: 'ANDERSON', role: 'PMO', date: '10/03/2026 09:00', type: 'resolucao', content: 'Go Live realizado com sucesso em 10/03.' },
-        { user: 'DOUGLAS', role: 'Diretor', date: '10/03/2026 15:00', type: 'comentario', content: 'Excelente trabalho!' }
+        { user: 'ANDERSON', role: 'PMO', date: '10/03/2026 09:00', type: 'resolucao', content: 'Go Live realizado com sucesso!' },
+        { user: 'DOUGLAS', role: 'Diretor', date: '10/03/2026 15:00', type: 'comentario', content: 'Excelente trabalho da equipe!' }
     ],
-    // CDSK
-    'CDSK_KICKOFF INTERNO': [
-        { user: 'VINICIUS', role: 'PMO', date: '01/08/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado. Escopo definido.' }
+    // BETA ESTEIO (Kickoff)
+    'BETA ESTEIO_Reunião de Kickoff': [
+        { user: 'ANDERSON', role: 'PMO', date: '16/01/2026 09:00', type: 'atualizacao', content: 'Kickoff realizado em Esteio-RS. Equipe local mobilizada.' },
+        { user: 'DAIANA', role: 'Gestora', date: '16/01/2026 14:00', type: 'comentario', content: 'Projeto novo. Definir cronograma detalhado esta semana.' }
     ],
-    'CDSK_Deploy Produção': [
-        { user: 'VINICIUS', role: 'PMO', date: '05/02/2026 08:00', type: 'atualizacao', content: 'Deploy da Fase 1 iniciado. Janela: 08:00-12:00.' },
-        { user: 'VINICIUS', role: 'PMO', date: '05/02/2026 11:45', type: 'resolucao', content: 'Deploy concluído com sucesso! Monitoramento ativo.' },
-        { user: 'DAIANA', role: 'Gestora', date: '06/02/2026 09:00', type: 'comentario', content: 'Acompanhar estabilização pós-deploy.' }
+    // BP (Levantamento)
+    'BP_Reunião de Kickoff': [
+        { user: 'GIOVANNI', role: 'PMO', date: '01/12/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado. Cliente BP presente.' }
     ],
-    // COUGAR
-    'COUGAR_KICKOFF INTERNO': [
-        { user: 'LEANDRO', role: 'PMO', date: '01/05/2025 09:30', type: 'atualizacao', content: 'Kickoff realizado com sucesso. Stakeholders alinhados.' },
-        { user: 'DAIANA', role: 'Gestora', date: '01/05/2025 14:00', type: 'comentario', content: 'Excelente início! Documentar decisões.' }
+    'BP_Levantamento Técnico': [
+        { user: 'GIOVANNI', role: 'PMO', date: '20/01/2026 10:00', type: 'atualizacao', content: 'Levantamento técnico em andamento. Mapeando infraestrutura atual.' },
+        { user: 'GIOVANNI', role: 'PMO', date: '28/01/2026 14:00', type: 'comentario', content: 'Identificadas 3 integrações críticas com sistemas legados.' }
+    ],
+    // BR (Kickoff)
+    'BR_Reunião de Kickoff': [
+        { user: 'FÁBIO', role: 'PMO', date: '01/02/2026 09:00', type: 'atualizacao', content: 'Kickoff realizado em Jaboatão-PE. Equipe regional presente.' },
+        { user: 'DAIANA', role: 'Gestora', date: '01/02/2026 15:00', type: 'comentario', content: 'Atenção especial à logística de equipamentos para o Nordeste.' }
+    ],
+    // CANDELABRIA (Concluído)
+    'CANDELABRIA_Reunião de Kickoff': [
+        { user: 'ALEX', role: 'PMO', date: '01/06/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado em Candelária-RS.' }
+    ],
+    'CANDELABRIA_Aceite Formal': [
+        { user: 'ALEX', role: 'PMO', date: '09/12/2025 10:00', type: 'resolucao', content: 'Projeto concluído dentro do prazo. Aceite assinado.' }
+    ],
+    // CDSK (Go Live)
+    'CDSK_Reunião de Kickoff': [
+        { user: 'VINICIUS', role: 'PMO', date: '01/08/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado. Escopo CDSK definido.' }
+    ],
+    'CDSK_Migração para Produção': [
+        { user: 'VINICIUS', role: 'PMO', date: '05/02/2026 08:00', type: 'atualizacao', content: 'Migração iniciada. Janela de mudança: 08:00-12:00.' },
+        { user: 'VINICIUS', role: 'PMO', date: '05/02/2026 11:45', type: 'resolucao', content: 'Migração concluída com sucesso! Sistema operacional.' },
+        { user: 'DAIANA', role: 'Gestora', date: '06/02/2026 09:00', type: 'comentario', content: 'Iniciar período de Hypercare. Monitorar 24/7.' }
+    ],
+    // COUGAR (Concluído)
+    'COUGAR_Reunião de Kickoff': [
+        { user: 'LEANDRO', role: 'PMO', date: '01/05/2025 09:30', type: 'atualizacao', content: 'Kickoff realizado. Stakeholders alinhados.' },
+        { user: 'DAIANA', role: 'Gestora', date: '01/05/2025 14:00', type: 'comentario', content: 'Projeto estratégico. Documentar todas as decisões.' }
     ],
     'COUGAR_Aceite Formal': [
-        { user: 'LEANDRO', role: 'PMO', date: '09/02/2026 10:00', type: 'resolucao', content: 'Go Live B2B realizado com sucesso!' },
+        { user: 'LEANDRO', role: 'PMO', date: '09/02/2026 10:00', type: 'resolucao', content: 'Go Live realizado com sucesso!' },
         { user: 'DOUGLAS', role: 'Diretor', date: '09/02/2026 15:00', type: 'comentario', content: 'Parabéns pela entrega!' }
     ],
-    // CRISTAL MG RETROFIT
-    'CRISTAL MG RETROFIT_KICKOFF INTERNO': [
+    // CRISTAL MG RETROFIT (Levantamento)
+    'CRISTAL MG RETROFIT_Reunião de Kickoff': [
         { user: 'GIOVANNI', role: 'PMO', date: '01/11/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado em Belo Horizonte.' }
     ],
-    'CRISTAL MG RETROFIT_Documentação Layout': [
-        { user: 'GIOVANNI', role: 'PMO', date: '01/02/2026 09:00', type: 'alerta', content: 'Escopo em revisão. Cliente solicitou alterações.' },
+    'CRISTAL MG RETROFIT_Documentação de Arquitetura': [
+        { user: 'GIOVANNI', role: 'PMO', date: '01/02/2026 09:00', type: 'alerta', content: 'Escopo em revisão. Cliente solicitou alterações no retrofit.' },
         { user: 'DAIANA', role: 'Gestora', date: '02/02/2026 11:00', type: 'comentario', content: 'Agendar reunião para alinhar novo escopo.' }
     ],
-    // DIA
-    'DIA_KICKOFF INTERNO': [
-        { user: 'ANDERSON', role: 'PMO', date: '01/09/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado.' }
+    // DIA (Provisionamento)
+    'DIA_Reunião de Kickoff': [
+        { user: 'ANDERSON', role: 'PMO', date: '01/09/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado. Projeto DIA iniciado.' }
     ],
-    'DIA_Solicitação VPN': [
-        { user: 'ANDERSON', role: 'PMO', date: '15/01/2026 10:00', type: 'alerta', content: 'ATENÇÃO: Aguardando liberação de VPN pelo cliente. Prazo comprometido.' },
-        { user: 'DAIANA', role: 'Gestora', date: '15/01/2026 11:30', type: 'comentario', content: 'Escalar para gerente de TI do cliente. VPN urgente.' },
+    'DIA_Solicitação de Acessos (VPN/IPs)': [
+        { user: 'ANDERSON', role: 'PMO', date: '15/01/2026 10:00', type: 'alerta', content: 'ATENÇÃO: Aguardando liberação de VPN pelo cliente.' },
+        { user: 'DAIANA', role: 'Gestora', date: '15/01/2026 11:30', type: 'comentario', content: 'Escalar para gerente de TI do cliente.' },
         { user: 'ANDERSON', role: 'PMO', date: '18/01/2026 09:00', type: 'atualizacao', content: 'Reunião agendada com TI do cliente para 20/01.' },
-        { user: 'DOUGLAS', role: 'Diretor', date: '20/01/2026 16:00', type: 'comentario', content: 'Acompanhando de perto. Manter atualizado sobre VPN.' }
+        { user: 'DOUGLAS', role: 'Diretor', date: '20/01/2026 16:00', type: 'comentario', content: 'Acompanhando de perto. VPN é crítico.' }
     ],
-    // ELETRO
-    'ELETRO_KICKOFF INTERNO': [
-        { user: 'GIOVANNI', role: 'PMO', date: '01/10/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado.' }
+    // DIAMANTE (Não Iniciado)
+    'DIAMANTE_Reunião de Kickoff': [
+        { user: 'FÁBIO', role: 'PMO', date: '15/02/2026 09:00', type: 'atualizacao', content: 'Projeto agendado para iniciar em 15/02/2026.' },
+        { user: 'DAIANA', role: 'Gestora', date: '01/02/2026 10:00', type: 'comentario', content: 'Preparar documentação inicial. Equipe será alocada em fevereiro.' }
     ],
-    'ELETRO_Instalação Equipamentos': [
-        { user: 'GIOVANNI', role: 'PMO', date: '01/02/2026 10:00', type: 'atualizacao', content: 'Implementação em andamento. 35% concluído.' }
+    // ELETRO (Implantação)
+    'ELETRO_Reunião de Kickoff': [
+        { user: 'GIOVANNI', role: 'PMO', date: '01/10/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado. Projeto ELETRO iniciado.' }
     ],
-    // NAVEPARK
-    'NAVEPARK_KICKOFF INTERNO': [
-        { user: 'ANDERSON', role: 'PMO', date: '01/09/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado. Equipe mobilizada.' }
+    'ELETRO_Instalação Física': [
+        { user: 'GIOVANNI', role: 'PMO', date: '01/02/2026 10:00', type: 'atualizacao', content: 'Implantação em andamento. 35% dos equipamentos instalados.' },
+        { user: 'GIOVANNI', role: 'PMO', date: '03/02/2026 14:00', type: 'comentario', content: 'Próxima entrega de equipamentos prevista para 10/02.' }
     ],
-    'NAVEPARK_Solicitação VPN': [
-        { user: 'ANDERSON', role: 'PMO', date: '20/01/2026 09:00', type: 'comentario', content: 'Aguardando sinal do datacenter.' },
-        { user: 'ANDERSON', role: 'PMO', date: '25/01/2026 14:00', type: 'atualizacao', content: 'Sinal recebido. Configuração em andamento.' }
+    // ESPERANÇA (Concluído)
+    'ESPERANÇA_Reunião de Kickoff': [
+        { user: 'VINICIUS', role: 'PMO', date: '01/04/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado em Belo Horizonte.' }
     ],
-    // OCTOPUS MS
-    'OCTOPUS MS_KICKOFF INTERNO': [
-        { user: 'ALEX', role: 'PMO', date: '01/10/2025 09:30', type: 'atualizacao', content: 'Kickoff realizado com sucesso.' },
-        { user: 'DAIANA', role: 'Gestora', date: '01/10/2025 14:15', type: 'comentario', content: 'Excelente início!' }
+    'ESPERANÇA_Aceite Formal': [
+        { user: 'VINICIUS', role: 'PMO', date: '19/01/2026 10:00', type: 'resolucao', content: 'Projeto ESPERANÇA concluído com sucesso!' },
+        { user: 'DOUGLAS', role: 'Diretor', date: '19/01/2026 15:00', type: 'comentario', content: 'Excelente entrega. Cliente muito satisfeito.' }
     ],
-    'OCTOPUS MS_Instalação Equipamentos': [
-        { user: 'ALEX', role: 'PMO', date: '15/01/2026 10:00', type: 'atualizacao', content: 'Implementação iniciada. Módulos em desenvolvimento.' }
+    // FLOWER (Levantamento)
+    'FLOWER_Reunião de Kickoff': [
+        { user: 'ANDERSON', role: 'PMO', date: '01/12/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado. Projeto FLOWER iniciado.' }
     ],
-    // PBL GUATEMALA
-    'PBL GUATEMALA_KICKOFF INTERNO': [
-        { user: 'FÁBIO', role: 'PMO', date: '01/09/2025 09:00', type: 'atualizacao', content: 'Kickoff internacional realizado via videoconferência.' },
-        { user: 'DAIANA', role: 'Gestora', date: '01/09/2025 14:00', type: 'comentario', content: 'Atenção ao fuso horário nas reuniões.' }
+    'FLOWER_Levantamento Técnico': [
+        { user: 'ANDERSON', role: 'PMO', date: '15/01/2026 10:00', type: 'atualizacao', content: 'Levantamento técnico em andamento.' },
+        { user: 'ANDERSON', role: 'PMO', date: '25/01/2026 14:00', type: 'comentario', content: 'Mapeamento de requisitos 60% concluído.' }
     ],
-    'PBL GUATEMALA_Instalação Equipamentos': [
-        { user: 'FÁBIO', role: 'PMO', date: '25/01/2026 10:00', type: 'atualizacao', content: 'Implementação em andamento. 60% dos módulos concluídos.' },
-        { user: 'FÁBIO', role: 'PMO', date: '28/01/2026 15:30', type: 'alerta', content: 'Problema de compatibilidade com sistema legado identificado.' },
-        { user: 'DAIANA', role: 'Gestora', date: '29/01/2026 09:00', type: 'comentario', content: 'Qual o impacto no cronograma? Avaliar riscos.' },
-        { user: 'FÁBIO', role: 'PMO', date: '30/01/2026 11:00', type: 'resolucao', content: 'Problema resolvido com workaround. Cronograma mantido.' }
+    // GAVIÃO (Concluído)
+    'GAVIÃO_Reunião de Kickoff': [
+        { user: 'FÁBIO', role: 'PMO', date: '01/05/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado em Fortaleza-CE.' }
     ],
-    // REVERSE
-    'REVERSE_KICKOFF INTERNO': [
-        { user: 'ALEX', role: 'PMO', date: '01/09/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado.' }
+    'GAVIÃO_Aceite Formal': [
+        { user: 'FÁBIO', role: 'PMO', date: '01/02/2026 10:00', type: 'resolucao', content: 'Projeto GAVIÃO concluído. Aceite formal assinado.' }
     ],
-    'REVERSE_Testes Homologação': [
-        { user: 'ALEX', role: 'PMO', date: '28/01/2026 14:00', type: 'atualizacao', content: 'Testes iniciados. Cobertura atual: 45%.' },
-        { user: 'ALEX', role: 'PMO', date: '01/02/2026 16:00', type: 'atualizacao', content: 'Cobertura de testes em 78%. Bugs corrigidos.' },
-        { user: 'DAIANA', role: 'Gestora', date: '02/02/2026 10:00', type: 'comentario', content: 'Acompanhar homologação com cliente.' }
+    // MKT CHILE (Não Iniciado)
+    'MKT CHILE_Reunião de Kickoff': [
+        { user: 'ALEX', role: 'PMO', date: '01/02/2026 10:00', type: 'atualizacao', content: 'Projeto internacional agendado para junho/2026.' },
+        { user: 'DAIANA', role: 'Gestora', date: '01/02/2026 14:00', type: 'comentario', content: 'Iniciar alinhamento com equipe do Chile. Atenção ao fuso horário.' }
     ],
-    // SUPER DIVINOPOLIS
-    'SUPER DIVINOPOLIS_KICKOFF INTERNO': [
-        { user: 'GIOVANNI', role: 'PMO', date: '01/10/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado.' }
+    // MKT PERU (Não Iniciado)
+    'MKT PERU_Reunião de Kickoff': [
+        { user: 'ALEX', role: 'PMO', date: '01/02/2026 10:30', type: 'atualizacao', content: 'Projeto internacional agendado para junho/2026.' },
+        { user: 'DAIANA', role: 'Gestora', date: '01/02/2026 14:30', type: 'comentario', content: 'Projeto conjunto com MKT CHILE. Compartilhar recursos.' }
     ],
-    'SUPER DIVINOPOLIS_Instalação Equipamentos': [
-        { user: 'GIOVANNI', role: 'PMO', date: '01/02/2026 10:00', type: 'atualizacao', content: 'Implementação em 50%. Progresso conforme planejado.' }
+    // MASTER (Não Iniciado)
+    'MASTER_Reunião de Kickoff': [
+        { user: 'LEANDRO', role: 'PMO', date: '01/02/2026 09:00', type: 'atualizacao', content: 'Projeto MASTER agendado para março/2026.' },
+        { user: 'DOUGLAS', role: 'Diretor', date: '01/02/2026 11:00', type: 'comentario', content: 'Projeto estratégico. Garantir recursos dedicados.' }
     ],
-    // TITANIO
-    'TITANIO_KICKOFF INTERNO': [
-        { user: 'ALEX', role: 'PMO', date: '01/07/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado.' }
+    // NAVEPARK (Provisionamento)
+    'NAVEPARK_Reunião de Kickoff': [
+        { user: 'ANDERSON', role: 'PMO', date: '01/09/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado em Curitiba. Equipe mobilizada.' }
     ],
-    'TITANIO_Monitoramento': [
-        { user: 'ALEX', role: 'PMO', date: '01/02/2026 14:00', type: 'atualizacao', content: 'Período de estabilização iniciado. Monitoramento 24/7 ativo.' },
+    'NAVEPARK_Solicitação de Acessos (VPN/IPs)': [
+        { user: 'ANDERSON', role: 'PMO', date: '20/01/2026 09:00', type: 'comentario', content: 'Aguardando sinal do datacenter local.' },
+        { user: 'ANDERSON', role: 'PMO', date: '25/01/2026 14:00', type: 'atualizacao', content: 'Sinal recebido. Configuração de acessos em andamento.' }
+    ],
+    // OCTOPUS MS (Implantação)
+    'OCTOPUS MS_Reunião de Kickoff': [
+        { user: 'ALEX', role: 'PMO', date: '01/10/2025 09:30', type: 'atualizacao', content: 'Kickoff realizado em Campo Grande-MS.' },
+        { user: 'DAIANA', role: 'Gestora', date: '01/10/2025 14:15', type: 'comentario', content: 'Projeto regional. Atenção à logística.' }
+    ],
+    'OCTOPUS MS_Instalação Física': [
+        { user: 'ALEX', role: 'PMO', date: '15/01/2026 10:00', type: 'atualizacao', content: 'Implantação iniciada. Equipamentos em instalação.' }
+    ],
+    // OCTOPUS SC (Concluído)
+    'OCTOPUS SC_Reunião de Kickoff': [
+        { user: 'ALEX', role: 'PMO', date: '01/06/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado em Florianópolis-SC.' }
+    ],
+    'OCTOPUS SC_Aceite Formal': [
+        { user: 'ALEX', role: 'PMO', date: '15/12/2025 10:00', type: 'resolucao', content: 'Projeto OCTOPUS SC concluído com sucesso!' }
+    ],
+    // OPTIMUS PRIME (Concluído)
+    'OPTIMUS PRIME_Reunião de Kickoff': [
+        { user: 'GIOVANNI', role: 'PMO', date: '01/04/2025 09:00', type: 'atualizacao', content: 'Kickoff do projeto OPTIMUS PRIME realizado.' }
+    ],
+    'OPTIMUS PRIME_Aceite Formal': [
+        { user: 'GIOVANNI', role: 'PMO', date: '27/10/2025 10:00', type: 'resolucao', content: 'Projeto concluído antes do prazo!' },
+        { user: 'DOUGLAS', role: 'Diretor', date: '27/10/2025 14:00', type: 'comentario', content: 'Excelente performance da equipe!' }
+    ],
+    // PBL GUATEMALA (Homologação)
+    'PBL GUATEMALA_Reunião de Kickoff': [
+        { user: 'FÁBIO', role: 'PMO', date: '01/09/2025 09:00', type: 'atualizacao', content: 'Kickoff internacional via videoconferência.' },
+        { user: 'DAIANA', role: 'Gestora', date: '01/09/2025 14:00', type: 'comentario', content: 'Atenção ao fuso horário. Reuniões às 10h (horário local).' }
+    ],
+    'PBL GUATEMALA_Testes Funcionais': [
+        { user: 'FÁBIO', role: 'PMO', date: '25/01/2026 10:00', type: 'atualizacao', content: 'Testes funcionais iniciados. 40% dos cenários executados.' },
+        { user: 'FÁBIO', role: 'PMO', date: '28/01/2026 15:30', type: 'alerta', content: 'Bug crítico identificado na integração com ERP local.' },
+        { user: 'DAIANA', role: 'Gestora', date: '29/01/2026 09:00', type: 'comentario', content: 'Priorizar correção. Qual impacto no cronograma?' },
+        { user: 'FÁBIO', role: 'PMO', date: '30/01/2026 11:00', type: 'resolucao', content: 'Bug corrigido. Cronograma mantido.' }
+    ],
+    // PROMO B2B CD GRU (Concluído)
+    'PROMO B2B CD GRU_Reunião de Kickoff': [
+        { user: 'LEANDRO', role: 'PMO', date: '01/07/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado em Guarulhos.' }
+    ],
+    'PROMO B2B CD GRU_Aceite Formal': [
+        { user: 'LEANDRO', role: 'PMO', date: '04/02/2026 10:00', type: 'resolucao', content: 'Projeto CD GRU concluído. Centro de distribuição operacional.' }
+    ],
+    // PTL SP (Concluído)
+    'PTL SP_Reunião de Kickoff': [
+        { user: 'VINICIUS', role: 'PMO', date: '01/04/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado. Projeto PTL SP iniciado.' }
+    ],
+    'PTL SP_Aceite Formal': [
+        { user: 'VINICIUS', role: 'PMO', date: '30/10/2025 10:00', type: 'resolucao', content: 'Projeto concluído com sucesso.' }
+    ],
+    // REISADO (Concluído)
+    'REISADO_Reunião de Kickoff': [
+        { user: 'FÁBIO', role: 'PMO', date: '01/06/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado em Recife-PE.' }
+    ],
+    'REISADO_Aceite Formal': [
+        { user: 'FÁBIO', role: 'PMO', date: '20/12/2025 10:00', type: 'resolucao', content: 'Projeto REISADO concluído. Entrega antes do Natal!' }
+    ],
+    // REVERSE (Homologação)
+    'REVERSE_Reunião de Kickoff': [
+        { user: 'ALEX', role: 'PMO', date: '01/09/2025 09:00', type: 'atualizacao', content: 'Kickoff do projeto REVERSE realizado.' }
+    ],
+    'REVERSE_Testes Funcionais': [
+        { user: 'ALEX', role: 'PMO', date: '28/01/2026 14:00', type: 'atualizacao', content: 'Testes funcionais iniciados. Cobertura: 45%.' },
+        { user: 'ALEX', role: 'PMO', date: '01/02/2026 16:00', type: 'atualizacao', content: 'Cobertura de testes em 78%. Bugs menores corrigidos.' },
+        { user: 'DAIANA', role: 'Gestora', date: '02/02/2026 10:00', type: 'comentario', content: 'Agendar homologação com cliente para próxima semana.' }
+    ],
+    // SUPER DIVINOPOLIS (Implantação)
+    'SUPER DIVINOPOLIS_Reunião de Kickoff': [
+        { user: 'GIOVANNI', role: 'PMO', date: '01/10/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado em Divinópolis-MG.' }
+    ],
+    'SUPER DIVINOPOLIS_Configuração de Rede': [
+        { user: 'GIOVANNI', role: 'PMO', date: '01/02/2026 10:00', type: 'atualizacao', content: 'Implantação em 50%. Progresso conforme planejado.' },
+        { user: 'GIOVANNI', role: 'PMO', date: '03/02/2026 14:00', type: 'comentario', content: 'Equipe local bem treinada. Sem impedimentos.' }
+    ],
+    // TITANIO (Hypercare)
+    'TITANIO_Reunião de Kickoff': [
+        { user: 'ALEX', role: 'PMO', date: '01/07/2025 09:00', type: 'atualizacao', content: 'Kickoff do projeto TITANIO realizado.' }
+    ],
+    'TITANIO_Monitoramento Intensivo': [
+        { user: 'ALEX', role: 'PMO', date: '01/02/2026 14:00', type: 'atualizacao', content: 'Hypercare iniciado. Monitoramento 24/7 ativo.' },
         { user: 'ALEX', role: 'PMO', date: '02/02/2026 09:00', type: 'comentario', content: 'Nenhum incidente nas primeiras 24h. Sistema estável.' },
-        { user: 'DAIANA', role: 'Gestora', date: '02/02/2026 15:00', type: 'comentario', content: 'Manter monitoramento. Preparar para encerramento.' }
+        { user: 'DAIANA', role: 'Gestora', date: '02/02/2026 15:00', type: 'comentario', content: 'Manter monitoramento. Preparar documentação de encerramento.' }
     ]
 };
 
