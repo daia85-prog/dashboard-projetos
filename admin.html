@@ -1,132 +1,487 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Admin - Dashboard v8</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;padding:20px}
-.container{max-width:1300px;margin:0 auto;background:#fff;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.2);overflow:hidden}
-.header{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;padding:20px 25px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px}
-.header h1{font-size:1.4em}
-.nav-links{display:flex;gap:10px}
-.nav-links a{color:#fff;text-decoration:none;padding:8px 16px;background:rgba(255,255,255,.2);border-radius:6px;font-weight:600;font-size:.9em}
-.nav-links a:hover{background:rgba(255,255,255,.3)}
-.content{padding:25px}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:15px;margin-bottom:25px}
-.stat{text-align:center;padding:20px;background:#f8fafc;border-radius:10px;border-top:4px solid #e2e8f0}
-.stat.azul{border-top-color:#3b82f6}
-.stat.verde{border-top-color:#22c55e}
-.stat.amarelo{border-top-color:#f59e0b}
-.stat.roxo{border-top-color:#8b5cf6}
-.stat.vermelho{border-top-color:#ef4444}
-.stat .num{font-size:2.2em;font-weight:700;color:#1e293b}
-.stat .lbl{color:#64748b;font-size:.85em;margin-top:5px}
-.stat.azul .num{color:#3b82f6}
-.stat.verde .num{color:#22c55e}
-.stat.amarelo .num{color:#f59e0b}
-.stat.roxo .num{color:#8b5cf6}
-.stat.vermelho .num{color:#ef4444}
-h3{color:#1e293b;margin-bottom:15px;font-size:1.1em}
-table{width:100%;border-collapse:collapse}
-th,td{padding:12px 15px;text-align:left;border-bottom:1px solid #e2e8f0}
-th{background:#f8fafc;color:#64748b;font-weight:600;font-size:.85em;position:sticky;top:0}
-tr:hover{background:#f8fafc}
-.status{padding:4px 10px;border-radius:5px;font-size:.75em;font-weight:600;display:inline-block}
-.status.concluido{background:#dcfce7;color:#166534}
-.status.em-andamento{background:#dbeafe;color:#1e40af}
-.status.planejamento{background:#f3e8ff;color:#7c3aed}
-.status.atrasado{background:#fee2e2;color:#991b1b}
-.priority{padding:3px 8px;border-radius:4px;font-size:.72em;font-weight:700}
-.priority.alta{background:#fee2e2;color:#dc2626}
-.priority.media{background:#fef3c7;color:#d97706}
-.priority.baixa{background:#dcfce7;color:#16a34a}
-.table-wrapper{max-height:500px;overflow-y:auto;border:1px solid #e2e8f0;border-radius:10px}
-.footer{text-align:center;padding:15px;background:#f8fafc;border-top:1px solid #e2e8f0;font-size:.8em;color:#64748b}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Dashboard de Infraestrutura v9</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { color: white; text-align: center; margin-bottom: 20px; font-size: 1.8em; }
+        h1 span { font-size: 0.6em; display: block; font-weight: 400; opacity: 0.9; }
+        .card { background: white; border-radius: 12px; padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .card h2 { color: #667eea; margin-bottom: 15px; font-size: 1.2em; display: flex; align-items: center; gap: 10px; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab { padding: 10px 20px; background: #f1f5f9; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s; }
+        .tab:hover { background: #e2e8f0; }
+        .tab.active { background: #667eea; color: white; }
+        .section { display: none; }
+        .section.active { display: block; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; color: #475569; font-size: 0.9em; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 0.95em; transition: border-color 0.2s; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #667eea; }
+        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .btn { padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn-primary { background: #667eea; color: white; }
+        .btn-primary:hover { background: #5a67d8; }
+        .btn-success { background: #22c55e; color: white; }
+        .btn-success:hover { background: #16a34a; }
+        .btn-danger { background: #ef4444; color: white; }
+        .btn-danger:hover { background: #dc2626; }
+        .btn-secondary { background: #64748b; color: white; }
+        .btn-secondary:hover { background: #475569; }
+        .buttons { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+        .upload-area { border: 3px dashed #cbd5e1; border-radius: 12px; padding: 40px; text-align: center; cursor: pointer; transition: all 0.2s; background: #f8fafc; }
+        .upload-area:hover { border-color: #667eea; background: #f1f5f9; }
+        .upload-area.dragover { border-color: #667eea; background: #ede9fe; }
+        .upload-area input { display: none; }
+        .upload-icon { font-size: 3em; margin-bottom: 10px; }
+        .upload-text { color: #64748b; }
+        .upload-text strong { color: #667eea; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.85em; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        th { background: #f8fafc; font-weight: 600; color: #475569; position: sticky; top: 0; }
+        tr:hover { background: #f8fafc; }
+        .table-container { max-height: 400px; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 8px; }
+        .alert { padding: 15px; border-radius: 8px; margin-bottom: 15px; }
+        .alert-success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+        .alert-error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+        .alert-info { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+        .preview-section { margin-top: 20px; }
+        .preview-section h3 { color: #475569; margin-bottom: 10px; font-size: 1em; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .stat { background: #f8fafc; padding: 15px; border-radius: 8px; text-align: center; }
+        .stat-num { font-size: 2em; font-weight: 700; color: #667eea; }
+        .stat-label { font-size: 0.85em; color: #64748b; }
+        .link-box { background: #f1f5f9; padding: 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px; margin-top: 15px; }
+        .link-box input { flex: 1; background: white; }
+        .badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 0.75em; font-weight: 600; }
+        .badge-alta { background: #fee2e2; color: #dc2626; }
+        .badge-media, .badge-média { background: #fef3c7; color: #d97706; }
+        .badge-baixa { background: #dcfce7; color: #16a34a; }
+        .nav-link { display: inline-block; padding: 10px 20px; background: rgba(255,255,255,0.2); color: white; text-decoration: none; border-radius: 8px; margin-bottom: 15px; transition: all 0.2s; }
+        .nav-link:hover { background: rgba(255,255,255,0.3); }
+        .fase-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+        .fase-tag { background: #e0e7ff; color: #3730a3; padding: 4px 10px; border-radius: 6px; font-size: 0.8em; }
+    </style>
 </head>
 <body>
-<div class="container">
-<header class="header">
-<h1>⚙️ Administração - Dashboard v8</h1>
-<nav class="nav-links">
-<a href="index.html">🏠 Executiva</a>
-<a href="view-projetos.html">📊 Alertas</a>
-<a href="view-detalhada.html">📋 Detalhada</a>
-</nav>
-</header>
-<main class="content">
-<div class="stats" id="stats"></div>
-<h3>📋 Lista de Projetos (<span id="totalCount">30</span>)</h3>
-<div class="table-wrapper">
-<table>
-<thead><tr><th>#</th><th>Projeto</th><th>Status</th><th>Prioridade</th><th>PMO</th><th>Local</th><th>Progresso</th></tr></thead>
-<tbody id="tbody"></tbody>
-</table>
-</div>
-</main>
-<footer class="footer">Admin Dashboard v8 | Invent Corp | 30 Projetos</footer>
-</div>
-<script>
-const PROJETOS=[
-{id:1,nome:"BARBECUE B2B",status:"Concluído",local:"São Paulo - SP",prioridade:"Alta",pmo:"ALEX",progresso:100},
-{id:2,nome:"BELEZA",status:"Concluído",local:"São Paulo - SP",prioridade:"Média",pmo:"ANDERSON",progresso:100},
-{id:3,nome:"BETA",status:"Concluído",local:"Rio de Janeiro - RJ",prioridade:"Alta",pmo:"ANDERSON",progresso:100},
-{id:4,nome:"BETA ESTEIO",status:"Planejamento",local:"Esteio - RS",prioridade:"Média",pmo:"ANDERSON",progresso:5},
-{id:5,nome:"BP",status:"Em andamento",local:"São Paulo - SP",prioridade:"Média",pmo:"GIOVANNI",progresso:15},
-{id:6,nome:"BR",status:"Planejamento",local:"Jaboatão - PE",prioridade:"Alta",pmo:"FÁBIO",progresso:5},
-{id:7,nome:"CANDELABRIA",status:"Concluído",local:"Candelária - RS",prioridade:"Média",pmo:"ALEX",progresso:100},
-{id:8,nome:"CDSK",status:"Em andamento",local:"São Paulo - SP",prioridade:"Alta",pmo:"VINICIUS",progresso:75},
-{id:9,nome:"COUGAR",status:"Concluído",local:"São Paulo - SP",prioridade:"Alta",pmo:"LEANDRO",progresso:100},
-{id:10,nome:"CRISTAL MG RETROFIT",status:"Em andamento",local:"Belo Horizonte - MG",prioridade:"Alta",pmo:"GIOVANNI",progresso:15},
-{id:11,nome:"DIA",status:"Atrasado",local:"São Paulo - SP",prioridade:"Alta",pmo:"ANDERSON",progresso:30},
-{id:12,nome:"DIAMANTE",status:"Planejamento",local:"Curitiba - PR",prioridade:"Média",pmo:"FÁBIO",progresso:0},
-{id:13,nome:"ELETRO",status:"Em andamento",local:"São Paulo - SP",prioridade:"Média",pmo:"GIOVANNI",progresso:35},
-{id:14,nome:"ESPERANÇA",status:"Concluído",local:"Belo Horizonte - MG",prioridade:"Média",pmo:"VINICIUS",progresso:100},
-{id:15,nome:"FLOWER",status:"Em andamento",local:"São Paulo - SP",prioridade:"Baixa",pmo:"ANDERSON",progresso:10},
-{id:16,nome:"GAVIÃO",status:"Concluído",local:"Fortaleza - CE",prioridade:"Alta",pmo:"FÁBIO",progresso:100},
-{id:17,nome:"MKT CHILE",status:"Planejamento",local:"Santiago - Chile",prioridade:"Média",pmo:"ALEX",progresso:0},
-{id:18,nome:"MKT PERU",status:"Planejamento",local:"Lima - Peru",prioridade:"Média",pmo:"ALEX",progresso:0},
-{id:19,nome:"MASTER",status:"Planejamento",local:"São Paulo - SP",prioridade:"Alta",pmo:"LEANDRO",progresso:0},
-{id:20,nome:"NAVEPARK",status:"Em andamento",local:"Curitiba - PR",prioridade:"Média",pmo:"ANDERSON",progresso:25},
-{id:21,nome:"OCTOPUS MS",status:"Em andamento",local:"Campo Grande - MS",prioridade:"Média",pmo:"ALEX",progresso:40},
-{id:22,nome:"OCTOPUS SC",status:"Concluído",local:"Florianópolis - SC",prioridade:"Média",pmo:"ALEX",progresso:100},
-{id:23,nome:"OPTIMUS PRIME",status:"Concluído",local:"São Paulo - SP",prioridade:"Alta",pmo:"GIOVANNI",progresso:100},
-{id:24,nome:"PBL GUATEMALA",status:"Em andamento",local:"Guatemala City",prioridade:"Alta",pmo:"FÁBIO",progresso:45},
-{id:25,nome:"PROMO B2B CD GRU",status:"Concluído",local:"Guarulhos - SP",prioridade:"Alta",pmo:"LEANDRO",progresso:100},
-{id:26,nome:"PTL SP",status:"Concluído",local:"São Paulo - SP",prioridade:"Média",pmo:"VINICIUS",progresso:100},
-{id:27,nome:"REISADO",status:"Concluído",local:"Recife - PE",prioridade:"Média",pmo:"FÁBIO",progresso:100},
-{id:28,nome:"REVERSE",status:"Em andamento",local:"São Paulo - SP",prioridade:"Alta",pmo:"ALEX",progresso:55},
-{id:29,nome:"SUPER DIVINOPOLIS",status:"Em andamento",local:"Divinópolis - MG",prioridade:"Média",pmo:"GIOVANNI",progresso:50},
-{id:30,nome:"TITANIO",status:"Em andamento",local:"São Paulo - SP",prioridade:"Alta",pmo:"ALEX",progresso:80}
-];
-function getStatusClass(s){return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/ /g,"-")}
-function render(){
-const t=PROJETOS.length;
-const c=PROJETOS.filter(p=>p.status==="Concluído").length;
-const e=PROJETOS.filter(p=>p.status==="Em andamento").length;
-const pl=PROJETOS.filter(p=>p.status==="Planejamento").length;
-const a=PROJETOS.filter(p=>p.status==="Atrasado").length;
-document.getElementById("stats").innerHTML=`
-<div class="stat azul"><div class="num">${t}</div><div class="lbl">Total</div></div>
-<div class="stat verde"><div class="num">${c}</div><div class="lbl">Concluídos</div></div>
-<div class="stat amarelo"><div class="num">${e}</div><div class="lbl">Em Andamento</div></div>
-<div class="stat roxo"><div class="num">${pl}</div><div class="lbl">Planejamento</div></div>
-<div class="stat vermelho"><div class="num">${a}</div><div class="lbl">Atrasados</div></div>`;
-document.getElementById("totalCount").textContent=t;
-document.getElementById("tbody").innerHTML=PROJETOS.map(p=>`
-<tr>
-<td>${p.id}</td>
-<td><strong>${p.nome}</strong></td>
-<td><span class="status ${getStatusClass(p.status)}">${p.status}</span></td>
-<td><span class="priority ${p.prioridade.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}">${p.prioridade}</span></td>
-<td>${p.pmo}</td>
-<td>${p.local}</td>
-<td>${p.progresso}%</td>
-</tr>`).join("");
-}
-render();
-</script>
+    <div class="container">
+        <a href="index.html" class="nav-link">← Voltar ao Dashboard</a>
+        <h1>⚙️ Administração<span>Dashboard de Infraestrutura v9</span></h1>
+        
+        <div class="card">
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('import')">📥 Importar Dados</button>
+                <button class="tab" onclick="showTab('projects')">📋 Projetos</button>
+                <button class="tab" onclick="showTab('activities')">📝 Atividades</button>
+                <button class="tab" onclick="showTab('export')">📤 Exportar</button>
+            </div>
+            
+            <!-- IMPORTAR -->
+            <div id="import" class="section active">
+                <h2>📥 Importar Dados do Excel</h2>
+                
+                <div class="alert alert-info">
+                    <strong>📌 Estrutura esperada da planilha:</strong><br>
+                    • <strong>Aba "Projetos":</strong> NOME, LOCAL, RESPONSÁVEL, PRIORIDADE, DATA INÍCIO, DATA PREVISTA<br>
+                    • <strong>Aba "Atividades":</strong> FASE, ATIVIDADE (estrutura padrão das 22 atividades)
+                </div>
+                
+                <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+                    <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" onchange="handleFile(event)">
+                    <div class="upload-icon">📁</div>
+                    <div class="upload-text">
+                        <strong>Clique para selecionar</strong> ou arraste o arquivo aqui<br>
+                        <small>Formatos: .xlsx, .xls, .csv</small>
+                    </div>
+                </div>
+                
+                <div class="preview-section" id="previewSection" style="display:none;">
+                    <h3>📊 Dados Carregados</h3>
+                    <div class="stats" id="importStats"></div>
+                    <div class="table-container" id="previewTable"></div>
+                    <div class="buttons">
+                        <button class="btn btn-success" onclick="applyImport()">✅ Aplicar Dados</button>
+                        <button class="btn btn-secondary" onclick="cancelImport()">❌ Cancelar</button>
+                    </div>
+                </div>
+                
+                <div class="alert alert-info" style="margin-top: 20px;">
+                    <strong>💡 Fases do projeto (8 fases, 22 atividades):</strong>
+                    <div class="fase-list">
+                        <span class="fase-tag">1. Kickoff (2)</span>
+                        <span class="fase-tag">2. Levantamento & Design (3)</span>
+                        <span class="fase-tag">3. Provisionamento (3)</span>
+                        <span class="fase-tag">4. Implantação (3)</span>
+                        <span class="fase-tag">5. Homologação (3)</span>
+                        <span class="fase-tag">6. Go Live (3)</span>
+                        <span class="fase-tag">7. Hypercare (3)</span>
+                        <span class="fase-tag">8. Encerramento (3)</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- PROJETOS -->
+            <div id="projects" class="section">
+                <h2>📋 Gerenciar Projetos</h2>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nome do Projeto *</label>
+                        <input type="text" id="projNome" placeholder="Ex: PROJETO ALPHA">
+                    </div>
+                    <div class="form-group">
+                        <label>Local</label>
+                        <input type="text" id="projLocal" placeholder="Ex: São Paulo - SP">
+                    </div>
+                    <div class="form-group">
+                        <label>Responsável</label>
+                        <input type="text" id="projResp" placeholder="Ex: ANDERSON">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Prioridade</label>
+                        <select id="projPrioridade">
+                            <option value="Alta">Alta</option>
+                            <option value="Média" selected>Média</option>
+                            <option value="Baixa">Baixa</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Data Início</label>
+                        <input type="date" id="projInicio">
+                    </div>
+                    <div class="form-group">
+                        <label>Data Prevista</label>
+                        <input type="date" id="projFim">
+                    </div>
+                </div>
+                
+                <div class="buttons">
+                    <button class="btn btn-primary" onclick="addProject()">➕ Adicionar Projeto</button>
+                    <button class="btn btn-secondary" onclick="clearProjectForm()">🔄 Limpar</button>
+                </div>
+                
+                <div class="table-container" style="margin-top: 20px;">
+                    <table id="projectsTable">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Local</th>
+                                <th>Responsável</th>
+                                <th>Prioridade</th>
+                                <th>Início</th>
+                                <th>Término</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="projectsBody"></tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- ATIVIDADES -->
+            <div id="activities" class="section">
+                <h2>📝 Atividades Padrão por Fase</h2>
+                
+                <div class="alert alert-info">
+                    As atividades são geradas automaticamente para cada projeto com base na estrutura padrão de 22 atividades em 8 fases.
+                </div>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Fase</th><th>Atividades</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>1. Kickoff</strong></td><td>Reunião de Kickoff, Definição de Escopo</td></tr>
+                            <tr><td><strong>2. Levantamento & Design</strong></td><td>Levantamento Técnico, Documentação de Arquitetura, Elaboração do Cronograma</td></tr>
+                            <tr><td><strong>3. Provisionamento</strong></td><td>Solicitação de Acessos (VPN/IPs), Aquisição de Equipamentos, Preparação de Ambiente</td></tr>
+                            <tr><td><strong>4. Implantação</strong></td><td>Instalação Física, Configuração de Rede, Integração de Sistemas</td></tr>
+                            <tr><td><strong>5. Homologação</strong></td><td>Testes Funcionais, Testes de Performance, Validação com Cliente</td></tr>
+                            <tr><td><strong>6. Go Live</strong></td><td>Janela de Mudança (GMUD), Migração para Produção, Validação Pós-Migração</td></tr>
+                            <tr><td><strong>7. Hypercare</strong></td><td>Monitoramento Intensivo, Correção de Incidentes, Ajustes e Otimização</td></tr>
+                            <tr><td><strong>8. Encerramento</strong></td><td>Documentação Final, Treinamento/Repasse, Aceite Formal</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- EXPORTAR -->
+            <div id="export" class="section">
+                <h2>📤 Exportar Dados</h2>
+                
+                <div class="stats" id="exportStats"></div>
+                
+                <div class="buttons">
+                    <button class="btn btn-primary" onclick="exportJSON()">📄 Exportar JSON</button>
+                    <button class="btn btn-success" onclick="copyToClipboard()">📋 Copiar para Área de Transferência</button>
+                </div>
+                
+                <div class="form-group" style="margin-top: 20px;">
+                    <label>Dados (JSON)</label>
+                    <textarea id="exportData" rows="15" style="font-family: monospace; font-size: 0.85em;"></textarea>
+                </div>
+                
+                <div class="link-box">
+                    <span>🔗 Dashboard:</span>
+                    <input type="text" value="https://daia85-prog.github.io/dashboard-projetos/" readonly id="dashLink">
+                    <button class="btn btn-secondary" onclick="copyLink()">Copiar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        let PROJETOS = [];
+        let importedData = null;
+        
+        // Carregar dados do localStorage
+        function loadData() {
+            const saved = localStorage.getItem('dashboardProjetos_v9');
+            if (saved) {
+                const data = JSON.parse(saved);
+                PROJETOS = data.projetos || [];
+            }
+            renderTables();
+            updateStats();
+        }
+        
+        // Salvar dados no localStorage
+        function saveData() {
+            localStorage.setItem('dashboardProjetos_v9', JSON.stringify({
+                projetos: PROJETOS,
+                timestamp: new Date().toISOString()
+            }));
+        }
+        
+        // Tabs
+        function showTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById(tab).classList.add('active');
+            
+            if (tab === 'export') prepareExport();
+        }
+        
+        // Upload de arquivo
+        const uploadArea = document.getElementById('uploadArea');
+        uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('dragover'); });
+        uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+        uploadArea.addEventListener('drop', e => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            if (e.dataTransfer.files.length) handleFile({ target: { files: e.dataTransfer.files } });
+        });
+        
+        function handleFile(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    
+                    importedData = { projetos: [] };
+                    
+                    // Ler aba Projetos
+                    if (workbook.SheetNames.includes('Projetos')) {
+                        const sheet = workbook.Sheets['Projetos'];
+                        const json = XLSX.utils.sheet_to_json(sheet);
+                        importedData.projetos = json.map(row => ({
+                            nome: row['NOME'] || row['Nome'] || '',
+                            local: row['LOCAL'] || row['Local'] || '',
+                            resp: row['RESPONSÁVEL'] || row['Responsável'] || row['RESPONSAVEL'] || '',
+                            prioridade: row['PRIORIDADE'] || row['Prioridade'] || 'Média',
+                            dataInicio: formatExcelDate(row['DATA INÍCIO'] || row['Data Início'] || row['DATA INICIO'] || ''),
+                            dataPrevista: formatExcelDate(row['DATA PREVISTA'] || row['Data Prevista'] || '')
+                        })).filter(p => p.nome);
+                    }
+                    
+                    showPreview();
+                } catch (err) {
+                    alert('Erro ao processar arquivo: ' + err.message);
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+        
+        function formatExcelDate(val) {
+            if (!val) return '';
+            if (typeof val === 'number') {
+                const date = new Date((val - 25569) * 86400 * 1000);
+                return date.toISOString().split('T')[0];
+            }
+            if (typeof val === 'string') {
+                if (val.includes('/')) {
+                    const parts = val.split('/');
+                    if (parts.length === 3) {
+                        if (parts[2].length === 4) {
+                            return `${parts[2]}-${parts[1].padStart(2,'0')}-${parts[0].padStart(2,'0')}`;
+                        } else {
+                            return `${parts[0]}-${parts[1].padStart(2,'0')}-${parts[2].padStart(2,'0')}`;
+                        }
+                    }
+                }
+                return val;
+            }
+            return '';
+        }
+        
+        function showPreview() {
+            document.getElementById('previewSection').style.display = 'block';
+            document.getElementById('importStats').innerHTML = `
+                <div class="stat"><div class="stat-num">${importedData.projetos.length}</div><div class="stat-label">Projetos</div></div>
+            `;
+            
+            let tableHtml = '<table><thead><tr><th>Nome</th><th>Local</th><th>Responsável</th><th>Prioridade</th></tr></thead><tbody>';
+            importedData.projetos.slice(0, 10).forEach(p => {
+                tableHtml += `<tr><td>${p.nome}</td><td>${p.local}</td><td>${p.resp}</td><td>${p.prioridade}</td></tr>`;
+            });
+            if (importedData.projetos.length > 10) {
+                tableHtml += `<tr><td colspan="4" style="text-align:center;color:#94a3b8;">... e mais ${importedData.projetos.length - 10} projetos</td></tr>`;
+            }
+            tableHtml += '</tbody></table>';
+            document.getElementById('previewTable').innerHTML = tableHtml;
+        }
+        
+        function applyImport() {
+            if (!importedData) return;
+            
+            PROJETOS = importedData.projetos;
+            saveData();
+            renderTables();
+            updateStats();
+            
+            document.getElementById('previewSection').style.display = 'none';
+            importedData = null;
+            alert('✅ Dados importados com sucesso!\n\nOs projetos foram salvos. Acesse o Dashboard principal para visualizar.');
+        }
+        
+        function cancelImport() {
+            document.getElementById('previewSection').style.display = 'none';
+            importedData = null;
+        }
+        
+        // Projetos
+        function addProject() {
+            const nome = document.getElementById('projNome').value.trim().toUpperCase();
+            if (!nome) { alert('Nome do projeto é obrigatório!'); return; }
+            
+            if (PROJETOS.find(p => p.nome === nome)) {
+                alert('Já existe um projeto com esse nome!');
+                return;
+            }
+            
+            PROJETOS.push({
+                nome,
+                local: document.getElementById('projLocal').value.trim(),
+                resp: document.getElementById('projResp').value.trim().toUpperCase(),
+                prioridade: document.getElementById('projPrioridade').value,
+                dataInicio: document.getElementById('projInicio').value,
+                dataPrevista: document.getElementById('projFim').value
+            });
+            
+            saveData();
+            renderTables();
+            clearProjectForm();
+            alert('✅ Projeto adicionado!');
+        }
+        
+        function deleteProject(nome) {
+            if (!confirm(`Excluir projeto "${nome}"?`)) return;
+            PROJETOS = PROJETOS.filter(p => p.nome !== nome);
+            saveData();
+            renderTables();
+        }
+        
+        function clearProjectForm() {
+            document.getElementById('projNome').value = '';
+            document.getElementById('projLocal').value = '';
+            document.getElementById('projResp').value = '';
+            document.getElementById('projPrioridade').value = 'Média';
+            document.getElementById('projInicio').value = '';
+            document.getElementById('projFim').value = '';
+        }
+        
+        // Renderizar tabelas
+        function renderTables() {
+            const tbody = document.getElementById('projectsBody');
+            tbody.innerHTML = PROJETOS.map(p => `
+                <tr>
+                    <td><strong>${p.nome}</strong></td>
+                    <td>${p.local || '-'}</td>
+                    <td>${p.resp || '-'}</td>
+                    <td><span class="badge badge-${(p.prioridade || 'média').toLowerCase()}">${p.prioridade || 'Média'}</span></td>
+                    <td>${formatDateBR(p.dataInicio)}</td>
+                    <td>${formatDateBR(p.dataPrevista)}</td>
+                    <td><button class="btn btn-danger" style="padding:5px 10px;font-size:0.8em" onclick="deleteProject('${p.nome}')">🗑️</button></td>
+                </tr>
+            `).join('') || '<tr><td colspan="7" style="text-align:center;color:#94a3b8;">Nenhum projeto cadastrado</td></tr>';
+        }
+        
+        function formatDateBR(d) {
+            if (!d) return '-';
+            if (d.includes('-')) {
+                const [y, m, day] = d.split('-');
+                return `${day}/${m}/${y}`;
+            }
+            return d;
+        }
+        
+        // Estatísticas
+        function updateStats() {
+            document.getElementById('exportStats').innerHTML = `
+                <div class="stat"><div class="stat-num">${PROJETOS.length}</div><div class="stat-label">Projetos</div></div>
+                <div class="stat"><div class="stat-num">22</div><div class="stat-label">Atividades/Projeto</div></div>
+                <div class="stat"><div class="stat-num">8</div><div class="stat-label">Fases</div></div>
+            `;
+        }
+        
+        // Exportar
+        function prepareExport() {
+            updateStats();
+            document.getElementById('exportData').value = JSON.stringify({
+                projetos: PROJETOS,
+                exportedAt: new Date().toISOString(),
+                version: 'v9'
+            }, null, 2);
+        }
+        
+        function exportJSON() {
+            const data = document.getElementById('exportData').value;
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'dashboard-projetos-v9.json';
+            a.click();
+        }
+        
+        function copyToClipboard() {
+            const textarea = document.getElementById('exportData');
+            textarea.select();
+            document.execCommand('copy');
+            alert('✅ Copiado para a área de transferência!');
+        }
+        
+        function copyLink() {
+            const input = document.getElementById('dashLink');
+            input.select();
+            document.execCommand('copy');
+            alert('✅ Link copiado!');
+        }
+        
+        // Inicializar
+        loadData();
+    </script>
 </body>
 </html>

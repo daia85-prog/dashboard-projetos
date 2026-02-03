@@ -456,13 +456,13 @@ const TOTAL_ATIVIDADES = Object.values(ATIVIDADES_POR_FASE).flat().length; // 22
 
 // Status de cada projeto (número de atividades concluídas: 0-22)
 const PROJETO_STATUS = {
-    'BARBECUE B2B': 22, 'BELEZA': 22, 'BETA': 22, 'BETA ESTEIO': 1, 'BP': 3,
-    'BR': 1, 'CANDELABRIA': 22, 'CDSK': 17, 'COUGAR': 22, 'CRISTAL MG RETROFIT': 4,
+    'BARBECUE B2B': 22, 'BELEZA': 22, 'BETA': 20, 'BETA ESTEIO': 1, 'BP': 3,
+    'BR': 1, 'CANDELABRIA': 22, 'CDSK': 22, 'COUGAR': 22, 'CRISTAL MG RETROFIT': 4,
     'DIA': 7, 'DIAMANTE': 0, 'ELETRO': 10, 'ESPERANÇA': 22, 'FLOWER': 4,
     'GAVIÃO': 22, 'MKT CHILE': 0, 'MKT PERU': 0, 'MASTER': 0, 'NAVEPARK': 8,
     'OCTOPUS MS': 11, 'OCTOPUS SC': 22, 'OPTIMUS PRIME': 22, 'PBL GUATEMALA': 12,
     'PROMO B2B CD GRU': 22, 'PTL SP': 22, 'REISADO': 22, 'REVERSE': 14,
-    'SUPER DIVINOPOLIS': 11, 'TITANIO': 19
+    'SUPER DIVINOPOLIS': 22, 'TITANIO': 19
 };
 
 // Gerar atividades automaticamente para cada projeto
@@ -531,7 +531,8 @@ function calcProximaFase(p){const f=calcFaseAtual(p),i=FASES.indexOf(f);return i
 function calcProximaEntrega(p){const a=getAtividades(p).filter(x=>x.status!=='Concluído').sort((a,b)=>parseDate(a.dataInicio)-parseDate(b.dataInicio));return a.length?a[0]:null}
 function isCritico(p){const pr=PROJETOS.find(x=>x.nome===p),s=calcStatus(p);return s==='Atrasado'||pr?.prioridade==='Alta'||s==='Aguardando'}
 function getCor(pct){return pct>=80?'verde':pct>=40?'amarelo':'vermelho'}
-function getStatusClass(s){return s.toLowerCase().replace(/ /g,'-').replace('ã','a')}
+function getStatusClass(s){return s.toLowerCase().replace(/ /g,'-').normalize('NFD').replace(/[\u0300-\u036f]/g,'')}
+function getStatusStyle(s){const styles={'Concluído':'background:#dcfce7;color:#166534','Em andamento':'background:#dbeafe;color:#1e40af','Aguardando':'background:#fef3c7;color:#92400e','Não Iniciado':'background:#f3f4f6;color:#6b7280'};return styles[s]||'background:#f3f4f6;color:#6b7280'}
 
 function getContextoFase(f,ps){if(ps.some(p=>calcStatus(p.nome)==='Atrasado'))return{tipo:'danger',texto:'🚨 Projeto(s) atrasado(s)'};let todasFut=true,algPassou=false;ps.forEach(p=>{const af=getAtividades(p.nome).filter(a=>a.fase===f);af.forEach(a=>{const d=parseDate(a.dataInicio);if(d&&d<=hoje){todasFut=false;if(a.status==='Não Iniciado')algPassou=true}})});if(todasFut)return{tipo:'gray',texto:'⏳ Aguardando início'};if(algPassou)return{tipo:'warning',texto:'⚠️ Atenção ao cronograma'};return null}
 function faseTemAlerta(f,ps){return ps.some(p=>isCritico(p.nome)||calcStatus(p.nome)==='Atrasado')}
@@ -571,7 +572,7 @@ function abrirModal(proj){
     </div>
     <p style="margin-bottom:12px;color:#64748b;font-size:0.9em"><strong>Fase atual:</strong> ${fa} | <strong>Progresso:</strong> ${pg}%${pf?` | <strong>Próxima:</strong> ${pf}`:''}</p>
     <p style="margin-bottom:8px;color:#94a3b8;font-size:0.8em">💡 Clique em uma atividade para ver detalhes</p>
-    <div class="activity-list">${a.map(x=>`<div class="activity" onclick="abrirAtividade('${proj}','${x.nome}')"><div class="activity-info"><div class="activity-name">${x.nome}</div><div class="activity-fase">${x.fase}</div><div class="activity-dates">📅 ${formatDate(x.dataInicio)} → ${formatDate(x.dataFim)}</div></div><div class="activity-resp">👤 ${x.resp}</div><span class="status-badge ${getStatusClass(x.status)}">${x.status}</span></div>`).join('')}</div>`;
+    <div class="activity-list">${a.map(x=>`<div class="activity" onclick="abrirAtividade('${proj}','${x.nome}')"><div class="activity-info"><div class="activity-name">${x.nome}</div><div class="activity-fase">${x.fase}</div><div class="activity-dates">📅 ${formatDate(x.dataInicio)} → ${formatDate(x.dataFim)}</div></div><div class="activity-resp">👤 ${x.resp}</div><span class="status-badge" style="${getStatusStyle(x.status)}">${x.status}</span></div>`).join('')}</div>`;
     document.getElementById('modal').classList.add('show');
 }
 
@@ -630,14 +631,17 @@ const TRATATIVAS = {
     'CANDELABRIA_Aceite Formal': [
         { user: 'ALEX', role: 'PMO', date: '09/12/2025 10:00', type: 'resolucao', content: 'Projeto concluído dentro do prazo. Aceite assinado.' }
     ],
-    // CDSK (Go Live)
+    // CDSK (Concluído)
     'CDSK_Reunião de Kickoff': [
         { user: 'VINICIUS', role: 'PMO', date: '01/08/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado. Escopo CDSK definido.' }
     ],
     'CDSK_Migração para Produção': [
         { user: 'VINICIUS', role: 'PMO', date: '05/02/2026 08:00', type: 'atualizacao', content: 'Migração iniciada. Janela de mudança: 08:00-12:00.' },
-        { user: 'VINICIUS', role: 'PMO', date: '05/02/2026 11:45', type: 'resolucao', content: 'Migração concluída com sucesso! Sistema operacional.' },
-        { user: 'DAIANA', role: 'Gestora', date: '06/02/2026 09:00', type: 'comentario', content: 'Iniciar período de Hypercare. Monitorar 24/7.' }
+        { user: 'VINICIUS', role: 'PMO', date: '05/02/2026 11:45', type: 'resolucao', content: 'Migração concluída com sucesso! Sistema operacional.' }
+    ],
+    'CDSK_Aceite Formal': [
+        { user: 'VINICIUS', role: 'PMO', date: '28/02/2026 10:00', type: 'resolucao', content: 'Projeto CDSK concluído! Aceite formal assinado pelo cliente.' },
+        { user: 'DOUGLAS', role: 'Diretor', date: '28/02/2026 14:00', type: 'comentario', content: 'Excelente entrega. Parabéns à equipe!' }
     ],
     // COUGAR (Concluído)
     'COUGAR_Reunião de Kickoff': [
@@ -789,13 +793,17 @@ const TRATATIVAS = {
         { user: 'ALEX', role: 'PMO', date: '01/02/2026 16:00', type: 'atualizacao', content: 'Cobertura de testes em 78%. Bugs menores corrigidos.' },
         { user: 'DAIANA', role: 'Gestora', date: '02/02/2026 10:00', type: 'comentario', content: 'Agendar homologação com cliente para próxima semana.' }
     ],
-    // SUPER DIVINOPOLIS (Implantação)
+    // SUPER DIVINOPOLIS (Concluído)
     'SUPER DIVINOPOLIS_Reunião de Kickoff': [
         { user: 'GIOVANNI', role: 'PMO', date: '01/10/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado em Divinópolis-MG.' }
     ],
     'SUPER DIVINOPOLIS_Configuração de Rede': [
         { user: 'GIOVANNI', role: 'PMO', date: '01/02/2026 10:00', type: 'atualizacao', content: 'Implantação em 50%. Progresso conforme planejado.' },
         { user: 'GIOVANNI', role: 'PMO', date: '03/02/2026 14:00', type: 'comentario', content: 'Equipe local bem treinada. Sem impedimentos.' }
+    ],
+    'SUPER DIVINOPOLIS_Aceite Formal': [
+        { user: 'GIOVANNI', role: 'PMO', date: '30/04/2026 10:00', type: 'resolucao', content: 'Projeto SUPER DIVINOPOLIS concluído! Aceite formal assinado.' },
+        { user: 'DOUGLAS', role: 'Diretor', date: '30/04/2026 15:00', type: 'comentario', content: 'Ótima entrega em Minas Gerais!' }
     ],
     // TITANIO (Hypercare)
     'TITANIO_Reunião de Kickoff': [
@@ -852,7 +860,7 @@ function abrirAtividade(proj,nomeAtiv){
             <div class="activity-detail-row"><span class="activity-detail-label">Responsável</span><span class="activity-detail-value">${a.resp}</span></div>
             <div class="activity-detail-row"><span class="activity-detail-label">Data Início</span><span class="activity-detail-value">${formatDate(a.dataInicio)}</span></div>
             <div class="activity-detail-row"><span class="activity-detail-label">Data Término</span><span class="activity-detail-value">${formatDate(a.dataFim)}</span></div>
-            <div class="activity-detail-row"><span class="activity-detail-label">Status</span><span class="activity-detail-value"><span class="status-badge ${getStatusClass(a.status)}">${a.status}</span></span></div>
+            <div class="activity-detail-row"><span class="activity-detail-label">Status</span><span class="activity-detail-value"><span class="status-badge" style="${getStatusStyle(a.status)}">${a.status}</span></span></div>
             <div class="activity-detail-row"><span class="activity-detail-label">Descrição</span><span class="activity-detail-value">${a.descricao||'-'}</span></div>
         </div>
         <div class="activity-history">
