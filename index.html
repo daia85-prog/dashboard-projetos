@@ -1,254 +1,639 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Dashboard de Infraestrutura v8</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;padding:20px}
-.container{max-width:1400px;margin:0 auto;background:#fff;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.2);overflow:hidden}
-.header{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:20px 25px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px}
-.header-left h1{font-size:1.4em;margin-bottom:5px}
-.header-left p{opacity:.9;font-size:.85em}
-.nav-buttons{display:flex;gap:8px;flex-wrap:wrap}
-.nav-btn{padding:9px 16px;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:.85em;text-decoration:none;color:#fff}
-.nav-btn.blue{background:#3b82f6}
-.nav-btn.purple{background:#8b5cf6}
-.nav-btn.green{background:#22c55e}
-.content{padding:20px 25px}
-.toggle{display:flex;justify-content:center;margin-bottom:18px}
-.toggle button{padding:11px 28px;border:2px solid #667eea;background:#fff;color:#667eea;font-weight:600;cursor:pointer;font-size:.95em}
-.toggle button:first-child{border-radius:25px 0 0 25px}
-.toggle button:last-child{border-radius:0 25px 25px 0;border-left:none}
-.toggle button.active{background:#667eea;color:#fff}
-.filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px;padding:15px;background:#f8fafc;border-radius:10px;align-items:end}
-.filter-group label{display:block;font-size:.78em;color:#64748b;margin-bottom:4px;font-weight:500}
-.filter-group input,.filter-group select{width:100%;padding:8px 10px;border:1px solid #e2e8f0;border-radius:6px;font-size:.9em}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:20px}
-.kpi{text-align:center;padding:15px 10px;background:#fff;border-radius:10px;border:1px solid #e2e8f0;border-top:4px solid #e2e8f0;cursor:pointer;transition:all .2s}
-.kpi:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1)}
-.kpi.verde{border-top-color:#22c55e}
-.kpi.amarelo{border-top-color:#f59e0b}
-.kpi.vermelho{border-top-color:#ef4444}
-.kpi.azul{border-top-color:#3b82f6}
-.kpi.roxo{border-top-color:#8b5cf6}
-.kpi .num{font-size:1.8em;font-weight:700;color:#1e293b}
-.kpi .lbl{font-size:.8em;color:#64748b}
-.phases{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:15px}
-.phase-card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:15px;border-top:4px solid #e2e8f0}
-.phase-card.verde{border-top-color:#22c55e}
-.phase-card.amarelo{border-top-color:#f59e0b}
-.phase-card.vermelho{border-top-color:#ef4444}
-.phase-header{display:flex;justify-content:space-between;align-items:start;margin-bottom:10px}
-.phase-title{font-weight:700;color:#1e293b;font-size:.9em}
-.phase-count{font-size:.8em;color:#64748b}
-.phase-percent{font-size:1.4em;font-weight:700}
-.phase-percent.verde{color:#22c55e}
-.phase-percent.amarelo{color:#f59e0b}
-.phase-percent.vermelho{color:#ef4444}
-.phase-bar{height:8px;background:#e2e8f0;border-radius:4px;margin-bottom:10px;overflow:hidden}
-.phase-bar-fill{height:100%;border-radius:4px}
-.phase-bar-fill.verde{background:#22c55e}
-.phase-bar-fill.amarelo{background:#f59e0b}
-.phase-bar-fill.vermelho{background:#ef4444}
-.phase-projects{display:flex;flex-wrap:wrap;gap:5px}
-.badge{background:#e0e7ff;color:#4338ca;padding:4px 10px;border-radius:12px;font-size:.75em;font-weight:600;cursor:pointer;transition:all .2s}
-.badge:hover{background:#4338ca;color:#fff}
-.badge.critico{background:#fee2e2;color:#dc2626}
-.badge.critico:hover{background:#dc2626;color:#fff}
-.projects{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:15px}
-.project-card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:15px;cursor:pointer;transition:all .2s;border-left:4px solid #e2e8f0}
-.project-card:hover{box-shadow:0 5px 20px rgba(0,0,0,.1);transform:translateY(-2px)}
-.project-card.verde{border-left-color:#22c55e}
-.project-card.amarelo{border-left-color:#f59e0b}
-.project-card.vermelho{border-left-color:#ef4444}
-.project-header{display:flex;justify-content:space-between;align-items:start;margin-bottom:8px}
-.project-name{font-weight:700;color:#1e293b;font-size:1.05em}
-.priority{padding:3px 8px;border-radius:4px;font-size:.7em;font-weight:700}
-.priority.alta{background:#fee2e2;color:#dc2626}
-.priority.media,.priority.média{background:#fef3c7;color:#d97706}
-.priority.baixa{background:#dcfce7;color:#16a34a}
-.project-meta{display:flex;flex-wrap:wrap;gap:12px;font-size:.82em;color:#64748b;margin-bottom:8px}
-.project-phase{background:#eff6ff;color:#1d4ed8;padding:5px 10px;border-radius:6px;font-size:.8em;margin-bottom:8px}
-.progress{margin-bottom:10px}
-.progress-header{display:flex;justify-content:space-between;font-size:.85em;margin-bottom:4px}
-.progress-bar{height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden}
-.progress-fill{height:100%;border-radius:3px}
-.progress-fill.verde{background:#22c55e}
-.progress-fill.amarelo{background:#f59e0b}
-.progress-fill.vermelho{background:#ef4444}
-.project-footer{display:flex;justify-content:space-between;align-items:center}
-.status-badge{padding:4px 10px;border-radius:5px;font-size:.75em;font-weight:600}
-.status-badge.concluido,.status-badge.concluído{background:#dcfce7;color:#166534}
-.status-badge.em-andamento{background:#dbeafe;color:#1e40af}
-.status-badge.planejamento{background:#f3e8ff;color:#7c3aed}
-.status-badge.atrasado{background:#fee2e2;color:#991b1b}
-.empty{text-align:center;padding:40px;color:#64748b}
-.modal-bg{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:1000;justify-content:center;align-items:center;padding:20px}
-.modal-bg.show{display:flex}
-.modal{background:#fff;border-radius:12px;max-width:700px;width:100%;max-height:85vh;overflow:hidden}
-.modal-head{background:#667eea;color:#fff;padding:15px 20px;display:flex;justify-content:space-between;align-items:center}
-.modal-head h2{font-size:1.1em}
-.modal-close{background:rgba(255,255,255,.2);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1.3em}
-.modal-body{padding:20px;max-height:calc(85vh - 60px);overflow-y:auto}
-.modal-info{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:15px}
-.modal-info-item .label{color:#64748b;font-size:.8em}
-.modal-info-item .value{color:#1e293b;font-weight:600}
-.activity-list{display:flex;flex-direction:column;gap:8px}
-.activity{display:flex;justify-content:space-between;align-items:center;padding:10px;background:#f8fafc;border-radius:8px}
-.activity-name{font-weight:600;color:#1e293b;font-size:.9em}
-.activity-fase{font-size:.8em;color:#64748b}
-.footer{text-align:center;padding:15px;background:#f8fafc;border-top:1px solid #e2e8f0;font-size:.8em;color:#64748b}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Infraestrutura v7.6</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; min-height: 100vh; }
+        
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .header-left h1 { font-size: 1.3em; display: flex; align-items: center; gap: 10px; }
+        .header-left p { font-size: 0.85em; opacity: 0.9; margin-top: 3px; }
+        .header-right { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn { padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85em; display: flex; align-items: center; gap: 6px; text-decoration: none; }
+        .btn-red { background: #ef4444; color: white; }
+        .btn-yellow { background: #f59e0b; color: white; }
+        .btn-blue { background: #3b82f6; color: white; }
+        .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        
+        .container { max-width: 1500px; margin: 0 auto; padding: 20px; }
+        
+        .toggle-container { display: flex; justify-content: center; margin-bottom: 20px; }
+        .toggle { display: flex; background: white; border-radius: 30px; padding: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .toggle button { padding: 12px 30px; border: none; background: transparent; font-weight: 600; cursor: pointer; border-radius: 25px; font-size: 0.95em; display: flex; align-items: center; gap: 8px; color: #64748b; transition: all 0.3s; }
+        .toggle button.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        
+        .kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin-bottom: 20px; }
+        .kpi { background: white; border-radius: 12px; padding: 20px; text-align: center; border: 2px solid #e2e8f0; cursor: pointer; transition: all 0.2s; }
+        .kpi:hover { transform: translateY(-3px); box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        .kpi.verde { border-color: #22c55e; }
+        .kpi.amarelo { border-color: #f59e0b; }
+        .kpi.vermelho { border-color: #ef4444; }
+        .kpi.rosa { border-color: #ec4899; }
+        .kpi .numero { font-size: 2.5em; font-weight: 700; color: #1e293b; }
+        .kpi .label { color: #64748b; font-size: 0.9em; margin-top: 5px; }
+        
+        .fases-bar { background: white; border-radius: 12px; padding: 15px 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .fases-bar span.title { font-weight: 600; color: #64748b; }
+        .fases-bar span.fase { color: #94a3b8; font-size: 0.9em; }
+        
+        .filters { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; align-items: end; }
+        .filter-group label { display: block; font-size: 0.8em; color: #64748b; margin-bottom: 5px; font-weight: 500; }
+        .filter-group input, .filter-group select { width: 100%; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.9em; }
+        .filter-criticos { display: flex; align-items: center; gap: 8px; padding: 10px 15px; border: 2px solid #ef4444; border-radius: 8px; cursor: pointer; color: #ef4444; font-weight: 600; background: white; }
+        .filter-criticos input { width: auto; }
+        .filter-criticos:hover { background: #fef2f2; }
+        
+        .phases-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+        .phase-card { background: white; border-radius: 12px; padding: 20px; border-left: 5px solid #e2e8f0; }
+        .phase-card.verde { border-left-color: #22c55e; }
+        .phase-card.amarelo { border-left-color: #f59e0b; }
+        .phase-card.vermelho { border-left-color: #ef4444; }
+        
+        .phase-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px; }
+        .phase-title { font-weight: 700; color: #1e293b; font-size: 1em; }
+        .phase-count { display: flex; align-items: center; gap: 8px; font-size: 0.85em; color: #64748b; }
+        .phase-count .alert-icon { background: #fef3c7; color: #d97706; padding: 3px 6px; border-radius: 5px; font-size: 0.8em; }
+        .phase-percent { font-size: 1.5em; font-weight: 700; }
+        .phase-percent.verde { color: #22c55e; }
+        .phase-percent.amarelo { color: #f59e0b; }
+        .phase-percent.vermelho { color: #ef4444; }
+        
+        .phase-bar { height: 8px; background: #e2e8f0; border-radius: 4px; margin: 12px 0; overflow: hidden; }
+        .phase-bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s; }
+        .phase-bar-fill.verde { background: #22c55e; }
+        .phase-bar-fill.amarelo { background: #f59e0b; }
+        .phase-bar-fill.vermelho { background: #ef4444; }
+        
+        .phase-alert { padding: 10px 15px; border-radius: 8px; margin-bottom: 12px; font-size: 0.85em; display: flex; align-items: center; gap: 8px; }
+        .phase-alert.warning { background: #fef3c7; color: #92400e; }
+        .phase-alert.danger { background: #fee2e2; color: #991b1b; }
+        
+        .phase-activities { font-size: 0.85em; color: #64748b; margin-bottom: 12px; }
+        
+        .phase-projects { display: flex; flex-wrap: wrap; gap: 8px; }
+        .project-badge { padding: 6px 12px; border-radius: 8px; font-size: 0.8em; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .project-badge.normal { background: #f1f5f9; color: #475569; }
+        .project-badge.normal:hover { background: #e2e8f0; }
+        .project-badge.critico { background: #fee2e2; color: #dc2626; }
+        .project-badge.critico:hover { background: #fecaca; }
+        .project-badge.concluido { background: #dcfce7; color: #166534; }
+        .project-badge.concluido:hover { background: #bbf7d0; }
+        
+        /* Visão Micro */
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; }
+        .project-card { background: white; border-radius: 12px; padding: 20px; border-left: 5px solid #e2e8f0; cursor: pointer; transition: all 0.2s; }
+        .project-card:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        .project-card.verde { border-left-color: #22c55e; }
+        .project-card.amarelo { border-left-color: #f59e0b; }
+        .project-card.vermelho { border-left-color: #ef4444; }
+        .project-card-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px; }
+        .project-card-name { font-weight: 700; color: #1e293b; font-size: 1.1em; }
+        .priority-badge { padding: 4px 10px; border-radius: 5px; font-size: 0.75em; font-weight: 700; }
+        .priority-badge.alta { background: #fee2e2; color: #dc2626; }
+        .priority-badge.media { background: #fef3c7; color: #d97706; }
+        .priority-badge.baixa { background: #dcfce7; color: #16a34a; }
+        .project-card-meta { display: flex; gap: 15px; font-size: 0.85em; color: #64748b; margin-bottom: 10px; }
+        .project-card-phase { background: #eff6ff; color: #1d4ed8; padding: 6px 12px; border-radius: 6px; font-size: 0.85em; margin-bottom: 12px; display: inline-block; }
+        .project-card-progress { margin-bottom: 12px; }
+        .project-card-progress-header { display: flex; justify-content: space-between; font-size: 0.85em; margin-bottom: 5px; }
+        .project-card-bar { height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; }
+        .project-card-bar-fill { height: 100%; border-radius: 4px; }
+        .project-card-footer { display: flex; justify-content: space-between; align-items: center; }
+        .status-badge { padding: 5px 12px; border-radius: 6px; font-size: 0.8em; font-weight: 600; }
+        .status-badge.concluido { background: #dcfce7; color: #166534; }
+        .status-badge.em-andamento { background: #dbeafe; color: #1e40af; }
+        .status-badge.planejamento { background: #f3e8ff; color: #7c3aed; }
+        .status-badge.atrasado { background: #fee2e2; color: #991b1b; }
+        
+        /* Modal */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-overlay.show { display: flex; }
+        .modal { background: white; border-radius: 16px; max-width: 700px; width: 100%; max-height: 85vh; overflow: hidden; }
+        .modal-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h2 { font-size: 1.2em; display: flex; align-items: center; gap: 10px; }
+        .modal-close { background: rgba(255,255,255,0.2); border: none; color: white; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-size: 1.3em; }
+        .modal-body { padding: 0; max-height: calc(85vh - 70px); overflow-y: auto; }
+        .modal-info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; padding: 20px; }
+        .modal-info-item .label { color: #64748b; font-size: 0.8em; margin-bottom: 3px; }
+        .modal-info-item .value { color: #1e293b; font-weight: 600; }
+        
+        /* Histórico de Tratativas */
+        .tratativas-section { background: #f8fafc; padding: 20px; border-top: 1px solid #e2e8f0; }
+        .tratativas-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; color: #475569; font-weight: 600; font-size: 0.95em; }
+        .tratativas-empty { text-align: center; padding: 25px; background: #fff; border-radius: 10px; border: 2px dashed #e2e8f0; }
+        .tratativas-empty .msg { color: #f59e0b; font-weight: 500; margin-bottom: 5px; }
+        .tratativas-empty .sub { color: #94a3b8; font-size: 0.85em; }
+        .tratativa-item { background: #fff; border-radius: 10px; padding: 15px; margin-bottom: 12px; border-left: 4px solid #667eea; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .tratativa-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px; }
+        .tratativa-user { display: flex; align-items: center; gap: 10px; }
+        .tratativa-avatar { width: 35px; height: 35px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85em; }
+        .tratativa-user-info .name { font-weight: 600; color: #1e293b; font-size: 0.9em; }
+        .tratativa-user-info .role { font-size: 0.75em; color: #64748b; }
+        .tratativa-date { font-size: 0.75em; color: #94a3b8; }
+        .tratativa-content { color: #475569; font-size: 0.9em; line-height: 1.5; padding: 10px; background: #f8fafc; border-radius: 8px; }
+        .tratativa-type { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 0.7em; font-weight: 600; margin-bottom: 8px; }
+        .tratativa-type.comentario { background: #dbeafe; color: #1e40af; }
+        .tratativa-type.atualizacao { background: #dcfce7; color: #166534; }
+        .tratativa-type.alerta { background: #fee2e2; color: #991b1b; }
+        .tratativa-type.resolucao { background: #f3e8ff; color: #7c3aed; }
+        
+        .hidden { display: none !important; }
+        .empty-state { text-align: center; padding: 60px; color: #64748b; }
+        
+        @media print {
+            .header-right, .toggle-container, .filters { display: none !important; }
+            body { background: white; }
+            .phase-card, .project-card { break-inside: avoid; }
+        }
+        
+        @media (max-width: 768px) {
+            .kpis { grid-template-columns: repeat(2, 1fr); }
+            .header { flex-direction: column; text-align: center; }
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-<header class="header">
-<div class="header-left">
-<h1>📊 Dashboard de Infraestrutura v8</h1>
-<p>Gestão de Projetos | Invent Corp | <span id="dataAtual"></span></p>
-</div>
-<nav class="nav-buttons">
-<a href="view-projetos.html" class="nav-btn blue">📊 Alertas</a>
-<a href="view-detalhada.html" class="nav-btn purple">📋 Detalhada</a>
-<a href="admin.html" class="nav-btn green">⚙️ Admin</a>
-</nav>
-</header>
-<main class="content">
-<div class="toggle">
-<button class="active" id="btnMacro" onclick="setView('macro')">📊 Visão Macro (Fases)</button>
-<button id="btnMicro" onclick="setView('micro')">📋 Visão Micro (Projetos)</button>
-</div>
-<div class="filters">
-<div class="filter-group"><label>🔍 Buscar</label><input type="text" id="search" placeholder="Nome do projeto..." oninput="render()"></div>
-<div class="filter-group"><label>📊 Status</label><select id="filterStatus" onchange="render()"><option value="">Todos</option><option value="Concluído">Concluído</option><option value="Em andamento">Em andamento</option><option value="Planejamento">Planejamento</option><option value="Atrasado">Atrasado</option></select></div>
-<div class="filter-group"><label>⚡ Prioridade</label><select id="filterPrior" onchange="render()"><option value="">Todas</option><option value="Alta">Alta</option><option value="Média">Média</option><option value="Baixa">Baixa</option></select></div>
-<div class="filter-group"><label>👤 PMO</label><select id="filterResp" onchange="render()"><option value="">Todos</option><option>ALEX</option><option>ANDERSON</option><option>FÁBIO</option><option>GIOVANNI</option><option>LEANDRO</option><option>VINICIUS</option></select></div>
-</div>
-<div class="kpis" id="kpis"></div>
-<div class="phases" id="macroView"></div>
-<div class="projects" id="microView" style="display:none"></div>
-</main>
-<footer class="footer">Dashboard v8 | Invent Corp | 30 Projetos | <span id="ts"></span></footer>
-</div>
-<div class="modal-bg" id="modal" onclick="fecharModal()">
-<div class="modal" onclick="event.stopPropagation()">
-<div class="modal-head"><h2 id="modalTitle">Projeto</h2><button class="modal-close" onclick="fecharModal()">×</button></div>
-<div class="modal-body" id="modalBody"></div>
-</div>
-</div>
+    <header class="header">
+        <div class="header-left">
+            <h1>📊 Dashboard de Infraestrutura</h1>
+            <p>Gestão de Projetos | Invent Corp</p>
+        </div>
+        <div class="header-right">
+            <a href="view-detalhada.html" class="btn btn-red">📋 Visão Detalhada</a>
+            <button class="btn btn-yellow" onclick="window.print()">🖨️ Imprimir</button>
+            <button class="btn btn-blue" onclick="window.print()">📄 Gerar PDF</button>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="toggle-container">
+            <div class="toggle">
+                <button class="active" id="btnMacro" onclick="setView('macro')">📊 Visão Executiva (Macro)</button>
+                <button id="btnMicro" onclick="setView('micro')">📋 Visão por Projeto (Micro)</button>
+            </div>
+        </div>
+        
+        <div class="kpis" id="kpis"></div>
+        
+        <div class="fases-bar">
+            <span class="title">Fases:</span>
+            <span class="fase">1. Iniciação · 2. Planejamento · 3. Provisionamento · 4. Implementação · 5. Testes · 6. Deploy · 7. Estabilização · 8. Encerramento</span>
+        </div>
+        
+        <div class="filters">
+            <div class="filter-group">
+                <label>🔍 Buscar:</label>
+                <input type="text" id="filtroNome" placeholder="Nome do projeto..." oninput="render()">
+            </div>
+            <div class="filter-group">
+                <label>📊 Status:</label>
+                <select id="filtroStatus" onchange="render()">
+                    <option value="">Todos</option>
+                    <option value="Concluído">Concluído</option>
+                    <option value="Em andamento">Em andamento</option>
+                    <option value="Planejamento">Planejamento</option>
+                    <option value="Atrasado">Atrasado</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>⚡ Prioridade:</label>
+                <select id="filtroPrioridade" onchange="render()">
+                    <option value="">Todas</option>
+                    <option value="Alta">Alta</option>
+                    <option value="Média">Média</option>
+                    <option value="Baixa">Baixa</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>📍 Local:</label>
+                <select id="filtroLocal" onchange="render()">
+                    <option value="">Todos</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>👤 Responsável:</label>
+                <select id="filtroResp" onchange="render()">
+                    <option value="">Todos</option>
+                    <option>ALEX</option>
+                    <option>ANDERSON</option>
+                    <option>FÁBIO</option>
+                    <option>GIOVANNI</option>
+                    <option>LEANDRO</option>
+                    <option>VINICIUS</option>
+                </select>
+            </div>
+            <label class="filter-criticos">
+                <input type="checkbox" id="filtroCriticos" onchange="render()">
+                <span>🔺 Apenas Críticos</span>
+            </label>
+        </div>
+        
+        <div class="phases-grid" id="macroView"></div>
+        <div class="projects-grid hidden" id="microView"></div>
+    </div>
+    
+    <div class="modal-overlay" id="modal" onclick="fecharModal()">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2 id="modalTitle">📋 Projeto</h2>
+                <button class="modal-close" onclick="fecharModal()">×</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
 <script>
-const PROJETOS=[
-{nome:"BARBECUE B2B",local:"São Paulo - SP",resp:"ALEX",prioridade:"Alta",status:"Concluído",fase:"8. Encerramento",progresso:100},
-{nome:"BELEZA",local:"São Paulo - SP",resp:"ANDERSON",prioridade:"Média",status:"Concluído",fase:"8. Encerramento",progresso:100},
-{nome:"BETA",local:"Rio de Janeiro - RJ",resp:"ANDERSON",prioridade:"Alta",status:"Concluído",fase:"8. Encerramento",progresso:100},
-{nome:"BETA ESTEIO",local:"Esteio - RS",resp:"ANDERSON",prioridade:"Média",status:"Planejamento",fase:"1. Iniciação",progresso:5},
-{nome:"BP",local:"São Paulo - SP",resp:"GIOVANNI",prioridade:"Média",status:"Em andamento",fase:"2. Planejamento",progresso:15},
-{nome:"BR",local:"Jaboatão - PE",resp:"FÁBIO",prioridade:"Alta",status:"Planejamento",fase:"1. Iniciação",progresso:5},
-{nome:"CANDELABRIA",local:"Candelária - RS",resp:"ALEX",prioridade:"Média",status:"Concluído",fase:"8. Encerramento",progresso:100},
-{nome:"CDSK",local:"São Paulo - SP",resp:"VINICIUS",prioridade:"Alta",status:"Em andamento",fase:"6. Deploy",progresso:75},
-{nome:"COUGAR",local:"São Paulo - SP",resp:"LEANDRO",prioridade:"Alta",status:"Concluído",fase:"8. Encerramento",progresso:100},
-{nome:"CRISTAL MG RETROFIT",local:"Belo Horizonte - MG",resp:"GIOVANNI",prioridade:"Alta",status:"Em andamento",fase:"2. Planejamento",progresso:15},
-{nome:"DIA",local:"São Paulo - SP",resp:"ANDERSON",prioridade:"Alta",status:"Atrasado",fase:"3. Provisionamento",progresso:30},
-{nome:"DIAMANTE",local:"Curitiba - PR",resp:"FÁBIO",prioridade:"Média",status:"Planejamento",fase:"1. Iniciação",progresso:0},
-{nome:"ELETRO",local:"São Paulo - SP",resp:"GIOVANNI",prioridade:"Média",status:"Em andamento",fase:"4. Implementação",progresso:35},
-{nome:"ESPERANÇA",local:"Belo Horizonte - MG",resp:"VINICIUS",prioridade:"Média",status:"Concluído",fase:"8. Encerramento",progresso:100},
-{nome:"FLOWER",local:"São Paulo - SP",resp:"ANDERSON",prioridade:"Baixa",status:"Em andamento",fase:"2. Planejamento",progresso:10},
-{nome:"GAVIÃO",local:"Fortaleza - CE",resp:"FÁBIO",prioridade:"Alta",status:"Concluído",fase:"8. Encerramento",progresso:100},
-{nome:"MKT CHILE",local:"Santiago - Chile",resp:"ALEX",prioridade:"Média",status:"Planejamento",fase:"1. Iniciação",progresso:0},
-{nome:"MKT PERU",local:"Lima - Peru",resp:"ALEX",prioridade:"Média",status:"Planejamento",fase:"1. Iniciação",progresso:0},
-{nome:"MASTER",local:"São Paulo - SP",resp:"LEANDRO",prioridade:"Alta",status:"Planejamento",fase:"1. Iniciação",progresso:0},
-{nome:"NAVEPARK",local:"Curitiba - PR",resp:"ANDERSON",prioridade:"Média",status:"Em andamento",fase:"3. Provisionamento",progresso:25},
-{nome:"OCTOPUS MS",local:"Campo Grande - MS",resp:"ALEX",prioridade:"Média",status:"Em andamento",fase:"4. Implementação",progresso:40},
-{nome:"OCTOPUS SC",local:"Florianópolis - SC",resp:"ALEX",prioridade:"Média",status:"Concluído",fase:"8. Encerramento",progresso:100},
-{nome:"OPTIMUS PRIME",local:"São Paulo - SP",resp:"GIOVANNI",prioridade:"Alta",status:"Concluído",fase:"8. Encerramento",progresso:100},
-{nome:"PBL GUATEMALA",local:"Guatemala City",resp:"FÁBIO",prioridade:"Alta",status:"Em andamento",fase:"4. Implementação",progresso:45},
-{nome:"PROMO B2B CD GRU",local:"Guarulhos - SP",resp:"LEANDRO",prioridade:"Alta",status:"Concluído",fase:"8. Encerramento",progresso:100},
-{nome:"PTL SP",local:"São Paulo - SP",resp:"VINICIUS",prioridade:"Média",status:"Concluído",fase:"8. Encerramento",progresso:100},
-{nome:"REISADO",local:"Recife - PE",resp:"FÁBIO",prioridade:"Média",status:"Concluído",fase:"8. Encerramento",progresso:100},
-{nome:"REVERSE",local:"São Paulo - SP",resp:"ALEX",prioridade:"Alta",status:"Em andamento",fase:"5. Testes",progresso:55},
-{nome:"SUPER DIVINOPOLIS",local:"Divinópolis - MG",resp:"GIOVANNI",prioridade:"Média",status:"Em andamento",fase:"4. Implementação",progresso:50},
-{nome:"TITANIO",local:"São Paulo - SP",resp:"ALEX",prioridade:"Alta",status:"Em andamento",fase:"7. Estabilização",progresso:80}
+const PROJETOS = [
+    { nome: 'BARBECUE B2B', local: 'São Paulo - SP', resp: 'ALEX', prioridade: 'Alta', status: 'Concluído', fase: '8. Encerramento', progresso: 100 },
+    { nome: 'BELEZA', local: 'São Paulo - SP', resp: 'ANDERSON', prioridade: 'Média', status: 'Concluído', fase: '8. Encerramento', progresso: 100 },
+    { nome: 'BETA', local: 'Rio de Janeiro - RJ', resp: 'ANDERSON', prioridade: 'Alta', status: 'Concluído', fase: '8. Encerramento', progresso: 100 },
+    { nome: 'BETA ESTEIO', local: 'Esteio - RS', resp: 'ANDERSON', prioridade: 'Média', status: 'Planejamento', fase: '1. Iniciação', progresso: 5 },
+    { nome: 'BP', local: 'São Paulo - SP', resp: 'GIOVANNI', prioridade: 'Média', status: 'Em andamento', fase: '2. Planejamento & Documentação', progresso: 15 },
+    { nome: 'BR', local: 'Jaboatão - PE', resp: 'FÁBIO', prioridade: 'Alta', status: 'Planejamento', fase: '1. Iniciação', progresso: 5 },
+    { nome: 'CANDELABRIA', local: 'Candelária - RS', resp: 'ALEX', prioridade: 'Média', status: 'Concluído', fase: '8. Encerramento', progresso: 100 },
+    { nome: 'CDSK', local: 'São Paulo - SP', resp: 'VINICIUS', prioridade: 'Alta', status: 'Em andamento', fase: '6. Deploy', progresso: 75 },
+    { nome: 'COUGAR', local: 'São Paulo - SP', resp: 'LEANDRO', prioridade: 'Alta', status: 'Concluído', fase: '8. Encerramento', progresso: 100 },
+    { nome: 'CRISTAL MG RETROFIT', local: 'Belo Horizonte - MG', resp: 'GIOVANNI', prioridade: 'Alta', status: 'Em andamento', fase: '2. Planejamento & Documentação', progresso: 15 },
+    { nome: 'DIA', local: 'São Paulo - SP', resp: 'ANDERSON', prioridade: 'Alta', status: 'Atrasado', fase: '3. Provisionamento', progresso: 30 },
+    { nome: 'DIAMANTE', local: 'Curitiba - PR', resp: 'FÁBIO', prioridade: 'Média', status: 'Planejamento', fase: '1. Iniciação', progresso: 0 },
+    { nome: 'ELETRO', local: 'São Paulo - SP', resp: 'GIOVANNI', prioridade: 'Média', status: 'Em andamento', fase: '4. Implementação', progresso: 35 },
+    { nome: 'ESPERANÇA', local: 'Belo Horizonte - MG', resp: 'VINICIUS', prioridade: 'Média', status: 'Concluído', fase: '8. Encerramento', progresso: 100 },
+    { nome: 'FLOWER', local: 'São Paulo - SP', resp: 'ANDERSON', prioridade: 'Baixa', status: 'Em andamento', fase: '2. Planejamento & Documentação', progresso: 10 },
+    { nome: 'GAVIÃO', local: 'Fortaleza - CE', resp: 'FÁBIO', prioridade: 'Alta', status: 'Concluído', fase: '8. Encerramento', progresso: 100 },
+    { nome: 'MKT CHILE', local: 'Santiago - Chile', resp: 'ALEX', prioridade: 'Média', status: 'Planejamento', fase: '1. Iniciação', progresso: 0 },
+    { nome: 'MKT PERU', local: 'Lima - Peru', resp: 'ALEX', prioridade: 'Média', status: 'Planejamento', fase: '1. Iniciação', progresso: 0 },
+    { nome: 'MASTER', local: 'São Paulo - SP', resp: 'LEANDRO', prioridade: 'Alta', status: 'Planejamento', fase: '1. Iniciação', progresso: 0 },
+    { nome: 'NAVEPARK', local: 'Curitiba - PR', resp: 'ANDERSON', prioridade: 'Média', status: 'Em andamento', fase: '3. Provisionamento', progresso: 25 },
+    { nome: 'OCTOPUS MS', local: 'Campo Grande - MS', resp: 'ALEX', prioridade: 'Média', status: 'Em andamento', fase: '4. Implementação', progresso: 40 },
+    { nome: 'OCTOPUS SC', local: 'Florianópolis - SC', resp: 'ALEX', prioridade: 'Média', status: 'Concluído', fase: '8. Encerramento', progresso: 100 },
+    { nome: 'OPTIMUS PRIME', local: 'São Paulo - SP', resp: 'GIOVANNI', prioridade: 'Alta', status: 'Concluído', fase: '8. Encerramento', progresso: 100 },
+    { nome: 'PBL GUATEMALA', local: 'Guatemala City', resp: 'FÁBIO', prioridade: 'Alta', status: 'Em andamento', fase: '4. Implementação', progresso: 45 },
+    { nome: 'PROMO B2B CD GRU', local: 'Guarulhos - SP', resp: 'LEANDRO', prioridade: 'Alta', status: 'Concluído', fase: '8. Encerramento', progresso: 100 },
+    { nome: 'PTL SP', local: 'São Paulo - SP', resp: 'VINICIUS', prioridade: 'Média', status: 'Concluído', fase: '8. Encerramento', progresso: 100 },
+    { nome: 'REISADO', local: 'Recife - PE', resp: 'FÁBIO', prioridade: 'Média', status: 'Concluído', fase: '8. Encerramento', progresso: 100 },
+    { nome: 'REVERSE', local: 'São Paulo - SP', resp: 'ALEX', prioridade: 'Alta', status: 'Em andamento', fase: '5. Testes & Homologação', progresso: 55 },
+    { nome: 'SUPER DIVINOPOLIS', local: 'Divinópolis - MG', resp: 'GIOVANNI', prioridade: 'Média', status: 'Em andamento', fase: '4. Implementação', progresso: 50 },
+    { nome: 'TITANIO', local: 'São Paulo - SP', resp: 'ALEX', prioridade: 'Alta', status: 'Em andamento', fase: '7. Estabilização', progresso: 80 }
 ];
-const FASES=["1. Iniciação","2. Planejamento","3. Provisionamento","4. Implementação","5. Testes","6. Deploy","7. Estabilização","8. Encerramento"];
-let view="macro";
-const hoje=new Date();hoje.setHours(0,0,0,0);
-function getCor(p){return p>=80?"verde":p>=40?"amarelo":"vermelho"}
-function getStatusClass(s){return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/ /g,"-")}
-function isCritico(p){return p.status==="Atrasado"||p.prioridade==="Alta"}
-function getProjetosFiltrados(){
-const s=document.getElementById("search").value.toLowerCase();
-const st=document.getElementById("filterStatus").value;
-const pr=document.getElementById("filterPrior").value;
-const re=document.getElementById("filterResp").value;
-return PROJETOS.filter(p=>(!s||p.nome.toLowerCase().includes(s))&&(!st||p.status===st)&&(!pr||p.prioridade===pr)&&(!re||p.resp===re));
+
+// TRATATIVAS - Adicione aqui ou carregue da planilha Excel
+const TRATATIVAS = {
+    'OCTOPUS MS': [
+        { user: 'ALEX', role: 'PMO', date: '01/01/2026 09:30', type: 'atualizacao', content: 'Kickoff realizado com sucesso. Participantes: equipe técnica, cliente e stakeholders.' },
+        { user: 'DAIANA', role: 'Gestora', date: '01/01/2026 14:15', type: 'comentario', content: 'Excelente início! Garantir documentação compartilhada com todos.' },
+        { user: 'ALEX', role: 'PMO', date: '15/01/2026 10:00', type: 'atualizacao', content: 'Implementação iniciada. Módulos de integração em desenvolvimento.' }
+    ],
+    'DIA': [
+        { user: 'ANDERSON', role: 'PMO', date: '15/01/2026 10:00', type: 'alerta', content: 'ATENÇÃO: Aguardando liberação de VPN pelo cliente. Prazo comprometido.' },
+        { user: 'DAIANA', role: 'Gestora', date: '15/01/2026 11:30', type: 'comentario', content: 'Escalar para gerente de TI do cliente. VPN urgente.' },
+        { user: 'ANDERSON', role: 'PMO', date: '18/01/2026 09:00', type: 'atualizacao', content: 'Reunião agendada com TI do cliente para 20/01.' },
+        { user: 'DOUGLAS', role: 'Diretor', date: '20/01/2026 16:00', type: 'comentario', content: 'Acompanhando de perto. Manter atualizado sobre VPN.' }
+    ],
+    'CDSK': [
+        { user: 'VINICIUS', role: 'PMO', date: '05/02/2026 08:00', type: 'atualizacao', content: 'Deploy da Fase 1 iniciado. Janela: 08:00-12:00.' },
+        { user: 'VINICIUS', role: 'PMO', date: '05/02/2026 11:45', type: 'resolucao', content: 'Deploy concluído com sucesso! Sistemas operacionais.' }
+    ],
+    'TITANIO': [
+        { user: 'ALEX', role: 'PMO', date: '01/02/2026 14:00', type: 'atualizacao', content: 'Período de estabilização iniciado. Monitoramento 24/7 ativo.' },
+        { user: 'ALEX', role: 'PMO', date: '02/02/2026 09:00', type: 'comentario', content: 'Nenhum incidente nas primeiras 24h. Sistema estável.' }
+    ],
+    'PBL GUATEMALA': [
+        { user: 'FÁBIO', role: 'PMO', date: '25/01/2026 10:00', type: 'atualizacao', content: 'Implementação em andamento. 60% dos módulos concluídos.' },
+        { user: 'FÁBIO', role: 'PMO', date: '28/01/2026 15:30', type: 'alerta', content: 'Problema de compatibilidade com sistema legado identificado.' },
+        { user: 'DAIANA', role: 'Gestora', date: '29/01/2026 09:00', type: 'comentario', content: 'Qual o impacto no cronograma? Avaliar riscos.' },
+        { user: 'FÁBIO', role: 'PMO', date: '30/01/2026 11:00', type: 'resolucao', content: 'Problema resolvido com workaround. Cronograma mantido.' }
+    ],
+    'REVERSE': [
+        { user: 'ALEX', role: 'PMO', date: '28/01/2026 14:00', type: 'atualizacao', content: 'Testes iniciados. Cobertura atual: 45%.' },
+        { user: 'ALEX', role: 'PMO', date: '01/02/2026 16:00', type: 'atualizacao', content: 'Cobertura de testes em 78%. Bugs corrigidos.' }
+    ],
+    'NAVEPARK': [
+        { user: 'ANDERSON', role: 'PMO', date: '20/01/2026 09:00', type: 'comentario', content: 'Aguardando sinal do datacenter.' },
+        { user: 'ANDERSON', role: 'PMO', date: '25/01/2026 14:00', type: 'atualizacao', content: 'Sinal recebido. Configuração em andamento.' }
+    ],
+    'COUGAR': [
+        { user: 'LEANDRO', role: 'PMO', date: '09/02/2026 10:00', type: 'resolucao', content: 'Go Live B2B realizado com sucesso!' },
+        { user: 'DOUGLAS', role: 'Diretor', date: '09/02/2026 15:00', type: 'comentario', content: 'Excelente trabalho da equipe. Parabéns!' }
+    ],
+    'CRISTAL MG RETROFIT': [
+        { user: 'GIOVANNI', role: 'PMO', date: '01/02/2026 09:00', type: 'alerta', content: 'Escopo em revisão. Cliente solicitou alterações.' },
+        { user: 'DAIANA', role: 'Gestora', date: '02/02/2026 11:00', type: 'comentario', content: 'Agendar reunião para alinhar novo escopo.' }
+    ]
+};
+
+const FASES = [
+    '1. Iniciação',
+    '2. Planejamento & Documentação', 
+    '3. Provisionamento',
+    '4. Implementação',
+    '5. Testes & Homologação',
+    '6. Deploy',
+    '7. Estabilização',
+    '8. Encerramento'
+];
+
+let currentView = 'macro';
+
+function isCritico(p) {
+    return p.status === 'Atrasado' || p.prioridade === 'Alta';
 }
-function renderKPIs(){
-const ps=getProjetosFiltrados();
-const t=ps.length;
-const c=ps.filter(p=>p.status==="Concluído").length;
-const e=ps.filter(p=>p.status==="Em andamento").length;
-const pl=ps.filter(p=>p.status==="Planejamento").length;
-const a=ps.filter(p=>p.status==="Atrasado").length;
-document.getElementById("kpis").innerHTML=`
-<div class="kpi azul" onclick="filtrarStatus('')"><div class="num">${t}</div><div class="lbl">Total</div></div>
-<div class="kpi verde" onclick="filtrarStatus('Concluído')"><div class="num">${c}</div><div class="lbl">Concluídos</div></div>
-<div class="kpi amarelo" onclick="filtrarStatus('Em andamento')"><div class="num">${e}</div><div class="lbl">Em Andamento</div></div>
-<div class="kpi roxo" onclick="filtrarStatus('Planejamento')"><div class="num">${pl}</div><div class="lbl">Planejamento</div></div>
-<div class="kpi vermelho" onclick="filtrarStatus('Atrasado')"><div class="num">${a}</div><div class="lbl">Atrasados</div></div>`;
+
+function getCor(pct) {
+    return pct >= 80 ? 'verde' : pct >= 40 ? 'amarelo' : 'vermelho';
 }
-function filtrarStatus(s){document.getElementById("filterStatus").value=s;render()}
-function setView(v){
-view=v;
-document.getElementById("btnMacro").classList.toggle("active",v==="macro");
-document.getElementById("btnMicro").classList.toggle("active",v==="micro");
-document.getElementById("macroView").style.display=v==="macro"?"grid":"none";
-document.getElementById("microView").style.display=v==="micro"?"grid":"none";
+
+function getStatusClass(s) {
+    return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ /g, '-');
+}
+
+function getTipoLabel(type) {
+    const labels = {
+        'comentario': '💬 Comentário',
+        'atualizacao': '📝 Atualização',
+        'alerta': '⚠️ Alerta',
+        'resolucao': '✅ Resolução'
+    };
+    return labels[type] || type;
+}
+
+function getProjetosFiltrados() {
+    const nome = document.getElementById('filtroNome').value.toLowerCase();
+    const status = document.getElementById('filtroStatus').value;
+    const prioridade = document.getElementById('filtroPrioridade').value;
+    const local = document.getElementById('filtroLocal').value;
+    const resp = document.getElementById('filtroResp').value;
+    const criticos = document.getElementById('filtroCriticos').checked;
+    
+    return PROJETOS.filter(p => {
+        if (nome && !p.nome.toLowerCase().includes(nome)) return false;
+        if (status && p.status !== status) return false;
+        if (prioridade && p.prioridade !== prioridade) return false;
+        if (local && p.local !== local) return false;
+        if (resp && p.resp !== resp) return false;
+        if (criticos && !isCritico(p)) return false;
+        return true;
+    });
+}
+
+function populateLocais() {
+    const locais = [...new Set(PROJETOS.map(p => p.local))].sort();
+    const select = document.getElementById('filtroLocal');
+    select.innerHTML = '<option value="">Todos</option>' + locais.map(l => `<option value="${l}">${l}</option>`).join('');
+}
+
+function renderKPIs() {
+    const ps = getProjetosFiltrados();
+    const total = ps.length;
+    const concluidos = ps.filter(p => p.status === 'Concluído').length;
+    const andamento = ps.filter(p => p.status === 'Em andamento').length;
+    const atrasados = ps.filter(p => p.status === 'Atrasado').length;
+    const criticos = ps.filter(p => isCritico(p)).length;
+    
+    document.getElementById('kpis').innerHTML = `
+        <div class="kpi" onclick="limparFiltroStatus()">
+            <div class="numero">${total}</div>
+            <div class="label">Total</div>
+        </div>
+        <div class="kpi verde" onclick="filtrarStatus('Concluído')">
+            <div class="numero">${concluidos}</div>
+            <div class="label">Concluídos</div>
+        </div>
+        <div class="kpi amarelo" onclick="filtrarStatus('Em andamento')">
+            <div class="numero">${andamento}</div>
+            <div class="label">Em Andamento</div>
+        </div>
+        <div class="kpi vermelho" onclick="filtrarStatus('Atrasado')">
+            <div class="numero">${atrasados}</div>
+            <div class="label">Atrasados</div>
+        </div>
+        <div class="kpi rosa" onclick="filtrarCriticos()">
+            <div class="numero">${criticos}</div>
+            <div class="label">Críticos</div>
+        </div>
+    `;
+}
+
+function filtrarStatus(s) {
+    document.getElementById('filtroStatus').value = s;
+    document.getElementById('filtroCriticos').checked = false;
+    render();
+}
+
+function limparFiltroStatus() {
+    document.getElementById('filtroStatus').value = '';
+    document.getElementById('filtroCriticos').checked = false;
+    render();
+}
+
+function filtrarCriticos() {
+    document.getElementById('filtroCriticos').checked = true;
+    document.getElementById('filtroStatus').value = '';
+    render();
+}
+
+function setView(v) {
+    currentView = v;
+    document.getElementById('btnMacro').classList.toggle('active', v === 'macro');
+    document.getElementById('btnMicro').classList.toggle('active', v === 'micro');
+    document.getElementById('macroView').classList.toggle('hidden', v !== 'macro');
+    document.getElementById('microView').classList.toggle('hidden', v !== 'micro');
+    render();
+}
+
+function render() {
+    renderKPIs();
+    if (currentView === 'macro') renderMacro();
+    else renderMicro();
+}
+
+function renderMacro() {
+    const container = document.getElementById('macroView');
+    const ps = getProjetosFiltrados();
+    
+    const porFase = {};
+    FASES.forEach(f => porFase[f] = []);
+    
+    ps.forEach(p => {
+        if (porFase[p.fase]) {
+            porFase[p.fase].push(p);
+        }
+    });
+    
+    let html = '';
+    
+    FASES.forEach(fase => {
+        const projetos = porFase[fase];
+        if (projetos.length === 0) return;
+        
+        const totalAtiv = projetos.length;
+        const concluidas = projetos.filter(p => p.progresso === 100).length;
+        const pctFase = totalAtiv > 0 ? Math.round((concluidas / totalAtiv) * 100) : 0;
+        const cor = getCor(pctFase);
+        
+        const temAtrasados = projetos.some(p => p.status === 'Atrasado');
+        const temCriticos = projetos.some(p => isCritico(p) && p.status !== 'Concluído');
+        
+        let alertHtml = '';
+        if (temAtrasados) {
+            alertHtml = '<div class="phase-alert danger">🔺 Projeto(s) atrasado(s)</div>';
+        } else if (temCriticos && pctFase < 50) {
+            alertHtml = '<div class="phase-alert warning">⚠️ Atenção ao cronograma</div>';
+        }
+        
+        html += `
+            <div class="phase-card ${cor}">
+                <div class="phase-header">
+                    <div>
+                        <div class="phase-title">${fase}</div>
+                        <div class="phase-count">
+                            ${projetos.length} projeto${projetos.length > 1 ? 's' : ''}
+                            ${temCriticos ? '<span class="alert-icon">🔺</span>' : ''}
+                        </div>
+                    </div>
+                    <div class="phase-percent ${cor}">${pctFase}%</div>
+                </div>
+                <div class="phase-bar">
+                    <div class="phase-bar-fill ${cor}" style="width: ${pctFase}%"></div>
+                </div>
+                ${alertHtml}
+                <div class="phase-activities">${concluidas}/${totalAtiv} atividades concluídas</div>
+                <div class="phase-projects">
+                    ${projetos.map(p => {
+                        let badgeClass = 'normal';
+                        if (p.status === 'Concluído') badgeClass = 'concluido';
+                        else if (isCritico(p)) badgeClass = 'critico';
+                        return `<span class="project-badge ${badgeClass}" onclick="abrirModal('${p.nome}')">${p.nome}</span>`;
+                    }).join('')}
+                </div>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html || '<div class="empty-state">Nenhum projeto encontrado</div>';
+}
+
+function renderMicro() {
+    const container = document.getElementById('microView');
+    const ps = getProjetosFiltrados();
+    
+    if (ps.length === 0) {
+        container.innerHTML = '<div class="empty-state">Nenhum projeto encontrado</div>';
+        return;
+    }
+    
+    container.innerHTML = ps.map(p => {
+        const cor = getCor(p.progresso);
+        return `
+            <div class="project-card ${cor}" onclick="abrirModal('${p.nome}')">
+                <div class="project-card-header">
+                    <span class="project-card-name">${p.nome}</span>
+                    <span class="priority-badge ${p.prioridade.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')}">${p.prioridade}</span>
+                </div>
+                <div class="project-card-meta">
+                    <span>📍 ${p.local}</span>
+                    <span>👤 ${p.resp}</span>
+                </div>
+                <div class="project-card-phase">📘 ${p.fase}</div>
+                <div class="project-card-progress">
+                    <div class="project-card-progress-header">
+                        <span>Progresso</span>
+                        <span>${p.progresso}%</span>
+                    </div>
+                    <div class="project-card-bar">
+                        <div class="project-card-bar-fill ${cor}" style="width: ${p.progresso}%"></div>
+                    </div>
+                </div>
+                <div class="project-card-footer">
+                    <span class="status-badge ${getStatusClass(p.status)}">${p.status}</span>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function abrirModal(nome) {
+    const p = PROJETOS.find(x => x.nome === nome);
+    if (!p) return;
+    
+    const tratativas = TRATATIVAS[nome] || [];
+    
+    let tratativasHtml = '';
+    if (tratativas.length === 0) {
+        tratativasHtml = `
+            <div class="tratativas-empty">
+                <div class="msg">Nenhuma tratativa registrada ainda.</div>
+                <div class="sub">Em versões futuras, aqui aparecerão todas as atualizações e comentários deste projeto.</div>
+            </div>
+        `;
+    } else {
+        tratativasHtml = tratativas.map(t => `
+            <div class="tratativa-item">
+                <div class="tratativa-header">
+                    <div class="tratativa-user">
+                        <div class="tratativa-avatar">${t.user.charAt(0)}</div>
+                        <div class="tratativa-user-info">
+                            <div class="name">${t.user}</div>
+                            <div class="role">${t.role}</div>
+                        </div>
+                    </div>
+                    <div class="tratativa-date">${t.date}</div>
+                </div>
+                <span class="tratativa-type ${t.type}">${getTipoLabel(t.type)}</span>
+                <div class="tratativa-content">${t.content}</div>
+            </div>
+        `).join('');
+    }
+    
+    document.getElementById('modalTitle').textContent = '📋 ' + nome;
+    document.getElementById('modalBody').innerHTML = `
+        <div class="modal-info-grid">
+            <div class="modal-info-item">
+                <div class="label">Status</div>
+                <div class="value">${p.status}</div>
+            </div>
+            <div class="modal-info-item">
+                <div class="label">Fase Atual</div>
+                <div class="value">${p.fase}</div>
+            </div>
+            <div class="modal-info-item">
+                <div class="label">Progresso</div>
+                <div class="value">${p.progresso}%</div>
+            </div>
+            <div class="modal-info-item">
+                <div class="label">Prioridade</div>
+                <div class="value">${p.prioridade}</div>
+            </div>
+            <div class="modal-info-item">
+                <div class="label">PMO Responsável</div>
+                <div class="value">${p.resp}</div>
+            </div>
+            <div class="modal-info-item">
+                <div class="label">Local</div>
+                <div class="value">${p.local}</div>
+            </div>
+        </div>
+        <div class="tratativas-section">
+            <div class="tratativas-header">📋 Histórico de Tratativas</div>
+            ${tratativasHtml}
+        </div>
+    `;
+    document.getElementById('modal').classList.add('show');
+}
+
+function fecharModal() {
+    document.getElementById('modal').classList.remove('show');
+}
+
+// Inicialização
+populateLocais();
 render();
-}
-function render(){renderKPIs();if(view==="macro")renderMacro();else renderMicro();document.getElementById("ts").textContent="Atualizado: "+new Date().toLocaleString("pt-BR")}
-function renderMacro(){
-const c=document.getElementById("macroView");
-const ps=getProjetosFiltrados();
-const pf={};FASES.forEach(f=>pf[f]=[]);
-ps.forEach(p=>{pf[p.fase].push(p)});
-let h="";
-FASES.forEach(f=>{
-const pjs=pf[f];if(!pjs.length)return;
-const avgProg=Math.round(pjs.reduce((a,p)=>a+p.progresso,0)/pjs.length);
-const cor=getCor(avgProg);
-h+=`<div class="phase-card ${cor}"><div class="phase-header"><div><span class="phase-title">${f}</span><br><span class="phase-count">${pjs.length} projeto${pjs.length>1?"s":""}</span></div><span class="phase-percent ${cor}">${avgProg}%</span></div><div class="phase-bar"><div class="phase-bar-fill ${cor}" style="width:${avgProg}%"></div></div><div class="phase-projects">${pjs.map(p=>`<span class="badge ${isCritico(p)?"critico":""}" onclick="abrirModal('${p.nome}')">${p.nome}</span>`).join("")}</div></div>`;
+
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') fecharModal();
 });
-c.innerHTML=h||'<div class="empty">Nenhum projeto encontrado</div>';
-}
-function renderMicro(){
-const c=document.getElementById("microView");
-const ps=getProjetosFiltrados();
-if(!ps.length){c.innerHTML='<div class="empty">Nenhum projeto encontrado</div>';return}
-c.innerHTML=ps.map(p=>{
-const cor=getCor(p.progresso);
-return`<div class="project-card ${cor}" onclick="abrirModal('${p.nome}')"><div class="project-header"><span class="project-name">${p.nome}</span><span class="priority ${p.prioridade.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}">${p.prioridade}</span></div><div class="project-meta"><span>📍 ${p.local}</span><span>👤 ${p.resp}</span></div><div class="project-phase">📘 ${p.fase}</div><div class="progress"><div class="progress-header"><span>Progresso</span><span>${p.progresso}%</span></div><div class="progress-bar"><div class="progress-fill ${cor}" style="width:${p.progresso}%"></div></div></div><div class="project-footer"><span class="status-badge ${getStatusClass(p.status)}">${p.status}</span></div></div>`;
-}).join("");
-}
-function abrirModal(nome){
-const p=PROJETOS.find(x=>x.nome===nome);if(!p)return;
-document.getElementById("modalTitle").textContent="📋 "+nome;
-document.getElementById("modalBody").innerHTML=`
-<div class="modal-info">
-<div class="modal-info-item"><span class="label">Status</span><div class="value">${p.status}</div></div>
-<div class="modal-info-item"><span class="label">Fase Atual</span><div class="value">${p.fase}</div></div>
-<div class="modal-info-item"><span class="label">Progresso</span><div class="value">${p.progresso}%</div></div>
-<div class="modal-info-item"><span class="label">Prioridade</span><div class="value">${p.prioridade}</div></div>
-<div class="modal-info-item"><span class="label">PMO</span><div class="value">${p.resp}</div></div>
-<div class="modal-info-item"><span class="label">Local</span><div class="value">${p.local}</div></div>
-</div>`;
-document.getElementById("modal").classList.add("show");
-}
-function fecharModal(){document.getElementById("modal").classList.remove("show")}
-document.getElementById("dataAtual").textContent=hoje.toLocaleDateString("pt-BR",{weekday:"long",day:"2-digit",month:"long",year:"numeric"});
-render();
-document.addEventListener("keydown",e=>{if(e.key==="Escape")fecharModal()});
 </script>
 </body>
 </html>
