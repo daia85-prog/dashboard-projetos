@@ -45,11 +45,13 @@
         
         /* KPI Cards */
         .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 20px; }
-        .kpi { text-align: center; padding: 15px 10px; background: white; border-radius: 10px; border: 1px solid #e2e8f0; border-top: 4px solid #e2e8f0; }
-        .kpi.verde { border-top-color: #22c55e; }
-        .kpi.amarelo { border-top-color: #f59e0b; }
-        .kpi.vermelho { border-top-color: #ef4444; }
-        .kpi.azul { border-top-color: #3b82f6; }
+        .kpi { text-align: center; padding: 15px 10px; background: white; border-radius: 10px; border: 2px solid #e2e8f0; cursor: pointer; transition: all 0.2s; }
+        .kpi:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .kpi.verde { border-color: #22c55e; }
+        .kpi.amarelo { border-color: #f59e0b; }
+        .kpi.vermelho { border-color: #ef4444; }
+        .kpi.azul { border-color: #3b82f6; }
+        .kpi.rosa { border-color: #ec4899; }
         .kpi .num { font-size: 1.8em; font-weight: 700; color: #1e293b; }
         .kpi .lbl { font-size: 0.8em; color: #64748b; }
         
@@ -394,70 +396,99 @@
 
 <script>
 const PROJETOS = [
-    { nome: 'COUGAR', local: 'São Paulo', resp: 'Maria Silva', prioridade: 'Alta', dataInicio: '2025-10-01', dataPrevista: '2026-03-15' },
-    { nome: 'BETA', local: 'Rio de Janeiro', resp: 'João Santos', prioridade: 'Alta', dataInicio: '2025-11-15', dataPrevista: '2026-04-01' },
-    { nome: 'NAVEPARK', local: 'Curitiba', resp: 'Ana Costa', prioridade: 'Média', dataInicio: '2025-06-01', dataPrevista: '2026-01-10' },
-    { nome: 'ESPERANÇA', local: 'Belo Horizonte', resp: 'Carlos Lima', prioridade: 'Média', dataInicio: '2025-12-01', dataPrevista: '2026-05-20' },
-    { nome: 'PBL GUATEMALA', local: 'Guatemala', resp: 'Pedro Souza', prioridade: 'Baixa', dataInicio: '2026-01-15', dataPrevista: '2026-06-01' },
-    { nome: 'CRISTAL MG', local: 'Belo Horizonte', resp: 'Maria Silva', prioridade: 'Alta', dataInicio: '2025-09-01', dataPrevista: '2026-01-20' }
+    { nome: 'BARBECUE B2B', local: 'São Paulo - SP', resp: 'ALEX', prioridade: 'Alta', dataInicio: '2025-06-01', dataPrevista: '2026-02-06' },
+    { nome: 'BELEZA', local: 'São Paulo - SP', resp: 'ANDERSON', prioridade: 'Média', dataInicio: '2025-05-01', dataPrevista: '2025-11-30' },
+    { nome: 'BETA', local: 'Rio de Janeiro - RJ', resp: 'ANDERSON', prioridade: 'Alta', dataInicio: '2025-07-01', dataPrevista: '2026-03-10' },
+    { nome: 'BETA ESTEIO', local: 'Esteio - RS', resp: 'ANDERSON', prioridade: 'Média', dataInicio: '2026-01-16', dataPrevista: '2026-07-15' },
+    { nome: 'BP', local: 'São Paulo - SP', resp: 'GIOVANNI', prioridade: 'Média', dataInicio: '2025-12-01', dataPrevista: '2026-06-30' },
+    { nome: 'BR', local: 'Jaboatão - PE', resp: 'FÁBIO', prioridade: 'Alta', dataInicio: '2026-02-01', dataPrevista: '2026-08-01' },
+    { nome: 'CANDELABRIA', local: 'Candelária - RS', resp: 'ALEX', prioridade: 'Média', dataInicio: '2025-06-01', dataPrevista: '2025-12-09' },
+    { nome: 'CDSK', local: 'São Paulo - SP', resp: 'VINICIUS', prioridade: 'Alta', dataInicio: '2025-08-01', dataPrevista: '2026-02-28' },
+    { nome: 'COUGAR', local: 'São Paulo - SP', resp: 'LEANDRO', prioridade: 'Alta', dataInicio: '2025-05-01', dataPrevista: '2026-02-09' },
+    { nome: 'CRISTAL MG RETROFIT', local: 'Belo Horizonte - MG', resp: 'GIOVANNI', prioridade: 'Alta', dataInicio: '2025-11-01', dataPrevista: '2026-05-30' },
+    { nome: 'DIA', local: 'São Paulo - SP', resp: 'ANDERSON', prioridade: 'Alta', dataInicio: '2025-09-01', dataPrevista: '2026-01-15' },
+    { nome: 'DIAMANTE', local: 'Curitiba - PR', resp: 'FÁBIO', prioridade: 'Média', dataInicio: '2026-02-15', dataPrevista: '2026-08-15' },
+    { nome: 'ELETRO', local: 'São Paulo - SP', resp: 'GIOVANNI', prioridade: 'Média', dataInicio: '2025-10-01', dataPrevista: '2026-04-30' },
+    { nome: 'ESPERANÇA', local: 'Belo Horizonte - MG', resp: 'VINICIUS', prioridade: 'Média', dataInicio: '2025-04-01', dataPrevista: '2026-01-19' },
+    { nome: 'FLOWER', local: 'São Paulo - SP', resp: 'ANDERSON', prioridade: 'Baixa', dataInicio: '2025-12-01', dataPrevista: '2026-06-30' },
+    { nome: 'GAVIÃO', local: 'Fortaleza - CE', resp: 'FÁBIO', prioridade: 'Alta', dataInicio: '2025-05-01', dataPrevista: '2026-02-01' },
+    { nome: 'MKT CHILE', local: 'Santiago - Chile', resp: 'ALEX', prioridade: 'Média', dataInicio: '2026-06-01', dataPrevista: '2026-12-01' },
+    { nome: 'MKT PERU', local: 'Lima - Peru', resp: 'ALEX', prioridade: 'Média', dataInicio: '2026-06-01', dataPrevista: '2026-12-01' },
+    { nome: 'MASTER', local: 'São Paulo - SP', resp: 'LEANDRO', prioridade: 'Alta', dataInicio: '2026-03-01', dataPrevista: '2026-09-01' },
+    { nome: 'NAVEPARK', local: 'Curitiba - PR', resp: 'ANDERSON', prioridade: 'Média', dataInicio: '2025-09-01', dataPrevista: '2026-04-30' },
+    { nome: 'OCTOPUS MS', local: 'Campo Grande - MS', resp: 'ALEX', prioridade: 'Média', dataInicio: '2025-10-01', dataPrevista: '2026-04-30' },
+    { nome: 'OCTOPUS SC', local: 'Florianópolis - SC', resp: 'ALEX', prioridade: 'Média', dataInicio: '2025-06-01', dataPrevista: '2025-12-15' },
+    { nome: 'OPTIMUS PRIME', local: 'São Paulo - SP', resp: 'GIOVANNI', prioridade: 'Alta', dataInicio: '2025-04-01', dataPrevista: '2025-10-27' },
+    { nome: 'PBL GUATEMALA', local: 'Guatemala City', resp: 'FÁBIO', prioridade: 'Alta', dataInicio: '2025-09-01', dataPrevista: '2026-03-31' },
+    { nome: 'PROMO B2B CD GRU', local: 'Guarulhos - SP', resp: 'LEANDRO', prioridade: 'Alta', dataInicio: '2025-07-01', dataPrevista: '2026-02-04' },
+    { nome: 'PTL SP', local: 'São Paulo - SP', resp: 'VINICIUS', prioridade: 'Média', dataInicio: '2025-04-01', dataPrevista: '2025-10-30' },
+    { nome: 'REISADO', local: 'Recife - PE', resp: 'FÁBIO', prioridade: 'Média', dataInicio: '2025-06-01', dataPrevista: '2025-12-20' },
+    { nome: 'REVERSE', local: 'São Paulo - SP', resp: 'ALEX', prioridade: 'Alta', dataInicio: '2025-09-01', dataPrevista: '2026-03-15' },
+    { nome: 'SUPER DIVINOPOLIS', local: 'Divinópolis - MG', resp: 'GIOVANNI', prioridade: 'Média', dataInicio: '2025-10-01', dataPrevista: '2026-04-30' },
+    { nome: 'TITANIO', local: 'São Paulo - SP', resp: 'ALEX', prioridade: 'Alta', dataInicio: '2025-07-01', dataPrevista: '2026-02-28' }
 ];
 
 const FASES = ['1. Iniciação','2. Planejamento & Documentação','3. Provisionamento de Recursos','4. Implementação','5. Testes & Homologação','6. Deploy em Produção','7. Estabilização','8. Encerramento'];
 
-const ATIVIDADES = [
-    {proj:'COUGAR',nome:'KICKOFF INTERNO',fase:'1. Iniciação',status:'Concluído',dataInicio:'2025-10-01',dataFim:'2025-10-05',resp:'Maria Silva',descricao:'Reunião inicial do projeto com stakeholders'},
-    {proj:'COUGAR',nome:'Documentação Layout',fase:'2. Planejamento & Documentação',status:'Concluído',dataInicio:'2025-10-06',dataFim:'2025-10-20',resp:'Ana Costa',descricao:'Elaboração da documentação técnica do layout'},
-    {proj:'COUGAR',nome:'Solicitação VPN',fase:'3. Provisionamento de Recursos',status:'Concluído',dataInicio:'2025-10-21',dataFim:'2025-11-05',resp:'João Santos',descricao:'Solicitação e configuração de acesso VPN'},
-    {proj:'COUGAR',nome:'Solicitação IPs',fase:'3. Provisionamento de Recursos',status:'Concluído',dataInicio:'2025-10-21',dataFim:'2025-11-05',resp:'João Santos',descricao:'Reserva de faixa de IPs para o projeto'},
-    {proj:'COUGAR',nome:'Instalação Equipamentos',fase:'4. Implementação',status:'Concluído',dataInicio:'2025-11-10',dataFim:'2025-12-01',resp:'Pedro Souza',descricao:'Instalação física dos equipamentos de rede'},
-    {proj:'COUGAR',nome:'Configuração Rede',fase:'4. Implementação',status:'Em andamento',dataInicio:'2025-12-05',dataFim:'2026-01-15',resp:'Carlos Lima',descricao:'Configuração de switches e roteadores'},
-    {proj:'COUGAR',nome:'Testes Homologação',fase:'5. Testes & Homologação',status:'Não Iniciado',dataInicio:'2026-01-20',dataFim:'2026-02-10',resp:'Maria Silva',descricao:'Testes de validação em ambiente de homologação'},
-    {proj:'COUGAR',nome:'Deploy Produção',fase:'6. Deploy em Produção',status:'Não Iniciado',dataInicio:'2026-02-15',dataFim:'2026-02-28',resp:'João Santos',descricao:'Migração para ambiente de produção'},
-    {proj:'COUGAR',nome:'Monitoramento',fase:'7. Estabilização',status:'Não Iniciado',dataInicio:'2026-03-01',dataFim:'2026-03-10',resp:'Ana Costa',descricao:'Monitoramento pós-deploy'},
-    {proj:'COUGAR',nome:'Aceite Formal',fase:'8. Encerramento',status:'Não Iniciado',dataInicio:'2026-03-11',dataFim:'2026-03-15',resp:'Maria Silva',descricao:'Assinatura do termo de aceite'},
-    {proj:'BETA',nome:'KICKOFF INTERNO',fase:'1. Iniciação',status:'Concluído',dataInicio:'2025-11-15',dataFim:'2025-11-20',resp:'João Santos',descricao:'Reunião inicial do projeto BETA'},
-    {proj:'BETA',nome:'Documentação Layout',fase:'2. Planejamento & Documentação',status:'Em andamento',dataInicio:'2025-11-25',dataFim:'2026-01-10',resp:'Ana Costa',descricao:'Documentação técnica em elaboração'},
-    {proj:'BETA',nome:'Solicitação VPN',fase:'3. Provisionamento de Recursos',status:'Não Iniciado',dataInicio:'2026-01-15',dataFim:'2026-02-01',resp:'Carlos Lima',descricao:'Aguardando conclusão da documentação'},
-    {proj:'BETA',nome:'Instalação Equipamentos',fase:'4. Implementação',status:'Não Iniciado',dataInicio:'2026-02-05',dataFim:'2026-02-28',resp:'Pedro Souza',descricao:'Instalação dos equipamentos'},
-    {proj:'BETA',nome:'Testes Homologação',fase:'5. Testes & Homologação',status:'Não Iniciado',dataInicio:'2026-03-01',dataFim:'2026-03-15',resp:'Maria Silva',descricao:'Validação em homologação'},
-    {proj:'BETA',nome:'Deploy Produção',fase:'6. Deploy em Produção',status:'Não Iniciado',dataInicio:'2026-03-16',dataFim:'2026-03-25',resp:'João Santos',descricao:'Deploy em produção'},
-    {proj:'BETA',nome:'Monitoramento',fase:'7. Estabilização',status:'Não Iniciado',dataInicio:'2026-03-26',dataFim:'2026-03-30',resp:'Ana Costa',descricao:'Monitoramento'},
-    {proj:'BETA',nome:'Aceite Formal',fase:'8. Encerramento',status:'Não Iniciado',dataInicio:'2026-03-31',dataFim:'2026-04-01',resp:'João Santos',descricao:'Aceite formal'},
-    {proj:'NAVEPARK',nome:'KICKOFF INTERNO',fase:'1. Iniciação',status:'Concluído',dataInicio:'2025-06-01',dataFim:'2025-06-05',resp:'Ana Costa',descricao:'Kickoff do NAVEPARK'},
-    {proj:'NAVEPARK',nome:'Documentação Layout',fase:'2. Planejamento & Documentação',status:'Concluído',dataInicio:'2025-06-10',dataFim:'2025-07-01',resp:'Maria Silva',descricao:'Documentação completa'},
-    {proj:'NAVEPARK',nome:'Solicitação VPN',fase:'3. Provisionamento de Recursos',status:'Concluído',dataInicio:'2025-07-05',dataFim:'2025-07-20',resp:'João Santos',descricao:'VPN configurada'},
-    {proj:'NAVEPARK',nome:'Instalação Equipamentos',fase:'4. Implementação',status:'Concluído',dataInicio:'2025-07-25',dataFim:'2025-09-01',resp:'Pedro Souza',descricao:'Equipamentos instalados'},
-    {proj:'NAVEPARK',nome:'Testes Homologação',fase:'5. Testes & Homologação',status:'Concluído',dataInicio:'2025-09-05',dataFim:'2025-10-01',resp:'Carlos Lima',descricao:'Testes OK'},
-    {proj:'NAVEPARK',nome:'Deploy Produção',fase:'6. Deploy em Produção',status:'Concluído',dataInicio:'2025-10-05',dataFim:'2025-10-20',resp:'Ana Costa',descricao:'Deploy realizado'},
-    {proj:'NAVEPARK',nome:'Monitoramento',fase:'7. Estabilização',status:'Concluído',dataInicio:'2025-10-25',dataFim:'2025-12-01',resp:'Maria Silva',descricao:'Sistema estável'},
-    {proj:'NAVEPARK',nome:'Aceite Formal',fase:'8. Encerramento',status:'Concluído',dataInicio:'2025-12-05',dataFim:'2026-01-10',resp:'Ana Costa',descricao:'Projeto encerrado com sucesso'},
-    {proj:'ESPERANÇA',nome:'KICKOFF INTERNO',fase:'1. Iniciação',status:'Aguardando',dataInicio:'2025-12-01',dataFim:'2025-12-10',resp:'Carlos Lima',descricao:'Aguardando aprovação do orçamento'},
-    {proj:'ESPERANÇA',nome:'Documentação Layout',fase:'2. Planejamento & Documentação',status:'Não Iniciado',dataInicio:'2025-12-15',dataFim:'2026-01-15',resp:'Ana Costa',descricao:'Documentação técnica'},
-    {proj:'ESPERANÇA',nome:'Solicitação VPN',fase:'3. Provisionamento de Recursos',status:'Não Iniciado',dataInicio:'2026-01-20',dataFim:'2026-02-10',resp:'João Santos',descricao:'Solicitação VPN'},
-    {proj:'ESPERANÇA',nome:'Instalação Equipamentos',fase:'4. Implementação',status:'Não Iniciado',dataInicio:'2026-02-15',dataFim:'2026-03-15',resp:'Pedro Souza',descricao:'Instalação'},
-    {proj:'ESPERANÇA',nome:'Testes Homologação',fase:'5. Testes & Homologação',status:'Não Iniciado',dataInicio:'2026-03-20',dataFim:'2026-04-10',resp:'Maria Silva',descricao:'Testes'},
-    {proj:'ESPERANÇA',nome:'Deploy Produção',fase:'6. Deploy em Produção',status:'Não Iniciado',dataInicio:'2026-04-15',dataFim:'2026-04-30',resp:'Carlos Lima',descricao:'Deploy'},
-    {proj:'ESPERANÇA',nome:'Monitoramento',fase:'7. Estabilização',status:'Não Iniciado',dataInicio:'2026-05-01',dataFim:'2026-05-15',resp:'Ana Costa',descricao:'Monitoramento'},
-    {proj:'ESPERANÇA',nome:'Aceite Formal',fase:'8. Encerramento',status:'Não Iniciado',dataInicio:'2026-05-16',dataFim:'2026-05-20',resp:'Carlos Lima',descricao:'Aceite'},
-    {proj:'PBL GUATEMALA',nome:'KICKOFF INTERNO',fase:'1. Iniciação',status:'Não Iniciado',dataInicio:'2026-01-15',dataFim:'2026-01-20',resp:'Pedro Souza',descricao:'Kickoff Guatemala'},
-    {proj:'PBL GUATEMALA',nome:'Documentação Layout',fase:'2. Planejamento & Documentação',status:'Não Iniciado',dataInicio:'2026-01-25',dataFim:'2026-02-15',resp:'Ana Costa',descricao:'Documentação'},
-    {proj:'PBL GUATEMALA',nome:'Solicitação VPN',fase:'3. Provisionamento de Recursos',status:'Não Iniciado',dataInicio:'2026-02-20',dataFim:'2026-03-10',resp:'João Santos',descricao:'VPN'},
-    {proj:'PBL GUATEMALA',nome:'Instalação Equipamentos',fase:'4. Implementação',status:'Não Iniciado',dataInicio:'2026-03-15',dataFim:'2026-04-15',resp:'Pedro Souza',descricao:'Instalação'},
-    {proj:'PBL GUATEMALA',nome:'Testes Homologação',fase:'5. Testes & Homologação',status:'Não Iniciado',dataInicio:'2026-04-20',dataFim:'2026-05-10',resp:'Maria Silva',descricao:'Testes'},
-    {proj:'PBL GUATEMALA',nome:'Deploy Produção',fase:'6. Deploy em Produção',status:'Não Iniciado',dataInicio:'2026-05-15',dataFim:'2026-05-25',resp:'Carlos Lima',descricao:'Deploy'},
-    {proj:'PBL GUATEMALA',nome:'Monitoramento',fase:'7. Estabilização',status:'Não Iniciado',dataInicio:'2026-05-26',dataFim:'2026-05-30',resp:'Ana Costa',descricao:'Monitoramento'},
-    {proj:'PBL GUATEMALA',nome:'Aceite Formal',fase:'8. Encerramento',status:'Não Iniciado',dataInicio:'2026-05-31',dataFim:'2026-06-01',resp:'Pedro Souza',descricao:'Aceite'},
-    {proj:'CRISTAL MG',nome:'KICKOFF INTERNO',fase:'1. Iniciação',status:'Concluído',dataInicio:'2025-09-01',dataFim:'2025-09-05',resp:'Maria Silva',descricao:'Kickoff CRISTAL MG'},
-    {proj:'CRISTAL MG',nome:'Documentação Layout',fase:'2. Planejamento & Documentação',status:'Concluído',dataInicio:'2025-09-10',dataFim:'2025-09-30',resp:'Ana Costa',descricao:'Documentação completa'},
-    {proj:'CRISTAL MG',nome:'Solicitação VPN',fase:'3. Provisionamento de Recursos',status:'Concluído',dataInicio:'2025-10-01',dataFim:'2025-10-15',resp:'João Santos',descricao:'VPN OK'},
-    {proj:'CRISTAL MG',nome:'Solicitação IPs',fase:'3. Provisionamento de Recursos',status:'Concluído',dataInicio:'2025-10-01',dataFim:'2025-10-15',resp:'João Santos',descricao:'IPs reservados'},
-    {proj:'CRISTAL MG',nome:'Instalação Equipamentos',fase:'4. Implementação',status:'Concluído',dataInicio:'2025-10-20',dataFim:'2025-11-15',resp:'Pedro Souza',descricao:'Equipamentos instalados'},
-    {proj:'CRISTAL MG',nome:'Configuração Rede',fase:'4. Implementação',status:'Concluído',dataInicio:'2025-11-16',dataFim:'2025-12-01',resp:'Carlos Lima',descricao:'Rede configurada'},
-    {proj:'CRISTAL MG',nome:'Testes Homologação',fase:'5. Testes & Homologação',status:'Em andamento',dataInicio:'2025-12-05',dataFim:'2026-01-10',resp:'Maria Silva',descricao:'Testes em andamento - alguns ajustes necessários'},
-    {proj:'CRISTAL MG',nome:'Deploy Produção',fase:'6. Deploy em Produção',status:'Não Iniciado',dataInicio:'2026-01-12',dataFim:'2026-01-18',resp:'João Santos',descricao:'Deploy'},
-    {proj:'CRISTAL MG',nome:'Monitoramento',fase:'7. Estabilização',status:'Não Iniciado',dataInicio:'2026-01-19',dataFim:'2026-01-25',resp:'Ana Costa',descricao:'Monitoramento'},
-    {proj:'CRISTAL MG',nome:'Aceite Formal',fase:'8. Encerramento',status:'Não Iniciado',dataInicio:'2026-01-26',dataFim:'2026-01-30',resp:'Maria Silva',descricao:'Aceite formal'}
-];
+// Status de cada projeto (atividades concluídas por fase: 0-8)
+const PROJETO_STATUS = {
+    'BARBECUE B2B': 8, 'BELEZA': 8, 'BETA': 8, 'BETA ESTEIO': 1, 'BP': 2,
+    'BR': 1, 'CANDELABRIA': 8, 'CDSK': 6, 'COUGAR': 8, 'CRISTAL MG RETROFIT': 2,
+    'DIA': 3, 'DIAMANTE': 0, 'ELETRO': 4, 'ESPERANÇA': 8, 'FLOWER': 2,
+    'GAVIÃO': 8, 'MKT CHILE': 0, 'MKT PERU': 0, 'MASTER': 0, 'NAVEPARK': 3,
+    'OCTOPUS MS': 4, 'OCTOPUS SC': 8, 'OPTIMUS PRIME': 8, 'PBL GUATEMALA': 4,
+    'PROMO B2B CD GRU': 8, 'PTL SP': 8, 'REISADO': 8, 'REVERSE': 5,
+    'SUPER DIVINOPOLIS': 4, 'TITANIO': 7
+};
+
+// Gerar atividades automaticamente para cada projeto
+function gerarAtividades() {
+    const atividades = [];
+    const atividadesPorFase = [
+        'KICKOFF INTERNO',
+        'Documentação Layout',
+        'Solicitação VPN',
+        'Instalação Equipamentos',
+        'Testes Homologação',
+        'Deploy Produção',
+        'Monitoramento',
+        'Aceite Formal'
+    ];
+    
+    PROJETOS.forEach(p => {
+        const fasesCompletas = PROJETO_STATUS[p.nome] || 0;
+        const inicio = new Date(p.dataInicio);
+        const fim = new Date(p.dataPrevista);
+        const duracao = (fim - inicio) / 8;
+        
+        atividadesPorFase.forEach((atv, i) => {
+            const dataInicio = new Date(inicio.getTime() + duracao * i);
+            const dataFim = new Date(inicio.getTime() + duracao * (i + 1));
+            let status = 'Não Iniciado';
+            
+            if (i < fasesCompletas) status = 'Concluído';
+            else if (i === fasesCompletas) {
+                const hoje = new Date();
+                if (dataInicio <= hoje) status = 'Em andamento';
+                else status = 'Aguardando';
+            }
+            
+            atividades.push({
+                proj: p.nome,
+                nome: atv,
+                fase: FASES[i],
+                status: status,
+                dataInicio: dataInicio.toISOString().split('T')[0],
+                dataFim: dataFim.toISOString().split('T')[0],
+                resp: p.resp,
+                descricao: `${atv} do projeto ${p.nome}`
+            });
+        });
+    });
+    return atividades;
+}
+
+const ATIVIDADES = gerarAtividades();
 
 let view='macro', projetoFiltro='', projetoAtual='', printMode='print';
 const hoje=new Date();hoje.setHours(0,0,0,0);
@@ -481,7 +512,7 @@ function faseTemAlerta(f,ps){return ps.some(p=>isCritico(p.nome)||calcStatus(p.n
 function getProjetosFiltrados(){const s=document.getElementById('search').value.toLowerCase(),st=document.getElementById('filterStatus').value,pr=document.getElementById('filterPrior').value,lo=document.getElementById('filterLocal').value,re=document.getElementById('filterResp').value,cr=document.getElementById('filterCritico').checked;return PROJETOS.filter(p=>{const ps=calcStatus(p.nome);return(!s||p.nome.toLowerCase().includes(s))&&(!st||ps===st)&&(!pr||p.prioridade===pr)&&(!lo||p.local===lo)&&(!re||p.resp===re)&&(!cr||isCritico(p.nome))&&(!projetoFiltro||p.nome===projetoFiltro)})}
 function populateFilters(){const l=[...new Set(PROJETOS.map(p=>p.local))].sort(),r=[...new Set(PROJETOS.map(p=>p.resp))].sort();document.getElementById('filterLocal').innerHTML='<option value="">Todos</option>'+l.map(x=>`<option value="${x}">${x}</option>`).join('');document.getElementById('filterResp').innerHTML='<option value="">Todos</option>'+r.map(x=>`<option value="${x}">${x}</option>`).join('')}
 
-function renderKPIs(){const ps=getProjetosFiltrados(),t=ps.length,c=ps.filter(p=>calcStatus(p.nome)==='Concluído').length,e=ps.filter(p=>calcStatus(p.nome)==='Em andamento').length,a=ps.filter(p=>calcStatus(p.nome)==='Atrasado').length,cr=ps.filter(p=>isCritico(p.nome)).length;document.getElementById('kpis').innerHTML=`<div class="kpi azul"><div class="num">${t}</div><div class="lbl">Total</div></div><div class="kpi verde"><div class="num">${c}</div><div class="lbl">Concluídos</div></div><div class="kpi amarelo"><div class="num">${e}</div><div class="lbl">Em Andamento</div></div><div class="kpi vermelho"><div class="num">${a}</div><div class="lbl">Atrasados</div></div><div class="kpi vermelho"><div class="num">${cr}</div><div class="lbl">Críticos</div></div>`}
+function renderKPIs(){const ps=getProjetosFiltrados(),t=ps.length,c=ps.filter(p=>calcStatus(p.nome)==='Concluído').length,e=ps.filter(p=>calcStatus(p.nome)==='Em andamento').length,a=ps.filter(p=>calcStatus(p.nome)==='Atrasado').length,cr=ps.filter(p=>isCritico(p.nome)).length;document.getElementById('kpis').innerHTML=`<div class="kpi azul"><div class="num">${t}</div><div class="lbl">Total</div></div><div class="kpi verde"><div class="num">${c}</div><div class="lbl">Concluídos</div></div><div class="kpi amarelo"><div class="num">${e}</div><div class="lbl">Em Andamento</div></div><div class="kpi vermelho"><div class="num">${a}</div><div class="lbl">Atrasados</div></div><div class="kpi rosa"><div class="num">${cr}</div><div class="lbl">Críticos</div></div>`}
 
 function setView(v){view=v;document.getElementById('btnMacro').classList.toggle('active',v==='macro');document.getElementById('btnMicro').classList.toggle('active',v==='micro');document.getElementById('macroView').style.display=v==='macro'?'grid':'none';document.getElementById('microView').style.display=v==='micro'?'grid':'none';render()}
 function render(){renderKPIs();if(view==='macro')renderMacro();else renderMicro();document.getElementById('ts').textContent='Atualizado em: '+new Date().toLocaleString('pt-BR')}
@@ -522,68 +553,118 @@ function filtrarProjeto(n){projetoFiltro=n;document.getElementById('search').val
 
 // TRATATIVAS POR ATIVIDADE - Preencha aqui ou importe do Excel
 const TRATATIVAS = {
-    // COUGAR
-    'COUGAR_KICKOFF INTERNO': [
-        { user: 'Maria Silva', role: 'PMO', date: '01/10/2025 09:30', type: 'atualizacao', content: 'Kickoff realizado com sucesso. Stakeholders alinhados.' },
-        { user: 'DAIANA', role: 'Gestora', date: '01/10/2025 14:00', type: 'comentario', content: 'Excelente início! Documentar decisões.' }
+    // BARBECUE B2B
+    'BARBECUE B2B_KICKOFF INTERNO': [
+        { user: 'ALEX', role: 'PMO', date: '01/06/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado com sucesso.' },
+        { user: 'DAIANA', role: 'Gestora', date: '01/06/2025 14:00', type: 'comentario', content: 'Projeto prioritário. Acompanhar de perto.' }
     ],
-    'COUGAR_Documentação Layout': [
-        { user: 'Ana Costa', role: 'Analista', date: '06/10/2025 10:00', type: 'atualizacao', content: 'Iniciada elaboração da documentação técnica.' },
-        { user: 'Ana Costa', role: 'Analista', date: '20/10/2025 16:00', type: 'resolucao', content: 'Documentação concluída e aprovada.' }
-    ],
-    'COUGAR_Configuração Rede': [
-        { user: 'Carlos Lima', role: 'Técnico', date: '05/12/2025 09:00', type: 'atualizacao', content: 'Configuração de switches iniciada.' },
-        { user: 'Carlos Lima', role: 'Técnico', date: '15/01/2026 11:00', type: 'alerta', content: 'Aguardando licenças de software.' }
+    'BARBECUE B2B_Aceite Formal': [
+        { user: 'ALEX', role: 'PMO', date: '06/02/2026 10:00', type: 'resolucao', content: 'Projeto concluído com sucesso. Aceite assinado.' },
+        { user: 'DOUGLAS', role: 'Diretor', date: '06/02/2026 14:00', type: 'comentario', content: 'Parabéns à equipe pela entrega!' }
     ],
     // BETA
     'BETA_KICKOFF INTERNO': [
-        { user: 'João Santos', role: 'PMO', date: '15/11/2025 10:00', type: 'atualizacao', content: 'Kickoff do projeto BETA realizado.' },
-        { user: 'DAIANA', role: 'Gestora', date: '15/11/2025 15:00', type: 'comentario', content: 'Prioridade alta. Acompanhar de perto.' }
+        { user: 'ANDERSON', role: 'PMO', date: '01/07/2025 10:00', type: 'atualizacao', content: 'Kickoff do projeto BETA realizado.' },
+        { user: 'DAIANA', role: 'Gestora', date: '01/07/2025 15:00', type: 'comentario', content: 'Prioridade alta. Acompanhar cronograma.' }
     ],
-    'BETA_Documentação Layout': [
-        { user: 'Ana Costa', role: 'Analista', date: '25/11/2025 09:00', type: 'atualizacao', content: 'Documentação técnica em elaboração.' },
-        { user: 'Ana Costa', role: 'Analista', date: '10/01/2026 14:00', type: 'alerta', content: 'Pendente aprovação do cliente.' }
+    'BETA_Aceite Formal': [
+        { user: 'ANDERSON', role: 'PMO', date: '10/03/2026 09:00', type: 'resolucao', content: 'Go Live realizado com sucesso em 10/03.' },
+        { user: 'DOUGLAS', role: 'Diretor', date: '10/03/2026 15:00', type: 'comentario', content: 'Excelente trabalho!' }
+    ],
+    // CDSK
+    'CDSK_KICKOFF INTERNO': [
+        { user: 'VINICIUS', role: 'PMO', date: '01/08/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado. Escopo definido.' }
+    ],
+    'CDSK_Deploy Produção': [
+        { user: 'VINICIUS', role: 'PMO', date: '05/02/2026 08:00', type: 'atualizacao', content: 'Deploy da Fase 1 iniciado. Janela: 08:00-12:00.' },
+        { user: 'VINICIUS', role: 'PMO', date: '05/02/2026 11:45', type: 'resolucao', content: 'Deploy concluído com sucesso! Monitoramento ativo.' },
+        { user: 'DAIANA', role: 'Gestora', date: '06/02/2026 09:00', type: 'comentario', content: 'Acompanhar estabilização pós-deploy.' }
+    ],
+    // COUGAR
+    'COUGAR_KICKOFF INTERNO': [
+        { user: 'LEANDRO', role: 'PMO', date: '01/05/2025 09:30', type: 'atualizacao', content: 'Kickoff realizado com sucesso. Stakeholders alinhados.' },
+        { user: 'DAIANA', role: 'Gestora', date: '01/05/2025 14:00', type: 'comentario', content: 'Excelente início! Documentar decisões.' }
+    ],
+    'COUGAR_Aceite Formal': [
+        { user: 'LEANDRO', role: 'PMO', date: '09/02/2026 10:00', type: 'resolucao', content: 'Go Live B2B realizado com sucesso!' },
+        { user: 'DOUGLAS', role: 'Diretor', date: '09/02/2026 15:00', type: 'comentario', content: 'Parabéns pela entrega!' }
+    ],
+    // CRISTAL MG RETROFIT
+    'CRISTAL MG RETROFIT_KICKOFF INTERNO': [
+        { user: 'GIOVANNI', role: 'PMO', date: '01/11/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado em Belo Horizonte.' }
+    ],
+    'CRISTAL MG RETROFIT_Documentação Layout': [
+        { user: 'GIOVANNI', role: 'PMO', date: '01/02/2026 09:00', type: 'alerta', content: 'Escopo em revisão. Cliente solicitou alterações.' },
+        { user: 'DAIANA', role: 'Gestora', date: '02/02/2026 11:00', type: 'comentario', content: 'Agendar reunião para alinhar novo escopo.' }
+    ],
+    // DIA
+    'DIA_KICKOFF INTERNO': [
+        { user: 'ANDERSON', role: 'PMO', date: '01/09/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado.' }
+    ],
+    'DIA_Solicitação VPN': [
+        { user: 'ANDERSON', role: 'PMO', date: '15/01/2026 10:00', type: 'alerta', content: 'ATENÇÃO: Aguardando liberação de VPN pelo cliente. Prazo comprometido.' },
+        { user: 'DAIANA', role: 'Gestora', date: '15/01/2026 11:30', type: 'comentario', content: 'Escalar para gerente de TI do cliente. VPN urgente.' },
+        { user: 'ANDERSON', role: 'PMO', date: '18/01/2026 09:00', type: 'atualizacao', content: 'Reunião agendada com TI do cliente para 20/01.' },
+        { user: 'DOUGLAS', role: 'Diretor', date: '20/01/2026 16:00', type: 'comentario', content: 'Acompanhando de perto. Manter atualizado sobre VPN.' }
+    ],
+    // ELETRO
+    'ELETRO_KICKOFF INTERNO': [
+        { user: 'GIOVANNI', role: 'PMO', date: '01/10/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado.' }
+    ],
+    'ELETRO_Instalação Equipamentos': [
+        { user: 'GIOVANNI', role: 'PMO', date: '01/02/2026 10:00', type: 'atualizacao', content: 'Implementação em andamento. 35% concluído.' }
     ],
     // NAVEPARK
     'NAVEPARK_KICKOFF INTERNO': [
-        { user: 'Ana Costa', role: 'PMO', date: '01/06/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado. Equipe mobilizada.' }
+        { user: 'ANDERSON', role: 'PMO', date: '01/09/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado. Equipe mobilizada.' }
     ],
-    'NAVEPARK_Documentação Layout': [
-        { user: 'Maria Silva', role: 'Analista', date: '10/06/2025 10:00', type: 'atualizacao', content: 'Documentação iniciada.' },
-        { user: 'Maria Silva', role: 'Analista', date: '01/07/2025 16:00', type: 'resolucao', content: 'Documentação completa e aprovada.' }
+    'NAVEPARK_Solicitação VPN': [
+        { user: 'ANDERSON', role: 'PMO', date: '20/01/2026 09:00', type: 'comentario', content: 'Aguardando sinal do datacenter.' },
+        { user: 'ANDERSON', role: 'PMO', date: '25/01/2026 14:00', type: 'atualizacao', content: 'Sinal recebido. Configuração em andamento.' }
     ],
-    'NAVEPARK_Aceite Formal': [
-        { user: 'Ana Costa', role: 'PMO', date: '05/12/2025 10:00', type: 'atualizacao', content: 'Processo de aceite iniciado.' },
-        { user: 'DOUGLAS', role: 'Diretor', date: '10/01/2026 15:00', type: 'resolucao', content: 'Aceite formal assinado. Projeto encerrado com sucesso!' }
+    // OCTOPUS MS
+    'OCTOPUS MS_KICKOFF INTERNO': [
+        { user: 'ALEX', role: 'PMO', date: '01/10/2025 09:30', type: 'atualizacao', content: 'Kickoff realizado com sucesso.' },
+        { user: 'DAIANA', role: 'Gestora', date: '01/10/2025 14:15', type: 'comentario', content: 'Excelente início!' }
     ],
-    // ESPERANÇA
-    'ESPERANÇA_KICKOFF INTERNO': [
-        { user: 'Carlos Lima', role: 'PMO', date: '01/12/2025 09:00', type: 'alerta', content: 'Aguardando aprovação do orçamento para iniciar.' },
-        { user: 'DAIANA', role: 'Gestora', date: '05/12/2025 11:00', type: 'comentario', content: 'Escalar para diretoria a aprovação do orçamento.' }
-    ],
-    'ESPERANÇA_Documentação Layout': [
-        { user: 'Ana Costa', role: 'Analista', date: '15/12/2025 10:00', type: 'atualizacao', content: 'Preparando templates de documentação.' }
+    'OCTOPUS MS_Instalação Equipamentos': [
+        { user: 'ALEX', role: 'PMO', date: '15/01/2026 10:00', type: 'atualizacao', content: 'Implementação iniciada. Módulos em desenvolvimento.' }
     ],
     // PBL GUATEMALA
     'PBL GUATEMALA_KICKOFF INTERNO': [
-        { user: 'Pedro Souza', role: 'PMO', date: '15/01/2026 09:00', type: 'atualizacao', content: 'Kickoff internacional realizado via videoconferência.' },
-        { user: 'DAIANA', role: 'Gestora', date: '15/01/2026 14:00', type: 'comentario', content: 'Atenção ao fuso horário nas reuniões.' }
+        { user: 'FÁBIO', role: 'PMO', date: '01/09/2025 09:00', type: 'atualizacao', content: 'Kickoff internacional realizado via videoconferência.' },
+        { user: 'DAIANA', role: 'Gestora', date: '01/09/2025 14:00', type: 'comentario', content: 'Atenção ao fuso horário nas reuniões.' }
     ],
-    'PBL GUATEMALA_Documentação Layout': [
-        { user: 'Pedro Souza', role: 'PMO', date: '20/01/2026 10:00', type: 'atualizacao', content: 'Documentação em espanhol em elaboração.' }
+    'PBL GUATEMALA_Instalação Equipamentos': [
+        { user: 'FÁBIO', role: 'PMO', date: '25/01/2026 10:00', type: 'atualizacao', content: 'Implementação em andamento. 60% dos módulos concluídos.' },
+        { user: 'FÁBIO', role: 'PMO', date: '28/01/2026 15:30', type: 'alerta', content: 'Problema de compatibilidade com sistema legado identificado.' },
+        { user: 'DAIANA', role: 'Gestora', date: '29/01/2026 09:00', type: 'comentario', content: 'Qual o impacto no cronograma? Avaliar riscos.' },
+        { user: 'FÁBIO', role: 'PMO', date: '30/01/2026 11:00', type: 'resolucao', content: 'Problema resolvido com workaround. Cronograma mantido.' }
     ],
-    // CRISTAL MG
-    'CRISTAL MG_KICKOFF INTERNO': [
-        { user: 'Maria Silva', role: 'PMO', date: '01/09/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado em Belo Horizonte.' }
+    // REVERSE
+    'REVERSE_KICKOFF INTERNO': [
+        { user: 'ALEX', role: 'PMO', date: '01/09/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado.' }
     ],
-    'CRISTAL MG_Documentação Layout': [
-        { user: 'Maria Silva', role: 'PMO', date: '10/09/2025 10:00', type: 'atualizacao', content: 'Documentação iniciada.' },
-        { user: 'Maria Silva', role: 'PMO', date: '15/01/2026 14:00', type: 'alerta', content: 'Cliente solicitou alterações no escopo. Revisão necessária.' },
-        { user: 'DAIANA', role: 'Gestora', date: '16/01/2026 09:00', type: 'comentario', content: 'Agendar reunião para alinhar novo escopo com cliente.' }
+    'REVERSE_Testes Homologação': [
+        { user: 'ALEX', role: 'PMO', date: '28/01/2026 14:00', type: 'atualizacao', content: 'Testes iniciados. Cobertura atual: 45%.' },
+        { user: 'ALEX', role: 'PMO', date: '01/02/2026 16:00', type: 'atualizacao', content: 'Cobertura de testes em 78%. Bugs corrigidos.' },
+        { user: 'DAIANA', role: 'Gestora', date: '02/02/2026 10:00', type: 'comentario', content: 'Acompanhar homologação com cliente.' }
     ],
-    'CRISTAL MG_Testes Homologação': [
-        { user: 'Maria Silva', role: 'PMO', date: '20/01/2026 10:00', type: 'alerta', content: 'ATENÇÃO: Projeto atrasado. Testes não iniciados.' },
-        { user: 'DOUGLAS', role: 'Diretor', date: '20/01/2026 15:00', type: 'comentario', content: 'Priorizar resolução. Reunião de crise agendada.' }
+    // SUPER DIVINOPOLIS
+    'SUPER DIVINOPOLIS_KICKOFF INTERNO': [
+        { user: 'GIOVANNI', role: 'PMO', date: '01/10/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado.' }
+    ],
+    'SUPER DIVINOPOLIS_Instalação Equipamentos': [
+        { user: 'GIOVANNI', role: 'PMO', date: '01/02/2026 10:00', type: 'atualizacao', content: 'Implementação em 50%. Progresso conforme planejado.' }
+    ],
+    // TITANIO
+    'TITANIO_KICKOFF INTERNO': [
+        { user: 'ALEX', role: 'PMO', date: '01/07/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado.' }
+    ],
+    'TITANIO_Monitoramento': [
+        { user: 'ALEX', role: 'PMO', date: '01/02/2026 14:00', type: 'atualizacao', content: 'Período de estabilização iniciado. Monitoramento 24/7 ativo.' },
+        { user: 'ALEX', role: 'PMO', date: '02/02/2026 09:00', type: 'comentario', content: 'Nenhum incidente nas primeiras 24h. Sistema estável.' },
+        { user: 'DAIANA', role: 'Gestora', date: '02/02/2026 15:00', type: 'comentario', content: 'Manter monitoramento. Preparar para encerramento.' }
     ]
 };
 
