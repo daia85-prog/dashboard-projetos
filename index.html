@@ -42,6 +42,12 @@
         .checkbox-group { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: #fef2f2; border: 2px solid #fca5a5; border-radius: 8px; cursor: pointer; }
         .checkbox-group input { width: 16px; height: 16px; cursor: pointer; }
         .checkbox-group span { font-size: 0.85em; color: #dc2626; font-weight: 600; }
+        .search-wrapper { position: relative; }
+        .search-wrapper input { padding-right: 30px; }
+        .search-clear { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: #94a3b8; color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 12px; cursor: pointer; display: none; align-items: center; justify-content: center; line-height: 1; }
+        .search-clear:hover { background: #64748b; }
+        .btn-limpar { padding: 8px 14px; background: #f1f5f9; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 0.85em; color: #64748b; cursor: pointer; font-weight: 600; transition: all 0.2s; white-space: nowrap; }
+        .btn-limpar:hover { background: #e2e8f0; border-color: #cbd5e1; color: #475569; }
         
         /* KPI Cards */
         .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 20px; }
@@ -276,7 +282,10 @@
             <div class="filters">
                 <div class="filter-group">
                     <label>🔍 Buscar:</label>
-                    <input type="text" id="search" placeholder="Nome do projeto..." oninput="render()">
+                    <div class="search-wrapper">
+                        <input type="text" id="search" placeholder="Nome do projeto..." oninput="render();toggleSearchClear()">
+                        <button class="search-clear" id="searchClear" onclick="limparBusca()" title="Limpar busca">×</button>
+                    </div>
                 </div>
                 <div class="filter-group">
                     <label>📊 Status:</label>
@@ -310,6 +319,7 @@
                     <input type="checkbox" id="filterCritico" onchange="render()">
                     <span>🚨 Apenas Críticos</span>
                 </label>
+                <button class="btn-limpar" onclick="limparFiltros()" title="Limpar todos os filtros">🗑️ Limpar filtros</button>
             </div>
             
             <div id="macroView" class="phases"></div>
@@ -542,7 +552,10 @@ function getProjetosFiltrados(){const s=document.getElementById('search').value.
 function populateFilters(){const l=[...new Set(PROJETOS.map(p=>p.local))].sort(),r=[...new Set(PROJETOS.map(p=>p.resp))].sort();document.getElementById('filterLocal').innerHTML='<option value="">Todos</option>'+l.map(x=>`<option value="${x}">${x}</option>`).join('');document.getElementById('filterResp').innerHTML='<option value="">Todos</option>'+r.map(x=>`<option value="${x}">${x}</option>`).join('')}
 
 function renderKPIs(){const ps=getProjetosFiltrados(),t=ps.length,c=ps.filter(p=>calcStatus(p.nome)==='Concluído').length,e=ps.filter(p=>calcStatus(p.nome)==='Em andamento').length,a=ps.filter(p=>calcStatus(p.nome)==='Atrasado').length,cr=ps.filter(p=>isCritico(p.nome)).length;document.getElementById('kpis').innerHTML=`<div class="kpi azul" onclick="filtrarPorKPI('todos')" style="cursor:pointer" title="Clique para ver todos"><div class="num">${t}</div><div class="lbl">Total</div></div><div class="kpi verde" onclick="filtrarPorKPI('Concluído')" style="cursor:pointer" title="Clique para filtrar"><div class="num">${c}</div><div class="lbl">Concluídos</div></div><div class="kpi amarelo" onclick="filtrarPorKPI('Em andamento')" style="cursor:pointer" title="Clique para filtrar"><div class="num">${e}</div><div class="lbl">Em Andamento</div></div><div class="kpi vermelho" onclick="filtrarPorKPI('Atrasado')" style="cursor:pointer" title="Clique para filtrar"><div class="num">${a}</div><div class="lbl">Atrasados</div></div><div class="kpi rosa" onclick="filtrarPorKPI('critico')" style="cursor:pointer" title="Clique para filtrar"><div class="num">${cr}</div><div class="lbl">Críticos</div></div>`}
-function filtrarPorKPI(tipo){document.getElementById('filterStatus').value=tipo==='todos'?'':tipo==='critico'?'':tipo;if(tipo==='critico')document.getElementById('criticoFilter').checked=true;else document.getElementById('criticoFilter').checked=false;render()}
+function filtrarPorKPI(tipo){document.getElementById('filterStatus').value=tipo==='todos'?'':tipo==='critico'?'':tipo;if(tipo==='critico')document.getElementById('filterCritico').checked=true;else document.getElementById('filterCritico').checked=false;toggleSearchClear();render()}
+function limparFiltros(){document.getElementById('search').value='';document.getElementById('filterStatus').value='';document.getElementById('filterPrior').value='';document.getElementById('filterLocal').value='';document.getElementById('filterResp').value='';document.getElementById('filterCritico').checked=false;projetoFiltro='';toggleSearchClear();render()}
+function limparBusca(){document.getElementById('search').value='';projetoFiltro='';toggleSearchClear();render()}
+function toggleSearchClear(){const s=document.getElementById('search'),c=document.getElementById('searchClear');c.style.display=s.value?'flex':'none'}
 
 function setView(v){view=v;document.getElementById('btnMacro').classList.toggle('active',v==='macro');document.getElementById('btnMicro').classList.toggle('active',v==='micro');document.getElementById('macroView').style.display=v==='macro'?'grid':'none';document.getElementById('microView').style.display=v==='micro'?'grid':'none';render()}
 function render(){renderKPIs();if(view==='macro')renderMacro();else renderMicro();document.getElementById('ts').textContent='Atualizado em: '+new Date().toLocaleString('pt-BR')}
@@ -585,7 +598,7 @@ document.addEventListener('mousedown',function(e){const head=e.target.closest('.
 document.addEventListener('mousemove',function(e){if(isDragging){modalX=e.clientX-startX;modalY=e.clientY-startY;const modal=document.querySelector('#modal.show .modal');if(modal)modal.style.transform=`translate(${modalX}px,${modalY}px)`}});
 document.addEventListener('mouseup',function(){isDragging=false});
 window.resetModalPosition=function(){modalX=0;modalY=0}})();
-function filtrarProjeto(n){projetoFiltro=n;document.getElementById('search').value=n;setView('micro')}
+function filtrarProjeto(n){projetoFiltro=n;document.getElementById('search').value=n;toggleSearchClear();setView('micro')}
 
 // TRATATIVAS POR ATIVIDADE - Preencha aqui ou importe do Excel
 const TRATATIVAS = {
@@ -1003,7 +1016,7 @@ function gerarPDF(projetos){
 }
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){fecharModal();fecharPrintModal();fecharActivityModal()}});
-window.addEventListener('DOMContentLoaded',()=>{localStorage.removeItem('infraDashboard');populateFilters();render()});
+window.addEventListener('DOMContentLoaded',()=>{localStorage.removeItem('infraDashboard');populateFilters();toggleSearchClear();render()});
 </script>
 </body>
 </html>
