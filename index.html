@@ -137,7 +137,8 @@
         /* Modal */
         .modal-bg { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
         .modal-bg.show { display: flex; }
-        .modal { background: white; border-radius: 12px; max-width: 750px; width: 100%; max-height: 85vh; overflow: hidden; }
+        .modal { background: white; border-radius: 12px; max-width: 750px; width: 100%; max-height: 85vh; overflow: hidden; position: relative; cursor: default; }
+        .modal-head { cursor: move; user-select: none; }
         .modal-head { background: #667eea; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
         .modal-head h2 { font-size: 1.1em; }
         .modal-head-btns { display: flex; gap: 8px; }
@@ -540,7 +541,8 @@ function faseTemAlerta(f,ps){return ps.some(p=>isCritico(p.nome)||calcStatus(p.n
 function getProjetosFiltrados(){const s=document.getElementById('search').value.toLowerCase(),st=document.getElementById('filterStatus').value,pr=document.getElementById('filterPrior').value,lo=document.getElementById('filterLocal').value,re=document.getElementById('filterResp').value,cr=document.getElementById('filterCritico').checked;return PROJETOS.filter(p=>{const ps=calcStatus(p.nome);return(!s||p.nome.toLowerCase().includes(s))&&(!st||ps===st)&&(!pr||p.prioridade===pr)&&(!lo||p.local===lo)&&(!re||p.resp===re)&&(!cr||isCritico(p.nome))&&(!projetoFiltro||p.nome===projetoFiltro)})}
 function populateFilters(){const l=[...new Set(PROJETOS.map(p=>p.local))].sort(),r=[...new Set(PROJETOS.map(p=>p.resp))].sort();document.getElementById('filterLocal').innerHTML='<option value="">Todos</option>'+l.map(x=>`<option value="${x}">${x}</option>`).join('');document.getElementById('filterResp').innerHTML='<option value="">Todos</option>'+r.map(x=>`<option value="${x}">${x}</option>`).join('')}
 
-function renderKPIs(){const ps=getProjetosFiltrados(),t=ps.length,c=ps.filter(p=>calcStatus(p.nome)==='Concluído').length,e=ps.filter(p=>calcStatus(p.nome)==='Em andamento').length,a=ps.filter(p=>calcStatus(p.nome)==='Atrasado').length,cr=ps.filter(p=>isCritico(p.nome)).length;document.getElementById('kpis').innerHTML=`<div class="kpi azul"><div class="num">${t}</div><div class="lbl">Total</div></div><div class="kpi verde"><div class="num">${c}</div><div class="lbl">Concluídos</div></div><div class="kpi amarelo"><div class="num">${e}</div><div class="lbl">Em Andamento</div></div><div class="kpi vermelho"><div class="num">${a}</div><div class="lbl">Atrasados</div></div><div class="kpi rosa"><div class="num">${cr}</div><div class="lbl">Críticos</div></div>`}
+function renderKPIs(){const ps=getProjetosFiltrados(),t=ps.length,c=ps.filter(p=>calcStatus(p.nome)==='Concluído').length,e=ps.filter(p=>calcStatus(p.nome)==='Em andamento').length,a=ps.filter(p=>calcStatus(p.nome)==='Atrasado').length,cr=ps.filter(p=>isCritico(p.nome)).length;document.getElementById('kpis').innerHTML=`<div class="kpi azul" onclick="filtrarPorKPI('todos')" style="cursor:pointer" title="Clique para ver todos"><div class="num">${t}</div><div class="lbl">Total</div></div><div class="kpi verde" onclick="filtrarPorKPI('Concluído')" style="cursor:pointer" title="Clique para filtrar"><div class="num">${c}</div><div class="lbl">Concluídos</div></div><div class="kpi amarelo" onclick="filtrarPorKPI('Em andamento')" style="cursor:pointer" title="Clique para filtrar"><div class="num">${e}</div><div class="lbl">Em Andamento</div></div><div class="kpi vermelho" onclick="filtrarPorKPI('Atrasado')" style="cursor:pointer" title="Clique para filtrar"><div class="num">${a}</div><div class="lbl">Atrasados</div></div><div class="kpi rosa" onclick="filtrarPorKPI('critico')" style="cursor:pointer" title="Clique para filtrar"><div class="num">${cr}</div><div class="lbl">Críticos</div></div>`}
+function filtrarPorKPI(tipo){document.getElementById('filterStatus').value=tipo==='todos'?'':tipo==='critico'?'':tipo;if(tipo==='critico')document.getElementById('criticoFilter').checked=true;else document.getElementById('criticoFilter').checked=false;render()}
 
 function setView(v){view=v;document.getElementById('btnMacro').classList.toggle('active',v==='macro');document.getElementById('btnMicro').classList.toggle('active',v==='micro');document.getElementById('macroView').style.display=v==='macro'?'grid':'none';document.getElementById('microView').style.display=v==='micro'?'grid':'none';render()}
 function render(){renderKPIs();if(view==='macro')renderMacro();else renderMicro();document.getElementById('ts').textContent='Atualizado em: '+new Date().toLocaleString('pt-BR')}
@@ -574,7 +576,15 @@ function abrirModal(proj){
     document.getElementById('modal').classList.add('show');
 }
 
-function fecharModal(e){if(!e||e.target.id==='modal')document.getElementById('modal').classList.remove('show')}
+function fecharModal(e){if(!e||e.target.id==='modal'){document.getElementById('modal').classList.remove('show');resetModalPosition()}}
+function resetModalPosition(){const m=document.querySelector('#modal .modal');if(m){m.style.transform='';m.style.left='';m.style.top='';m.style.position='';}}
+
+// Funcionalidade de arrastar o modal
+(function(){let isDragging=false,startX,startY,modalX=0,modalY=0;
+document.addEventListener('mousedown',function(e){const head=e.target.closest('.modal-head');if(head&&!e.target.closest('button')){isDragging=true;const modal=head.closest('.modal');startX=e.clientX-modalX;startY=e.clientY-modalY;modal.style.position='relative';e.preventDefault()}});
+document.addEventListener('mousemove',function(e){if(isDragging){modalX=e.clientX-startX;modalY=e.clientY-startY;const modal=document.querySelector('#modal.show .modal');if(modal)modal.style.transform=`translate(${modalX}px,${modalY}px)`}});
+document.addEventListener('mouseup',function(){isDragging=false});
+window.resetModalPosition=function(){modalX=0;modalY=0}})();
 function filtrarProjeto(n){projetoFiltro=n;document.getElementById('search').value=n;setView('micro')}
 
 // TRATATIVAS POR ATIVIDADE - Preencha aqui ou importe do Excel
