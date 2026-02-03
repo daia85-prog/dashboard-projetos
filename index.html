@@ -25,9 +25,26 @@
         .toggle button { padding: 12px 30px; border: none; background: transparent; font-weight: 600; cursor: pointer; border-radius: 25px; font-size: 0.95em; display: flex; align-items: center; gap: 8px; color: #64748b; transition: all 0.3s; }
         .toggle button.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
         
+        /* KPIs - Layout Macro (5 colunas em linha) */
         .kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin-bottom: 20px; }
+        
+        /* KPIs - Layout Micro (2x2 + 1 centralizado) */
+        .kpis.micro-layout { 
+            grid-template-columns: repeat(2, 1fr); 
+            max-width: 550px; 
+            margin-left: auto; 
+            margin-right: auto; 
+        }
+        .kpis.micro-layout .kpi:last-child { 
+            grid-column: span 2; 
+            max-width: 265px; 
+            margin: 0 auto; 
+            width: 100%;
+        }
+        
         .kpi { background: white; border-radius: 12px; padding: 20px; text-align: center; border: 2px solid #e2e8f0; cursor: pointer; transition: all 0.2s; }
         .kpi:hover { transform: translateY(-3px); box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        .kpi.azul { border-color: #3b82f6; }
         .kpi.verde { border-color: #22c55e; }
         .kpi.amarelo { border-color: #f59e0b; }
         .kpi.vermelho { border-color: #ef4444; }
@@ -279,7 +296,7 @@ const PROJETOS = [
     { nome: 'TITANIO', local: 'São Paulo - SP', resp: 'ALEX', prioridade: 'Alta', status: 'Em andamento', fase: '7. Estabilização', progresso: 80 }
 ];
 
-// TRATATIVAS - Adicione aqui ou carregue da planilha Excel
+// TRATATIVAS
 const TRATATIVAS = {
     'OCTOPUS MS': [
         { user: 'ALEX', role: 'PMO', date: '01/01/2026 09:30', type: 'atualizacao', content: 'Kickoff realizado com sucesso. Participantes: equipe técnica, cliente e stakeholders.' },
@@ -392,8 +409,17 @@ function renderKPIs() {
     const atrasados = ps.filter(p => p.status === 'Atrasado').length;
     const criticos = ps.filter(p => isCritico(p)).length;
     
-    document.getElementById('kpis').innerHTML = `
-        <div class="kpi" onclick="limparFiltroStatus()">
+    const kpisEl = document.getElementById('kpis');
+    
+    // Alternar layout: Macro = 5 colunas, Micro = 2x2+1
+    if (currentView === 'micro') {
+        kpisEl.classList.add('micro-layout');
+    } else {
+        kpisEl.classList.remove('micro-layout');
+    }
+    
+    kpisEl.innerHTML = `
+        <div class="kpi azul" onclick="limparFiltroStatus()">
             <div class="numero">${total}</div>
             <div class="label">Total</div>
         </div>
