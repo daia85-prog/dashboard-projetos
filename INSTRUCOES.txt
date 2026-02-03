@@ -1,0 +1,65 @@
+============================================
+DASHBOARD v9 - INSTRUÇÕES DE ATUALIZAÇÃO
+============================================
+
+PASSO 1: LIMPAR O REPOSITÓRIO GITHUB
+-------------------------------------
+DELETE os seguintes arquivos (são versões antigas):
+
+- dados.json
+- README-v7.md
+- ATUALIZACAO-v7.1.md
+- CHANGELOG_BUGS.md
+- CHANGELOG-v7.2.1.md
+- CHECKLIST-v7.md
+- CORRECAO-DADOS-FICTICIOS.md
+- CORRECAO-v7.2.md
+- CORRECOES-v7.2.1.md
+- GUIA-TESTE-v7.2.md
+- INSTALACAO-v7.2.1.md
+- MELHORIAS-v7.1.md
+- TESTE-RAPIDO-v7.2.1.md
+- Dashboard_Projetos_v8.xlsx
+- Dashboard-Infraestrutura-v7.xlsx
+- Template_Projetos_v5.xlsx
+- Template_Projetos_v5_TestData.xlsx
+- Template_Projetos_v6.xlsx
+- template-dados-v7.csv
+- dashboard-completo-v6.1.zip
+- ver-projetos.html (se existir com nome errado)
+
+
+PASSO 2: ATUALIZAR ARQUIVOS
+---------------------------
+Substitua estes arquivos pelos novos:
+
+✅ index.html (OBRIGATÓRIO - versão com 23 atividades)
+✅ admin.html (OBRIGATÓRIO)
+✅ README.md (atualizado para v9)
+✅ Dashboard_Projetos_v9.xlsx
+
+
+PASSO 3: MANTER (OPCIONAL)
+--------------------------
+Pode manter se quiser views alternativas:
+
+⚠️ view-detalhada.html
+⚠️ view-simples.html  
+⚠️ view-projetos.html
+
+
+PASSO 4: LIMPAR CACHE
+---------------------
+Após atualizar, pressione Ctrl+Shift+R no navegador
+
+
+ESTRUTURA FINAL RECOMENDADA:
+----------------------------
+dashboard-projetos/
+├── index.html         (principal)
+├── admin.html         (administração)
+├── README.md          (documentação)
+├── Dashboard_Projetos_v9.xlsx
+└── (opcional: views alternativas)
+
+============================================
