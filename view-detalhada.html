@@ -1,376 +1,736 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visão Detalhada - Fases & Atividades v9</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
-        
-        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
-        .header h1 { font-size: 1.4em; display: flex; align-items: center; gap: 10px; }
-        .nav-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
-        .nav-btn { padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.9em; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s; }
-        .nav-btn.orange { background: #f59e0b; color: white; }
-        .nav-btn.orange:hover { background: #d97706; }
-        .nav-btn.purple { background: #8b5cf6; color: white; }
-        .nav-btn.purple:hover { background: #7c3aed; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Visão Detalhada - Fases & Atividades v9</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#e5e7eb;color:#111827;min-height:100vh}
 
-        .container { max-width: 1600px; margin: 0 auto; padding: 20px; }
+/* TOPBAR */
+.topbar{background:linear-gradient(90deg,#6366f1,#8b5cf6);padding:14px 30px;display:flex;justify-content:space-between;align-items:center;color:#fff;box-shadow:0 4px 15px rgba(99,102,241,.3)}
+.topbar-title{font-size:1.1rem;font-weight:600;display:flex;align-items:center;gap:8px}
+.topbar-buttons{display:flex;gap:8px}
+.btn{border-radius:999px;border:none;padding:8px 18px;font-size:.85rem;font-weight:600;display:inline-flex;align-items:center;gap:6px;cursor:pointer;text-decoration:none;color:#fff;transition:all .2s}
+.btn-executiva{background:#f97316}
+.btn-alertas{background:#22c55e}
+.btn:hover{opacity:.9;transform:translateY(-1px)}
 
-        .filters { background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .filters-grid { display: grid; grid-template-columns: 2fr repeat(3, 1fr) auto; gap: 15px; align-items: end; }
-        .filter-group { display: flex; flex-direction: column; gap: 5px; }
-        .filter-group label { font-size: 0.85em; font-weight: 600; color: #64748b; }
-        .filter-group input, .filter-group select { padding: 10px 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 0.95em; transition: border 0.2s; }
-        .filter-group input:focus, .filter-group select:focus { outline: none; border-color: #667eea; }
-        .btn-clear { padding: 10px 16px; background: #f1f5f9; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; font-weight: 600; color: #64748b; transition: all 0.2s; }
-        .btn-clear:hover { background: #e2e8f0; border-color: #cbd5e1; }
+.page{max-width:1400px;margin:20px auto 32px;padding:0 16px}
 
-        .main-layout { display: grid; grid-template-columns: 380px 1fr; gap: 20px; }
-        
-        .projects-panel { background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-height: calc(100vh - 200px); overflow: hidden; display: flex; flex-direction: column; }
-        .projects-header { padding: 15px 20px; border-bottom: 2px solid #e2e8f0; background: #f8fafc; }
-        .projects-header h2 { font-size: 1.1em; color: #1e293b; }
-        .projects-list { overflow-y: auto; flex: 1; padding: 10px; }
-        
-        .project-item { padding: 12px 15px; border: 2px solid #e2e8f0; border-radius: 10px; margin-bottom: 8px; cursor: pointer; transition: all 0.2s; }
-        .project-item:hover { border-color: #667eea; background: #f8fafc; }
-        .project-item.active { border-color: #667eea; background: #eef2ff; box-shadow: 0 0 0 3px rgba(102,126,234,0.2); }
-        .project-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-        .project-name { font-weight: 700; color: #1e293b; font-size: 0.95em; }
-        .project-progress { font-weight: 700; font-size: 0.9em; }
-        .project-meta { display: flex; gap: 8px; font-size: 0.8em; color: #64748b; flex-wrap: wrap; align-items: center; }
-        
-        .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.75em; font-weight: 600; }
-        .badge-alta { background: #fee2e2; color: #dc2626; }
-        .badge-media { background: #fef3c7; color: #d97706; }
-        .badge-baixa { background: #dbeafe; color: #2563eb; }
-        .badge-concluido { background: #dcfce7; color: #166534; }
-        .badge-andamento { background: #dbeafe; color: #1e40af; }
-        .badge-aguardando { background: #fef3c7; color: #92400e; }
-        .badge-nao-iniciado { background: #f3f4f6; color: #6b7280; }
+/* FILTROS */
+.filters{background:#fff;border-radius:20px;padding:18px 22px;box-shadow:0 10px 30px rgba(15,23,42,.12);margin-bottom:18px;display:grid;grid-template-columns:2.2fr 1.2fr 1.2fr 1.2fr auto;gap:14px;align-items:end}
+.filter-group{display:flex;flex-direction:column;gap:4px}
+.filter-label{font-size:.8rem;font-weight:600;color:#6b7280;display:flex;align-items:center;gap:4px}
+.filter-input,.filter-select{border-radius:999px;border:1px solid #e5e7eb;padding:10px 16px;font-size:.9rem;background:#fff;transition:all .2s}
+.filter-input:focus,.filter-select:focus{outline:none;border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.btn-clear{background:#ef4444;color:#fff;border-radius:999px;border:none;padding:10px 20px;font-size:.85rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .2s}
+.btn-clear:hover{background:#dc2626}
 
-        .details-panel { background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-height: calc(100vh - 200px); overflow-y: auto; }
-        .details-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 400px; color: #94a3b8; }
-        .details-empty-icon { font-size: 4em; margin-bottom: 15px; }
-        
-        .details-header { padding: 20px; border-bottom: 3px solid #667eea; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 12px 12px 0 0; }
-        .details-title { font-size: 1.5em; font-weight: 700; margin-bottom: 12px; }
-        .details-meta { display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.9em; opacity: 0.95; }
-        .details-meta span { display: flex; align-items: center; gap: 5px; }
-        .details-meta .badge { background: rgba(255,255,255,0.2); color: white; }
+/* LAYOUT PRINCIPAL */
+.layout{display:grid;grid-template-columns:360px 1fr;gap:18px;align-items:flex-start}
 
-        .phases-timeline { padding: 25px 20px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
-        .phases-timeline h3 { font-size: 1em; color: #475569; margin-bottom: 20px; }
-        .phase-steps { display: flex; justify-content: space-between; position: relative; }
-        .phase-steps::before { content: ''; position: absolute; top: 15px; left: 5%; width: 90%; height: 3px; background: #e2e8f0; z-index: 0; }
-        .phase-step { flex: 1; text-align: center; position: relative; z-index: 1; }
-        .phase-circle { width: 32px; height: 32px; border-radius: 50%; background: #e2e8f0; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8em; color: #64748b; transition: all 0.3s; }
-        .phase-step.completed .phase-circle { background: #22c55e; color: white; }
-        .phase-step.current .phase-circle { background: #667eea; color: white; box-shadow: 0 0 0 4px rgba(102,126,234,0.3); transform: scale(1.1); }
-        .phase-label { font-size: 0.7em; color: #64748b; font-weight: 600; line-height: 1.2; }
-        .phase-step.completed .phase-label { color: #22c55e; }
-        .phase-step.current .phase-label { color: #667eea; font-weight: 700; }
+/* COLUNA ESQUERDA - PROJETOS */
+.projects-panel{background:#fff;border-radius:20px;padding:16px;box-shadow:0 10px 30px rgba(15,23,42,.12);max-height:calc(100vh - 200px);display:flex;flex-direction:column}
+.projects-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:0 6px}
+.projects-header-title{font-size:.95rem;font-weight:700;display:flex;align-items:center;gap:8px;color:#111827}
+.projects-header-title span{background:#eef2ff;color:#4f46e5;padding:2px 10px;border-radius:999px;font-size:.8rem}
+.projects-list{overflow-y:auto;padding-right:6px;flex:1}
+.projects-list::-webkit-scrollbar{width:6px}
+.projects-list::-webkit-scrollbar-track{background:#f1f5f9;border-radius:10px}
+.projects-list::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:10px}
+.projects-list::-webkit-scrollbar-thumb:hover{background:#94a3b8}
 
-        .activities-section { padding: 20px; }
-        .activities-section h3 { font-size: 1em; color: #475569; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
-        .activities-count { background: #667eea; color: white; padding: 2px 10px; border-radius: 12px; font-size: 0.85em; }
+.project-card{border-radius:14px;padding:12px 14px;margin-bottom:10px;background:#f9fafb;border:2px solid #e5e7eb;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.project-card:hover{border-color:#a5b4fc;box-shadow:0 6px 18px rgba(99,102,241,.15);transform:translateY(-2px)}
+.project-card.active{box-shadow:0 0 0 3px #a5b4fc,0 10px 25px rgba(99,102,241,.25);border-color:#6366f1;background:#eef2ff}
+.project-main{display:flex;flex-direction:column;gap:6px;flex:1}
+.project-name{font-size:.95rem;font-weight:700;color:#111827}
+.project-meta-line{font-size:.78rem;color:#6b7280;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.project-status-line{font-size:.75rem;display:flex;align-items:center;gap:6px;margin-top:4px}
+.project-progress{font-size:.9rem;font-weight:700;color:#059669;white-space:nowrap;display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.project-progress small{font-size:.7rem;color:#6b7280;font-weight:500}
 
-        .activity-item { background: #f9fafb; border-left: 4px solid #e2e8f0; padding: 12px 15px; margin-bottom: 10px; border-radius: 0 8px 8px 0; cursor: pointer; transition: all 0.2s; }
-        .activity-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-        .activity-item.concluido { border-left-color: #22c55e; background: #f0fdf4; }
-        .activity-item.andamento { border-left-color: #3b82f6; background: #eff6ff; }
-        .activity-item.aguardando { border-left-color: #f59e0b; background: #fffbeb; }
-        .activity-item.nao-iniciado { border-left-color: #94a3b8; background: #f8fafc; }
-        
-        .activity-header { display: flex; justify-content: space-between; align-items: center; }
-        .activity-info { flex: 1; }
-        .activity-name { font-weight: 600; color: #1e293b; font-size: 0.95em; }
-        .activity-phase { font-size: 0.8em; color: #64748b; margin-top: 2px; }
+.badge{display:inline-flex;align-items:center;justify-content:center;padding:3px 10px;border-radius:999px;font-size:.72rem;font-weight:600;white-space:nowrap}
+.badge-prio-alta{background:#fee2e2;color:#dc2626}
+.badge-prio-media{background:#fef3c7;color:#d97706}
+.badge-prio-baixa{background:#dbeafe;color:#2563eb}
+.badge-status-concluido{background:#dcfce7;color:#166534}
+.badge-status-andamento{background:#dbeafe;color:#1e40af}
+.badge-status-planejamento{background:#fef3c7;color:#92400e}
+.badge-status-aguardando{background:#fee2e2;color:#b91c1c}
+.badge-status-nao-iniciado{background:#f1f5f9;color:#475569}
 
-        .tratativas-section { margin-top: 12px; padding-top: 12px; border-top: 1px dashed #e2e8f0; display: none; }
-        .tratativas-section.active { display: block; }
-        .tratativas-header { font-size: 0.85em; color: #667eea; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
-        
-        .tratativa-item { background: white; padding: 10px 12px; margin-bottom: 8px; border-radius: 6px; border-left: 3px solid #667eea; }
-        .tratativa-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-        .tratativa-user { font-weight: 600; color: #1e293b; font-size: 0.85em; }
-        .tratativa-date { color: #94a3b8; font-size: 0.8em; }
-        .tratativa-tipo { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.7em; font-weight: 600; margin-bottom: 6px; }
-        .tipo-atualizacao { background: #dbeafe; color: #1e40af; }
-        .tipo-alerta { background: #fee2e2; color: #dc2626; }
-        .tipo-resolucao { background: #dcfce7; color: #166534; }
-        .tipo-comentario { background: #fef3c7; color: #92400e; }
-        .tratativa-content { color: #475569; font-size: 0.9em; line-height: 1.4; }
-        .no-tratativas { color: #94a3b8; font-style: italic; font-size: 0.85em; }
+/* PAINEL DIREITO - DETALHES */
+.detail-panel{background:#fff;border-radius:20px;padding:20px 24px;box-shadow:0 10px 30px rgba(15,23,42,.12);min-height:500px}
+.detail-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:400px;color:#9ca3af;text-align:center}
+.detail-placeholder .icon{font-size:4rem;margin-bottom:15px;opacity:.5}
+.detail-placeholder .text{font-size:1rem;line-height:1.6}
 
-        .expand-icon { font-size: 0.8em; color: #94a3b8; transition: transform 0.2s; margin-left: 10px; }
-        .activity-item.expanded .expand-icon { transform: rotate(180deg); }
+.detail-header{margin-bottom:16px;padding-bottom:16px;border-bottom:3px solid #6366f1}
+.detail-title{font-size:1.4rem;font-weight:700;color:#111827;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.detail-title .badge{font-size:.75rem}
+.detail-meta{display:flex;flex-wrap:wrap;gap:12px 20px;font-size:.85rem;color:#4b5563}
+.detail-meta span{display:flex;align-items:center;gap:5px}
+.detail-meta strong{color:#111827}
 
-        .footer { text-align: center; padding: 15px; color: rgba(255,255,255,0.8); font-size: 0.85em; margin-top: 20px; }
+/* TIMELINE FASES */
+.phases-block{margin:20px 0;padding:18px 20px;border-radius:16px;background:linear-gradient(135deg,#f8fafc,#f1f5f9)}
+.phases-title{font-size:1rem;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:8px;color:#1e293b}
+.phase-steps{display:flex;justify-content:space-between;align-items:center;position:relative;padding:15px 0 8px}
+.phase-step{flex:1;text-align:center;position:relative}
+.phase-step::before{content:'';position:absolute;top:17px;left:50%;width:100%;height:4px;background:#e2e8f0;z-index:0}
+.phase-step:first-child::before{left:50%;width:50%}
+.phase-step:last-child::before{width:50%}
+.phase-circle{width:34px;height:34px;border-radius:50%;background:#e2e8f0;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;position:relative;z-index:1;transition:all .3s;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.phase-label{font-size:.7rem;color:#64748b;font-weight:600;line-height:1.2}
+.phase-step.completed .phase-circle{background:#22c55e;color:#fff}
+.phase-step.completed::before{background:#22c55e}
+.phase-step.current .phase-circle{background:#6366f1;color:#fff;box-shadow:0 0 0 6px rgba(99,102,241,.25),0 4px 12px rgba(99,102,241,.3);transform:scale(1.1)}
 
-        @media (max-width: 1200px) {
-            .main-layout { grid-template-columns: 1fr; }
-            .projects-panel { max-height: 300px; }
-            .details-panel { max-height: none; }
-        }
-        @media (max-width: 768px) {
-            .filters-grid { grid-template-columns: 1fr 1fr; }
-            .phase-label { font-size: 0.6em; }
-            .phase-circle { width: 26px; height: 26px; font-size: 0.7em; }
-        }
-    </style>
+/* ATIVIDADES */
+.activities-block{margin-top:20px;padding:18px 20px;border-radius:16px;background:#fff;border:1px solid #e5e7eb}
+.activities-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.activities-title{font-size:1rem;font-weight:600;display:flex;align-items:center;gap:8px;color:#1e293b}
+.activities-counter{display:flex;align-items:center;gap:8px}
+.badge-counter{background:#eef2ff;color:#4f46e5;padding:4px 12px;border-radius:999px;font-size:.8rem;font-weight:700}
+.activities-list{max-height:400px;overflow-y:auto;padding-right:8px}
+.activities-list::-webkit-scrollbar{width:5px}
+.activities-list::-webkit-scrollbar-track{background:#f1f5f9;border-radius:10px}
+.activities-list::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:10px}
+
+.activity-item{border-radius:12px;padding:12px 14px;margin-bottom:8px;border-left:5px solid #e5e7eb;font-size:.88rem;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:all .2s;background:#f9fafb}
+.activity-item:hover{box-shadow:0 4px 12px rgba(0,0,0,.08);transform:translateX(4px)}
+.activity-main{display:flex;flex-direction:column;gap:3px;flex:1}
+.activity-name{font-weight:600;color:#1e293b}
+.activity-phase{font-size:.75rem;color:#64748b}
+.activity-status{font-size:.72rem;padding:4px 10px;border-radius:999px;background:#e5e7eb;color:#475569;white-space:nowrap;font-weight:600}
+.activity-item.status-concluido{border-left-color:#22c55e;background:#f0fdf4}
+.activity-item.status-concluido .activity-status{background:#dcfce7;color:#166534}
+.activity-item.status-andamento{border-left-color:#3b82f6;background:#eff6ff}
+.activity-item.status-andamento .activity-status{background:#dbeafe;color:#1e40af}
+.activity-item.status-aguardando{border-left-color:#f59e0b;background:#fffbeb}
+.activity-item.status-aguardando .activity-status{background:#fef3c7;color:#92400e}
+.activity-item.status-nao-iniciado{border-left-color:#94a3b8;background:#f8fafc}
+
+/* MODAL TRATATIVAS */
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,.6);display:none;align-items:center;justify-content:center;z-index:9999;padding:20px;backdrop-filter:blur(4px)}
+.modal-overlay.active{display:flex}
+.modal-box{background:#fff;border-radius:20px;max-width:700px;width:100%;max-height:85vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 25px 60px rgba(0,0,0,.3);animation:modalIn .3s ease}
+@keyframes modalIn{from{opacity:0;transform:scale(.95) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal-header{padding:20px 24px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;display:flex;justify-content:space-between;align-items:center}
+.modal-title{font-size:1.15rem;font-weight:700;display:flex;align-items:center;gap:10px}
+.modal-title::before{content:'📌';font-size:1.2rem}
+.modal-close{background:rgba(255,255,255,.2);border:none;font-size:1.5rem;cursor:pointer;color:#fff;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.modal-close:hover{background:rgba(255,255,255,.3);transform:rotate(90deg)}
+.modal-body{padding:0;overflow-y:auto;flex:1}
+.modal-info{padding:20px 24px;background:#f8fafc;border-bottom:1px solid #e5e7eb}
+.modal-info-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f1f5f9}
+.modal-info-row:last-child{border-bottom:none}
+.modal-info-row .label{color:#64748b;font-size:.88rem}
+.modal-info-row .value{color:#1e293b;font-weight:600;font-size:.88rem;text-align:right}
+
+.tratativas-section{padding:20px 24px}
+.tratativas-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;color:#1e293b;font-weight:700;font-size:1rem}
+.tratativas-header::before{content:'💬'}
+.tratativas-empty{text-align:center;padding:30px;background:#f8fafc;border-radius:12px;border:2px dashed #e5e7eb}
+.tratativas-empty .icon{font-size:2.5rem;margin-bottom:10px;opacity:.5}
+.tratativas-empty .msg{color:#64748b;font-size:.9rem}
+
+.tratativa-item{background:#f8fafc;border-radius:12px;padding:16px;margin-bottom:12px;border-left:4px solid #6366f1;transition:all .2s}
+.tratativa-item:hover{box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.tratativa-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.tratativa-user{display:flex;align-items:center;gap:12px}
+.tratativa-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.95rem}
+.tratativa-user-info .name{font-weight:600;color:#1e293b;font-size:.9rem}
+.tratativa-user-info .role{font-size:.75rem;color:#64748b;margin-top:2px}
+.tratativa-date{font-size:.75rem;color:#94a3b8;text-align:right}
+.tratativa-tipo{display:inline-block;padding:4px 10px;border-radius:999px;font-size:.72rem;font-weight:600;margin-bottom:10px}
+.tipo-atualizacao{background:#dbeafe;color:#1e40af}
+.tipo-alerta{background:#fee2e2;color:#dc2626}
+.tipo-resolucao{background:#dcfce7;color:#166534}
+.tipo-comentario{background:#f1f5f9;color:#475569}
+.tratativa-content{color:#475569;font-size:.88rem;line-height:1.6;padding:12px;background:#fff;border-radius:8px}
+
+.no-projects{font-size:.9rem;color:#9ca3af;font-style:italic;padding:30px;text-align:center}
+
+.footer{text-align:center;padding:12px;font-size:.75rem;color:#9ca3af;margin-top:16px}
+
+@media(max-width:1024px){
+    .layout{grid-template-columns:1fr}
+    .projects-panel{max-height:none}
+    .filters{grid-template-columns:1fr 1fr}
+}
+@media(max-width:640px){
+    .filters{grid-template-columns:1fr}
+    .phase-steps{flex-wrap:wrap;gap:10px}
+    .phase-step{flex:0 0 25%}
+    .phase-step::before{display:none}
+}
+</style>
 </head>
 <body>
-    <header class="header">
-        <h1>📋 Visão Detalhada - Fases & Atividades</h1>
-        <nav class="nav-buttons">
-            <a href="index.html" class="nav-btn orange">🏠 Visão Executiva</a>
-            <a href="view-projetos.html" class="nav-btn purple">🚨 Alertas</a>
-        </nav>
-    </header>
 
-    <div class="container">
-        <div class="filters">
-            <div class="filters-grid">
-                <div class="filter-group">
-                    <label>🔍 Buscar Projeto</label>
-                    <input type="text" id="searchProject" placeholder="Nome do projeto..." oninput="filterProjects()">
-                </div>
-                <div class="filter-group">
-                    <label>📊 Status</label>
-                    <select id="filterStatus" onchange="filterProjects()">
-                        <option value="">Todos</option>
-                        <option value="Concluído">Concluído</option>
-                        <option value="Em andamento">Em andamento</option>
-                        <option value="Aguardando">Aguardando</option>
-                        <option value="Não Iniciado">Não Iniciado</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label>⚡ Prioridade</label>
-                    <select id="filterPriority" onchange="filterProjects()">
-                        <option value="">Todas</option>
-                        <option value="Alta">Alta</option>
-                        <option value="Média">Média</option>
-                        <option value="Baixa">Baixa</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label>👤 Responsável</label>
-                    <select id="filterResp" onchange="filterProjects()"></select>
-                </div>
-                <div class="filter-group">
-                    <label>&nbsp;</label>
-                    <button class="btn-clear" onclick="clearFilters()">🗑️ Limpar</button>
-                </div>
-            </div>
+<div class="topbar">
+    <div class="topbar-title">📋 Visão Detalhada - Fases & Atividades</div>
+    <div class="topbar-buttons">
+        <a href="index.html" class="btn btn-executiva">🏠 Visão Executiva</a>
+        <a href="view-projetos.html" class="btn btn-alertas">🚨 Alertas</a>
+    </div>
+</div>
+
+<div class="page">
+    <!-- FILTROS -->
+    <div class="filters">
+        <div class="filter-group">
+            <label class="filter-label">🔍 Buscar Projeto</label>
+            <input id="filterBusca" class="filter-input" type="text" placeholder="Nome do projeto..." oninput="renderLista()">
         </div>
-
-        <div class="main-layout">
-            <div class="projects-panel">
-                <div class="projects-header">
-                    <h2>📂 Projetos (<span id="projectCount">30</span>)</h2>
-                </div>
-                <div class="projects-list" id="projectsList"></div>
-            </div>
-
-            <div class="details-panel" id="detailsPanel">
-                <div class="details-empty">
-                    <div class="details-empty-icon">👆</div>
-                    <p>Selecione um projeto para ver detalhes</p>
-                </div>
-            </div>
+        <div class="filter-group">
+            <label class="filter-label">📊 Status</label>
+            <select id="filterStatus" class="filter-select" onchange="renderLista()">
+                <option value="">Todos</option>
+                <option value="Concluído">Concluído</option>
+                <option value="Em andamento">Em andamento</option>
+                <option value="Planejamento">Planejamento</option>
+                <option value="Aguardando">Aguardando</option>
+                <option value="Não Iniciado">Não Iniciado</option>
+            </select>
         </div>
-
-        <footer class="footer">Visão Detalhada v9 | Invent Corp | Dashboard de Infraestrutura</footer>
+        <div class="filter-group">
+            <label class="filter-label">⚡ Prioridade</label>
+            <select id="filterPrioridade" class="filter-select" onchange="renderLista()">
+                <option value="">Todas</option>
+                <option value="Alta">Alta</option>
+                <option value="Média">Média</option>
+                <option value="Baixa">Baixa</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label class="filter-label">👤 Responsável</label>
+            <select id="filterResp" class="filter-select" onchange="renderLista()">
+                <option value="">Todos</option>
+                <option value="ALEX">ALEX</option>
+                <option value="ANDERSON">ANDERSON</option>
+                <option value="FÁBIO">FÁBIO</option>
+                <option value="GIOVANNI">GIOVANNI</option>
+                <option value="LEANDRO">LEANDRO</option>
+                <option value="VINICIUS">VINICIUS</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <button type="button" class="btn-clear" onclick="limparFiltros()">🗑️ Limpar</button>
+        </div>
     </div>
 
+    <!-- LAYOUT PRINCIPAL -->
+    <div class="layout">
+        <!-- ESQUERDA: PROJETOS -->
+        <div class="projects-panel">
+            <div class="projects-header">
+                <div class="projects-header-title">📁 Projetos <span id="countProjetos">0</span></div>
+            </div>
+            <div id="listaProjetos" class="projects-list"></div>
+        </div>
+
+        <!-- DIREITA: DETALHES -->
+        <div class="detail-panel">
+            <div id="detailEmpty" class="detail-placeholder">
+                <div class="icon">👆</div>
+                <div class="text">Selecione um projeto à esquerda<br>para ver as <strong>8 fases</strong> e <strong>23 atividades</strong></div>
+            </div>
+
+            <div id="detailContent" style="display:none;">
+                <!-- HEADER -->
+                <div class="detail-header">
+                    <div class="detail-title">
+                        <span id="detNomeProjeto">PROJETO</span>
+                        <span class="badge badge-prio-alta" id="detPrioBadge">Alta</span>
+                    </div>
+                    <div class="detail-meta">
+                        <span>📍 <strong id="detLocal"></strong></span>
+                        <span>👤 <strong id="detResp"></strong></span>
+                        <span>📅 <strong id="detPeriodo"></strong></span>
+                        <span>📊 <strong id="detStatus"></strong></span>
+                        <span>📈 <strong id="detProg"></strong></span>
+                    </div>
+                </div>
+
+                <!-- FASES -->
+                <div class="phases-block">
+                    <div class="phases-title">🗺️ Progresso por Fase</div>
+                    <div class="phase-steps" id="timelineFases">
+                        <div class="phase-step" data-fase="1">
+                            <div class="phase-circle">1</div>
+                            <div class="phase-label">Kickoff</div>
+                        </div>
+                        <div class="phase-step" data-fase="2">
+                            <div class="phase-circle">2</div>
+                            <div class="phase-label">Levantamento</div>
+                        </div>
+                        <div class="phase-step" data-fase="3">
+                            <div class="phase-circle">3</div>
+                            <div class="phase-label">Provisão</div>
+                        </div>
+                        <div class="phase-step" data-fase="4">
+                            <div class="phase-circle">4</div>
+                            <div class="phase-label">Implantação</div>
+                        </div>
+                        <div class="phase-step" data-fase="5">
+                            <div class="phase-circle">5</div>
+                            <div class="phase-label">Homologação</div>
+                        </div>
+                        <div class="phase-step" data-fase="6">
+                            <div class="phase-circle">6</div>
+                            <div class="phase-label">Go Live</div>
+                        </div>
+                        <div class="phase-step" data-fase="7">
+                            <div class="phase-circle">7</div>
+                            <div class="phase-label">Hypercare</div>
+                        </div>
+                        <div class="phase-step" data-fase="8">
+                            <div class="phase-circle">8</div>
+                            <div class="phase-label">Encerramento</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ATIVIDADES -->
+                <div class="activities-block">
+                    <div class="activities-header">
+                        <div class="activities-title">📋 Atividades do Projeto</div>
+                        <div class="activities-counter">
+                            <span class="badge-counter" id="ativCount">0/23</span>
+                        </div>
+                    </div>
+                    <div id="listaAtividades" class="activities-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">Visão Detalhada v9 · Invent Corp · Dashboard de Infraestrutura</div>
+</div>
+
+<!-- MODAL TRATATIVAS -->
+<div id="modalTratativas" class="modal-overlay" onclick="fecharModal(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <div class="modal-title" id="modalAtivNome">Atividade</div>
+            <button class="modal-close" onclick="fecharModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-info" id="modalAtivInfo"></div>
+            <div class="tratativas-section">
+                <div class="tratativas-header">Histórico de Tratativas</div>
+                <div id="modalTratativasBody"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+// ========== DADOS (30 Projetos) ==========
 const PROJETOS = [
-    { nome: 'BARBECUE B2B', local: 'São Paulo - SP', resp: 'ALEX', prioridade: 'Alta', dataInicio: '2025-06-01', dataPrevista: '2026-02-06' },
-    { nome: 'BELEZA', local: 'São Paulo - SP', resp: 'ANDERSON', prioridade: 'Média', dataInicio: '2025-05-01', dataPrevista: '2025-11-30' },
-    { nome: 'BETA', local: 'Rio de Janeiro - RJ', resp: 'ANDERSON', prioridade: 'Alta', dataInicio: '2025-07-01', dataPrevista: '2026-03-10' },
-    { nome: 'BETA ESTEIO', local: 'Esteio - RS', resp: 'ANDERSON', prioridade: 'Média', dataInicio: '2026-01-16', dataPrevista: '2026-07-15' },
-    { nome: 'BP', local: 'São Paulo - SP', resp: 'GIOVANNI', prioridade: 'Média', dataInicio: '2025-12-01', dataPrevista: '2026-06-30' },
-    { nome: 'BR', local: 'Jaboatão - PE', resp: 'FÁBIO', prioridade: 'Alta', dataInicio: '2026-02-01', dataPrevista: '2026-08-01' },
-    { nome: 'CANDELABRIA', local: 'Candelária - RS', resp: 'ALEX', prioridade: 'Média', dataInicio: '2025-06-01', dataPrevista: '2025-12-09' },
-    { nome: 'CDSK', local: 'São Paulo - SP', resp: 'VINICIUS', prioridade: 'Alta', dataInicio: '2025-08-01', dataPrevista: '2026-02-28' },
-    { nome: 'COUGAR', local: 'São Paulo - SP', resp: 'LEANDRO', prioridade: 'Alta', dataInicio: '2025-05-01', dataPrevista: '2026-02-09' },
-    { nome: 'CRISTAL MG RETROFIT', local: 'Belo Horizonte - MG', resp: 'GIOVANNI', prioridade: 'Alta', dataInicio: '2025-11-01', dataPrevista: '2026-05-30' },
-    { nome: 'DIA', local: 'São Paulo - SP', resp: 'FÁBIO', prioridade: 'Alta', dataInicio: '2025-09-15', dataPrevista: '2026-04-15' },
-    { nome: 'DIAMANTE', local: 'Curitiba - PR', resp: 'LEANDRO', prioridade: 'Média', dataInicio: '2026-03-01', dataPrevista: '2026-09-01' },
-    { nome: 'ELETRO', local: 'São Paulo - SP', resp: 'VINICIUS', prioridade: 'Média', dataInicio: '2025-10-01', dataPrevista: '2026-04-30' },
-    { nome: 'ESPERANÇA', local: 'Fortaleza - CE', resp: 'ALEX', prioridade: 'Média', dataInicio: '2025-04-01', dataPrevista: '2025-10-30' },
-    { nome: 'FLOWER', local: 'Campinas - SP', resp: 'GIOVANNI', prioridade: 'Baixa', dataInicio: '2025-11-15', dataPrevista: '2026-05-15' },
-    { nome: 'GAVIÃO', local: 'Salvador - BA', resp: 'FÁBIO', prioridade: 'Alta', dataInicio: '2025-03-01', dataPrevista: '2025-09-30' },
-    { nome: 'MKT CHILE', local: 'Santiago - Chile', resp: 'ANDERSON', prioridade: 'Alta', dataInicio: '2026-04-01', dataPrevista: '2026-10-01' },
-    { nome: 'MKT PERU', local: 'Lima - Peru', resp: 'ANDERSON', prioridade: 'Alta', dataInicio: '2026-05-01', dataPrevista: '2026-11-01' },
-    { nome: 'MASTER', local: 'Porto Alegre - RS', resp: 'LEANDRO', prioridade: 'Média', dataInicio: '2026-03-15', dataPrevista: '2026-09-15' },
-    { nome: 'NAVEPARK', local: 'Navegantes - SC', resp: 'ALEX', prioridade: 'Média', dataInicio: '2025-10-01', dataPrevista: '2026-04-01' },
-    { nome: 'OCTOPUS MS', local: 'Campo Grande - MS', resp: 'GIOVANNI', prioridade: 'Média', dataInicio: '2025-09-01', dataPrevista: '2026-03-30' },
-    { nome: 'OCTOPUS SC', local: 'Florianópolis - SC', resp: 'LEANDRO', prioridade: 'Alta', dataInicio: '2025-05-15', dataPrevista: '2025-11-15' },
-    { nome: 'OPTIMUS PRIME', local: 'Manaus - AM', resp: 'VINICIUS', prioridade: 'Alta', dataInicio: '2025-04-01', dataPrevista: '2025-10-01' },
-    { nome: 'PBL GUATEMALA', local: 'Cidade da Guatemala', resp: 'FÁBIO', prioridade: 'Alta', dataInicio: '2025-08-15', dataPrevista: '2026-02-15' },
-    { nome: 'PROMO B2B CD GRU', local: 'Guarulhos - SP', resp: 'ALEX', prioridade: 'Alta', dataInicio: '2025-06-15', dataPrevista: '2025-12-15' },
-    { nome: 'PTL SP', local: 'São Paulo - SP', resp: 'VINICIUS', prioridade: 'Média', dataInicio: '2025-07-01', dataPrevista: '2026-01-01' },
-    { nome: 'REISADO', local: 'Recife - PE', resp: 'FÁBIO', prioridade: 'Média', dataInicio: '2025-05-01', dataPrevista: '2025-11-01' },
-    { nome: 'REVERSE', local: 'Brasília - DF', resp: 'GIOVANNI', prioridade: 'Alta', dataInicio: '2025-08-01', dataPrevista: '2026-02-01' },
-    { nome: 'SUPER DIVINOPOLIS', local: 'Divinópolis - MG', resp: 'ALEX', prioridade: 'Média', dataInicio: '2025-06-01', dataPrevista: '2025-12-01' },
-    { nome: 'TITANIO', local: 'Goiânia - GO', resp: 'LEANDRO', prioridade: 'Alta', dataInicio: '2025-07-15', dataPrevista: '2026-01-15' }
+    { nome:'BARBECUE B2B', local:'São Paulo - SP', resp:'ALEX', prioridade:'Alta', inicio:'2025-06-01', fim:'2026-02-06' },
+    { nome:'BELEZA', local:'São Paulo - SP', resp:'ANDERSON', prioridade:'Média', inicio:'2025-05-01', fim:'2025-11-30' },
+    { nome:'BETA', local:'Rio de Janeiro - RJ', resp:'ANDERSON', prioridade:'Alta', inicio:'2025-07-01', fim:'2026-03-10' },
+    { nome:'BETA ESTEIO', local:'Esteio - RS', resp:'ANDERSON', prioridade:'Média', inicio:'2026-01-16', fim:'2026-07-15' },
+    { nome:'BP', local:'São Paulo - SP', resp:'GIOVANNI', prioridade:'Média', inicio:'2025-12-01', fim:'2026-06-30' },
+    { nome:'BR', local:'Jaboatão - PE', resp:'FÁBIO', prioridade:'Alta', inicio:'2026-02-01', fim:'2026-08-01' },
+    { nome:'CANDELABRIA', local:'Candelária - RS', resp:'ALEX', prioridade:'Média', inicio:'2025-06-01', fim:'2025-12-09' },
+    { nome:'CDSK', local:'São Paulo - SP', resp:'VINICIUS', prioridade:'Alta', inicio:'2025-08-01', fim:'2026-02-28' },
+    { nome:'COUGAR', local:'São Paulo - SP', resp:'LEANDRO', prioridade:'Alta', inicio:'2025-05-01', fim:'2026-02-09' },
+    { nome:'CRISTAL MG RETROFIT', local:'Belo Horizonte - MG', resp:'GIOVANNI', prioridade:'Alta', inicio:'2025-11-01', fim:'2026-05-30' },
+    { nome:'DIA', local:'São Paulo - SP', resp:'ANDERSON', prioridade:'Alta', inicio:'2025-09-01', fim:'2026-01-15' },
+    { nome:'DIAMANTE', local:'Curitiba - PR', resp:'FÁBIO', prioridade:'Média', inicio:'2026-02-15', fim:'2026-08-15' },
+    { nome:'ELETRO', local:'São Paulo - SP', resp:'GIOVANNI', prioridade:'Média', inicio:'2025-10-01', fim:'2026-04-30' },
+    { nome:'ESPERANÇA', local:'Belo Horizonte - MG', resp:'VINICIUS', prioridade:'Média', inicio:'2025-04-01', fim:'2026-01-19' },
+    { nome:'FLOWER', local:'São Paulo - SP', resp:'ANDERSON', prioridade:'Baixa', inicio:'2025-12-01', fim:'2026-06-30' },
+    { nome:'GAVIÃO', local:'Fortaleza - CE', resp:'FÁBIO', prioridade:'Alta', inicio:'2025-05-01', fim:'2026-02-01' },
+    { nome:'MKT CHILE', local:'Santiago - Chile', resp:'ALEX', prioridade:'Média', inicio:'2026-06-01', fim:'2026-12-01' },
+    { nome:'MKT PERU', local:'Lima - Peru', resp:'ALEX', prioridade:'Média', inicio:'2026-06-01', fim:'2026-12-01' },
+    { nome:'MASTER', local:'São Paulo - SP', resp:'LEANDRO', prioridade:'Alta', inicio:'2026-03-01', fim:'2026-09-01' },
+    { nome:'NAVEPARK', local:'Curitiba - PR', resp:'ANDERSON', prioridade:'Média', inicio:'2025-09-01', fim:'2026-04-30' },
+    { nome:'OCTOPUS MS', local:'Campo Grande - MS', resp:'ALEX', prioridade:'Média', inicio:'2025-10-01', fim:'2026-04-30' },
+    { nome:'OCTOPUS SC', local:'Florianópolis - SC', resp:'ALEX', prioridade:'Média', inicio:'2025-06-01', fim:'2025-12-15' },
+    { nome:'OPTIMUS PRIME', local:'São Paulo - SP', resp:'GIOVANNI', prioridade:'Alta', inicio:'2025-04-01', fim:'2025-10-27' },
+    { nome:'PBL GUATEMALA', local:'Guatemala City', resp:'FÁBIO', prioridade:'Alta', inicio:'2025-09-01', fim:'2026-03-31' },
+    { nome:'PROMO B2B CD GRU', local:'Guarulhos - SP', resp:'LEANDRO', prioridade:'Alta', inicio:'2025-07-01', fim:'2026-02-04' },
+    { nome:'PTL SP', local:'São Paulo - SP', resp:'VINICIUS', prioridade:'Média', inicio:'2025-04-01', fim:'2025-10-30' },
+    { nome:'REISADO', local:'Recife - PE', resp:'FÁBIO', prioridade:'Média', inicio:'2025-06-01', fim:'2025-12-20' },
+    { nome:'REVERSE', local:'São Paulo - SP', resp:'ALEX', prioridade:'Alta', inicio:'2025-09-01', fim:'2026-03-15' },
+    { nome:'SUPER DIVINOPOLIS', local:'Divinópolis - MG', resp:'GIOVANNI', prioridade:'Média', inicio:'2025-10-01', fim:'2026-04-30' },
+    { nome:'TITANIO', local:'São Paulo - SP', resp:'ALEX', prioridade:'Alta', inicio:'2025-07-01', fim:'2026-02-28' }
 ];
 
-const PROJETO_STATUS = {
-    'BARBECUE B2B': 23, 'BELEZA': 23, 'BETA': 21, 'BETA ESTEIO': 1, 'BP': 3,
-    'BR': 1, 'CANDELABRIA': 23, 'CDSK': 23, 'COUGAR': 23, 'CRISTAL MG RETROFIT': 4,
-    'DIA': 7, 'DIAMANTE': 0, 'ELETRO': 10, 'ESPERANÇA': 23, 'FLOWER': 4,
-    'GAVIÃO': 23, 'MKT CHILE': 0, 'MKT PERU': 0, 'MASTER': 0, 'NAVEPARK': 8,
-    'OCTOPUS MS': 11, 'OCTOPUS SC': 23, 'OPTIMUS PRIME': 23, 'PBL GUATEMALA': 12,
-    'PROMO B2B CD GRU': 23, 'PTL SP': 23, 'REISADO': 23, 'REVERSE': 14,
-    'SUPER DIVINOPOLIS': 23, 'TITANIO': 20
-};
+// ========== 23 ATIVIDADES PADRÃO ==========
+const ATIVIDADES_PADRAO = [
+    { fase:'1. Kickoff', nome:'Reunião de Kickoff' },
+    { fase:'1. Kickoff', nome:'Definição de Escopo' },
+    { fase:'2. Levantamento & Design', nome:'Levantamento Técnico' },
+    { fase:'2. Levantamento & Design', nome:'Documentação de Arquitetura' },
+    { fase:'2. Levantamento & Design', nome:'Elaboração do Cronograma' },
+    { fase:'3. Provisionamento', nome:'Solicitação de Acessos (VPN/IPs)' },
+    { fase:'3. Provisionamento', nome:'Aquisição de Equipamentos' },
+    { fase:'3. Provisionamento', nome:'Preparação de Ambiente' },
+    { fase:'4. Implantação', nome:'Instalação Física' },
+    { fase:'4. Implantação', nome:'Configuração de Rede' },
+    { fase:'4. Implantação', nome:'Integração de Sistemas' },
+    { fase:'5. Homologação', nome:'Testes Funcionais' },
+    { fase:'5. Homologação', nome:'Testes de Performance' },
+    { fase:'5. Homologação', nome:'Validação com Cliente' },
+    { fase:'6. Go Live', nome:'Janela de Mudança (GMUD)' },
+    { fase:'6. Go Live', nome:'Migração para Produção' },
+    { fase:'6. Go Live', nome:'Validação Pós-Migração' },
+    { fase:'7. Hypercare', nome:'Monitoramento Intensivo' },
+    { fase:'7. Hypercare', nome:'Correção de Incidentes' },
+    { fase:'7. Hypercare', nome:'Ajustes e Otimização' },
+    { fase:'8. Encerramento', nome:'Documentação Final' },
+    { fase:'8. Encerramento', nome:'Treinamento/Repasse' },
+    { fase:'8. Encerramento', nome:'Aceite Formal' }
+];
 
-const FASES = ['1. Kickoff', '2. Levantamento & Design', '3. Provisionamento', '4. Implantação', '5. Homologação', '6. Go Live', '7. Hypercare', '8. Encerramento'];
-
-const ATIVIDADES_POR_FASE = {
-    '1. Kickoff': ['Reunião de Kickoff', 'Definição de Escopo'],
-    '2. Levantamento & Design': ['Levantamento Técnico', 'Documentação de Arquitetura', 'Elaboração do Cronograma'],
-    '3. Provisionamento': ['Solicitação de Acessos (VPN/IPs)', 'Aquisição de Equipamentos', 'Preparação de Ambiente'],
-    '4. Implantação': ['Instalação Física', 'Configuração de Rede', 'Integração de Sistemas'],
-    '5. Homologação': ['Testes Funcionais', 'Testes de Performance', 'Validação com Cliente'],
-    '6. Go Live': ['Janela de Mudança (GMUD)', 'Migração para Produção', 'Validação Pós-Migração'],
-    '7. Hypercare': ['Monitoramento Intensivo', 'Correção de Incidentes', 'Ajustes e Otimização'],
-    '8. Encerramento': ['Documentação Final', 'Treinamento/Repasse', 'Aceite Formal']
-};
-
+// ========== TRATATIVAS (exemplo com dados reais) ==========
 const TRATATIVAS = {
     'BARBECUE B2B_Reunião de Kickoff': [
-        { user: 'ALEX', role: 'PMO', date: '01/06/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado com sucesso. Equipe completa presente.' },
-        { user: 'DAIANA', role: 'Gestora', date: '01/06/2025 14:00', type: 'comentario', content: 'Projeto prioritário para B2B. Acompanhar de perto.' }
+        { user:'ALEX', role:'PMO', date:'01/06/2025 09:00', tipo:'Atualização', content:'Kickoff realizado com sucesso. Equipe completa presente. Definidos os principais marcos do projeto.' },
+        { user:'DAIANA', role:'Gestora', date:'01/06/2025 14:00', tipo:'Comentário', content:'Projeto prioritário para B2B. Acompanhar de perto o cronograma.' }
     ],
     'BARBECUE B2B_Aceite Formal': [
-        { user: 'ALEX', role: 'PMO', date: '06/02/2026 10:00', type: 'resolucao', content: 'Projeto concluído com sucesso. Aceite assinado pelo cliente.' },
-        { user: 'DOUGLAS', role: 'Diretor', date: '06/02/2026 14:00', type: 'comentario', content: 'Parabéns à equipe pela entrega no prazo!' }
-    ],
-    'BELEZA_Reunião de Kickoff': [
-        { user: 'ANDERSON', role: 'PMO', date: '01/05/2025 09:00', type: 'atualizacao', content: 'Kickoff realizado. Escopo alinhado com stakeholders.' }
-    ],
-    'BELEZA_Aceite Formal': [
-        { user: 'ANDERSON', role: 'PMO', date: '30/11/2025 10:00', type: 'resolucao', content: 'Projeto BELEZA concluído. Cliente satisfeito com a entrega.' }
+        { user:'ALEX', role:'PMO', date:'06/02/2026 10:00', tipo:'Resolução', content:'Projeto concluído com sucesso! Aceite formal assinado pelo cliente. Parabéns à equipe!' }
     ],
     'BETA_Reunião de Kickoff': [
-        { user: 'ANDERSON', role: 'PMO', date: '01/07/2025 10:00', type: 'atualizacao', content: 'Kickoff do projeto BETA realizado no Rio de Janeiro.' },
-        { user: 'DAIANA', role: 'Gestora', date: '01/07/2025 15:00', type: 'comentario', content: 'Prioridade alta. Acompanhar cronograma semanalmente.' }
+        { user:'ANDERSON', role:'PMO', date:'01/07/2025 10:00', tipo:'Atualização', content:'Kickoff do projeto BETA realizado no Rio de Janeiro. Stakeholders alinhados.' },
+        { user:'DAIANA', role:'Gestora', date:'01/07/2025 14:30', tipo:'Comentário', content:'Projeto estratégico. Manter comunicação frequente com o cliente.' }
     ],
     'BETA_Levantamento Técnico': [
-        { user: 'ANDERSON', role: 'PMO', date: '15/01/2026 09:00', type: 'atualizacao', content: 'Levantamento técnico em andamento. Mapeando infraestrutura atual.' }
+        { user:'ANDERSON', role:'PMO', date:'15/01/2026 09:00', tipo:'Atualização', content:'Levantamento técnico em andamento. Mapeando infraestrutura atual do cliente.' }
     ],
-    'DIA_Reunião de Kickoff': [
-        { user: 'FÁBIO', role: 'PMO', date: '15/09/2025 10:00', type: 'atualizacao', content: 'Kickoff realizado com cliente DIA.' }
+    'BP_Reunião de Kickoff': [
+        { user:'GIOVANNI', role:'PMO', date:'01/12/2025 09:00', tipo:'Atualização', content:'Kickoff realizado. Cliente BP presente com equipe de TI.' }
+    ],
+    'BP_Levantamento Técnico': [
+        { user:'GIOVANNI', role:'PMO', date:'20/01/2026 10:00', tipo:'Atualização', content:'Levantamento em andamento. Identificados 3 sites para migração.' }
+    ],
+    'BR_Reunião de Kickoff': [
+        { user:'FÁBIO', role:'PMO', date:'01/02/2026 09:00', tipo:'Atualização', content:'Kickoff realizado em Jaboatão-PE. Equipe local mobilizada.' },
+        { user:'DAIANA', role:'Gestora', date:'01/02/2026 15:00', tipo:'Alerta', content:'ATENÇÃO: Logística para o Nordeste requer planejamento antecipado.' }
     ],
     'DIA_Solicitação de Acessos (VPN/IPs)': [
-        { user: 'FÁBIO', role: 'PMO', date: '10/01/2026 09:00', type: 'alerta', content: 'Aguardando cliente liberar acessos VPN há 15 dias.' },
-        { user: 'DAIANA', role: 'Gestora', date: '12/01/2026 14:00', type: 'comentario', content: 'Escalar para gerente comercial do cliente.' }
+        { user:'ANDERSON', role:'PMO', date:'15/01/2026 10:00', tipo:'Alerta', content:'ATENÇÃO: Aguardando liberação de VPN pelo cliente há 5 dias.' },
+        { user:'DAIANA', role:'Gestora', date:'15/01/2026 11:30', tipo:'Comentário', content:'Escalar para gerente de TI do cliente. Prazo impactando cronograma.' }
+    ],
+    'PBL GUATEMALA_Testes Funcionais': [
+        { user:'FÁBIO', role:'PMO', date:'25/01/2026 10:00', tipo:'Atualização', content:'Testes iniciados. 40% dos cenários executados com sucesso.' },
+        { user:'FÁBIO', role:'PMO', date:'28/01/2026 15:30', tipo:'Alerta', content:'Bug crítico identificado na integração com ERP. Equipe de dev acionada.' },
+        { user:'FÁBIO', role:'PMO', date:'30/01/2026 11:00', tipo:'Resolução', content:'Bug corrigido. Testes retomados. Cronograma mantido.' }
     ],
     'COUGAR_Aceite Formal': [
-        { user: 'LEANDRO', role: 'PMO', date: '09/02/2026 10:00', type: 'resolucao', content: 'Projeto COUGAR encerrado com sucesso.' },
-        { user: 'DOUGLAS', role: 'Diretor', date: '09/02/2026 15:00', type: 'comentario', content: 'Excelente trabalho da equipe!' }
+        { user:'LEANDRO', role:'PMO', date:'09/02/2026 10:00', tipo:'Resolução', content:'Projeto COUGAR concluído! Cliente extremamente satisfeito. Aceite assinado.' }
+    ],
+    'CRISTAL MG RETROFIT_Instalação Física': [
+        { user:'GIOVANNI', role:'PMO', date:'20/01/2026 14:00', tipo:'Atualização', content:'Instalação em andamento em BH. 2 de 4 racks montados.' },
+        { user:'GIOVANNI', role:'PMO', date:'25/01/2026 09:00', tipo:'Alerta', content:'Atraso na entrega de switches. Novo prazo: 28/01.' }
+    ],
+    'REVERSE_Documentação de Arquitetura': [
+        { user:'ALEX', role:'PMO', date:'10/01/2026 10:00', tipo:'Atualização', content:'Documentação 70% concluída. Aguardando validação do cliente.' }
+    ],
+    'TITANIO_Configuração de Rede': [
+        { user:'ALEX', role:'PMO', date:'15/01/2026 09:00', tipo:'Atualização', content:'Configuração de rede iniciada. VLANs definidas.' },
+        { user:'ALEX', role:'PMO', date:'20/01/2026 16:00', tipo:'Resolução', content:'Configuração concluída. Testes de conectividade OK.' }
     ]
 };
 
-function calcProgresso(nome) { return Math.round(((PROJETO_STATUS[nome] || 0) / 23) * 100); }
+// ========== PROJETOS CONCLUÍDOS ==========
+const CONCLUIDOS = [
+    'BARBECUE B2B','BELEZA','CANDELABRIA','CDSK','COUGAR','ESPERANÇA',
+    'GAVIÃO','OCTOPUS SC','OPTIMUS PRIME','PROMO B2B CD GRU',
+    'PTL SP','REISADO','SUPER DIVINOPOLIS'
+];
 
-function calcStatus(nome) {
-    const prog = calcProgresso(nome);
-    if (prog === 100) return 'Concluído';
-    if (prog === 0) return 'Não Iniciado';
-    const proj = PROJETOS.find(p => p.nome === nome);
-    if (proj && new Date(proj.dataInicio) > new Date()) return 'Aguardando';
-    return 'Em andamento';
+// ========== ELEMENTOS DOM ==========
+const elLista = document.getElementById('listaProjetos');
+const elCount = document.getElementById('countProjetos');
+const elEmpty = document.getElementById('detailEmpty');
+const elDetail = document.getElementById('detailContent');
+const elNome = document.getElementById('detNomeProjeto');
+const elLocal = document.getElementById('detLocal');
+const elResp = document.getElementById('detResp');
+const elPeriodo = document.getElementById('detPeriodo');
+const elStatus = document.getElementById('detStatus');
+const elProg = document.getElementById('detProg');
+const elPrioBadge = document.getElementById('detPrioBadge');
+const elAtivCount = document.getElementById('ativCount');
+const elListaAtiv = document.getElementById('listaAtividades');
+
+const fBusca = document.getElementById('filterBusca');
+const fStatus = document.getElementById('filterStatus');
+const fPrio = document.getElementById('filterPrioridade');
+const fResp = document.getElementById('filterResp');
+
+let projetoAtual = null;
+
+// ========== FUNÇÕES ==========
+function calcularStatusEProgresso(p) {
+    if (CONCLUIDOS.includes(p.nome)) {
+        return { status: 'Concluído', prog: 100 };
+    }
+    
+    const hoje = new Date();
+    const inicio = new Date(p.inicio);
+    const fim = new Date(p.fim);
+    
+    if (hoje < inicio) {
+        return { status: 'Não Iniciado', prog: 0 };
+    }
+    
+    if (hoje > fim) {
+        return { status: 'Aguardando', prog: 65 };
+    }
+    
+    // Calcular progresso baseado no tempo
+    const total = fim - inicio;
+    const decorrido = hoje - inicio;
+    const prog = Math.min(95, Math.max(5, Math.round((decorrido / total) * 100)));
+    
+    return { status: 'Em andamento', prog };
 }
 
-function calcFaseAtual(nome) {
-    const a = PROJETO_STATUS[nome] || 0;
-    if (a === 0) return 0;
-    if (a <= 2) return 1;
-    if (a <= 5) return 2;
-    if (a <= 8) return 3;
-    if (a <= 11) return 4;
-    if (a <= 14) return 5;
-    if (a <= 17) return 6;
-    if (a <= 20) return 7;
-    return 8;
-}
+function renderLista() {
+    const termo = (fBusca.value || '').trim().toLowerCase();
+    const st = fStatus.value;
+    const prio = fPrio.value;
+    const resp = fResp.value;
 
-function formatDate(d) { return d ? new Date(d).toLocaleDateString('pt-BR') : '-'; }
-function getStatusClass(s) { return { 'Concluído': 'concluido', 'Em andamento': 'andamento', 'Aguardando': 'aguardando', 'Não Iniciado': 'nao-iniciado' }[s] || 'nao-iniciado'; }
-function getPriorityClass(p) { return { 'Alta': 'alta', 'Média': 'media', 'Baixa': 'baixa' }[p] || 'media'; }
-function getProgressColor(p) { return p >= 80 ? '#22c55e' : p >= 40 ? '#f59e0b' : '#ef4444'; }
-
-function renderProjectsList() {
-    const search = document.getElementById('searchProject').value.toLowerCase();
-    const st = document.getElementById('filterStatus').value;
-    const pr = document.getElementById('filterPriority').value;
-    const re = document.getElementById('filterResp').value;
-
-    const filtered = PROJETOS.filter(p => {
-        const status = calcStatus(p.nome);
-        return (!search || p.nome.toLowerCase().includes(search)) && (!st || status === st) && (!pr || p.prioridade === pr) && (!re || p.resp === re);
+    const filtrados = PROJETOS.filter(p => {
+        const { status } = calcularStatusEProgresso(p);
+        if (termo && !p.nome.toLowerCase().includes(termo)) return false;
+        if (st && st !== status) return false;
+        if (prio && prio !== p.prioridade) return false;
+        if (resp && resp !== p.resp) return false;
+        p._status = status;
+        return true;
     });
 
-    document.getElementById('projectCount').textContent = filtered.length;
-    document.getElementById('projectsList').innerHTML = filtered.map(p => {
-        const prog = calcProgresso(p.nome), status = calcStatus(p.nome);
-        return `<div class="project-item" onclick="showDetails('${p.nome}')" id="proj-${p.nome.replace(/\s+/g, '-')}">
-            <div class="project-item-header"><span class="project-name">${p.nome}</span><span class="project-progress" style="color:${getProgressColor(prog)}">${prog}%</span></div>
-            <div class="project-meta"><span class="badge badge-${getPriorityClass(p.prioridade)}">${p.prioridade}</span><span>📍 ${p.local}</span><span>👤 ${p.resp}</span><span class="badge badge-${getStatusClass(status)}">${status}</span></div>
-        </div>`;
-    }).join('') || '<p style="padding:20px;color:#94a3b8;text-align:center;">Nenhum projeto encontrado</p>';
-}
+    elCount.textContent = filtrados.length;
 
-function showDetails(nome) {
-    document.querySelectorAll('.project-item').forEach(el => el.classList.remove('active'));
-    const projEl = document.getElementById('proj-' + nome.replace(/\s+/g, '-'));
-    if (projEl) projEl.classList.add('active');
+    if (!filtrados.length) {
+        elLista.innerHTML = '<div class="no-projects">Nenhum projeto encontrado com os filtros atuais.</div>';
+        elEmpty.style.display = 'flex';
+        elDetail.style.display = 'none';
+        return;
+    }
 
-    const proj = PROJETOS.find(p => p.nome === nome);
-    if (!proj) return;
+    elLista.innerHTML = filtrados.map(p => {
+        const { prog, status } = calcularStatusEProgresso(p);
+        const prioClass = p.prioridade === 'Alta' ? 'badge-prio-alta' : p.prioridade === 'Média' ? 'badge-prio-media' : 'badge-prio-baixa';
+        const statusClass = status === 'Concluído' ? 'badge-status-concluido' : 
+                           status === 'Em andamento' ? 'badge-status-andamento' : 
+                           status === 'Aguardando' ? 'badge-status-aguardando' : 'badge-status-nao-iniciado';
+        const isActive = projetoAtual === p.nome ? 'active' : '';
 
-    const prog = calcProgresso(nome), status = calcStatus(nome), faseAtual = calcFaseAtual(nome), atv = PROJETO_STATUS[nome] || 0;
-
-    const timeline = FASES.map((f, i) => {
-        const n = i + 1; let cls = '', c = n;
-        if (n < faseAtual) { cls = 'completed'; c = '✓'; } else if (n === faseAtual) cls = 'current';
-        return `<div class="phase-step ${cls}"><div class="phase-circle">${c}</div><div class="phase-label">${f.split('. ')[1]}</div></div>`;
+        return `
+            <div class="project-card ${isActive}" data-proj="${p.nome}" onclick="selecionarProjeto('${p.nome}')">
+                <div class="project-main">
+                    <div class="project-name">${p.nome}</div>
+                    <div class="project-meta-line">
+                        <span>📍 ${p.local}</span>
+                        <span>👤 ${p.resp}</span>
+                    </div>
+                    <div class="project-status-line">
+                        <span class="badge ${prioClass}">${p.prioridade}</span>
+                        <span class="badge ${statusClass}">${status}</span>
+                    </div>
+                </div>
+                <div class="project-progress">
+                    ${prog}%
+                    <small>${status === 'Concluído' ? '✓' : 'progresso'}</small>
+                </div>
+            </div>
+        `;
     }).join('');
-
-    let actHTML = '', idx = 0;
-    FASES.forEach(fase => {
-        ATIVIDADES_POR_FASE[fase].forEach(a => {
-            let st = 'Não Iniciado', cl = 'nao-iniciado';
-            if (idx < atv) { st = 'Concluído'; cl = 'concluido'; }
-            else if (idx === atv) { st = new Date(proj.dataInicio) <= new Date() ? 'Em andamento' : 'Aguardando'; cl = st === 'Em andamento' ? 'andamento' : 'aguardando'; }
-            const key = `${nome}_${a}`, trats = TRATATIVAS[key] || [], tc = trats.length;
-            const tratHTML = tc > 0 ? trats.map(t => `<div class="tratativa-item"><div class="tratativa-top"><span class="tratativa-user">${t.user} (${t.role})</span><span class="tratativa-date">${t.date}</span></div><span class="tratativa-tipo tipo-${t.type}">${{atualizacao:'Atualização',alerta:'Alerta',resolucao:'Resolução',comentario:'Comentário'}[t.type]}</span><div class="tratativa-content">${t.content}</div></div>`).join('') : '<p class="no-tratativas">Nenhuma tratativa registrada.</p>';
-            actHTML += `<div class="activity-item ${cl}" onclick="toggleTratativas(this,event)"><div class="activity-header"><div class="activity-info"><div class="activity-name">${a}</div><div class="activity-phase">${fase}</div></div><span class="badge badge-${cl}">${st}</span><span class="expand-icon">${tc > 0 ? '▼' : ''}</span></div><div class="tratativas-section"><div class="tratativas-header">💬 Tratativas (${tc})</div>${tratHTML}</div></div>`;
-            idx++;
-        });
-    });
-
-    document.getElementById('detailsPanel').innerHTML = `
-        <div class="details-header"><div class="details-title">${nome}</div><div class="details-meta"><span>📍 <strong>${proj.local}</strong></span><span>👤 <strong>${proj.resp}</strong></span><span>⚡ <span class="badge badge-${getPriorityClass(proj.prioridade)}">${proj.prioridade}</span></span><span>📅 ${formatDate(proj.dataInicio)} → ${formatDate(proj.dataPrevista)}</span><span>📈 <strong>${prog}%</strong></span></div></div>
-        <div class="phases-timeline"><h3>🗺️ Progresso por Fase (${faseAtual > 0 ? FASES[faseAtual-1] : 'Não iniciado'})</h3><div class="phase-steps">${timeline}</div></div>
-        <div class="activities-section"><h3>📝 Atividades <span class="activities-count">${atv}/23</span></h3>${actHTML}</div>`;
 }
 
-function toggleTratativas(el, e) { e.stopPropagation(); const s = el.querySelector('.tratativas-section'); if (s) { s.classList.toggle('active'); el.classList.toggle('expanded'); } }
-function filterProjects() { renderProjectsList(); }
-function clearFilters() { document.getElementById('searchProject').value = ''; document.getElementById('filterStatus').value = ''; document.getElementById('filterPriority').value = ''; document.getElementById('filterResp').value = ''; renderProjectsList(); }
-function populateRespFilter() { const r = [...new Set(PROJETOS.map(p => p.resp))].sort(); document.getElementById('filterResp').innerHTML = '<option value="">Todos</option>' + r.map(x => `<option value="${x}">${x}</option>`).join(''); }
+function selecionarProjeto(nomeProj) {
+    projetoAtual = nomeProj;
 
-document.addEventListener('DOMContentLoaded', () => { populateRespFilter(); renderProjectsList(); });
+    document.querySelectorAll('.project-card').forEach(card => {
+        card.classList.toggle('active', card.getAttribute('data-proj') === nomeProj);
+    });
+
+    const p = PROJETOS.find(x => x.nome === nomeProj);
+    if (!p) return;
+
+    const { status, prog } = calcularStatusEProgresso(p);
+
+    elNome.textContent = p.nome;
+    elLocal.textContent = p.local;
+    elResp.textContent = p.resp;
+    elPeriodo.textContent = `${formatarDataBR(p.inicio)} → ${formatarDataBR(p.fim)}`;
+    elStatus.textContent = status;
+    elProg.textContent = `${prog}% concluído`;
+
+    // Badge prioridade
+    const prioClass = p.prioridade === 'Alta' ? 'badge-prio-alta' : p.prioridade === 'Média' ? 'badge-prio-media' : 'badge-prio-baixa';
+    elPrioBadge.className = `badge ${prioClass}`;
+    elPrioBadge.textContent = p.prioridade;
+
+    // Timeline de fases
+    const faseIdx = status === 'Concluído' ? 8 : (prog <= 0 ? 1 : Math.min(8, Math.ceil((prog / 100) * 8)));
+    atualizarTimelineFases(faseIdx);
+
+    // Atividades
+    renderAtividades(status, prog);
+
+    elEmpty.style.display = 'none';
+    elDetail.style.display = 'block';
+}
+
+function atualizarTimelineFases(idxAtual) {
+    const steps = document.querySelectorAll('#timelineFases .phase-step');
+    steps.forEach((step, idx) => {
+        step.classList.remove('completed', 'current');
+        const n = idx + 1;
+        if (n < idxAtual) {
+            step.classList.add('completed');
+            step.querySelector('.phase-circle').textContent = '✓';
+        } else {
+            step.querySelector('.phase-circle').textContent = n;
+        }
+        if (n === idxAtual) step.classList.add('current');
+    });
+}
+
+function renderAtividades(statusProjeto, prog) {
+    const atividades = ATIVIDADES_PADRAO;
+    
+    // Calcular quantas atividades estão concluídas baseado no progresso
+    let ativConcluidas = 0;
+    if (statusProjeto === 'Concluído') {
+        ativConcluidas = 23;
+    } else {
+        ativConcluidas = Math.floor((prog / 100) * 23);
+    }
+    
+    elAtivCount.textContent = `${ativConcluidas}/23`;
+
+    elListaAtiv.innerHTML = atividades.map((a, idx) => {
+        let status = 'Não Iniciado';
+        let statusClass = 'status-nao-iniciado';
+        
+        if (statusProjeto === 'Concluído' || idx < ativConcluidas) {
+            status = 'Concluído';
+            statusClass = 'status-concluido';
+        } else if (idx === ativConcluidas) {
+            status = 'Em andamento';
+            statusClass = 'status-andamento';
+        } else if (idx === ativConcluidas + 1) {
+            status = 'Aguardando';
+            statusClass = 'status-aguardando';
+        }
+
+        return `
+            <div class="activity-item ${statusClass}" onclick="abrirTratativas('${a.nome}', '${a.fase}', '${status}')">
+                <div class="activity-main">
+                    <div class="activity-name">${a.nome}</div>
+                    <div class="activity-phase">${a.fase}</div>
+                </div>
+                <div class="activity-status">${status}</div>
+            </div>
+        `;
+    }).join('');
+}
+
+function abrirTratativas(nomeAtiv, fase, status) {
+    if (!projetoAtual) return;
+
+    const key = `${projetoAtual}_${nomeAtiv}`;
+    const tratativas = TRATATIVAS[key] || [];
+    const p = PROJETOS.find(x => x.nome === projetoAtual);
+
+    document.getElementById('modalAtivNome').textContent = nomeAtiv;
+    
+    // Info da atividade
+    document.getElementById('modalAtivInfo').innerHTML = `
+        <div class="modal-info-row"><span class="label">Projeto</span><span class="value">${projetoAtual}</span></div>
+        <div class="modal-info-row"><span class="label">Fase</span><span class="value">${fase}</span></div>
+        <div class="modal-info-row"><span class="label">Responsável</span><span class="value">${p.resp}</span></div>
+        <div class="modal-info-row"><span class="label">Status</span><span class="value">${status}</span></div>
+    `;
+
+    // Tratativas
+    const modalBody = document.getElementById('modalTratativasBody');
+    
+    if (!tratativas.length) {
+        modalBody.innerHTML = `
+            <div class="tratativas-empty">
+                <div class="icon">📭</div>
+                <div class="msg">Nenhuma tratativa registrada para esta atividade.</div>
+            </div>
+        `;
+    } else {
+        modalBody.innerHTML = tratativas.map(t => {
+            const tipoClass = `tipo-${t.tipo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')}`;
+            return `
+                <div class="tratativa-item">
+                    <div class="tratativa-header">
+                        <div class="tratativa-user">
+                            <div class="tratativa-avatar">${t.user.charAt(0)}</div>
+                            <div class="tratativa-user-info">
+                                <div class="name">${t.user}</div>
+                                <div class="role">${t.role}</div>
+                            </div>
+                        </div>
+                        <div class="tratativa-date">${t.date}</div>
+                    </div>
+                    <span class="tratativa-tipo ${tipoClass}">${getTipoIcon(t.tipo)} ${t.tipo}</span>
+                    <div class="tratativa-content">${t.content}</div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    document.getElementById('modalTratativas').classList.add('active');
+}
+
+function getTipoIcon(tipo) {
+    const icons = { 'Atualização': '📝', 'Alerta': '⚠️', 'Resolução': '✅', 'Comentário': '💬' };
+    return icons[tipo] || '📌';
+}
+
+function fecharModal(event) {
+    if (!event || event.target.id === 'modalTratativas') {
+        document.getElementById('modalTratativas').classList.remove('active');
+    }
+}
+
+function formatarDataBR(iso) {
+    if (!iso) return '--';
+    const d = new Date(iso);
+    if (isNaN(d)) return iso;
+    return d.toLocaleDateString('pt-BR');
+}
+
+function limparFiltros() {
+    fBusca.value = '';
+    fStatus.value = '';
+    fPrio.value = '';
+    fResp.value = '';
+    projetoAtual = null;
+    renderLista();
+    elEmpty.style.display = 'flex';
+    elDetail.style.display = 'none';
+}
+
+// Tecla ESC fecha modal
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') fecharModal();
+});
+
+// Inicializar
+renderLista();
 </script>
 </body>
 </html>
