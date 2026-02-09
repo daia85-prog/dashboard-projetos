@@ -29,7 +29,9 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:
 
 /* ===== KPIs DE RISCO (novo bloco no topo) ===== */
 .risk-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px; }
-.risk-kpi { padding: 18px 20px; border-radius: 12px; color: white; position: relative; overflow: hidden; cursor: default; }
+.risk-kpi { padding: 18px 20px; border-radius: 12px; color: white; position: relative; overflow: hidden; cursor: pointer; transition: all 0.2s; }
+.risk-kpi:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+.risk-kpi.active { outline: 3px solid #1e293b; outline-offset: 2px; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
 .risk-kpi::after { content: ''; position: absolute; top: -20px; right: -20px; width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%; }
 .risk-kpi .icon { font-size: 1.8em; margin-bottom: 8px; }
 .risk-kpi .value { font-size: 2.2em; font-weight: 800; line-height: 1; }
@@ -195,22 +197,22 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:
 
 <!-- KPIs DE RISCO (novo bloco) -->
 <div class="risk-kpis">
-    <div class="risk-kpi verde">
+    <div class="risk-kpi verde" id="kpiNoPrazo" onclick="filtrarRisco('noprazo')">
         <div class="icon">✅</div>
         <div class="value" id="riskNoPrazo">0</div>
         <div class="label">No Prazo</div>
     </div>
-    <div class="risk-kpi amarelo">
+    <div class="risk-kpi amarelo" id="kpiGoLive" onclick="filtrarRisco('golive')">
         <div class="icon">⚠️</div>
         <div class="value" id="riskGoLive">0</div>
         <div class="label">Go Lives em Risco</div>
     </div>
-    <div class="risk-kpi laranja">
+    <div class="risk-kpi laranja" id="kpiInfra" onclick="filtrarRisco('infra')">
         <div class="icon">🔧</div>
         <div class="value" id="riskInfra">0</div>
         <div class="label">Alertas Infra</div>
     </div>
-    <div class="risk-kpi vermelho">
+    <div class="risk-kpi vermelho" id="kpiCriticos" onclick="filtrarRisco('criticos')">
         <div class="icon">🚨</div>
         <div class="value" id="riskCriticos">0</div>
         <div class="label">Críticos</div>
@@ -281,7 +283,7 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:
 </div>
 
 <!-- PROJETOS -->
-<div class="projects-title">📁 Projetos <span class="count-badge" id="projetosCount">0</span> <span style="font-size:0.75em;color:#94a3b8;margin-left:8px;">Ordenados por nível de risco</span></div>
+<div class="projects-title">📁 Projetos <span class="count-badge" id="projetosCount">0</span> <span id="filtroAtivoLabel" style="font-size:0.75em;color:#94a3b8;margin-left:8px;">Ordenados por nível de risco</span></div>
 <div class="projects" id="projetosGrid"></div>
 
 </main>
@@ -490,10 +492,34 @@ function renderProjetos() {
         return true;
     });
     
+    // Filtro por KPI de risco
+    if (filtroRiscoAtivo) {
+        const nc = pf.filter(p => p.status !== "Concluído");
+        if (filtroRiscoAtivo === 'noprazo') {
+            pf = nc.filter(p => { const al = getAlertaGoLive(p); return al.tipo === "ok" && p.status !== "Atrasado"; });
+        } else if (filtroRiscoAtivo === 'golive') {
+            pf = nc.filter(p => { const al = getAlertaGoLive(p); return al.tipo === "atrasado" || al.tipo === "proximo"; });
+        } else if (filtroRiscoAtivo === 'infra') {
+            pf = nc.filter(p => isAlertaInfra(p));
+        } else if (filtroRiscoAtivo === 'criticos') {
+            pf = nc.filter(p => calcRisco(p).nivel === "alto");
+        }
+    }
+    
     // Ordenar por risco (maior primeiro)
     pf.sort((a, b) => calcRisco(b).score - calcRisco(a).score);
     
     document.getElementById("projetosCount").textContent = pf.length;
+    
+    // Atualizar label do filtro ativo
+    const labels = { noprazo: '✅ Filtro: No Prazo', golive: '⚠️ Filtro: Go Lives em Risco', infra: '🔧 Filtro: Alertas Infra', criticos: '🚨 Filtro: Críticos' };
+    const labelEl = document.getElementById("filtroAtivoLabel");
+    if (filtroRiscoAtivo) {
+        labelEl.innerHTML = `<span style="background:#eef2ff;color:#4338ca;padding:3px 10px;border-radius:12px;font-weight:600">${labels[filtroRiscoAtivo]} <span onclick="filtrarRisco('${filtroRiscoAtivo}')" style="cursor:pointer;margin-left:4px">✕</span></span>`;
+    } else {
+        labelEl.textContent = 'Ordenados por nível de risco';
+        labelEl.style.color = '#94a3b8';
+    }
     
     document.getElementById("projetosGrid").innerHTML = pf.map(p => {
         const cor = getCorProgresso(p.progresso);
@@ -526,10 +552,34 @@ function renderProjetos() {
 }
 
 // ===== FILTROS =====
-function filtrarStatus(s) { document.getElementById("filtroStatus").value = s; renderProjetos(); }
-function filtrarPrioridade(p) { document.getElementById("filtroPrioridade").value = p; renderProjetos(); }
-function filtrarPMO(m) { document.getElementById("filtroPMO").value = m; renderProjetos(); }
+let filtroRiscoAtivo = '';
+
+function filtrarRisco(tipo) {
+    // Toggle: clicou no mesmo = limpa filtro
+    if (filtroRiscoAtivo === tipo) {
+        filtroRiscoAtivo = '';
+    } else {
+        filtroRiscoAtivo = tipo;
+    }
+    // Limpar filtros normais ao usar filtro de risco
+    ["filtroNome","filtroStatus","filtroPrioridade","filtroPMO"].forEach(id => document.getElementById(id).value = "");
+    // Visual: marcar KPI ativo
+    document.querySelectorAll('.risk-kpi').forEach(el => el.classList.remove('active'));
+    if (filtroRiscoAtivo) {
+        const ids = { noprazo: 'kpiNoPrazo', golive: 'kpiGoLive', infra: 'kpiInfra', criticos: 'kpiCriticos' };
+        document.getElementById(ids[filtroRiscoAtivo])?.classList.add('active');
+    }
+    renderProjetos();
+    // Scroll até a lista de projetos
+    document.getElementById("projetosGrid").scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function filtrarStatus(s) { filtroRiscoAtivo = ''; document.querySelectorAll('.risk-kpi').forEach(el => el.classList.remove('active')); document.getElementById("filtroStatus").value = s; renderProjetos(); }
+function filtrarPrioridade(p) { filtroRiscoAtivo = ''; document.querySelectorAll('.risk-kpi').forEach(el => el.classList.remove('active')); document.getElementById("filtroPrioridade").value = p; renderProjetos(); }
+function filtrarPMO(m) { filtroRiscoAtivo = ''; document.querySelectorAll('.risk-kpi').forEach(el => el.classList.remove('active')); document.getElementById("filtroPMO").value = m; renderProjetos(); }
 function limparFiltros() {
+    filtroRiscoAtivo = '';
+    document.querySelectorAll('.risk-kpi').forEach(el => el.classList.remove('active'));
     ["filtroNome","filtroStatus","filtroPrioridade","filtroPMO"].forEach(id => document.getElementById(id).value = "");
     renderProjetos();
 }
