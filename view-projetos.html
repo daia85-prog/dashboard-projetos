@@ -5,294 +5,594 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Alertas & Projetos v9</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;padding:20px}
-.container{max-width:1400px;margin:0 auto;background:#fff;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.2);overflow:hidden}
-.header{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:20px 25px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px}
-.header h1{font-size:1.4em}
-.nav-buttons{display:flex;gap:8px}
-.nav-btn{padding:9px 16px;border:none;border-radius:6px;font-weight:600;text-decoration:none;color:#fff}
-.nav-btn.blue{background:#3b82f6}
-.nav-btn.purple{background:#8b5cf6}
-.nav-btn.green{background:#22c55e}
-.content{padding:20px 25px}
-.kpis-row{display:grid;grid-template-columns:repeat(5,1fr) 160px 160px;gap:12px;margin-bottom:20px}
-@media(max-width:1100px){.kpis-row{grid-template-columns:repeat(5,1fr)}.side-card{margin-top:12px}}
-.kpi{text-align:center;padding:15px 10px;border-radius:10px;cursor:pointer;color:#fff;transition:all .2s}
-.kpi:hover{transform:translateY(-2px)}
-.kpi.azul{background:linear-gradient(135deg,#3b82f6,#1d4ed8)}
-.kpi.verde{background:linear-gradient(135deg,#22c55e,#16a34a)}
-.kpi.amarelo{background:linear-gradient(135deg,#f59e0b,#d97706)}
-.kpi.roxo{background:linear-gradient(135deg,#8b5cf6,#7c3aed)}
-.kpi.vermelho{background:linear-gradient(135deg,#ef4444,#dc2626)}
-.kpi .num{font-size:2em;font-weight:700}
-.kpi .lbl{font-size:.78em;opacity:.95}
-.side-card{background:#f8fafc;border-radius:10px;padding:12px 15px;border:1px solid #e2e8f0}
-.side-card h4{font-size:.8em;color:#64748b;margin-bottom:8px}
-.side-item{display:flex;justify-content:space-between;padding:6px 10px;border-radius:6px;font-size:.85em;cursor:pointer;margin-bottom:4px;font-weight:500}
-.side-item:hover{transform:translateX(3px)}
-.side-item.alta{background:#fef2f2;color:#dc2626}
-.side-item.media{background:#fffbeb;color:#b45309}
-.side-item.baixa{background:#f0fdf4;color:#16a34a}
-.side-item.pmo{background:#f1f5f9;color:#475569}
-.side-item .count{font-weight:700}
-.alerts-section{margin-bottom:20px}
-.alert-header{padding:12px 18px;border-radius:10px 10px 0 0;color:#fff;font-weight:600;display:flex;justify-content:space-between;flex-wrap:wrap}
-.alert-header.douglas{background:linear-gradient(135deg,#1e293b,#334155)}
-.alert-header.daiana{background:linear-gradient(135deg,#ea580c,#c2410c)}
-.alert-header small{opacity:.85;font-weight:400}
-.alert-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;padding:15px;background:#f8fafc;border-radius:0 0 10px 10px;border:1px solid #e2e8f0;border-top:none}
-.alert-card{background:#fff;border-radius:8px;overflow:hidden}
-.alert-card-head{padding:10px 12px;color:#fff;font-weight:600;font-size:.85em;display:flex;justify-content:space-between}
-.alert-card-head.vermelho{background:#ef4444}
-.alert-card-head.amarelo{background:#f59e0b}
-.alert-card-head.cinza{background:#64748b}
-.alert-card-head.roxo{background:#8b5cf6}
-.alert-card-head .badge{background:rgba(255,255,255,.25);padding:2px 8px;border-radius:10px}
-.alert-card-body{padding:10px;max-height:150px;overflow-y:auto}
-.alert-proj{padding:6px 10px;margin-bottom:4px;border-radius:6px;font-size:.85em;cursor:pointer;display:flex;justify-content:space-between;font-weight:500}
-.alert-proj:hover{transform:translateX(3px)}
-.alert-proj.vermelho{background:#fef2f2;color:#dc2626}
-.alert-proj.amarelo{background:#fffbeb;color:#92400e}
-.alert-proj.cinza{background:#f1f5f9;color:#64748b}
-.alert-proj.roxo{background:#f5f3ff;color:#6d28d9}
-.alert-proj .dias{font-size:.8em;opacity:.8}
-.alert-empty{color:#94a3b8;font-size:.85em;padding:15px;text-align:center}
-.filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:18px;padding:15px;background:#f8fafc;border-radius:10px}
-.filter-group label{display:block;font-size:.78em;color:#64748b;margin-bottom:4px}
-.filter-group input,.filter-group select{width:100%;padding:8px 10px;border:1px solid #e2e8f0;border-radius:6px;font-size:.9em}
-.btn-limpar{padding:8px 14px;background:#ef4444;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:600}
-.projects{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:15px}
-.project-card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:15px;cursor:pointer;transition:all .2s;border-left:4px solid #e2e8f0}
-.project-card:hover{box-shadow:0 5px 20px rgba(0,0,0,.1);transform:translateY(-2px)}
-.project-card.verde{border-left-color:#22c55e}
-.project-card.amarelo{border-left-color:#f59e0b}
-.project-card.vermelho{border-left-color:#ef4444}
-.project-header{display:flex;justify-content:space-between;margin-bottom:8px}
-.project-name{font-weight:700;color:#1e293b}
-.priority{padding:3px 8px;border-radius:4px;font-size:.7em;font-weight:700}
-.priority.alta{background:#fee2e2;color:#dc2626}
-.priority.media{background:#fef3c7;color:#d97706}
-.priority.baixa{background:#dcfce7;color:#16a34a}
-.project-meta{display:flex;gap:12px;font-size:.82em;color:#64748b;margin-bottom:8px}
-.project-phase{background:#eff6ff;color:#1d4ed8;padding:5px 10px;border-radius:6px;font-size:.8em;margin-bottom:8px;display:inline-block}
-.progress{margin-bottom:10px}
-.progress-header{display:flex;justify-content:space-between;font-size:.85em;margin-bottom:4px}
-.progress-bar{height:6px;background:#e2e8f0;border-radius:3px}
-.progress-fill{height:100%;border-radius:3px}
-.progress-fill.verde{background:#22c55e}
-.progress-fill.amarelo{background:#f59e0b}
-.progress-fill.vermelho{background:#ef4444}
-.project-footer{display:flex;justify-content:space-between;align-items:center}
-.status-badge{padding:4px 10px;border-radius:5px;font-size:.75em;font-weight:600}
-.status-badge.concluido{background:#dcfce7;color:#166534}
-.status-badge.em-andamento{background:#dbeafe;color:#1e40af}
-.status-badge.planejamento{background:#f3e8ff;color:#7c3aed}
-.status-badge.atrasado{background:#fee2e2;color:#991b1b}
-.go-live-info{font-size:.8em;color:#64748b}
-.go-live-info.atrasado{color:#dc2626;font-weight:600}
-.go-live-info.proximo{color:#d97706;font-weight:600}
-.modal-bg{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:1000;justify-content:center;align-items:center;padding:20px}
-.modal-bg.show{display:flex}
-.modal{background:#fff;border-radius:12px;max-width:600px;width:100%;max-height:80vh;overflow:hidden}
-.modal-head{background:#667eea;color:#fff;padding:15px 20px;display:flex;justify-content:space-between}
-.modal-close{background:rgba(255,255,255,.2);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1.3em}
-.modal-body{padding:20px;overflow-y:auto}
-.modal-info{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:15px}
-.modal-info-item .label{color:#64748b;font-size:.8em}
-.modal-info-item .value{color:#1e293b;font-weight:600}
-.modal-obs{background:#f8fafc;padding:12px;border-radius:8px;border-left:4px solid #667eea}
-.modal-obs strong{color:#64748b;font-size:.85em}
-.footer{text-align:center;padding:15px;background:#f8fafc;border-top:1px solid #e2e8f0;font-size:.8em;color:#64748b}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+
+.container { max-width: 1400px; margin: 0 auto; background: white; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); overflow: hidden; }
+
+/* ===== HEADER (padrão Detalhada) ===== */
+.header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+.header-left h1 { font-size: 1.4em; display: flex; align-items: center; gap: 10px; }
+.header-left p { opacity: 0.9; font-size: 0.85em; margin-top: 4px; }
+.nav-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+.nav-btn { padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.9em; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s; color: white; }
+.nav-btn.orange { background: #f59e0b; }
+.nav-btn.orange:hover { background: #d97706; }
+.nav-btn.purple { background: #8b5cf6; }
+.nav-btn.purple:hover { background: #7c3aed; }
+.nav-btn.green { background: #22c55e; }
+.nav-btn.green:hover { background: #16a34a; }
+.nav-btn.blue { background: #3b82f6; }
+.nav-btn.blue:hover { background: #2563eb; }
+
+.content { padding: 20px 25px; }
+
+/* ===== KPIs DE RISCO (novo bloco no topo) ===== */
+.risk-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px; }
+.risk-kpi { padding: 18px 20px; border-radius: 12px; color: white; position: relative; overflow: hidden; cursor: default; }
+.risk-kpi::after { content: ''; position: absolute; top: -20px; right: -20px; width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%; }
+.risk-kpi .icon { font-size: 1.8em; margin-bottom: 8px; }
+.risk-kpi .value { font-size: 2.2em; font-weight: 800; line-height: 1; }
+.risk-kpi .label { font-size: 0.82em; opacity: 0.92; margin-top: 4px; font-weight: 500; }
+.risk-kpi.verde { background: linear-gradient(135deg, #059669, #047857); }
+.risk-kpi.amarelo { background: linear-gradient(135deg, #d97706, #b45309); }
+.risk-kpi.laranja { background: linear-gradient(135deg, #ea580c, #c2410c); }
+.risk-kpi.vermelho { background: linear-gradient(135deg, #dc2626, #991b1b); }
+
+/* ===== KPIs STATUS + CARDS LATERAIS ===== */
+.kpis-row { display: grid; grid-template-columns: repeat(5, 1fr) 160px 160px; gap: 12px; margin-bottom: 20px; }
+@media(max-width:1100px) { .kpis-row { grid-template-columns: repeat(5, 1fr); } .side-card { margin-top: 12px; } }
+.kpi { text-align: center; padding: 15px 10px; border-radius: 10px; cursor: pointer; color: white; transition: all 0.2s; }
+.kpi:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+.kpi.azul { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+.kpi.verde { background: linear-gradient(135deg, #22c55e, #16a34a); }
+.kpi.amarelo { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.kpi.roxo { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+.kpi.vermelho { background: linear-gradient(135deg, #ef4444, #dc2626); }
+.kpi .num { font-size: 2em; font-weight: 700; }
+.kpi .lbl { font-size: 0.78em; opacity: 0.95; }
+
+.side-card { background: #f8fafc; border-radius: 10px; padding: 12px 15px; border: 1px solid #e2e8f0; }
+.side-card h4 { font-size: 0.8em; color: #64748b; margin-bottom: 8px; }
+.side-item { display: flex; justify-content: space-between; padding: 6px 10px; border-radius: 6px; font-size: 0.85em; cursor: pointer; margin-bottom: 4px; font-weight: 500; transition: transform 0.2s; }
+.side-item:hover { transform: translateX(3px); }
+.side-item.alta { background: #fef2f2; color: #dc2626; }
+.side-item.media { background: #fffbeb; color: #b45309; }
+.side-item.baixa { background: #f0fdf4; color: #16a34a; }
+.side-item.pmo { background: #f1f5f9; color: #475569; }
+.side-item .count { font-weight: 700; }
+
+/* ===== ALERTAS ===== */
+.alerts-section { margin-bottom: 20px; }
+.alert-header { padding: 12px 18px; border-radius: 10px 10px 0 0; color: white; font-weight: 600; display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center; }
+.alert-header.douglas { background: linear-gradient(135deg, #1e293b, #334155); }
+.alert-header.daiana { background: linear-gradient(135deg, #ea580c, #c2410c); }
+.alert-header small { opacity: 0.85; font-weight: 400; }
+.alert-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; padding: 15px; background: #f8fafc; border-radius: 0 0 10px 10px; border: 1px solid #e2e8f0; border-top: none; }
+.alert-card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+.alert-card-head { padding: 10px 12px; color: white; font-weight: 600; font-size: 0.85em; display: flex; justify-content: space-between; }
+.alert-card-head.vermelho { background: #ef4444; }
+.alert-card-head.amarelo { background: #f59e0b; }
+.alert-card-head.cinza { background: #64748b; }
+.alert-card-head.roxo { background: #8b5cf6; }
+.alert-card-head.azul { background: #3b82f6; }
+.alert-card-head .badge { background: rgba(255,255,255,0.25); padding: 2px 8px; border-radius: 10px; }
+.alert-card-body { padding: 10px; max-height: 150px; overflow-y: auto; }
+.alert-proj { padding: 6px 10px; margin-bottom: 4px; border-radius: 6px; font-size: 0.85em; cursor: pointer; display: flex; justify-content: space-between; font-weight: 500; transition: transform 0.2s; }
+.alert-proj:hover { transform: translateX(3px); }
+.alert-proj.vermelho { background: #fef2f2; color: #dc2626; }
+.alert-proj.amarelo { background: #fffbeb; color: #92400e; }
+.alert-proj.cinza { background: #f1f5f9; color: #64748b; }
+.alert-proj.roxo { background: #f5f3ff; color: #6d28d9; }
+.alert-proj.azul { background: #eff6ff; color: #1d4ed8; }
+.alert-proj .dias { font-size: 0.8em; opacity: 0.8; }
+.alert-empty { color: #94a3b8; font-size: 0.85em; padding: 15px; text-align: center; }
+
+/* ===== FILTROS ===== */
+.filters { display: grid; grid-template-columns: 2fr repeat(3, 1fr) auto; gap: 12px; margin-bottom: 18px; padding: 15px; background: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0; align-items: end; }
+.filter-group label { display: block; font-size: 0.78em; color: #64748b; margin-bottom: 4px; font-weight: 600; }
+.filter-group input, .filter-group select { width: 100%; padding: 9px 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 0.9em; transition: border 0.2s; }
+.filter-group input:focus, .filter-group select:focus { outline: none; border-color: #667eea; }
+.btn-limpar { padding: 9px 16px; background: #f1f5f9; border: 2px solid #e2e8f0; color: #64748b; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s; }
+.btn-limpar:hover { background: #e2e8f0; border-color: #cbd5e1; }
+
+/* ===== PROJETOS GRID ===== */
+.projects-title { font-size: 1.1em; color: #1e293b; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+.projects-title .count-badge { background: #667eea; color: white; padding: 2px 12px; border-radius: 12px; font-size: 0.82em; }
+.projects { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 15px; }
+
+.project-card { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 15px; cursor: pointer; transition: all 0.2s; border-left: 4px solid #e2e8f0; position: relative; }
+.project-card:hover { box-shadow: 0 5px 20px rgba(0,0,0,0.1); transform: translateY(-2px); }
+.project-card.verde { border-left-color: #22c55e; }
+.project-card.amarelo { border-left-color: #f59e0b; }
+.project-card.vermelho { border-left-color: #ef4444; }
+
+.project-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; gap: 8px; }
+.project-name { font-weight: 700; color: #1e293b; font-size: 0.95em; }
+.project-badges { display: flex; gap: 5px; flex-wrap: wrap; }
+
+.priority { padding: 3px 8px; border-radius: 4px; font-size: 0.7em; font-weight: 700; }
+.priority.alta { background: #fee2e2; color: #dc2626; }
+.priority.media { background: #fef3c7; color: #d97706; }
+.priority.baixa { background: #dcfce7; color: #16a34a; }
+
+.risk-badge { padding: 3px 8px; border-radius: 4px; font-size: 0.7em; font-weight: 700; }
+.risk-badge.alto { background: #dc2626; color: white; }
+.risk-badge.medio { background: #f59e0b; color: white; }
+.risk-badge.baixo { background: #22c55e; color: white; }
+
+.alert-badge-tag { padding: 2px 7px; border-radius: 4px; font-size: 0.65em; font-weight: 700; background: #7c3aed; color: white; }
+
+.project-meta { display: flex; gap: 12px; font-size: 0.82em; color: #64748b; margin-bottom: 8px; flex-wrap: wrap; }
+.project-phase { background: #eff6ff; color: #1d4ed8; padding: 5px 10px; border-radius: 6px; font-size: 0.8em; margin-bottom: 8px; display: inline-block; font-weight: 600; }
+
+.progress { margin-bottom: 10px; }
+.progress-header { display: flex; justify-content: space-between; font-size: 0.85em; margin-bottom: 4px; }
+.progress-bar { height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 3px; transition: width 0.3s; }
+.progress-fill.verde { background: #22c55e; }
+.progress-fill.amarelo { background: #f59e0b; }
+.progress-fill.vermelho { background: #ef4444; }
+
+.project-footer { display: flex; justify-content: space-between; align-items: center; }
+.status-badge { padding: 4px 10px; border-radius: 5px; font-size: 0.75em; font-weight: 600; }
+.status-badge.concluido { background: #dcfce7; color: #166534; }
+.status-badge.em-andamento { background: #dbeafe; color: #1e40af; }
+.status-badge.planejamento { background: #f3e8ff; color: #7c3aed; }
+.status-badge.atrasado { background: #fee2e2; color: #991b1b; }
+.go-live-info { font-size: 0.8em; color: #64748b; }
+.go-live-info.atrasado { color: #dc2626; font-weight: 600; }
+.go-live-info.proximo { color: #d97706; font-weight: 600; }
+
+/* ===== MODAL ===== */
+.modal-bg { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+.modal-bg.show { display: flex; }
+.modal { background: white; border-radius: 12px; max-width: 600px; width: 100%; max-height: 80vh; overflow: hidden; }
+.modal-head { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+.modal-head h2 { font-size: 1.1em; }
+.modal-close { background: rgba(255,255,255,0.2); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 1.3em; transition: background 0.2s; }
+.modal-close:hover { background: rgba(255,255,255,0.3); }
+.modal-body { padding: 20px; overflow-y: auto; max-height: calc(80vh - 60px); }
+.modal-info { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 15px; }
+.modal-info-item .label { color: #64748b; font-size: 0.8em; }
+.modal-info-item .value { color: #1e293b; font-weight: 600; }
+.modal-obs { background: #f8fafc; padding: 12px; border-radius: 8px; border-left: 4px solid #667eea; }
+.modal-obs strong { color: #64748b; font-size: 0.85em; display: block; margin-bottom: 6px; }
+
+/* ===== FOOTER ===== */
+.footer { text-align: center; padding: 15px; background: #f8fafc; border-top: 1px solid #e2e8f0; font-size: 0.8em; color: #64748b; }
+
+/* ===== RESPONSIVO ===== */
+@media(max-width: 900px) {
+    .risk-kpis { grid-template-columns: repeat(2, 1fr); }
+    .kpis-row { grid-template-columns: repeat(3, 1fr); }
+    .filters { grid-template-columns: 1fr 1fr; }
+    .projects { grid-template-columns: 1fr; }
+}
+@media(max-width: 600px) {
+    .risk-kpis { grid-template-columns: 1fr; }
+    .kpis-row { grid-template-columns: repeat(2, 1fr); }
+    .filters { grid-template-columns: 1fr; }
+    .header { flex-direction: column; text-align: center; }
+}
+@media print {
+    body { background: white; padding: 0; }
+    .container { box-shadow: none; }
+    .nav-buttons, .filters, .btn-limpar { display: none; }
+    .project-card { break-inside: avoid; }
+}
 </style>
 </head>
 <body>
 <div class="container">
+
+<!-- HEADER (padrão Detalhada) -->
 <header class="header">
-<h1>📊 Alertas & Projetos v9</h1>
-<nav class="nav-buttons">
-<a href="index.html" class="nav-btn blue">🏠 Executiva</a>
-<a href="view-detalhada.html" class="nav-btn purple">📋 Detalhada</a>
-</nav>
+    <div class="header-left">
+        <h1>📊 Alertas & Projetos v9</h1>
+        <p>Visão de Risco e Acompanhamento | Atualizado: <span id="dataAtual"></span></p>
+    </div>
+    <nav class="nav-buttons">
+        <a href="index.html" class="nav-btn orange">🏠 Visão Executiva</a>
+        <a href="view-detalhada.html" class="nav-btn purple">📋 Detalhada</a>
+        <a href="view-simples.html" class="nav-btn green">📄 Resumida</a>
+        <button class="nav-btn blue" onclick="window.print()">🖨️ Imprimir</button>
+    </nav>
 </header>
+
 <main class="content">
+
+<!-- KPIs DE RISCO (novo bloco) -->
+<div class="risk-kpis">
+    <div class="risk-kpi verde">
+        <div class="icon">✅</div>
+        <div class="value" id="riskNoPrazo">0</div>
+        <div class="label">No Prazo</div>
+    </div>
+    <div class="risk-kpi amarelo">
+        <div class="icon">⚠️</div>
+        <div class="value" id="riskGoLive">0</div>
+        <div class="label">Go Lives em Risco</div>
+    </div>
+    <div class="risk-kpi laranja">
+        <div class="icon">🔧</div>
+        <div class="value" id="riskInfra">0</div>
+        <div class="label">Alertas Infra</div>
+    </div>
+    <div class="risk-kpi vermelho">
+        <div class="icon">🚨</div>
+        <div class="value" id="riskCriticos">0</div>
+        <div class="label">Críticos</div>
+    </div>
+</div>
+
+<!-- KPIs STATUS + CARDS LATERAIS -->
 <div class="kpis-row">
-<div class="kpi azul" onclick="filtrarStatus('')"><div class="num" id="kpiTotal">30</div><div class="lbl">Total</div></div>
-<div class="kpi verde" onclick="filtrarStatus('Concluído')"><div class="num" id="kpiConcluidos">12</div><div class="lbl">Concluídos</div></div>
-<div class="kpi amarelo" onclick="filtrarStatus('Em andamento')"><div class="num" id="kpiAndamento">11</div><div class="lbl">Em Andamento</div></div>
-<div class="kpi roxo" onclick="filtrarStatus('Planejamento')"><div class="num" id="kpiPlanejamento">6</div><div class="lbl">Planejamento</div></div>
-<div class="kpi vermelho" onclick="filtrarStatus('Atrasado')"><div class="num" id="kpiAtrasados">1</div><div class="lbl">Atrasados</div></div>
-<div class="side-card"><h4>⚡ Prioridade</h4><div id="prioridadeItems"></div></div>
-<div class="side-card"><h4>👤 PMO</h4><div id="pmoItems"></div></div>
+    <div class="kpi azul" onclick="filtrarStatus('')"><div class="num" id="kpiTotal">0</div><div class="lbl">Total</div></div>
+    <div class="kpi verde" onclick="filtrarStatus('Concluído')"><div class="num" id="kpiConcluidos">0</div><div class="lbl">Concluídos</div></div>
+    <div class="kpi amarelo" onclick="filtrarStatus('Em andamento')"><div class="num" id="kpiAndamento">0</div><div class="lbl">Em Andamento</div></div>
+    <div class="kpi roxo" onclick="filtrarStatus('Planejamento')"><div class="num" id="kpiPlanejamento">0</div><div class="lbl">Planejamento</div></div>
+    <div class="kpi vermelho" onclick="filtrarStatus('Atrasado')"><div class="num" id="kpiAtrasados">0</div><div class="lbl">Atrasados</div></div>
+    <div class="side-card"><h4>⚡ Prioridade</h4><div id="prioridadeItems"></div></div>
+    <div class="side-card"><h4>👤 PMO</h4><div id="pmoItems"></div></div>
 </div>
+
+<!-- ALERTAS GO LIVE (Douglas) -->
 <div class="alerts-section">
-<div class="alert-header douglas"><span>🎯 ALERTAS GO LIVE (Douglas)</span><small>Baseado na DATA do Go Live</small></div>
-<div class="alert-cards" id="alertasGoLive"></div>
+    <div class="alert-header douglas">
+        <span>🎯 ALERTAS GO LIVE (Douglas)</span>
+        <small>Baseado na DATA do Go Live</small>
+    </div>
+    <div class="alert-cards" id="alertasGoLive"></div>
 </div>
+
+<!-- ALERTAS INFRA (Daiana) -->
 <div class="alerts-section">
-<div class="alert-header daiana"><span>🔧 ALERTAS INFRA (Daiana)</span><small>Baseado no STATUS do trabalho</small></div>
-<div class="alert-cards" id="alertasInfra"></div>
+    <div class="alert-header daiana">
+        <span>🔧 ALERTAS INFRA (Daiana)</span>
+        <small>Baseado no STATUS do trabalho</small>
+    </div>
+    <div class="alert-cards" id="alertasInfra"></div>
 </div>
+
+<!-- FILTROS -->
 <div class="filters">
-<div class="filter-group"><label>🔍 Buscar</label><input type="text" id="filtroNome" oninput="renderProjetos()"></div>
-<div class="filter-group"><label>📊 Status</label><select id="filtroStatus" onchange="renderProjetos()"><option value="">Todos</option><option value="Concluído">Concluído</option><option value="Em andamento">Em andamento</option><option value="Planejamento">Planejamento</option><option value="Atrasado">Atrasado</option></select></div>
-<div class="filter-group"><label>⚡ Prioridade</label><select id="filtroPrioridade" onchange="renderProjetos()"><option value="">Todas</option><option value="Alta">Alta</option><option value="Média">Média</option><option value="Baixa">Baixa</option></select></div>
-<div class="filter-group"><label>👤 PMO</label><select id="filtroPMO" onchange="renderProjetos()"><option value="">Todos</option><option>ALEX</option><option>ANDERSON</option><option>FÁBIO</option><option>GIOVANNI</option><option>LEANDRO</option><option>VINICIUS</option></select></div>
-<div class="filter-group"><label>&nbsp;</label><button class="btn-limpar" onclick="limparFiltros()">🗑️ Limpar</button></div>
+    <div class="filter-group">
+        <label>🔍 Buscar Projeto</label>
+        <input type="text" id="filtroNome" placeholder="Nome do projeto..." oninput="renderProjetos()">
+    </div>
+    <div class="filter-group">
+        <label>📊 Status</label>
+        <select id="filtroStatus" onchange="renderProjetos()">
+            <option value="">Todos</option>
+            <option value="Concluído">Concluído</option>
+            <option value="Em andamento">Em andamento</option>
+            <option value="Planejamento">Planejamento</option>
+            <option value="Atrasado">Atrasado</option>
+        </select>
+    </div>
+    <div class="filter-group">
+        <label>⚡ Prioridade</label>
+        <select id="filtroPrioridade" onchange="renderProjetos()">
+            <option value="">Todas</option>
+            <option value="Alta">Alta</option>
+            <option value="Média">Média</option>
+            <option value="Baixa">Baixa</option>
+        </select>
+    </div>
+    <div class="filter-group">
+        <label>👤 PMO</label>
+        <select id="filtroPMO" onchange="renderProjetos()">
+            <option value="">Todos</option>
+            <option>ALEX</option><option>ANDERSON</option><option>FÁBIO</option>
+            <option>GIOVANNI</option><option>LEANDRO</option><option>VINICIUS</option>
+        </select>
+    </div>
+    <div class="filter-group">
+        <label>&nbsp;</label>
+        <button class="btn-limpar" onclick="limparFiltros()">🗑️ Limpar</button>
+    </div>
 </div>
+
+<!-- PROJETOS -->
+<div class="projects-title">📁 Projetos <span class="count-badge" id="projetosCount">0</span> <span style="font-size:0.75em;color:#94a3b8;margin-left:8px;">Ordenados por nível de risco</span></div>
 <div class="projects" id="projetosGrid"></div>
+
 </main>
-<footer class="footer">Alertas & Projetos v9 | Invent Corp | 30 Projetos</footer>
+
+<footer class="footer">Alertas & Projetos v9 | Invent Corp | Dashboard de Infraestrutura</footer>
 </div>
+
+<!-- MODAL -->
 <div class="modal-bg" id="modal" onclick="fecharModal()">
-<div class="modal" onclick="event.stopPropagation()">
-<div class="modal-head"><h2 id="modalTitle">Projeto</h2><button class="modal-close" onclick="fecharModal()">×</button></div>
-<div class="modal-body" id="modalBody"></div>
+    <div class="modal" onclick="event.stopPropagation()">
+        <div class="modal-head">
+            <h2 id="modalTitle">Projeto</h2>
+            <button class="modal-close" onclick="fecharModal()">×</button>
+        </div>
+        <div class="modal-body" id="modalBody"></div>
+    </div>
 </div>
-</div>
+
 <script>
-const PROJETOS=[
-{nome:"BARBECUE B2B",status:"Concluído",local:"São Paulo - SP",prioridade:"Alta",pmo:"ALEX",goLive:"2026-02-06",obs:"Acompanhamento Assistido",fase:"8. Encerramento",progresso:100},
-{nome:"BELEZA",status:"Concluído",local:"São Paulo - SP",prioridade:"Média",pmo:"ANDERSON",goLive:"2025-11-30",obs:"Projeto finalizado",fase:"8. Encerramento",progresso:100},
-{nome:"BETA",status:"Concluído",local:"Rio de Janeiro - RJ",prioridade:"Alta",pmo:"ANDERSON",goLive:"2026-03-10",obs:"Go Live realizado",fase:"8. Encerramento",progresso:100},
-{nome:"BETA ESTEIO",status:"Planejamento",local:"Esteio - RS",prioridade:"Média",pmo:"ANDERSON",goLive:"2026-08-17",obs:"Kickoff realizado 16/01",fase:"1. Iniciação",progresso:5},
-{nome:"BP",status:"Em andamento",local:"São Paulo - SP",prioridade:"Média",pmo:"GIOVANNI",goLive:"2026-06-23",obs:"Aguardando escopo",fase:"2. Planejamento",progresso:15},
-{nome:"BR",status:"Planejamento",local:"Jaboatão - PE",prioridade:"Alta",pmo:"FÁBIO",goLive:"",obs:"Aguardando Kickoff",fase:"1. Iniciação",progresso:5},
-{nome:"CANDELABRIA",status:"Concluído",local:"Candelária - RS",prioridade:"Média",pmo:"ALEX",goLive:"2025-12-09",obs:"Go Live 09/12",fase:"8. Encerramento",progresso:100},
-{nome:"CDSK",status:"Em andamento",local:"São Paulo - SP",prioridade:"Alta",pmo:"VINICIUS",goLive:"2026-02-10",obs:"Go Live Fase 1",fase:"6. Deploy",progresso:75},
-{nome:"COUGAR",status:"Concluído",local:"São Paulo - SP",prioridade:"Alta",pmo:"LEANDRO",goLive:"2026-02-09",obs:"Go Live B2B 09/02",fase:"8. Encerramento",progresso:100},
-{nome:"CRISTAL MG RETROFIT",status:"Em andamento",local:"Belo Horizonte - MG",prioridade:"Alta",pmo:"GIOVANNI",goLive:"",obs:"Revisão de escopo",fase:"2. Planejamento",progresso:15},
-{nome:"DIA",status:"Atrasado",local:"São Paulo - SP",prioridade:"Alta",pmo:"ANDERSON",goLive:"2026-01-20",obs:"ATENÇÃO: VPN pendente",fase:"3. Provisionamento",progresso:30},
-{nome:"DIAMANTE",status:"Planejamento",local:"Curitiba - PR",prioridade:"Média",pmo:"FÁBIO",goLive:"2026-07-30",obs:"Novo projeto",fase:"1. Iniciação",progresso:0},
-{nome:"ELETRO",status:"Em andamento",local:"São Paulo - SP",prioridade:"Média",pmo:"GIOVANNI",goLive:"2026-04-20",obs:"Implementação",fase:"4. Implementação",progresso:35},
-{nome:"ESPERANÇA",status:"Concluído",local:"Belo Horizonte - MG",prioridade:"Média",pmo:"VINICIUS",goLive:"2026-01-19",obs:"Go Live 19/01",fase:"8. Encerramento",progresso:100},
-{nome:"FLOWER",status:"Em andamento",local:"São Paulo - SP",prioridade:"Baixa",pmo:"ANDERSON",goLive:"2026-09-30",obs:"Avaliação conceitual",fase:"2. Planejamento",progresso:10},
-{nome:"GAVIÃO",status:"Concluído",local:"Fortaleza - CE",prioridade:"Alta",pmo:"FÁBIO",goLive:"2026-02-01",obs:"Go Live realizado",fase:"8. Encerramento",progresso:100},
-{nome:"MKT CHILE",status:"Planejamento",local:"Santiago - Chile",prioridade:"Média",pmo:"ALEX",goLive:"2026-12-01",obs:"Aguardando Kickoff",fase:"1. Iniciação",progresso:0},
-{nome:"MKT PERU",status:"Planejamento",local:"Lima - Peru",prioridade:"Média",pmo:"ALEX",goLive:"2026-12-01",obs:"Aguardando pedido",fase:"1. Iniciação",progresso:0},
-{nome:"MASTER",status:"Planejamento",local:"São Paulo - SP",prioridade:"Alta",pmo:"LEANDRO",goLive:"",obs:"Aguardando requisitos",fase:"1. Iniciação",progresso:0},
-{nome:"NAVEPARK",status:"Em andamento",local:"Curitiba - PR",prioridade:"Média",pmo:"ANDERSON",goLive:"2026-06-23",obs:"Aguardando sinal",fase:"3. Provisionamento",progresso:25},
-{nome:"OCTOPUS MS",status:"Em andamento",local:"Campo Grande - MS",prioridade:"Média",pmo:"ALEX",goLive:"2026-05-26",obs:"Go Live 15/06",fase:"4. Implementação",progresso:40},
-{nome:"OCTOPUS SC",status:"Concluído",local:"Florianópolis - SC",prioridade:"Média",pmo:"ALEX",goLive:"2025-12-15",obs:"Finalizado",fase:"8. Encerramento",progresso:100},
-{nome:"OPTIMUS PRIME",status:"Concluído",local:"São Paulo - SP",prioridade:"Alta",pmo:"GIOVANNI",goLive:"2025-10-27",obs:"Assistido OK",fase:"8. Encerramento",progresso:100},
-{nome:"PBL GUATEMALA",status:"Em andamento",local:"Guatemala City",prioridade:"Alta",pmo:"FÁBIO",goLive:"2026-05-15",obs:"Internacional",fase:"4. Implementação",progresso:45},
-{nome:"PROMO B2B CD GRU",status:"Concluído",local:"Guarulhos - SP",prioridade:"Alta",pmo:"LEANDRO",goLive:"2026-02-04",obs:"Go Live IA 04/02",fase:"8. Encerramento",progresso:100},
-{nome:"PTL SP",status:"Concluído",local:"São Paulo - SP",prioridade:"Média",pmo:"VINICIUS",goLive:"2025-10-30",obs:"Finalizado",fase:"8. Encerramento",progresso:100},
-{nome:"REISADO",status:"Concluído",local:"Recife - PE",prioridade:"Média",pmo:"FÁBIO",goLive:"2025-12-20",obs:"Finalizado",fase:"8. Encerramento",progresso:100},
-{nome:"REVERSE",status:"Em andamento",local:"São Paulo - SP",prioridade:"Alta",pmo:"ALEX",goLive:"2026-03-15",obs:"Fase de testes",fase:"5. Testes",progresso:55},
-{nome:"SUPER DIVINOPOLIS",status:"Em andamento",local:"Divinópolis - MG",prioridade:"Média",pmo:"GIOVANNI",goLive:"2026-02-28",obs:"Implementação",fase:"4. Implementação",progresso:50},
-{nome:"TITANIO",status:"Em andamento",local:"São Paulo - SP",prioridade:"Alta",pmo:"ALEX",goLive:"2026-02-15",obs:"Estabilização",fase:"7. Estabilização",progresso:80}
+// ===== DADOS DOS PROJETOS =====
+const PROJETOS = [
+    {nome:"BARBECUE B2B",status:"Concluído",local:"São Paulo - SP",prioridade:"Alta",pmo:"ALEX",goLive:"2026-02-06",obs:"Acompanhamento Assistido",fase:"8. Encerramento",progresso:100},
+    {nome:"BELEZA",status:"Concluído",local:"São Paulo - SP",prioridade:"Média",pmo:"ANDERSON",goLive:"2025-11-30",obs:"Projeto finalizado",fase:"8. Encerramento",progresso:100},
+    {nome:"BETA",status:"Concluído",local:"Rio de Janeiro - RJ",prioridade:"Alta",pmo:"ANDERSON",goLive:"2026-03-10",obs:"Go Live realizado",fase:"8. Encerramento",progresso:100},
+    {nome:"BETA ESTEIO",status:"Planejamento",local:"Esteio - RS",prioridade:"Média",pmo:"ANDERSON",goLive:"2026-08-17",obs:"Kickoff realizado 16/01",fase:"1. Iniciação",progresso:5},
+    {nome:"BP",status:"Em andamento",local:"São Paulo - SP",prioridade:"Média",pmo:"GIOVANNI",goLive:"2026-06-23",obs:"Aguardando escopo",fase:"2. Planejamento",progresso:15},
+    {nome:"BR",status:"Planejamento",local:"Jaboatão - PE",prioridade:"Alta",pmo:"FÁBIO",goLive:"",obs:"Aguardando Kickoff",fase:"1. Iniciação",progresso:5},
+    {nome:"CANDELABRIA",status:"Concluído",local:"Candelária - RS",prioridade:"Média",pmo:"ALEX",goLive:"2025-12-09",obs:"Go Live 09/12",fase:"8. Encerramento",progresso:100},
+    {nome:"CDSK",status:"Em andamento",local:"São Paulo - SP",prioridade:"Alta",pmo:"VINICIUS",goLive:"2026-02-10",obs:"Go Live Fase 1",fase:"6. Deploy",progresso:75},
+    {nome:"COUGAR",status:"Concluído",local:"São Paulo - SP",prioridade:"Alta",pmo:"LEANDRO",goLive:"2026-02-09",obs:"Go Live B2B 09/02",fase:"8. Encerramento",progresso:100},
+    {nome:"CRISTAL MG RETROFIT",status:"Em andamento",local:"Belo Horizonte - MG",prioridade:"Alta",pmo:"GIOVANNI",goLive:"",obs:"Revisão de escopo",fase:"2. Planejamento",progresso:15},
+    {nome:"DIA",status:"Atrasado",local:"São Paulo - SP",prioridade:"Alta",pmo:"ANDERSON",goLive:"2026-01-20",obs:"ATENÇÃO: VPN pendente",fase:"3. Provisionamento",progresso:30},
+    {nome:"DIAMANTE",status:"Planejamento",local:"Curitiba - PR",prioridade:"Média",pmo:"FÁBIO",goLive:"2026-07-30",obs:"Novo projeto",fase:"1. Iniciação",progresso:0},
+    {nome:"ELETRO",status:"Em andamento",local:"São Paulo - SP",prioridade:"Média",pmo:"GIOVANNI",goLive:"2026-04-20",obs:"Implementação",fase:"4. Implementação",progresso:35},
+    {nome:"ESPERANÇA",status:"Concluído",local:"Belo Horizonte - MG",prioridade:"Média",pmo:"VINICIUS",goLive:"2026-01-19",obs:"Go Live 19/01",fase:"8. Encerramento",progresso:100},
+    {nome:"FLOWER",status:"Em andamento",local:"São Paulo - SP",prioridade:"Baixa",pmo:"ANDERSON",goLive:"2026-09-30",obs:"Avaliação conceitual",fase:"2. Planejamento",progresso:10},
+    {nome:"GAVIÃO",status:"Concluído",local:"Fortaleza - CE",prioridade:"Alta",pmo:"FÁBIO",goLive:"2026-02-01",obs:"Go Live realizado",fase:"8. Encerramento",progresso:100},
+    {nome:"MKT CHILE",status:"Planejamento",local:"Santiago - Chile",prioridade:"Média",pmo:"ALEX",goLive:"2026-12-01",obs:"Aguardando Kickoff",fase:"1. Iniciação",progresso:0},
+    {nome:"MKT PERU",status:"Planejamento",local:"Lima - Peru",prioridade:"Média",pmo:"ALEX",goLive:"2026-12-01",obs:"Aguardando pedido",fase:"1. Iniciação",progresso:0},
+    {nome:"MASTER",status:"Planejamento",local:"São Paulo - SP",prioridade:"Alta",pmo:"LEANDRO",goLive:"",obs:"Aguardando requisitos",fase:"1. Iniciação",progresso:0},
+    {nome:"NAVEPARK",status:"Em andamento",local:"Curitiba - PR",prioridade:"Média",pmo:"ANDERSON",goLive:"2026-06-23",obs:"Aguardando sinal",fase:"3. Provisionamento",progresso:25},
+    {nome:"OCTOPUS MS",status:"Em andamento",local:"Campo Grande - MS",prioridade:"Média",pmo:"ALEX",goLive:"2026-05-26",obs:"Go Live 15/06",fase:"4. Implementação",progresso:40},
+    {nome:"OCTOPUS SC",status:"Concluído",local:"Florianópolis - SC",prioridade:"Média",pmo:"ALEX",goLive:"2025-12-15",obs:"Finalizado",fase:"8. Encerramento",progresso:100},
+    {nome:"OPTIMUS PRIME",status:"Concluído",local:"São Paulo - SP",prioridade:"Alta",pmo:"GIOVANNI",goLive:"2025-10-27",obs:"Assistido OK",fase:"8. Encerramento",progresso:100},
+    {nome:"PBL GUATEMALA",status:"Em andamento",local:"Guatemala City",prioridade:"Alta",pmo:"FÁBIO",goLive:"2026-05-15",obs:"Internacional",fase:"4. Implementação",progresso:45},
+    {nome:"PROMO B2B CD GRU",status:"Concluído",local:"Guarulhos - SP",prioridade:"Alta",pmo:"LEANDRO",goLive:"2026-02-04",obs:"Go Live IA 04/02",fase:"8. Encerramento",progresso:100},
+    {nome:"PTL SP",status:"Concluído",local:"São Paulo - SP",prioridade:"Média",pmo:"VINICIUS",goLive:"2025-10-30",obs:"Finalizado",fase:"8. Encerramento",progresso:100},
+    {nome:"REISADO",status:"Concluído",local:"Recife - PE",prioridade:"Média",pmo:"FÁBIO",goLive:"2025-12-20",obs:"Finalizado",fase:"8. Encerramento",progresso:100},
+    {nome:"REVERSE",status:"Em andamento",local:"São Paulo - SP",prioridade:"Alta",pmo:"ALEX",goLive:"2026-03-15",obs:"Fase de testes",fase:"5. Testes",progresso:55},
+    {nome:"SUPER DIVINOPOLIS",status:"Em andamento",local:"Divinópolis - MG",prioridade:"Média",pmo:"GIOVANNI",goLive:"2026-02-28",obs:"Implementação",fase:"4. Implementação",progresso:50},
+    {nome:"TITANIO",status:"Em andamento",local:"São Paulo - SP",prioridade:"Alta",pmo:"ALEX",goLive:"2026-02-15",obs:"Estabilização",fase:"7. Estabilização",progresso:80}
 ];
-const hoje=new Date();hoje.setHours(0,0,0,0);
-function calcDiasGoLive(gl){if(!gl)return null;const[y,m,d]=gl.split("-").map(Number);return Math.round((new Date(y,m-1,d)-hoje)/86400000)}
-function getAlertaGoLive(p){if(!p.goLive)return{tipo:"pendente",dias:null};const dias=calcDiasGoLive(p.goLive);if(dias<0)return{tipo:"atrasado",dias};if(dias<=30)return{tipo:"proximo",dias};return{tipo:"ok",dias}}
-function getCorProgresso(p){return p>=80?"verde":p>=40?"amarelo":"vermelho"}
-function formatDate(s){if(!s)return"-";const[y,m,d]=s.split("-");return`${d}/${m}/${y}`}
-function getStatusClass(s){return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/ /g,"-")}
-function renderKPIs(){
-document.getElementById("kpiTotal").textContent=PROJETOS.length;
-document.getElementById("kpiConcluidos").textContent=PROJETOS.filter(p=>p.status==="Concluído").length;
-document.getElementById("kpiAndamento").textContent=PROJETOS.filter(p=>p.status==="Em andamento").length;
-document.getElementById("kpiPlanejamento").textContent=PROJETOS.filter(p=>p.status==="Planejamento").length;
-document.getElementById("kpiAtrasados").textContent=PROJETOS.filter(p=>p.status==="Atrasado").length;
+
+const hoje = new Date(); hoje.setHours(0,0,0,0);
+
+// ===== FUNÇÕES AUXILIARES =====
+function calcDiasGoLive(gl) {
+    if (!gl) return null;
+    const [y,m,d] = gl.split("-").map(Number);
+    return Math.round((new Date(y, m-1, d) - hoje) / 86400000);
 }
-function renderPrioridade(){
-document.getElementById("prioridadeItems").innerHTML=`
-<div class="side-item alta" onclick="filtrarPrioridade('Alta')"><span>Alta</span><span class="count">${PROJETOS.filter(p=>p.prioridade==="Alta").length}</span></div>
-<div class="side-item media" onclick="filtrarPrioridade('Média')"><span>Média</span><span class="count">${PROJETOS.filter(p=>p.prioridade==="Média").length}</span></div>
-<div class="side-item baixa" onclick="filtrarPrioridade('Baixa')"><span>Baixa</span><span class="count">${PROJETOS.filter(p=>p.prioridade==="Baixa").length}</span></div>`;
+
+function getAlertaGoLive(p) {
+    if (!p.goLive) return { tipo: "pendente", dias: null };
+    const dias = calcDiasGoLive(p.goLive);
+    if (dias < 0) return { tipo: "atrasado", dias };
+    if (dias <= 30) return { tipo: "proximo", dias };
+    return { tipo: "ok", dias };
 }
-function renderPMO(){
-const pmos=["ALEX","ANDERSON","FÁBIO","GIOVANNI","LEANDRO","VINICIUS"];
-document.getElementById("pmoItems").innerHTML=pmos.map(pmo=>`<div class="side-item pmo" onclick="filtrarPMO('${pmo}')"><span>${pmo}</span><span class="count">${PROJETOS.filter(p=>p.pmo===pmo).length}</span></div>`).join("");
+
+function getCorProgresso(p) { return p >= 80 ? "verde" : p >= 40 ? "amarelo" : "vermelho"; }
+function formatDate(s) { if (!s) return "-"; const [y,m,d] = s.split("-"); return `${d}/${m}/${y}`; }
+function getStatusClass(s) { return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/ /g,"-"); }
+
+// ===== CÁLCULO DE RISCO =====
+function calcRisco(p) {
+    if (p.status === "Concluído") return { nivel: "ok", score: 0, label: "" };
+    
+    let score = 0;
+    const al = getAlertaGoLive(p);
+    
+    // Go Live atrasado = +40
+    if (al.tipo === "atrasado") score += 40;
+    // Go Live em 30 dias = +25
+    else if (al.tipo === "proximo") score += 25;
+    // Sem data de Go Live = +10
+    else if (al.tipo === "pendente") score += 10;
+    
+    // Status Atrasado = +30
+    if (p.status === "Atrasado") score += 30;
+    
+    // Progresso baixo = +15
+    if (p.progresso < 30 && p.status !== "Planejamento") score += 15;
+    
+    // Prioridade Alta = +10
+    if (p.prioridade === "Alta") score += 10;
+    
+    if (score >= 40) return { nivel: "alto", score, label: "🔴 Alto" };
+    if (score >= 20) return { nivel: "medio", score, label: "🟠 Médio" };
+    if (score > 0) return { nivel: "baixo", score, label: "🟢 Baixo" };
+    return { nivel: "ok", score: 0, label: "" };
 }
-function renderAlertasGoLive(){
-const nc=PROJETOS.filter(p=>p.status!=="Concluído");
-const atrasados=nc.filter(p=>getAlertaGoLive(p).tipo==="atrasado");
-const proximos=nc.filter(p=>getAlertaGoLive(p).tipo==="proximo");
-const pendentes=nc.filter(p=>getAlertaGoLive(p).tipo==="pendente");
-document.getElementById("alertasGoLive").innerHTML=`
-<div class="alert-card">
-<div class="alert-card-head vermelho">🚨 GO LIVE ATRASADO <span class="badge">${atrasados.length}</span></div>
-<div class="alert-card-body">${atrasados.length?atrasados.map(p=>`<div class="alert-proj vermelho" onclick="abrirModal('${p.nome}')">${p.nome}<span class="dias">${getAlertaGoLive(p).dias}d</span></div>`).join(""):'<div class="alert-empty">Nenhum</div>'}</div>
-</div>
-<div class="alert-card">
-<div class="alert-card-head amarelo">⚠️ EM 30 DIAS <span class="badge">${proximos.length}</span></div>
-<div class="alert-card-body">${proximos.length?proximos.map(p=>`<div class="alert-proj amarelo" onclick="abrirModal('${p.nome}')">${p.nome}<span class="dias">${getAlertaGoLive(p).dias}d</span></div>`).join(""):'<div class="alert-empty">Nenhum</div>'}</div>
-</div>
-<div class="alert-card">
-<div class="alert-card-head cinza">⏳ SEM DATA <span class="badge">${pendentes.length}</span></div>
-<div class="alert-card-body">${pendentes.length?pendentes.map(p=>`<div class="alert-proj cinza" onclick="abrirModal('${p.nome}')">${p.nome}</div>`).join(""):'<div class="alert-empty">Nenhum</div>'}</div>
-</div>`;
+
+function isAlertaInfra(p) {
+    return p.status === "Atrasado" || 
+           (p.status === "Em andamento" && p.progresso < 40) ||
+           (p.status !== "Concluído" && !p.goLive);
 }
-function renderAlertasInfra(){
-const atrasados=PROJETOS.filter(p=>p.status==="Atrasado");
-const emAndamento=PROJETOS.filter(p=>p.status==="Em andamento");
-const planejamento=PROJETOS.filter(p=>p.status==="Planejamento");
-document.getElementById("alertasInfra").innerHTML=`
-<div class="alert-card">
-<div class="alert-card-head vermelho">🚨 ATRASADO <span class="badge">${atrasados.length}</span></div>
-<div class="alert-card-body">${atrasados.length?atrasados.map(p=>`<div class="alert-proj vermelho" onclick="abrirModal('${p.nome}')">${p.nome}</div>`).join(""):'<div class="alert-empty">Nenhum</div>'}</div>
-</div>
-<div class="alert-card">
-<div class="alert-card-head amarelo">⚡ EM ANDAMENTO <span class="badge">${emAndamento.length}</span></div>
-<div class="alert-card-body">${emAndamento.slice(0,6).map(p=>`<div class="alert-proj amarelo" onclick="abrirModal('${p.nome}')">${p.nome}</div>`).join("")}${emAndamento.length>6?`<div class="alert-empty">+${emAndamento.length-6} mais</div>`:""}</div>
-</div>
-<div class="alert-card">
-<div class="alert-card-head roxo">📋 PLANEJAMENTO <span class="badge">${planejamento.length}</span></div>
-<div class="alert-card-body">${planejamento.length?planejamento.map(p=>`<div class="alert-proj roxo" onclick="abrirModal('${p.nome}')">${p.nome}</div>`).join(""):'<div class="alert-empty">Nenhum</div>'}</div>
-</div>`;
+
+// ===== RENDER KPIs DE RISCO =====
+function renderRiskKPIs() {
+    const nc = PROJETOS.filter(p => p.status !== "Concluído");
+    
+    const noPrazo = nc.filter(p => {
+        const al = getAlertaGoLive(p);
+        return al.tipo === "ok" && p.status !== "Atrasado";
+    }).length;
+    
+    const goLiveRisco = nc.filter(p => {
+        const al = getAlertaGoLive(p);
+        return al.tipo === "atrasado" || al.tipo === "proximo";
+    }).length;
+    
+    const alertaInfra = nc.filter(p => isAlertaInfra(p)).length;
+    
+    const criticos = nc.filter(p => calcRisco(p).nivel === "alto").length;
+    
+    document.getElementById("riskNoPrazo").textContent = noPrazo;
+    document.getElementById("riskGoLive").textContent = goLiveRisco;
+    document.getElementById("riskInfra").textContent = alertaInfra;
+    document.getElementById("riskCriticos").textContent = criticos;
 }
-function renderProjetos(){
-const fn=document.getElementById("filtroNome").value.toLowerCase();
-const fs=document.getElementById("filtroStatus").value;
-const fp=document.getElementById("filtroPrioridade").value;
-const fm=document.getElementById("filtroPMO").value;
-let pf=PROJETOS.filter(p=>{
-if(fn&&!p.nome.toLowerCase().includes(fn))return false;
-if(fs&&p.status!==fs)return false;
-if(fp&&p.prioridade!==fp)return false;
-if(fm&&p.pmo!==fm)return false;
-return true;
-});
-document.getElementById("projetosGrid").innerHTML=pf.map(p=>{
-const cor=getCorProgresso(p.progresso);
-const al=getAlertaGoLive(p);
-const glc=al.tipo==="atrasado"?"atrasado":al.tipo==="proximo"?"proximo":"";
-return`<div class="project-card ${cor}" onclick="abrirModal('${p.nome}')">
-<div class="project-header"><span class="project-name">${p.nome}</span><span class="priority ${p.prioridade.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}">${p.prioridade}</span></div>
-<div class="project-meta"><span>📍 ${p.local}</span><span>👤 ${p.pmo}</span></div>
-<div class="project-phase">${p.fase}</div>
-<div class="progress"><div class="progress-header"><span>Progresso</span><strong>${p.progresso}%</strong></div><div class="progress-bar"><div class="progress-fill ${cor}" style="width:${p.progresso}%"></div></div></div>
-<div class="project-footer"><span class="status-badge ${getStatusClass(p.status)}">${p.status}</span><span class="go-live-info ${glc}">Go Live: ${formatDate(p.goLive)||"A definir"}</span></div>
-</div>`;
-}).join("")||'<div class="alert-empty">Nenhum projeto</div>';
+
+// ===== RENDER KPIs STATUS =====
+function renderKPIs() {
+    document.getElementById("kpiTotal").textContent = PROJETOS.length;
+    document.getElementById("kpiConcluidos").textContent = PROJETOS.filter(p => p.status === "Concluído").length;
+    document.getElementById("kpiAndamento").textContent = PROJETOS.filter(p => p.status === "Em andamento").length;
+    document.getElementById("kpiPlanejamento").textContent = PROJETOS.filter(p => p.status === "Planejamento").length;
+    document.getElementById("kpiAtrasados").textContent = PROJETOS.filter(p => p.status === "Atrasado").length;
 }
-function filtrarStatus(s){document.getElementById("filtroStatus").value=s;renderProjetos()}
-function filtrarPrioridade(p){document.getElementById("filtroPrioridade").value=p;renderProjetos()}
-function filtrarPMO(m){document.getElementById("filtroPMO").value=m;renderProjetos()}
-function limparFiltros(){["filtroNome","filtroStatus","filtroPrioridade","filtroPMO"].forEach(id=>document.getElementById(id).value="");renderProjetos()}
-function abrirModal(nome){
-const p=PROJETOS.find(x=>x.nome===nome);if(!p)return;
-const al=getAlertaGoLive(p);
-document.getElementById("modalTitle").textContent="📋 "+p.nome;
-document.getElementById("modalBody").innerHTML=`
-<div class="modal-info">
-<div class="modal-info-item"><span class="label">Status</span><div class="value">${p.status}</div></div>
-<div class="modal-info-item"><span class="label">Fase</span><div class="value">${p.fase}</div></div>
-<div class="modal-info-item"><span class="label">Progresso</span><div class="value">${p.progresso}%</div></div>
-<div class="modal-info-item"><span class="label">Prioridade</span><div class="value">${p.prioridade}</div></div>
-<div class="modal-info-item"><span class="label">PMO</span><div class="value">${p.pmo}</div></div>
-<div class="modal-info-item"><span class="label">Local</span><div class="value">${p.local}</div></div>
-<div class="modal-info-item"><span class="label">Go Live</span><div class="value">${formatDate(p.goLive)||"A definir"}</div></div>
-<div class="modal-info-item"><span class="label">Dias</span><div class="value">${al.dias!==null?al.dias+"d":"-"}</div></div>
-</div>
-<div class="modal-obs"><strong>📝 Observações</strong><p>${p.obs}</p></div>`;
-document.getElementById("modal").classList.add("show");
+
+// ===== RENDER PRIORIDADE =====
+function renderPrioridade() {
+    document.getElementById("prioridadeItems").innerHTML = `
+        <div class="side-item alta" onclick="filtrarPrioridade('Alta')"><span>Alta</span><span class="count">${PROJETOS.filter(p => p.prioridade === "Alta").length}</span></div>
+        <div class="side-item media" onclick="filtrarPrioridade('Média')"><span>Média</span><span class="count">${PROJETOS.filter(p => p.prioridade === "Média").length}</span></div>
+        <div class="side-item baixa" onclick="filtrarPrioridade('Baixa')"><span>Baixa</span><span class="count">${PROJETOS.filter(p => p.prioridade === "Baixa").length}</span></div>`;
 }
-function fecharModal(){document.getElementById("modal").classList.remove("show")}
-renderKPIs();renderPrioridade();renderPMO();renderAlertasGoLive();renderAlertasInfra();renderProjetos();
-document.addEventListener("keydown",e=>{if(e.key==="Escape")fecharModal()});
+
+// ===== RENDER PMO =====
+function renderPMO() {
+    const pmos = ["ALEX","ANDERSON","FÁBIO","GIOVANNI","LEANDRO","VINICIUS"];
+    document.getElementById("pmoItems").innerHTML = pmos.map(pmo => 
+        `<div class="side-item pmo" onclick="filtrarPMO('${pmo}')"><span>${pmo}</span><span class="count">${PROJETOS.filter(p => p.pmo === pmo).length}</span></div>`
+    ).join("");
+}
+
+// ===== RENDER ALERTAS GO LIVE =====
+function renderAlertasGoLive() {
+    const nc = PROJETOS.filter(p => p.status !== "Concluído");
+    const atrasados = nc.filter(p => getAlertaGoLive(p).tipo === "atrasado");
+    const proximos = nc.filter(p => getAlertaGoLive(p).tipo === "proximo");
+    const pendentes = nc.filter(p => getAlertaGoLive(p).tipo === "pendente");
+    
+    document.getElementById("alertasGoLive").innerHTML = `
+        <div class="alert-card">
+            <div class="alert-card-head vermelho">🚨 GO LIVE ATRASADO <span class="badge">${atrasados.length}</span></div>
+            <div class="alert-card-body">${atrasados.length ? atrasados.map(p => `<div class="alert-proj vermelho" onclick="abrirModal('${p.nome}')">${p.nome}<span class="dias">${getAlertaGoLive(p).dias}d</span></div>`).join("") : '<div class="alert-empty">Nenhum</div>'}</div>
+        </div>
+        <div class="alert-card">
+            <div class="alert-card-head amarelo">⚠️ EM 30 DIAS <span class="badge">${proximos.length}</span></div>
+            <div class="alert-card-body">${proximos.length ? proximos.map(p => `<div class="alert-proj amarelo" onclick="abrirModal('${p.nome}')">${p.nome}<span class="dias">${getAlertaGoLive(p).dias}d</span></div>`).join("") : '<div class="alert-empty">Nenhum</div>'}</div>
+        </div>
+        <div class="alert-card">
+            <div class="alert-card-head cinza">⏳ SEM DATA <span class="badge">${pendentes.length}</span></div>
+            <div class="alert-card-body">${pendentes.length ? pendentes.map(p => `<div class="alert-proj cinza" onclick="abrirModal('${p.nome}')">${p.nome}</div>`).join("") : '<div class="alert-empty">Nenhum</div>'}</div>
+        </div>`;
+}
+
+// ===== RENDER ALERTAS INFRA =====
+function renderAlertasInfra() {
+    const nc = PROJETOS.filter(p => p.status !== "Concluído");
+    const bloqueados = nc.filter(p => p.status === "Atrasado");
+    const emRisco = nc.filter(p => p.status === "Em andamento" && p.progresso < 40);
+    const atencao = nc.filter(p => p.status === "Em andamento" && p.progresso >= 40 && p.progresso < 70);
+    
+    document.getElementById("alertasInfra").innerHTML = `
+        <div class="alert-card">
+            <div class="alert-card-head vermelho">🛑 BLOQUEADO <span class="badge">${bloqueados.length}</span></div>
+            <div class="alert-card-body">${bloqueados.length ? bloqueados.map(p => `<div class="alert-proj vermelho" onclick="abrirModal('${p.nome}')">${p.nome}</div>`).join("") : '<div class="alert-empty">Nenhum</div>'}</div>
+        </div>
+        <div class="alert-card">
+            <div class="alert-card-head amarelo">⚠️ EM RISCO <span class="badge">${emRisco.length}</span></div>
+            <div class="alert-card-body">${emRisco.length ? emRisco.map(p => `<div class="alert-proj amarelo" onclick="abrirModal('${p.nome}')">${p.nome}<span class="dias">${p.progresso}%</span></div>`).join("") : '<div class="alert-empty">Nenhum</div>'}</div>
+        </div>
+        <div class="alert-card">
+            <div class="alert-card-head azul">👀 ATENÇÃO <span class="badge">${atencao.length}</span></div>
+            <div class="alert-card-body">${atencao.length ? atencao.map(p => `<div class="alert-proj azul" onclick="abrirModal('${p.nome}')">${p.nome}<span class="dias">${p.progresso}%</span></div>`).join("") : '<div class="alert-empty">Nenhum</div>'}</div>
+        </div>`;
+}
+
+// ===== RENDER PROJETOS (com risco + ordenação) =====
+function renderProjetos() {
+    const fn = document.getElementById("filtroNome").value.toLowerCase();
+    const fs = document.getElementById("filtroStatus").value;
+    const fp = document.getElementById("filtroPrioridade").value;
+    const fm = document.getElementById("filtroPMO").value;
+    
+    let pf = PROJETOS.filter(p => {
+        if (fn && !p.nome.toLowerCase().includes(fn)) return false;
+        if (fs && p.status !== fs) return false;
+        if (fp && p.prioridade !== fp) return false;
+        if (fm && p.pmo !== fm) return false;
+        return true;
+    });
+    
+    // Ordenar por risco (maior primeiro)
+    pf.sort((a, b) => calcRisco(b).score - calcRisco(a).score);
+    
+    document.getElementById("projetosCount").textContent = pf.length;
+    
+    document.getElementById("projetosGrid").innerHTML = pf.map(p => {
+        const cor = getCorProgresso(p.progresso);
+        const al = getAlertaGoLive(p);
+        const glc = al.tipo === "atrasado" ? "atrasado" : al.tipo === "proximo" ? "proximo" : "";
+        const risco = calcRisco(p);
+        const temAlerta = isAlertaInfra(p);
+        
+        return `<div class="project-card ${cor}" onclick="abrirModal('${p.nome}')">
+            <div class="project-header">
+                <span class="project-name">${p.nome}</span>
+                <div class="project-badges">
+                    ${risco.nivel !== "ok" ? `<span class="risk-badge ${risco.nivel}">${risco.label}</span>` : ""}
+                    <span class="priority ${p.prioridade.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}">${p.prioridade}</span>
+                    ${temAlerta ? '<span class="alert-badge-tag">⚡ ALERTA</span>' : ""}
+                </div>
+            </div>
+            <div class="project-meta"><span>📍 ${p.local}</span><span>👤 ${p.pmo}</span></div>
+            <div class="project-phase">${p.fase}</div>
+            <div class="progress">
+                <div class="progress-header"><span>Progresso</span><strong>${p.progresso}%</strong></div>
+                <div class="progress-bar"><div class="progress-fill ${cor}" style="width:${p.progresso}%"></div></div>
+            </div>
+            <div class="project-footer">
+                <span class="status-badge ${getStatusClass(p.status)}">${p.status}</span>
+                <span class="go-live-info ${glc}">Go Live: ${formatDate(p.goLive) || "A definir"}</span>
+            </div>
+        </div>`;
+    }).join("") || '<div class="alert-empty">Nenhum projeto encontrado</div>';
+}
+
+// ===== FILTROS =====
+function filtrarStatus(s) { document.getElementById("filtroStatus").value = s; renderProjetos(); }
+function filtrarPrioridade(p) { document.getElementById("filtroPrioridade").value = p; renderProjetos(); }
+function filtrarPMO(m) { document.getElementById("filtroPMO").value = m; renderProjetos(); }
+function limparFiltros() {
+    ["filtroNome","filtroStatus","filtroPrioridade","filtroPMO"].forEach(id => document.getElementById(id).value = "");
+    renderProjetos();
+}
+
+// ===== MODAL =====
+function abrirModal(nome) {
+    const p = PROJETOS.find(x => x.nome === nome);
+    if (!p) return;
+    const al = getAlertaGoLive(p);
+    const risco = calcRisco(p);
+    
+    document.getElementById("modalTitle").textContent = "📋 " + p.nome;
+    document.getElementById("modalBody").innerHTML = `
+        <div class="modal-info">
+            <div class="modal-info-item"><span class="label">Status</span><div class="value">${p.status}</div></div>
+            <div class="modal-info-item"><span class="label">Fase</span><div class="value">${p.fase}</div></div>
+            <div class="modal-info-item"><span class="label">Progresso</span><div class="value">${p.progresso}%</div></div>
+            <div class="modal-info-item"><span class="label">Prioridade</span><div class="value">${p.prioridade}</div></div>
+            <div class="modal-info-item"><span class="label">PMO</span><div class="value">${p.pmo}</div></div>
+            <div class="modal-info-item"><span class="label">Local</span><div class="value">${p.local}</div></div>
+            <div class="modal-info-item"><span class="label">Go Live</span><div class="value">${formatDate(p.goLive) || "A definir"}</div></div>
+            <div class="modal-info-item"><span class="label">Dias p/ Go Live</span><div class="value">${al.dias !== null ? al.dias + "d" : "-"}</div></div>
+            <div class="modal-info-item"><span class="label">Nível de Risco</span><div class="value">${risco.label || "✅ Sem risco"}</div></div>
+            <div class="modal-info-item"><span class="label">Score de Risco</span><div class="value">${risco.score} pts</div></div>
+        </div>
+        <div class="modal-obs"><strong>📝 Observações</strong><p>${p.obs}</p></div>`;
+    document.getElementById("modal").classList.add("show");
+}
+function fecharModal() { document.getElementById("modal").classList.remove("show"); }
+
+// ===== INICIALIZAÇÃO =====
+document.getElementById("dataAtual").textContent = hoje.toLocaleDateString("pt-BR");
+renderRiskKPIs();
+renderKPIs();
+renderPrioridade();
+renderPMO();
+renderAlertasGoLive();
+renderAlertasInfra();
+renderProjetos();
+document.addEventListener("keydown", e => { if (e.key === "Escape") fecharModal(); });
 </script>
 </body>
 </html>
