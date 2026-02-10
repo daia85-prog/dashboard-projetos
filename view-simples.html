@@ -245,9 +245,13 @@
         }
         
         @media print {
-            .header-buttons {
-                display: none;
-            }
+            .header-buttons { display: none !important; }
+            body { background: white !important; }
+            .container { box-shadow: none !important; }
+            .kpi-card { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .alert-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .section { break-inside: avoid; }
+            .summary-item { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         }
     </style>
 </head>
@@ -272,7 +276,7 @@
             <div class="kpi-card success">
                 <div class="kpi-label">No Prazo</div>
                 <div class="kpi-value" id="kpiOnTime">0%</div>
-                <div class="kpi-subtitle">de 11 com data</div>
+                <div class="kpi-subtitle">dos ativos com data</div>
             </div>
             
             <div class="kpi-card warning">
@@ -282,15 +286,15 @@
             </div>
             
             <div class="kpi-card">
-                <div class="kpi-label">Projetos Atualizados</div>
-                <div class="kpi-value" id="kpiUpdated">0%</div>
-                <div class="kpi-subtitle">últimos 7 dias</div>
+                <div class="kpi-label">Portfólio</div>
+                <div class="kpi-value" id="kpiUpdated">0</div>
+                <div class="kpi-subtitle">total de projetos</div>
             </div>
             
             <div class="kpi-card danger">
-                <div class="kpi-label">Tempo Médio Parado</div>
-                <div class="kpi-value" id="kpiAvgStopped">0 dias</div>
-                <div class="kpi-subtitle">de atualização</div>
+                <div class="kpi-label">Atenção</div>
+                <div class="kpi-value" id="kpiAvgStopped">0</div>
+                <div class="kpi-subtitle">progresso baixo</div>
             </div>
         </div>
         
@@ -357,64 +361,72 @@
     </div>
     
     <script>
-        let projectsData = [];
-        let activitiesData = [];
+        const PROJETOS = [
+            {nome:"BARBECUE B2B",status:"Concluído",pmo:"ALEX",goLive:"2026-02-06",progresso:100,prioridade:"Alta"},
+            {nome:"BELEZA",status:"Concluído",pmo:"ANDERSON",goLive:"2025-11-30",progresso:100,prioridade:"Média"},
+            {nome:"BETA",status:"Concluído",pmo:"ANDERSON",goLive:"2026-03-10",progresso:100,prioridade:"Alta"},
+            {nome:"BETA ESTEIO",status:"Planejamento",pmo:"ANDERSON",goLive:"2026-08-17",progresso:5,prioridade:"Média"},
+            {nome:"BP",status:"Em andamento",pmo:"GIOVANNI",goLive:"2026-06-23",progresso:15,prioridade:"Média"},
+            {nome:"BR",status:"Planejamento",pmo:"FÁBIO",goLive:"",progresso:5,prioridade:"Alta"},
+            {nome:"CANDELABRIA",status:"Concluído",pmo:"ALEX",goLive:"2025-12-09",progresso:100,prioridade:"Média"},
+            {nome:"CDSK",status:"Em andamento",pmo:"VINICIUS",goLive:"2026-02-10",progresso:75,prioridade:"Alta"},
+            {nome:"COUGAR",status:"Concluído",pmo:"LEANDRO",goLive:"2026-02-09",progresso:100,prioridade:"Alta"},
+            {nome:"CRISTAL MG RETROFIT",status:"Em andamento",pmo:"GIOVANNI",goLive:"",progresso:15,prioridade:"Alta"},
+            {nome:"DIA",status:"Atrasado",pmo:"ANDERSON",goLive:"2026-01-20",progresso:30,prioridade:"Alta"},
+            {nome:"DIAMANTE",status:"Planejamento",pmo:"FÁBIO",goLive:"2026-07-30",progresso:0,prioridade:"Média"},
+            {nome:"ELETRO",status:"Em andamento",pmo:"GIOVANNI",goLive:"2026-04-20",progresso:35,prioridade:"Média"},
+            {nome:"ESPERANÇA",status:"Concluído",pmo:"VINICIUS",goLive:"2026-01-19",progresso:100,prioridade:"Média"},
+            {nome:"FLOWER",status:"Em andamento",pmo:"ANDERSON",goLive:"2026-09-30",progresso:10,prioridade:"Baixa"},
+            {nome:"GAVIÃO",status:"Concluído",pmo:"FÁBIO",goLive:"2026-02-01",progresso:100,prioridade:"Alta"},
+            {nome:"MKT CHILE",status:"Planejamento",pmo:"ALEX",goLive:"2026-12-01",progresso:0,prioridade:"Média"},
+            {nome:"MKT PERU",status:"Planejamento",pmo:"ALEX",goLive:"2026-12-01",progresso:0,prioridade:"Média"},
+            {nome:"MASTER",status:"Planejamento",pmo:"LEANDRO",goLive:"",progresso:0,prioridade:"Alta"},
+            {nome:"NAVEPARK",status:"Em andamento",pmo:"ANDERSON",goLive:"2026-06-23",progresso:25,prioridade:"Média"},
+            {nome:"OCTOPUS MS",status:"Em andamento",pmo:"ALEX",goLive:"2026-05-26",progresso:40,prioridade:"Média"},
+            {nome:"OCTOPUS SC",status:"Concluído",pmo:"ALEX",goLive:"2025-12-15",progresso:100,prioridade:"Média"},
+            {nome:"OPTIMUS PRIME",status:"Concluído",pmo:"GIOVANNI",goLive:"2025-10-27",progresso:100,prioridade:"Alta"},
+            {nome:"PBL GUATEMALA",status:"Em andamento",pmo:"FÁBIO",goLive:"2026-05-15",progresso:45,prioridade:"Alta"},
+            {nome:"PROMO B2B CD GRU",status:"Concluído",pmo:"LEANDRO",goLive:"2026-02-04",progresso:100,prioridade:"Alta"},
+            {nome:"PTL SP",status:"Concluído",pmo:"VINICIUS",goLive:"2025-10-30",progresso:100,prioridade:"Média"},
+            {nome:"REISADO",status:"Concluído",pmo:"FÁBIO",goLive:"2025-12-20",progresso:100,prioridade:"Média"},
+            {nome:"REVERSE",status:"Em andamento",pmo:"ALEX",goLive:"2026-03-15",progresso:55,prioridade:"Alta"},
+            {nome:"SUPER DIVINOPOLIS",status:"Em andamento",pmo:"GIOVANNI",goLive:"2026-02-28",progresso:50,prioridade:"Média"},
+            {nome:"TITANIO",status:"Em andamento",pmo:"ALEX",goLive:"2026-02-15",progresso:80,prioridade:"Alta"}
+        ];
+        
+        const hoje = new Date(); hoje.setHours(0,0,0,0);
+        
+        function calcDiasGoLive(gl) {
+            if (!gl) return null;
+            const [y,m,d] = gl.split("-").map(Number);
+            return Math.round((new Date(y, m-1, d) - hoje) / 86400000);
+        }
         
         function loadData() {
-            const storedProjects = localStorage.getItem('projectsData');
-            const storedActivities = localStorage.getItem('activitiesData');
-            
-            if (storedProjects) {
-                projectsData = JSON.parse(storedProjects);
-            }
-            
-            if (storedActivities) {
-                activitiesData = JSON.parse(storedActivities);
-            }
-            
-            updateLastUpdate();
+            document.getElementById('lastUpdate').textContent = new Date().toLocaleString('pt-BR');
             calculateKPIs();
             renderDecisions();
             renderSummary();
         }
         
-        function updateLastUpdate() {
-            const now = new Date();
-            document.getElementById('lastUpdate').textContent = now.toLocaleString('pt-BR');
-        }
-        
-        function calculateProgress(projeto) {
-            const projectActivities = activitiesData.filter(a => a.projeto === projeto);
-            if (projectActivities.length === 0) return 0;
-            const completed = projectActivities.filter(a => a.status === 'Concluído').length;
-            return Math.round((completed / projectActivities.length) * 100);
-        }
-        
         function calculateKPIs() {
-            let onTime = 0;
-            let totalWithDate = 0;
+            const nc = PROJETOS.filter(p => p.status !== "Concluído");
+            const comData = nc.filter(p => p.goLive);
+            const noPrazo = comData.filter(p => { const d = calcDiasGoLive(p.goLive); return d >= 0 && p.status !== "Atrasado"; });
+            const onTimePercent = comData.length > 0 ? Math.round((noPrazo.length / comData.length) * 100) : 0;
             
-            projectsData.forEach(project => {
-                if (project.dataPrevista) {
-                    totalWithDate++;
-                    const progress = calculateProgress(project.projeto);
-                    if (progress >= 80) onTime++;
-                }
-            });
+            // Atraso médio
+            const atrasados = comData.filter(p => calcDiasGoLive(p.goLive) < 0);
+            const avgDelay = atrasados.length > 0 ? Math.round(atrasados.reduce((s,p) => s + Math.abs(calcDiasGoLive(p.goLive)), 0) / atrasados.length) : 0;
             
-            const onTimePercent = totalWithDate > 0 ? Math.round((onTime / totalWithDate) * 100) : 0;
             document.getElementById('kpiOnTime').textContent = onTimePercent + '%';
-            document.getElementById('kpiAvgDelay').textContent = '4 dias';
-            document.getElementById('kpiUpdated').textContent = '0%';
-            document.getElementById('kpiAvgStopped').textContent = '6 dias';
+            document.getElementById('kpiAvgDelay').textContent = avgDelay + ' dias';
+            document.getElementById('kpiUpdated').textContent = PROJETOS.length + ' projetos';
+            document.getElementById('kpiAvgStopped').textContent = nc.filter(p => p.progresso < 30 && p.status !== "Planejamento").length + ' parados';
         }
         
         function renderDecisions() {
-            const critical = projectsData.filter(p => {
-                const progress = calculateProgress(p.projeto);
-                return progress < 30 && p.status !== 'Concluído';
-            });
-            
+            const critical = PROJETOS.filter(p => p.status === "Atrasado" || (p.status === "Em andamento" && p.progresso < 30));
             const tbody = document.getElementById('decisionsBody');
             
             if (critical.length === 0) {
@@ -422,41 +434,31 @@
                 return;
             }
             
-            let html = '';
-            critical.forEach(project => {
-                html += `
-                    <tr>
-                        <td><a href="#" class="project-name-link">${project.projeto}</a></td>
-                        <td>Aguardando definição interna</td>
-                        <td>${project.responsavel || 'N/A'}</td>
-                        <td>--</td>
-                        <td>Resolver bloqueador</td>
-                    </tr>
-                `;
-            });
-            
-            tbody.innerHTML = html;
+            tbody.innerHTML = critical.map(p => {
+                const dias = p.goLive ? calcDiasGoLive(p.goLive) : null;
+                return `<tr>
+                    <td><strong class="project-name-link">${p.nome}</strong></td>
+                    <td>${p.status === "Atrasado" ? "Go Live atrasado" : "Progresso < 30%"}</td>
+                    <td>${p.pmo}</td>
+                    <td>${dias !== null ? Math.abs(dias) + 'd' : '--'}</td>
+                    <td>${p.status === "Atrasado" ? "Escalar para Douglas" : "Acompanhar bloqueador"}</td>
+                </tr>`;
+            }).join("");
         }
         
         function renderSummary() {
-            let concluidos = 0, andamento = 0, atrasados = 0, aguardando = 0, naoIniciados = 0, criticos = 0;
+            const concluidos = PROJETOS.filter(p => p.status === "Concluído").length;
+            const andamento = PROJETOS.filter(p => p.status === "Em andamento").length;
+            const atrasados = PROJETOS.filter(p => p.status === "Atrasado").length;
+            const planejamento = PROJETOS.filter(p => p.status === "Planejamento").length;
+            const criticos = PROJETOS.filter(p => p.status !== "Concluído" && (p.status === "Atrasado" || p.progresso < 30)).length;
             
-            projectsData.forEach(project => {
-                const progress = calculateProgress(project.projeto);
-                
-                if (project.status === 'Concluído') concluidos++;
-                else if (progress >= 60) andamento++;
-                else if (progress < 30) { atrasados++; criticos++; }
-                else if (progress < 60) aguardando++;
-                else if (project.status === 'Planejamento') naoIniciados++;
-            });
-            
-            document.getElementById('summaryTotal').textContent = projectsData.length;
+            document.getElementById('summaryTotal').textContent = PROJETOS.length;
             document.getElementById('summaryConcluidos').textContent = concluidos;
             document.getElementById('summaryAndamento').textContent = andamento;
             document.getElementById('summaryAtrasados').textContent = atrasados;
-            document.getElementById('summaryAguardando').textContent = aguardando;
-            document.getElementById('summaryNaoIniciados').textContent = naoIniciados;
+            document.getElementById('summaryAguardando').textContent = planejamento;
+            document.getElementById('summaryNaoIniciados').textContent = PROJETOS.filter(p => p.progresso === 0 && p.status !== "Concluído").length;
             document.getElementById('summaryCriticos').textContent = criticos;
         }
         

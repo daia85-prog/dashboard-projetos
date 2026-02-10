@@ -169,10 +169,18 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:
     .header { flex-direction: column; text-align: center; }
 }
 @media print {
-    body { background: white; padding: 0; }
-    .container { box-shadow: none; }
-    .nav-buttons, .filters, .btn-limpar { display: none; }
+    body { background: white !important; padding: 0 !important; }
+    .container { box-shadow: none !important; }
+    .nav-buttons, .filters, .filter-indicator { display: none !important; }
+    .header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .risk-kpis { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .risk-kpi { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .alert-card-head { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .alert-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .project-card { break-inside: avoid; }
+    .alerts-section { break-inside: avoid; }
+    .progress-fill { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .status-badge { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
 </style>
 </head>
@@ -247,11 +255,11 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:
 <div class="filters">
     <div class="filter-group">
         <label>🔍 Buscar Projeto</label>
-        <input type="text" id="filtroNome" placeholder="Nome do projeto..." oninput="renderProjetos()">
+        <input type="text" id="filtroNome" placeholder="Nome do projeto..." oninput="renderAll()">
     </div>
     <div class="filter-group">
         <label>📊 Status</label>
-        <select id="filtroStatus" onchange="renderProjetos()">
+        <select id="filtroStatus" onchange="renderAll()">
             <option value="">Todos</option>
             <option value="Concluído">Concluído</option>
             <option value="Em andamento">Em andamento</option>
@@ -261,7 +269,7 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:
     </div>
     <div class="filter-group">
         <label>⚡ Prioridade</label>
-        <select id="filtroPrioridade" onchange="renderProjetos()">
+        <select id="filtroPrioridade" onchange="renderAll()">
             <option value="">Todas</option>
             <option value="Alta">Alta</option>
             <option value="Média">Média</option>
@@ -270,7 +278,7 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:
     </div>
     <div class="filter-group">
         <label>👤 PMO</label>
-        <select id="filtroPMO" onchange="renderProjetos()">
+        <select id="filtroPMO" onchange="renderAll()">
             <option value="">Todos</option>
             <option>ALEX</option><option>ANDERSON</option><option>FÁBIO</option>
             <option>GIOVANNI</option><option>LEANDRO</option><option>VINICIUS</option>
@@ -433,9 +441,26 @@ function renderPMO() {
     ).join("");
 }
 
+// ===== PROJETOS FILTRADOS (base para alertas e grid) =====
+function getProjetosFiltrados() {
+    const fn = document.getElementById("filtroNome").value.toLowerCase();
+    const fs = document.getElementById("filtroStatus").value;
+    const fp = document.getElementById("filtroPrioridade").value;
+    const fm = document.getElementById("filtroPMO").value;
+    
+    return PROJETOS.filter(p => {
+        if (fn && !p.nome.toLowerCase().includes(fn)) return false;
+        if (fs && p.status !== fs) return false;
+        if (fp && p.prioridade !== fp) return false;
+        if (fm && p.pmo !== fm) return false;
+        return true;
+    });
+}
+
 // ===== RENDER ALERTAS GO LIVE =====
 function renderAlertasGoLive() {
-    const nc = PROJETOS.filter(p => p.status !== "Concluído");
+    const base = getProjetosFiltrados();
+    const nc = base.filter(p => p.status !== "Concluído");
     const atrasados = nc.filter(p => getAlertaGoLive(p).tipo === "atrasado");
     const proximos = nc.filter(p => getAlertaGoLive(p).tipo === "proximo");
     const pendentes = nc.filter(p => getAlertaGoLive(p).tipo === "pendente");
@@ -457,7 +482,8 @@ function renderAlertasGoLive() {
 
 // ===== RENDER ALERTAS INFRA =====
 function renderAlertasInfra() {
-    const nc = PROJETOS.filter(p => p.status !== "Concluído");
+    const base = getProjetosFiltrados();
+    const nc = base.filter(p => p.status !== "Concluído");
     const bloqueados = nc.filter(p => p.status === "Atrasado");
     const emRisco = nc.filter(p => p.status === "Em andamento" && p.progresso < 40);
     const atencao = nc.filter(p => p.status === "Em andamento" && p.progresso >= 40 && p.progresso < 70);
@@ -479,18 +505,7 @@ function renderAlertasInfra() {
 
 // ===== RENDER PROJETOS (com risco + ordenação) =====
 function renderProjetos() {
-    const fn = document.getElementById("filtroNome").value.toLowerCase();
-    const fs = document.getElementById("filtroStatus").value;
-    const fp = document.getElementById("filtroPrioridade").value;
-    const fm = document.getElementById("filtroPMO").value;
-    
-    let pf = PROJETOS.filter(p => {
-        if (fn && !p.nome.toLowerCase().includes(fn)) return false;
-        if (fs && p.status !== fs) return false;
-        if (fp && p.prioridade !== fp) return false;
-        if (fm && p.pmo !== fm) return false;
-        return true;
-    });
+    let pf = getProjetosFiltrados();
     
     // Filtro por KPI de risco
     if (filtroRiscoAtivo) {
@@ -569,19 +584,20 @@ function filtrarRisco(tipo) {
         const ids = { noprazo: 'kpiNoPrazo', golive: 'kpiGoLive', infra: 'kpiInfra', criticos: 'kpiCriticos' };
         document.getElementById(ids[filtroRiscoAtivo])?.classList.add('active');
     }
-    renderProjetos();
+    renderAll();
     // Scroll até a lista de projetos
     document.getElementById("projetosGrid").scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-function filtrarStatus(s) { filtroRiscoAtivo = ''; document.querySelectorAll('.risk-kpi').forEach(el => el.classList.remove('active')); document.getElementById("filtroStatus").value = s; renderProjetos(); }
-function filtrarPrioridade(p) { filtroRiscoAtivo = ''; document.querySelectorAll('.risk-kpi').forEach(el => el.classList.remove('active')); document.getElementById("filtroPrioridade").value = p; renderProjetos(); }
-function filtrarPMO(m) { filtroRiscoAtivo = ''; document.querySelectorAll('.risk-kpi').forEach(el => el.classList.remove('active')); document.getElementById("filtroPMO").value = m; renderProjetos(); }
+function filtrarStatus(s) { filtroRiscoAtivo = ''; document.querySelectorAll('.risk-kpi').forEach(el => el.classList.remove('active')); document.getElementById("filtroStatus").value = s; renderAll(); }
+function filtrarPrioridade(p) { filtroRiscoAtivo = ''; document.querySelectorAll('.risk-kpi').forEach(el => el.classList.remove('active')); document.getElementById("filtroPrioridade").value = p; renderAll(); }
+function filtrarPMO(m) { filtroRiscoAtivo = ''; document.querySelectorAll('.risk-kpi').forEach(el => el.classList.remove('active')); document.getElementById("filtroPMO").value = m; renderAll(); }
+function renderAll() { renderAlertasGoLive(); renderAlertasInfra(); renderProjetos(); }
 function limparFiltros() {
     filtroRiscoAtivo = '';
     document.querySelectorAll('.risk-kpi').forEach(el => el.classList.remove('active'));
     ["filtroNome","filtroStatus","filtroPrioridade","filtroPMO"].forEach(id => document.getElementById(id).value = "");
-    renderProjetos();
+    renderAll();
 }
 
 // ===== MODAL =====

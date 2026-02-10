@@ -168,6 +168,19 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#e5e7eb;color:#11182
     .phase-step{flex:0 0 25%}
     .phase-step::before{display:none}
 }
+@media print {
+    body { background: white !important; }
+    .topbar { -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 10px 20px !important; }
+    .topbar-buttons { display: none !important; }
+    .filters { display: none !important; }
+    .page { padding: 0 !important; margin: 0 !important; }
+    .projects-panel { display: none !important; }
+    .layout { grid-template-columns: 1fr !important; }
+    .detail-panel { box-shadow: none !important; }
+    .phase-card { break-inside: avoid; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .phase-step { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .badge, .phase-step-dot { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
 </style>
 </head>
 <body>
@@ -178,6 +191,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#e5e7eb;color:#11182
         <a href="index.html" class="btn btn-executiva">🏠 Visão Executiva</a>
         <a href="view-projetos.html" class="btn btn-alertas">🚨 Alertas</a>
         <a href="view-simples.html" class="btn" style="background:#f59e0b">📄 Resumida</a>
+        <button class="btn" style="background:#3b82f6" onclick="window.print()">🖨️ Imprimir</button>
     </div>
 </div>
 
