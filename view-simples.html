@@ -509,7 +509,7 @@
             {l:'Atrasados',v:proj.filter(p=>p.status==='Atrasado').length,c:'#f59e0b'},
             {l:'Críticos',v:proj.filter(p=>p.status!=='Concluído'&&(p.status==='Atrasado'||p.progresso<30)).length,c:'#ec4899'}
           ];
-          const rows=proj.filter(p=>p.status!=='Concluído').map(p=>`<tr><td style="font-weight:600;color:${p.status==='Atrasado'?'#dc2626':'#1d4ed8'}">${p.projeto}</td><td>${p.status}</td><td>${p.resp||'--'}</td><td>${p.progresso}%</td></tr>`).join('');
+          const rows=proj.filter(p=>p.status!=='Concluído').map(p=>`<tr><td style="font-weight:600;color:${p.status==='Atrasado'?'#dc2626':'#1d4ed8'}">${p.nome}</td><td>${p.status}</td><td>${p.pmo||'--'}</td><td>${p.progresso}%</td></tr>`).join('');
           w.document.write(`<!DOCTYPE html><html><head><title>Visão Resumida</title><style>
             body{font-family:system-ui,sans-serif;padding:25px;max-width:950px;margin:0 auto}
             h1{color:#6366f1;text-align:center;border-bottom:3px solid #6366f1;padding-bottom:12px;font-size:1.3em}
