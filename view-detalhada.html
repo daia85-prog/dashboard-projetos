@@ -169,17 +169,19 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#e5e7eb;color:#11182
     .phase-step::before{display:none}
 }
 @media print {
-    body { background: white !important; }
-    .topbar { -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 10px 20px !important; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+    body { background: white !important; margin: 0 !important; padding: 0 !important; }
+    .topbar { padding: 10px 20px !important; }
     .topbar-buttons { display: none !important; }
     .filters { display: none !important; }
-    .page { padding: 0 !important; margin: 0 !important; }
+    .page { padding: 10px !important; margin: 0 !important; }
     .projects-panel { display: none !important; }
     .layout { grid-template-columns: 1fr !important; }
-    .detail-panel { box-shadow: none !important; }
-    .phase-card { break-inside: avoid; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .phase-step { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .badge, .phase-step-dot { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .detail-panel { box-shadow: none !important; border-radius: 0 !important; }
+    .phase-card { break-inside: avoid; margin-bottom: 10px !important; }
+    .phase-step { break-inside: avoid; }
+    .modal-overlay { display: none !important; }
+    .detail-header { break-after: avoid; }
 }
 </style>
 </head>

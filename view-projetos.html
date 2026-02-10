@@ -169,18 +169,21 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:
     .header { flex-direction: column; text-align: center; }
 }
 @media print {
-    body { background: white !important; padding: 0 !important; }
-    .container { box-shadow: none !important; }
-    .nav-buttons, .filters, .filter-indicator { display: none !important; }
-    .header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .risk-kpis { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .risk-kpi { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .alert-card-head { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .alert-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+    body { background: white !important; padding: 0 !important; margin: 0 !important; }
+    .container { box-shadow: none !important; max-width: 100% !important; border-radius: 0 !important; }
+    .nav-buttons, .filters, .filter-indicator, .btn-limpar { display: none !important; }
+    .header { padding: 15px 20px !important; }
+    .risk-kpis { gap: 8px !important; margin: 10px 15px !important; }
+    .risk-kpi { padding: 12px !important; border-radius: 8px !important; }
+    .risk-kpi::after { display: none !important; }
+    .side-cards { margin: 10px 15px !important; gap: 8px !important; }
+    .alerts-section { margin: 10px 15px !important; break-inside: avoid; }
+    .alert-cards { gap: 8px !important; }
+    .alert-card { break-inside: avoid; }
     .project-card { break-inside: avoid; }
-    .alerts-section { break-inside: avoid; }
-    .progress-fill { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .status-badge { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .projects-grid { gap: 10px !important; }
+    .progress-bar { height: 6px !important; }
 }
 </style>
 </head>

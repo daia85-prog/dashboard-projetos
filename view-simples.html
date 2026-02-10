@@ -245,13 +245,14 @@
         }
         
         @media print {
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
             .header-buttons { display: none !important; }
-            body { background: white !important; }
-            .container { box-shadow: none !important; }
-            .kpi-card { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            .alert-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            .section { break-inside: avoid; }
-            .summary-item { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            body { background: white !important; margin: 0 !important; padding: 0 !important; }
+            .container { box-shadow: none !important; max-width: 100% !important; border-radius: 0 !important; }
+            .section { break-inside: avoid; margin-bottom: 10px !important; }
+            .kpi-grid { gap: 8px !important; }
+            .alert-table { font-size: 0.85em !important; }
+            .alert-table th, .alert-table td { padding: 6px 8px !important; }
         }
     </style>
 </head>

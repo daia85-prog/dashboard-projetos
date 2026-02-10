@@ -49,17 +49,33 @@
         .btn-limpar { padding: 8px 14px; background: #f1f5f9; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 0.85em; color: #64748b; cursor: pointer; font-weight: 600; transition: all 0.2s; white-space: nowrap; }
         .btn-limpar:hover { background: #e2e8f0; border-color: #cbd5e1; color: #475569; }
         
-        /* KPI Cards */
-        .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 20px; }
-        .kpi { text-align: center; padding: 15px 10px; background: white; border-radius: 10px; border: 2px solid #e2e8f0; cursor: pointer; transition: all 0.2s; }
-        .kpi:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        .kpi.verde { border-color: #22c55e; }
-        .kpi.amarelo { border-color: #f59e0b; }
-        .kpi.vermelho { border-color: #ef4444; }
-        .kpi.azul { border-color: #3b82f6; }
-        .kpi.rosa { border-color: #ec4899; }
-        .kpi .num { font-size: 1.8em; font-weight: 700; color: #1e293b; }
-        .kpi .lbl { font-size: 0.8em; color: #64748b; }
+        /* KPI Cards - Gradient Style */
+        .kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 20px; }
+        .kpi { text-align: center; padding: 20px 12px; border-radius: 12px; cursor: pointer; transition: all 0.2s; color: white; position: relative; overflow: hidden; }
+        .kpi::after { content: ''; position: absolute; top: -15px; right: -15px; width: 60px; height: 60px; background: rgba(255,255,255,0.1); border-radius: 50%; }
+        .kpi:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.15); }
+        .kpi.azul { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+        .kpi.verde { background: linear-gradient(135deg, #22c55e, #16a34a); }
+        .kpi.amarelo { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .kpi.vermelho { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .kpi.rosa { background: linear-gradient(135deg, #ec4899, #be185d); }
+        .kpi .num { font-size: 2.2em; font-weight: 700; color: white; }
+        .kpi .lbl { font-size: 0.85em; color: rgba(255,255,255,0.9); font-weight: 500; }
+        
+        /* Phases Summary Band */
+        .phases-band { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; margin-bottom: 18px; }
+        .phase-band-item { text-align: center; padding: 10px 6px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0; border-top: 3px solid #e2e8f0; transition: all 0.2s; cursor: default; }
+        .phase-band-item.verde { border-top-color: #22c55e; background: #f0fdf4; }
+        .phase-band-item.amarelo { border-top-color: #f59e0b; background: #fffbeb; }
+        .phase-band-item.vermelho { border-top-color: #ef4444; background: #fef2f2; }
+        .phase-band-item.vazio { border-top-color: #cbd5e1; opacity: 0.6; }
+        .phase-band-name { font-size: 0.65em; font-weight: 600; color: #475569; line-height: 1.2; margin-bottom: 4px; display: block; }
+        .phase-band-pct { font-size: 1.3em; font-weight: 700; display: block; }
+        .phase-band-pct.verde { color: #16a34a; }
+        .phase-band-pct.amarelo { color: #d97706; }
+        .phase-band-pct.vermelho { color: #dc2626; }
+        .phase-band-pct.vazio { color: #94a3b8; }
+        .phase-band-count { font-size: 0.65em; color: #94a3b8; display: block; margin-top: 2px; }
         
         /* Fase cards (Macro) - GRID LADO A LADO */
         .phases { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
@@ -240,16 +256,24 @@
             .projects { grid-template-columns: 1fr; }
             .summary { grid-template-columns: repeat(2, 1fr); }
             .kpis { grid-template-columns: repeat(2, 1fr); }
+            .phases-band { grid-template-columns: repeat(4, 1fr); }
         }
 
         @media print {
-            body { background: white !important; padding: 10px !important; }
-            .container { box-shadow: none !important; max-width: 100% !important; }
-            .nav-buttons, .toggle, .filters, .checkbox-group { display: none !important; }
-            .header { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; padding: 15px !important; }
-            .content { padding: 15px !important; }
-            .kpi, .phase-card, .project-card { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; border: 1px solid #e2e8f0 !important; break-inside: avoid !important; }
-            .phase-bar-fill, .progress-fill { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+            body { background: white !important; padding: 0 !important; margin: 0 !important; }
+            .container { box-shadow: none !important; max-width: 100% !important; border-radius: 0 !important; }
+            .nav-buttons, .toggle, .filters, .checkbox-group, .btn-limpar, .phases-legend { display: none !important; }
+            .header { padding: 15px 20px !important; }
+            .content { padding: 10px 15px !important; }
+            .kpis { gap: 8px !important; margin-bottom: 12px !important; }
+            .kpi { border: 1px solid #e2e8f0 !important; break-inside: avoid !important; padding: 10px !important; }
+            .phases-band { gap: 4px !important; margin-bottom: 10px !important; }
+            .phase-band-item { padding: 6px 4px !important; }
+            .phase-card { break-inside: avoid !important; margin-bottom: 8px !important; }
+            .project-card { break-inside: avoid !important; }
+            .phases, .projects { gap: 10px !important; }
+            .modal-overlay, .print-modal { display: none !important; }
         }
     </style>
 </head>
@@ -277,9 +301,7 @@
             
             <div class="kpis" id="kpis"></div>
             
-            <div class="phases-legend">
-                <strong>Fases:</strong> 1. Kickoff · 2. Levantamento & Design · 3. Provisionamento · 4. Implantação · 5. Homologação · 6. Go Live · 7. Hypercare · 8. Encerramento
-            </div>
+            <div class="phases-band" id="phasesBand"></div>
             
             <div class="filters">
                 <div class="filter-group">
@@ -560,7 +582,8 @@ function limparBusca(){document.getElementById('search').value='';projetoFiltro=
 function toggleSearchClear(){const s=document.getElementById('search'),c=document.getElementById('searchClear');c.style.display=s.value?'flex':'none'}
 
 function setView(v){view=v;document.getElementById('btnMacro').classList.toggle('active',v==='macro');document.getElementById('btnMicro').classList.toggle('active',v==='micro');document.getElementById('macroView').style.display=v==='macro'?'grid':'none';document.getElementById('microView').style.display=v==='micro'?'grid':'none';render()}
-function render(){renderKPIs();if(view==='macro')renderMacro();else renderMicro();document.getElementById('ts').textContent='Atualizado em: '+new Date().toLocaleString('pt-BR');document.getElementById('dataHeader').textContent=new Date().toLocaleDateString('pt-BR')}
+function renderPhasesBand(){const ps=getProjetosFiltrados(),el=document.getElementById('phasesBand');let h='';FASES.forEach(f=>{let ta=0,co=0,nproj=0;ps.forEach(p=>{const af=getAtividades(p.nome).filter(a=>a.fase===f);if(af.length){ta+=af.length;co+=af.filter(a=>a.status==='Concluído').length}if(calcFaseAtual(p.nome)===f)nproj++});const pct=ta?Math.round(co/ta*100):0;const cor=ta?getCor(pct):'vazio';const shortName=f.replace(/^\d+\.\s*/,'');h+=`<div class="phase-band-item ${cor}"><span class="phase-band-name">${shortName}</span><span class="phase-band-pct ${cor}">${ta?pct+'%':'—'}</span>${nproj?`<span class="phase-band-count">${nproj} proj.</span>`:''}</div>`});el.innerHTML=h}
+function render(){renderKPIs();renderPhasesBand();if(view==='macro')renderMacro();else renderMicro();document.getElementById('ts').textContent='Atualizado em: '+new Date().toLocaleString('pt-BR');document.getElementById('dataHeader').textContent=new Date().toLocaleDateString('pt-BR')}
 
 function renderMacro(){const c=document.getElementById('macroView'),ps=getProjetosFiltrados(),pf={};FASES.forEach(f=>pf[f]=[]);ps.forEach(p=>{const f=calcFaseAtual(p.nome);pf[f].push(p)});let h='';FASES.forEach(f=>{const pjs=pf[f];if(!pjs.length)return;let ta=0,co=0;pjs.forEach(p=>{const af=getAtividades(p.nome).filter(a=>a.fase===f);ta+=af.length;co+=af.filter(a=>a.status==='Concluído').length});const pct=ta?Math.round(co/ta*100):0,cor=getCor(pct),al=faseTemAlerta(f,pjs),ctx=getContextoFase(f,pjs);h+=`<div class="phase-card ${cor}"><div class="phase-header"><div class="phase-title-group"><span class="phase-title">${f}</span><span class="phase-count">${pjs.length} projeto${pjs.length>1?'s':''}</span>${al?'<span class="phase-alert">⚠️</span>':''}</div><span class="phase-percent ${cor}">${pct}%</span></div><div class="phase-bar"><div class="phase-bar-fill ${cor}" style="width:${pct}%"></div></div>${ctx?`<div class="phase-context ${ctx.tipo}">${ctx.texto}</div>`:''}<div class="phase-info">${co}/${ta} atividades concluídas</div><div class="phase-projects">${pjs.map(p=>`<span class="badge ${isCritico(p.nome)?'critico':''}" onclick="filtrarProjeto('${p.nome}')">${p.nome}</span>`).join('')}</div></div>`});c.innerHTML=h||'<div class="empty">Nenhum projeto encontrado</div>'}
 
