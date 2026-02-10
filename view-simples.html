@@ -244,9 +244,32 @@
             color: #999;
         }
         
+        /* PRINT MODAL */
+        .pm-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:2000;justify-content:center;align-items:center}
+        .pm-overlay.show{display:flex}
+        .pm-box{background:#fff;border-radius:20px;padding:24px;max-width:500px;width:90%;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+        .pm-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid #e5e7eb}
+        .pm-header h2{font-size:1.1rem;color:#1e293b;display:flex;align-items:center;gap:8px}
+        .pm-close{background:none;border:none;font-size:1.5rem;cursor:pointer;color:#94a3b8;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+        .pm-close:hover{background:#f1f5f9;color:#475569}
+        .pm-opt{display:flex;align-items:center;gap:12px;padding:12px 14px;background:#f8fafc;border-radius:12px;cursor:pointer;border:2px solid transparent;transition:all .2s;margin-bottom:8px}
+        .pm-opt:hover{border-color:#6366f1;background:#f0f4ff}
+        .pm-opt.selected{border-color:#6366f1;background:#eff6ff}
+        .pm-opt input[type="radio"]{width:18px;height:18px;cursor:pointer;accent-color:#6366f1}
+        .pm-opt-text{flex:1}
+        .pm-opt-title{font-weight:600;color:#1e293b;font-size:.9rem}
+        .pm-opt-desc{font-size:.78rem;color:#6b7280;margin-top:2px}
+        .pm-footer{display:flex;gap:10px;margin-top:16px;padding-top:12px;border-top:1px solid #e5e7eb}
+        .pm-footer button{flex:1;padding:12px;border:none;border-radius:12px;font-weight:600;cursor:pointer;font-size:.9rem;transition:all .2s}
+        .pm-cancel{background:#f1f5f9;color:#64748b}
+        .pm-cancel:hover{background:#e2e8f0}
+        .pm-exec{background:#6366f1;color:#fff}
+        .pm-exec:hover{background:#4f46e5}
+        
         @media print {
             * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
             .header-buttons { display: none !important; }
+            .pm-overlay { display: none !important; }
             body { background: white !important; margin: 0 !important; padding: 0 !important; }
             .container { box-shadow: none !important; max-width: 100% !important; border-radius: 0 !important; }
             .section { break-inside: avoid; margin-bottom: 10px !important; }
@@ -269,7 +292,7 @@
                 <a href="index.html" class="header-btn btn-inicio">🏠 Visão Executiva</a>
                 <a href="view-projetos.html" class="header-btn" style="background:#ef4444;">🚨 Alertas</a>
                 <a href="view-detalhada.html" class="header-btn btn-detalhada">📋 Detalhada</a>
-                <button class="header-btn btn-imprimir" onclick="window.print()">🖨️ Imprimir</button>
+                <button class="header-btn btn-imprimir" onclick="abrirPrintModal()">🖨️ Imprimir / PDF</button>
             </div>
         </div>
         
@@ -464,6 +487,58 @@
         }
         
         window.addEventListener('DOMContentLoaded', loadData);
+        
+        // === PRINT MODAL ===
+        function abrirPrintModal(){document.getElementById('pmOverlay').classList.add('show')}
+        function fecharPrintModal(){document.getElementById('pmOverlay').classList.remove('show')}
+        function pmSelOpcao(el,tipo){
+          document.querySelectorAll('.pm-opt').forEach(o=>o.classList.remove('selected'));
+          el.classList.add('selected');el.querySelector('input').checked=true;
+        }
+        function pmExecutar(){
+          const tipo=document.querySelector('input[name="pmType"]:checked').value;
+          fecharPrintModal();
+          if(tipo==='pagina'){window.print();return}
+          // Build filtered data
+          let proj=PROJETOS;
+          if(tipo==='criticos')proj=PROJETOS.filter(p=>p.status!=='Concluído'&&(p.status==='Atrasado'||p.progresso<30));
+          const w=window.open('','_blank');
+          const kpis=[
+            {l:'Total',v:proj.length,c:'#3b82f6'},{l:'Concluídos',v:proj.filter(p=>p.status==='Concluído').length,c:'#22c55e'},
+            {l:'Em Andamento',v:proj.filter(p=>p.status==='Em andamento').length,c:'#f97316'},
+            {l:'Atrasados',v:proj.filter(p=>p.status==='Atrasado').length,c:'#f59e0b'},
+            {l:'Críticos',v:proj.filter(p=>p.status!=='Concluído'&&(p.status==='Atrasado'||p.progresso<30)).length,c:'#ec4899'}
+          ];
+          const rows=proj.filter(p=>p.status!=='Concluído').map(p=>`<tr><td style="font-weight:600;color:${p.status==='Atrasado'?'#dc2626':'#1d4ed8'}">${p.projeto}</td><td>${p.status}</td><td>${p.resp||'--'}</td><td>${p.progresso}%</td></tr>`).join('');
+          w.document.write(`<!DOCTYPE html><html><head><title>Visão Resumida</title><style>
+            body{font-family:system-ui,sans-serif;padding:25px;max-width:950px;margin:0 auto}
+            h1{color:#6366f1;text-align:center;border-bottom:3px solid #6366f1;padding-bottom:12px;font-size:1.3em}
+            .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:15px 0}
+            .kpi{text-align:center;padding:12px 8px;background:#f8fafc;border-radius:10px;border-top:4px solid #e2e8f0}
+            .kpi-n{font-size:1.6em;font-weight:700}.kpi-l{font-size:.8em;color:#64748b}
+            table{width:100%;border-collapse:collapse;margin:15px 0}th,td{border:1px solid #e2e8f0;padding:8px 10px;text-align:left;font-size:.85em}th{background:#f8fafc;font-weight:600}
+            @media print{body{padding:10px}*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}}
+          </style></head><body>
+          <h1>📊 Visão Resumida - Infraestrutura v9</h1>
+          <div class="kpis">${kpis.map(k=>`<div class="kpi" style="border-top-color:${k.c}"><div class="kpi-n">${k.v}</div><div class="kpi-l">${k.l}</div></div>`).join('')}</div>
+          <h2 style="font-size:1em;color:#475569;margin:15px 0 8px">📋 Projetos Não Concluídos</h2>
+          <table><thead><tr><th>Projeto</th><th>Status</th><th>Responsável</th><th>Progresso</th></tr></thead><tbody>${rows}</tbody></table>
+          <p style="color:#94a3b8;text-align:center;margin-top:20px;font-size:.8em">Gerado em ${new Date().toLocaleString('pt-BR')} · Invent Corp</p>
+          </body></html>`);
+          w.document.close();setTimeout(()=>w.print(),400);
+        }
     </script>
+
+<!-- PRINT MODAL -->
+<div class="pm-overlay" id="pmOverlay" onclick="if(event.target===this)fecharPrintModal()">
+  <div class="pm-box">
+    <div class="pm-header"><h2>🖨️ Imprimir</h2><button class="pm-close" onclick="fecharPrintModal()">×</button></div>
+    <label class="pm-opt selected" onclick="pmSelOpcao(this,'pagina')"><input type="radio" name="pmType" value="pagina" checked><div class="pm-opt-text"><div class="pm-opt-title">📄 Esta Página</div><div class="pm-opt-desc">Imprimir a visão resumida como está na tela</div></div></label>
+    <label class="pm-opt" onclick="pmSelOpcao(this,'todos')"><input type="radio" name="pmType" value="todos"><div class="pm-opt-text"><div class="pm-opt-title">📂 Todos os Projetos</div><div class="pm-opt-desc">Relatório com KPIs + lista de todos os projetos</div></div></label>
+    <label class="pm-opt" onclick="pmSelOpcao(this,'criticos')"><input type="radio" name="pmType" value="criticos"><div class="pm-opt-text"><div class="pm-opt-title">🚨 Apenas Críticos</div><div class="pm-opt-desc">Somente projetos atrasados ou com progresso baixo</div></div></label>
+    <div class="pm-footer"><button class="pm-cancel" onclick="fecharPrintModal()">Cancelar</button><button class="pm-exec" onclick="pmExecutar()">🖨️ Imprimir</button></div>
+  </div>
+</div>
+
 </body>
 </html>
