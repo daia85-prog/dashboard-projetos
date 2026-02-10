@@ -65,7 +65,10 @@
     .phase-card {
       border-radius:14px; padding:10px 12px; background:#ffffff; border:1px solid #e5e7eb;
       display:flex; flex-direction:column; gap:4px; font-size:.8rem; border-top:3px solid #e5e7eb;
+      cursor:pointer; transition:all 0.2s;
     }
+    .phase-card:hover { transform:translateY(-2px); box-shadow:0 4px 12px rgba(0,0,0,0.1); }
+    .phase-card.active { border:2px solid #6366f1; box-shadow:0 0 0 2px rgba(99,102,241,0.3); transform:translateY(-2px); }
     .phase-card.verde { border-top-color:#22c55e; }
     .phase-card.amarelo { border-top-color:#f59e0b; }
     .phase-card.vermelho { border-top-color:#ef4444; }
@@ -83,13 +86,15 @@
 
     .bottom-grid { display:grid; grid-template-columns:minmax(0,2fr) minmax(0,1.1fr); gap:16px; }
 
-    .filters { display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr; gap:8px; margin-top:4px; margin-bottom:8px; }
+    .filters { display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr auto; gap:8px; margin-top:4px; margin-bottom:8px; }
     .filter-group { display:flex; flex-direction:column; gap:3px; }
     .filter-label { font-size:.78rem; font-weight:600; color:#6b7280; }
     .filter-input, .filter-select {
       border-radius:999px; border:1px solid #e5e7eb; padding:7px 11px; font-size:.85rem; background:#fff;
     }
     .filter-input:focus, .filter-select:focus { outline:none; border-color:#6366f1; box-shadow:0 0 0 1px rgba(99,102,241,.2); }
+    .btn-limpar { background:#ef4444; color:white; border:none; border-radius:999px; padding:7px 14px; font-size:.82rem; font-weight:600; cursor:pointer; transition:all 0.2s; white-space:nowrap; align-self:flex-end; }
+    .btn-limpar:hover { background:#dc2626; }
 
     .projects-list { max-height:360px; overflow-y:auto; margin-top:2px; }
     .project-row {
@@ -134,6 +139,9 @@
     .status-value { font-size:1.2rem; font-weight:700; color:#111827; }
     .status-sub { font-size:.75rem; color:#6b7280; }
     .no-projects { font-size:.8rem; color:#9ca3af; font-style:italic; padding:6px 2px; }
+    .filter-indicator { font-size:.78rem; color:#6366f1; font-weight:600; padding:4px 10px; background:#eff6ff; border-radius:8px; margin-bottom:6px; display:none; align-items:center; gap:6px; }
+    .filter-indicator.show { display:flex; }
+    .filter-indicator .clear { cursor:pointer; color:#ef4444; margin-left:auto; font-size:.75rem; }
 
     /* MODAL */
     .modal-overlay { display:none; position:fixed; top:0;left:0;right:0;bottom:0; background:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center; }
@@ -175,12 +183,13 @@
       .page { margin:0 !important; padding:0 10px !important; }
       .section { box-shadow:none !important; break-inside:avoid; }
       .filters { display:none !important; }
+      .filter-indicator { display:none !important; }
       .modal-overlay { display:none !important; }
       .projects-list { max-height:none !important; overflow:visible !important; }
       .project-row { break-inside:avoid; }
     }
     @media(max-width:1100px){ .kpi-grid{grid-template-columns:repeat(3,1fr);} .phases-grid{grid-template-columns:repeat(2,1fr);} .bottom-grid{grid-template-columns:1fr;} }
-    @media(max-width:800px){ .kpi-grid{grid-template-columns:repeat(2,1fr);} .filters{grid-template-columns:1fr 1fr;} .project-row{grid-template-columns:1fr;} .progress-chip{text-align:left;} }
+    @media(max-width:800px){ .kpi-grid{grid-template-columns:repeat(2,1fr);} .filters{grid-template-columns:1fr 1fr;} .project-row{grid-template-columns:1fr;} .progress-chip{text-align:left;} .phases-grid{grid-template-columns:repeat(2,1fr);} }
   </style>
 </head>
 <body>
@@ -248,7 +257,9 @@
             <label class="filter-label">👤 Responsável</label>
             <select id="filterResp" class="filter-select" onchange="renderLista()"><option value="">Todos</option></select>
           </div>
+          <button class="btn-limpar" onclick="limparFiltros()">🗑️ Limpar</button>
         </div>
+        <div class="filter-indicator" id="filterIndicator"></div>
         <div class="projects-list" id="listaProjetos"></div>
       </div>
 
@@ -382,6 +393,7 @@
 
     // === KPIs ===
     let kpiFilter='';
+    let faseFilter='';
     function renderKPIs(){
       const t=PROJETOS.length;
       const c=PROJETOS.filter(p=>statusProjeto(p)==='Concluído').length;
@@ -405,12 +417,20 @@
           <div class="kpi-desc">${k.d}</div>
         </div>`).join('');
     }
-    function filtrarKPI(f){kpiFilter=kpiFilter===f?'':f;renderKPIs();renderLista()}
+    function filtrarKPI(f){kpiFilter=kpiFilter===f?'':f;faseFilter='';renderKPIs();renderFases();renderLista()}
 
     // === FASES ===
+    const FASES=['1. Kickoff','2. Levantamento & Design','3. Provisionamento','4. Implantação','5. Homologação','6. Go Live','7. Hypercare','8. Encerramento'];
+
+    function faseAtualProjeto(p){
+      const prog=progressoEstimado(p);
+      if(prog>=100)return 7; // Encerramento
+      if(prog<=0)return -1;  // nenhuma
+      return Math.min(7,Math.floor(prog/12.5));
+    }
+
     function renderFases(){
-      const fases=['1. Kickoff','2. Levantamento & Design','3. Provisionamento','4. Implantação','5. Homologação','6. Go Live','7. Hypercare','8. Encerramento'];
-      document.getElementById('phasesGrid').innerHTML=fases.map((f,idx)=>{
+      document.getElementById('phasesGrid').innerHTML=FASES.map((f,idx)=>{
         let total=0,concl=0,nProj=0;
         PROJETOS.forEach(p=>{
           const prog=progressoEstimado(p);
@@ -421,7 +441,8 @@
         });
         const pct=total?Math.round(concl/total*100):0;
         const cor=getCor(pct);
-        return`<div class="phase-card ${cor}">
+        const isActive=faseFilter===f?'active':'';
+        return`<div class="phase-card ${cor} ${isActive}" onclick="filtrarFase('${f}')" title="Clique para filtrar projetos nesta fase">
           <div class="phase-name">${f}</div>
           <div class="phase-bar"><div class="phase-bar-inner ${cor}" style="width:${pct}%"></div></div>
           <div class="phase-meta">
@@ -430,6 +451,17 @@
           </div>
         </div>`;
       }).join('');
+    }
+
+    function filtrarFase(f){faseFilter=faseFilter===f?'':f;kpiFilter='';renderKPIs();renderFases();renderLista()}
+
+    function limparFiltros(){
+      kpiFilter='';faseFilter='';
+      document.getElementById('filterBusca').value='';
+      document.getElementById('filterStatus').value='';
+      document.getElementById('filterPrioridade').value='';
+      document.getElementById('filterResp').value='';
+      renderKPIs();renderFases();renderLista();
     }
 
     // === LISTA ===
@@ -445,10 +477,19 @@
         if(rf&&p.resp!==rf)return false;
         if(kpiFilter==='critico'&&!isCritico(p))return false;
         if(kpiFilter&&kpiFilter!=='todos'&&kpiFilter!=='critico'&&statusProjeto(p)!==kpiFilter)return false;
+        if(faseFilter){const fi=FASES.indexOf(faseFilter);if(faseAtualProjeto(p)!==fi)return false}
         return true;
       });
     }
     function renderLista(){
+      // Filter indicator
+      const ind=document.getElementById('filterIndicator');
+      let indTxt='';
+      if(kpiFilter&&kpiFilter!=='todos')indTxt=kpiFilter==='critico'?'🚨 Filtrando: Críticos':`📊 Filtrando: ${kpiFilter}`;
+      if(faseFilter)indTxt=`🗺️ Filtrando: ${faseFilter}`;
+      if(indTxt){ind.innerHTML=`${indTxt} <span class="clear" onclick="limparFiltros()">✖ Limpar</span>`;ind.classList.add('show')}
+      else{ind.classList.remove('show')}
+
       const lista=getProjetosFiltrados().map(p=>({...p,_st:statusProjeto(p),_pg:progressoEstimado(p),_ri:riscoProjeto(p)}));
       const el=document.getElementById('listaProjetos');
       if(!lista.length){el.innerHTML='<div class="no-projects">Nenhum projeto encontrado com os filtros atuais.</div>';return}
