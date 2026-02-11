@@ -540,6 +540,24 @@ const PROGRESSO_REAL = {
     'MKT PERU': 8
 };
 
+// ========== ATIVIDADES OVERRIDE (status real por projeto) ==========
+// concluidas = quantas atividades concluídas (da 1ª em diante)
+// proxima = status da próxima atividade: 'Em andamento', 'Pendente', 'Agendado' ou null (= Não Iniciado)
+const ATIVIDADES_OVERRIDE = {
+    'NAVEPARK': { concluidas: 4, proxima: 'Pendente' },
+    // Kickoff OK, Escopo OK, Levantamento OK, Doc Arq OK, Aprovação = pendente retorno cliente
+    'CRISTAL MG RETROFIT': { concluidas: 4, proxima: 'Pendente' },
+    // Kickoff OK, Escopo OK, Levantamento OK, Doc Arq OK, Aprovação = pendente troca info
+    'PBL GUATEMALA': { concluidas: 4, proxima: 'Em andamento' },
+    // Kickoff OK, Escopo OK, Levantamento OK, Doc Arq OK, Aprovação = reunião 11/02
+    'BR': { concluidas: 1, proxima: null },
+    // Só kickoff feito, nenhuma outra tratativa
+    'BETA ESTEIO': { concluidas: 1, proxima: null },
+    // Só kickoff feito, nenhuma outra tratativa
+    'MKT PERU': { concluidas: 1, proxima: null },
+    // Só kickoff feito, nenhuma outra tratativa
+};
+
 // ========== PROJETOS CONCLUÍDOS ==========
 const CONCLUIDOS = [
     'BARBECUE B2B','BELEZA','CANDELABRIA','CDSK','COUGAR','ESPERANÇA',
@@ -709,9 +727,15 @@ function atualizarTimelineFases(idxAtual) {
 function renderAtividades(statusProjeto, prog) {
     const atividades = ATIVIDADES_PADRAO;
     
-    // Calcular quantas atividades estão concluídas baseado no progresso
+    // Usar override real se disponível
+    const override = ATIVIDADES_OVERRIDE[projetoAtual];
     let ativConcluidas = 0;
-    if (statusProjeto === 'Concluído') {
+    let proximaStatus = 'Em andamento'; // default para a próxima atividade após concluídas
+    
+    if (override) {
+        ativConcluidas = override.concluidas;
+        proximaStatus = override.proxima; // null = sem atividade em andamento
+    } else if (statusProjeto === 'Concluído') {
         ativConcluidas = 23;
     } else {
         ativConcluidas = Math.floor((prog / 100) * 23);
@@ -726,10 +750,12 @@ function renderAtividades(statusProjeto, prog) {
         if (statusProjeto === 'Concluído' || idx < ativConcluidas) {
             status = 'Concluído';
             statusClass = 'status-concluido';
-        } else if (idx === ativConcluidas) {
-            status = 'Em andamento';
-            statusClass = 'status-andamento';
-        } else if (idx === ativConcluidas + 1) {
+        } else if (idx === ativConcluidas && proximaStatus) {
+            status = proximaStatus;
+            statusClass = proximaStatus === 'Em andamento' ? 'status-andamento' : 
+                         proximaStatus === 'Pendente' ? 'status-aguardando' :
+                         proximaStatus === 'Agendado' ? 'status-andamento' : 'status-nao-iniciado';
+        } else if (idx === ativConcluidas + 1 && proximaStatus && !override) {
             status = 'Aguardando';
             statusClass = 'status-aguardando';
         }
