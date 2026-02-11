@@ -444,6 +444,7 @@ const ATIVIDADES_PADRAO = [
 
 // ========== TRATATIVAS (exemplo com dados reais) ==========
 const TRATATIVAS = {
+    // ===== BARBECUE B2B =====
     'BARBECUE B2B_Reunião de Kickoff': [
         { user:'ALEX', role:'PMO', date:'01/06/2025 09:00', tipo:'Atualização', content:'Kickoff realizado com sucesso. Equipe completa presente. Definidos os principais marcos do projeto.' },
         { user:'DAIANA', role:'Gestora', date:'01/06/2025 14:00', tipo:'Comentário', content:'Projeto prioritário para B2B. Acompanhar de perto o cronograma.' }
@@ -451,6 +452,7 @@ const TRATATIVAS = {
     'BARBECUE B2B_Aceite Formal': [
         { user:'ALEX', role:'PMO', date:'06/02/2026 10:00', tipo:'Resolução', content:'Projeto concluído com sucesso! Aceite formal assinado pelo cliente. Parabéns à equipe!' }
     ],
+    // ===== BETA =====
     'BETA_Reunião de Kickoff': [
         { user:'ANDERSON', role:'PMO', date:'01/07/2025 10:00', tipo:'Atualização', content:'Kickoff do projeto BETA realizado no Rio de Janeiro. Stakeholders alinhados.' },
         { user:'DAIANA', role:'Gestora', date:'01/07/2025 14:30', tipo:'Comentário', content:'Projeto estratégico. Manter comunicação frequente com o cliente.' }
@@ -458,39 +460,84 @@ const TRATATIVAS = {
     'BETA_Levantamento Técnico': [
         { user:'ANDERSON', role:'PMO', date:'15/01/2026 09:00', tipo:'Atualização', content:'Levantamento técnico em andamento. Mapeando infraestrutura atual do cliente.' }
     ],
+    // ===== BP =====
     'BP_Reunião de Kickoff': [
         { user:'GIOVANNI', role:'PMO', date:'01/12/2025 09:00', tipo:'Atualização', content:'Kickoff realizado. Cliente BP presente com equipe de TI.' }
     ],
     'BP_Levantamento Técnico': [
         { user:'GIOVANNI', role:'PMO', date:'20/01/2026 10:00', tipo:'Atualização', content:'Levantamento em andamento. Identificados 3 sites para migração.' }
     ],
-    'BR_Reunião de Kickoff': [
-        { user:'FÁBIO', role:'PMO', date:'01/02/2026 09:00', tipo:'Atualização', content:'Kickoff realizado em Jaboatão-PE. Equipe local mobilizada.' },
-        { user:'DAIANA', role:'Gestora', date:'01/02/2026 15:00', tipo:'Alerta', content:'ATENÇÃO: Logística para o Nordeste requer planejamento antecipado.' }
+    // ===== NAVEPARK (DADOS REAIS) =====
+    'NAVEPARK_Reunião de Kickoff': [
+        { user:'ANDERSON', role:'PMO', date:'16/12/2025 10:00', tipo:'Atualização', content:'Kickoff realizado com o cliente NAVEPARK em Curitiba-PR.' }
     ],
+    'NAVEPARK_Levantamento Técnico': [
+        { user:'ANDERSON', role:'PMO', date:'15/01/2026 10:00', tipo:'Atualização', content:'Primeiro contato realizado com o cliente para levantamento técnico.' },
+        { user:'ANDERSON', role:'PMO', date:'16/01/2026 09:00', tipo:'Atualização', content:'Envio da especificação padrão de infraestrutura para o cliente.' },
+        { user:'DAIANA', role:'Gestora', date:'10/02/2026 08:00', tipo:'Alerta', content:'PENDENTE: Fazer novo contato com o cliente para saber se ficou alguma dúvida sobre a especificação e se podemos seguir.' }
+    ],
+    // ===== CRISTAL MG RETROFIT (DADOS REAIS) =====
+    'CRISTAL MG RETROFIT_Reunião de Kickoff': [
+        { user:'GIOVANNI', role:'PMO', date:'16/12/2025 10:00', tipo:'Atualização', content:'Kickoff realizado para o projeto de retrofit em Belo Horizonte-MG.' }
+    ],
+    'CRISTAL MG RETROFIT_Levantamento Técnico': [
+        { user:'DAIANA', role:'Gestora', date:'09/01/2026 14:00', tipo:'Atualização', content:'Envio de perguntas ao cliente a fim de antecipar dúvidas para já ter resposta na reunião.' },
+        { user:'GIOVANNI', role:'PMO', date:'23/01/2026 10:00', tipo:'Atualização', content:'Reunião realizada para alinhar todas as dúvidas sobre o retrofit.' },
+        { user:'DAIANA', role:'Gestora', date:'10/02/2026 08:00', tipo:'Alerta', content:'PENDENTE: Daiana retornar com informações para o cliente, e o cliente também retornar informações para a Invent.' }
+    ],
+    // ===== PBL GUATEMALA (DADOS REAIS) =====
+    'PBL GUATEMALA_Reunião de Kickoff': [
+        { user:'FÁBIO', role:'PMO', date:'30/12/2025 10:00', tipo:'Atualização', content:'Kickoff realizado com o cliente PBL em Guatemala City.' }
+    ],
+    'PBL GUATEMALA_Documentação de Arquitetura': [
+        { user:'FÁBIO', role:'PMO', date:'09/01/2026 09:00', tipo:'Atualização', content:'Documento de especificação de servidores enviado ao cliente em espanhol (Guatemala). Nota: enviado antes do primeiro contato direto.' }
+    ],
+    'PBL GUATEMALA_Levantamento Técnico': [
+        { user:'FÁBIO', role:'PMO', date:'20/01/2026 10:00', tipo:'Atualização', content:'Primeiro contato direto realizado com o cliente para discutir a especificação enviada.' },
+        { user:'FÁBIO', role:'PMO', date:'03/02/2026 10:00', tipo:'Atualização', content:'Segundo contato com o cliente. Avançando nas definições de servidores e rede.' },
+        { user:'FÁBIO', role:'PMO', date:'10/02/2026 08:00', tipo:'Comentário', content:'Próxima reunião agendada para 11/02/2026 para avançar no tema de servidores.' }
+    ],
+    // ===== BR (DADOS REAIS) =====
+    'BR_Reunião de Kickoff': [
+        { user:'FÁBIO', role:'PMO', date:'30/01/2026 09:00', tipo:'Atualização', content:'Kickoff realizado em Jaboatão-PE. Equipe local mobilizada.' },
+        { user:'DAIANA', role:'Gestora', date:'30/01/2026 15:00', tipo:'Alerta', content:'ATENÇÃO: Logística para o Nordeste requer planejamento antecipado.' }
+    ],
+    // ===== BETA ESTEIO (DADOS REAIS) =====
+    'BETA ESTEIO_Reunião de Kickoff': [
+        { user:'ANDERSON', role:'PMO', date:'30/01/2026 10:00', tipo:'Atualização', content:'Kickoff realizado para o projeto Beta Esteio-RS. Aguardando início das tratativas.' }
+    ],
+    // ===== MKT PERU (DADOS REAIS) =====
+    'MKT PERU_Reunião de Kickoff': [
+        { user:'ALEX', role:'PMO', date:'30/01/2026 10:00', tipo:'Atualização', content:'Kickoff realizado para o projeto MKT Peru em Lima. Aguardando início das tratativas.' }
+    ],
+    // ===== DIA =====
     'DIA_Solicitação de Acessos (VPN/IPs)': [
         { user:'ANDERSON', role:'PMO', date:'15/01/2026 10:00', tipo:'Alerta', content:'ATENÇÃO: Aguardando liberação de VPN pelo cliente há 5 dias.' },
         { user:'DAIANA', role:'Gestora', date:'15/01/2026 11:30', tipo:'Comentário', content:'Escalar para gerente de TI do cliente. Prazo impactando cronograma.' }
     ],
-    'PBL GUATEMALA_Testes Funcionais': [
-        { user:'FÁBIO', role:'PMO', date:'25/01/2026 10:00', tipo:'Atualização', content:'Testes iniciados. 40% dos cenários executados com sucesso.' },
-        { user:'FÁBIO', role:'PMO', date:'28/01/2026 15:30', tipo:'Alerta', content:'Bug crítico identificado na integração com ERP. Equipe de dev acionada.' },
-        { user:'FÁBIO', role:'PMO', date:'30/01/2026 11:00', tipo:'Resolução', content:'Bug corrigido. Testes retomados. Cronograma mantido.' }
-    ],
+    // ===== COUGAR =====
     'COUGAR_Aceite Formal': [
         { user:'LEANDRO', role:'PMO', date:'09/02/2026 10:00', tipo:'Resolução', content:'Projeto COUGAR concluído! Cliente extremamente satisfeito. Aceite assinado.' }
     ],
-    'CRISTAL MG RETROFIT_Instalação Física': [
-        { user:'GIOVANNI', role:'PMO', date:'20/01/2026 14:00', tipo:'Atualização', content:'Instalação em andamento em BH. 2 de 4 racks montados.' },
-        { user:'GIOVANNI', role:'PMO', date:'25/01/2026 09:00', tipo:'Alerta', content:'Atraso na entrega de switches. Novo prazo: 28/01.' }
-    ],
+    // ===== REVERSE =====
     'REVERSE_Documentação de Arquitetura': [
         { user:'ALEX', role:'PMO', date:'10/01/2026 10:00', tipo:'Atualização', content:'Documentação 70% concluída. Aguardando validação do cliente.' }
     ],
+    // ===== TITANIO =====
     'TITANIO_Configuração de Rede': [
         { user:'ALEX', role:'PMO', date:'15/01/2026 09:00', tipo:'Atualização', content:'Configuração de rede iniciada. VLANs definidas.' },
         { user:'ALEX', role:'PMO', date:'20/01/2026 16:00', tipo:'Resolução', content:'Configuração concluída. Testes de conectividade OK.' }
     ]
+};
+
+// ========== PROGRESSO REAL (override do cálculo por data) ==========
+const PROGRESSO_REAL = {
+    'NAVEPARK': 18,
+    'CRISTAL MG RETROFIT': 22,
+    'PBL GUATEMALA': 25,
+    'BR': 8,
+    'BETA ESTEIO': 8,
+    'MKT PERU': 8
 };
 
 // ========== PROJETOS CONCLUÍDOS ==========
@@ -526,6 +573,12 @@ let projetoAtual = null;
 function calcularStatusEProgresso(p) {
     if (CONCLUIDOS.includes(p.nome)) {
         return { status: 'Concluído', prog: 100 };
+    }
+    
+    // Usar progresso real se disponível
+    if (PROGRESSO_REAL.hasOwnProperty(p.nome)) {
+        const prog = PROGRESSO_REAL[p.nome];
+        return { status: 'Em andamento', prog };
     }
     
     const hoje = new Date();
@@ -781,6 +834,16 @@ document.addEventListener('keydown', e => {
 
 // Inicializar
 renderLista();
+
+// Auto-selecionar projeto se veio da URL (ex: ?projeto=BR)
+const urlParams = new URLSearchParams(window.location.search);
+const projetoParam = urlParams.get('projeto');
+if (projetoParam) {
+    const proj = PROJETOS.find(p => p.nome === projetoParam);
+    if (proj) {
+        setTimeout(() => selecionarProjeto(projetoParam), 100);
+    }
+}
 
 // === PRINT MODAL ===
 function abrirPrintModal(){

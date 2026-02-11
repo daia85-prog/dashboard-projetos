@@ -502,7 +502,7 @@
         const rl=p._ri==='alto'?'🚨 Crítico':p._ri==='medio'?'⚠️ Atenção':'✅ Saudável';
         const cor=getCor(p._pg);
         const rowC=p._ri==='alto'?'critico':cor;
-        return`<div class="project-row ${rowC}" onclick="window.location.href='view-detalhada.html'">
+        return`<div class="project-row ${rowC}" onclick="window.location.href='view-detalhada.html?projeto=${encodeURIComponent(p.nome)}'">
           <div class="project-main"><div class="project-name">${p.nome}</div><div class="project-meta-line"><span>📍 ${p.local}</span><span>👤 ${p.resp}</span></div></div>
           <div class="project-tagline"><span class="badge ${pc}">${p.prioridade}</span><span class="badge ${sc}">${p._st}</span></div>
           <div class="project-tagline"><span class="badge ${rc}">${rl}</span></div>
